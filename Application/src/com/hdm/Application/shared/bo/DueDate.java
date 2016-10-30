@@ -1,8 +1,14 @@
 package com.hdm.Application.shared.bo;
 import java.util.Date;
 
-public class DueDate {
+
+public class DueDate extends BusinessObject {
+
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Date dueDate; 
 	private int nID;
 	public Date getDueDate() {
