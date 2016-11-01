@@ -2,6 +2,21 @@ package com.hdm.Application.shared.bo;
 
 import java.io.Serializable;
 
+
+/**
+ * Die abstrakte Klasse <code>BusinessObject</code> implementiert 
+ * das Interface <code>Serializable</code> und ist somit serilisierbar.
+ * Sie stellt die Elternklasse für alle BusinessObjects dar, die über 
+ * die GUI verwendet werden.
+ * 
+ * Die Klasse ist abstrakt und mit static final <code> serialVersionUID</code>
+ * ausgestattet, dies ist wichtiger Bestandteil für die Serialisierung.
+ * 
+ * @author Andra
+ *
+ */
+
+
 public abstract class BusinessObject implements Serializable 
 	{
 		private static final long serialVersionUID = 1L; 
@@ -64,16 +79,4 @@ public abstract class BusinessObject implements Serializable
 		  }
 		
 	}
-	/**
-	 * Die abstrakte Klasse <code>BusinessObject</code> implementiert 
-	 * das Interface <code>Serializable</code> und ist somit serilisierbar.
-	 * Sie stellt die Elternklasse für alle BusinessObjects dar, die über 
-	 * die GUI verwendet werden.
-	 * 
-	 * Die Klasse ist abstrakt und mit static final <code> serialVersionUID</code>
-	 * ausgestattet, dies ist wichtiger Bestandteil für die Serialisierung.
-	 * 
-	 * @author Andra
-	 *
-	 */
 
