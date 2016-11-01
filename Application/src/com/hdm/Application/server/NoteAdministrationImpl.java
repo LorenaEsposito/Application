@@ -23,10 +23,10 @@ public class NoteAdministrationImpl extends RemoteServiceServlet
    */
   private Note Note = null;
 private UserMapper uMapper;
-private NoteMapper nMapper;
-private PermissionMapper pMapper;
-private NotebookMapper noMapper;
-private DueDateMapper dMapper;
+//private NoteMapper nMapper;
+//private PermissionMapper pMapper;
+//private NotebookMapper nbMapper;
+//private DueDateMapper ddMapper;
 
    
   public NoteAdministrationImpl() throws IllegalArgumentException {
@@ -36,30 +36,30 @@ private DueDateMapper dMapper;
 public void init() throws IllegalArgumentException {
 
     this.uMapper = UserMapper.userMapper();
-    this.nMapper = NoteMapper.noteMapper();
-    this.pMapper = PermissionMapper.permissionMapper();
-    this.dMapper = DueDateMapper.duedateMapper();
-    this.noMapper = NotebookMapper.notebookMapper();
+    //this.nMapper = NoteMapper.noteMapper();
+    //this.pMapper = PermissionMapper.permissionMapper();
+    //this.ddMapper = DueDateMapper.duedateMapper();
+    //this.nbMapper = NotebookMapper.notebookMapper();
     
   }
 
 public void delete(User u) throws IllegalArgumentException {
     this.uMapper.delete(u);
   }
-public void delete(Note n) throws IllegalArgumentException {
-    this.nMapper.delete(n);
-  }
-public void delete(Permission p) throws IllegalArgumentException {
-    this.pMapper.delete(p);
-  }
-public void delete(DueDate d) throws IllegalArgumentException {
-    this.dMapper.delete(d);
-  }
-public void delete(Notebook no) throws IllegalArgumentException {
-    this.noMapper.delete(no);
-  }
+//public void delete(Note n) throws IllegalArgumentException {
+//    this.nMapper.delete(n);
+//  }
+//public void delete(Permission p) throws IllegalArgumentException {
+//    this.pMapper.delete(p);
+//  }
+//public void delete(DueDate d) throws IllegalArgumentException {
+//    this.ddMapper.delete(d);
+//  }
+//public void delete(Notebook no) throws IllegalArgumentException {
+//    this.nbMapper.delete(no);
+//  }
 
-
+}
 
 
 
