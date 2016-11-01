@@ -1,7 +1,5 @@
 package com.hdm.Application.shared;
 
-import java.util.ArrayList;
-
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 import com.hdm.Application.shared.bo.*;
@@ -22,4 +20,34 @@ public interface NoteAdministrationAsync {
 
 	public void init(AsyncCallback<Void> callback) throws IllegalArgumentException;
 	
+	public void createUser(User u, AsyncCallback<Void> callback) throws IllegalArgumentException;
+
+	public void editUser(User u, AsyncCallback<Void> callback) throws IllegalArgumentException;
+
+	public void deleteUser(User u, AsyncCallback<Void> callback) throws IllegalArgumentException;
+
+	public void createNotebook(Notebook nb, AsyncCallback<Void> callback) throws IllegalArgumentException;
+
+	public void editNotebook(Notebook nb, AsyncCallback<Void> callback) throws IllegalArgumentException;
+
+	public void deleteNotebook(Notebook nb, AsyncCallback<Void> callback) throws IllegalArgumentException;
+
+	public void createNote(Note n, AsyncCallback<Void> callback) throws IllegalArgumentException;
+
+	public void editNote(Note n, AsyncCallback<Void> callback) throws IllegalArgumentException;
+
+	public void deleteNote(Note n, AsyncCallback<Void> callback) throws IllegalArgumentException;
+
+	public void createPermission(Permission p, AsyncCallback<Void> callback) throws IllegalArgumentException;
+
+	public void editPermission(Permission p, AsyncCallback<Void> callback) throws IllegalArgumentException;
+
+	public void deletePermission(Permission p, AsyncCallback<Void> callback) throws IllegalArgumentException;
+
+	public void createDuedate(DueDate dd, AsyncCallback<Void> callback) throws IllegalArgumentException;
+
+	public void editDuedate(DueDate dd, AsyncCallback<Void> callback) throws IllegalArgumentException;
+
+	public void deleteDuedate(DueDate dd, AsyncCallback<Void> callback) throws IllegalArgumentException;
+
 }
