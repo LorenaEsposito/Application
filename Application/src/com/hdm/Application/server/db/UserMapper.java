@@ -34,8 +34,8 @@ public class UserMapper {
 	protected UserMapper() {
 	}
 
-	/**
 
+	/**
 	 * Aufruf eines USER-Mappers f�r Klassen, die keinen Zugriff auf den
 	 * Konstruktor haben.
 	 * 
@@ -310,10 +310,7 @@ public class UserMapper {
 
 		try {
 			Statement stmt = con.createStatement();
-
-			//SimpleDateFormat mySQLformat = new SimpleDateFormat("yyyy-MM-dd");
-			//String date = mySQLformat.format(u.getDateOfBirth());
-
+			
 			/**
 			 * Statement ausf�llen und als Query an die DB schicken
 			 */
@@ -335,6 +332,7 @@ public class UserMapper {
 	/**
 	 * Read-Methode - �bergabe eines Suchprofils, anhand dessen User ausgelesen werden sollen,
 	 * die Zugriff auf die eigenen Notizen und Notizb�cher haben.
+
 >>>>>>> refs/heads/master
 	 * 
 	 * @author Marius Klepser

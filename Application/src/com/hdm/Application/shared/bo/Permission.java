@@ -61,6 +61,7 @@ public class Permission implements Serializable{
 	 * Rueckgabe des permissiontypes
 	 * @return permissiontype
 	 */
+
 	public boolean getPermissionType(){
 		return permissiontype;
 	}
