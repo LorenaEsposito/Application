@@ -34,7 +34,7 @@ package com.hdm.Application.server.db;
 		}
 
 		/**
-		 * Aufruf eines Permission-Mappers für Klassen, die keinen Zugriff auf den
+		 * Aufruf eines Permission-Mappers fï¿½r Klassen, die keinen Zugriff auf den
 		 * Konstruktor haben.
 		 * 
 		 * @return Einzigartige Mapper-Instanz zur Benutzung in der
@@ -49,17 +49,17 @@ package com.hdm.Application.server.db;
 		}
 
 		/**
-		 * Read-Methode - Anhand einer vorgegebenen id wird der dazu gehoerige User
+		 * Read-Methode - Anhand einer vorgegebenen id wird die dazu gehoerige Permission
 		 * in der Datenbank gesucht.
 		 * 
 		 * @author Marius Klepser
 		 * @param id
-		 *            Die id des Users, der aus der Datenbank gelesen werden soll
-		 * @return Das durch die id referenzierte User-Objekt
+		 *            Die id der Permission, die aus der Datenbank gelesen werden soll
+		 * @return Das durch die id referenzierte Permission-Objekt
 		 * 
 		 */
 
-		public User findByKey(int id) {
+		public Permission findByKey(int id) {
 			/**
 			 * DB-Verbindung holen & Erzeugen eines neuen SQL-Statements.
 			 */
@@ -69,73 +69,24 @@ package com.hdm.Application.server.db;
 				Statement stmt = con.createStatement();
 
 				/**
-				 * Statement ausfüllen und als Query an die DB schicken
+				 * Statement ausfï¿½llen und als Query an die DB schicken
 				 */
-				ResultSet rs = stmt.executeQuery("SELECT id, userName FROM users " + "WHERE id='" + id
+				ResultSet rs = stmt.executeQuery("SELECT id, permissionType, userID, nID, nbID FROM permissions " + "WHERE id='" + id
 						+ "' ORDER BY id");
 
 				/**
-				 * Da id Primaerschlüssel ist, kann max. nur ein Tupel zurückgegeben
-				 * werden. Prüfe, ob ein Ergebnis vorliegt.
+				 * Da id Primaerschlï¿½ssel ist, kann max. nur ein Tupel zurï¿½ckgegeben
+				 * werden. Prï¿½fe, ob ein Ergebnis vorliegt.
 				 */
 				if (rs.next()) {
 
-					User u = new User();
-					u.setId(rs.getInt("id"));
-					u.setUserName(rs.getString("userName"));
-					return u;
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-				return null;
-			}
-
-			return null;
-		}
-
-		/**
-		 * Read-Methode - Anhand eines Usernamen wird der dazu gehoerige User in
-		 * der Datenbank gesucht. Diese Methode ist vor Allem für den Login
-		 * relevant, der über die Google-Email-Adresse realisiert wird. Die
-		 * Google-Adresse fungiert also als Username, der von Haus aus eindeutig
-		 * ist.
-		 * 
-		 * @author Marius Klepser
-		 * @param id
-		 *            Der Username zum User, der aus der Datenbank gelesen werden
-		 *            soll
-		 * @return Das durch die id referenzierte User-Objekt
-		 * 
-		 */
-
-		public User findByName(String name) {
-			/**
-			 * DB-Verbindung holen & Erzeugen eines neuen SQL-Statements.
-			 */
-			Connection con = DBConnection.connection();
-
-			try {
-				Statement stmt = con.createStatement();
-
-				/**
-				 * Statement ausfüllen und als Query an die DB schicken
-				 */
-				ResultSet rs = stmt.executeQuery("SELECT id, userName FROM users " + "WHERE userName='" + name
-						+ "' ORDER BY userName");
-
-				/**
-				 * Da id Primaerschlüssel ist, kann max. nur ein Tupel zurückgegeben
-				 * werden. Prüfe, ob ein Ergebnis vorliegt.
-				 */
-				if (rs.next()) {
-					/**
-					 * Ergebnis-Tupel in Objekt umwandeln
-					 */
-					User u = new User();
-					u.setId(rs.getInt("id"));
-					u.setUserName(rs.getString("userName"));
-					
-					return u;
+					Permission p = new Permission();
+					p.setPermissionID(rs.getInt("id"));
+					p.setPermissionType(rs.getBoolean("permissionType"));
+					p.setUserID(rs.getInt("userID"));
+					p.setNID(rs.getInt("nID"));
+					p.setNbID(rs.getInt("nbID"));
+					return p;
 				}
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -167,26 +118,26 @@ package com.hdm.Application.server.db;
 				Statement stmt = con.createStatement();
 
 				/**
-				 * Statement ausfüllen und als Query an die DB schicken.
+				 * Statement ausfï¿½llen und als Query an die DB schicken.
 				 */
 
 				ResultSet rs = stmt.executeQuery("SELECT id, uID, nID, nbID, permissionType FROM permissions" + "ORDER BY id");
 
 				/**
-				 * Für jeden Eintrag im Suchergebnis wird nun ein Profile-Objekt
+				 * Fï¿½r jeden Eintrag im Suchergebnis wird nun ein Profile-Objekt
 				 * erstellt.
 				 */
 				while (rs.next()) {
+					
 					Permission p = new Permission();
-					p.setId(rs.getInt("id"));
-					p.setuID(rs.getInt("uID"));
-					p.setnID(rs.getInt("nID"));
-					p.setnbID(rs.getInt("nbID"));
-					p.setPermissionType(rs.getInt("permissionType"));
-
+					p.setPermissionID(rs.getInt("id"));
+					p.setPermissionType(rs.getBoolean("permissionType"));
+					p.setUserID(rs.getInt("userID"));
+					p.setNID(rs.getInt("nID"));
+					p.setNbID(rs.getInt("nbID"));
 
 					/**
-					 * Hinzufügen des neuen Objekts zum Ergebnisvektor
+					 * Hinzufï¿½gen des neuen Objekts zum Ergebnisvektor
 					 */
 					result.addElement(p);
 				}
@@ -195,14 +146,14 @@ package com.hdm.Application.server.db;
 			}
 
 			/**
-			 * Ergebnisvektor zurückgeben
+			 * Ergebnisvektor zurï¿½ckgeben
 			 */
 			return result;
 		}
 
 		/**
-		 * Insert-Methode - Ein Permission-Objekt wird übergeben und die zugehoerigen
-		 * Werte in ein SQL-Statement geschrieben, welches ausgeführt wird, um das
+		 * Insert-Methode - Ein Permission-Objekt wird ï¿½bergeben und die zugehoerigen
+		 * Werte in ein SQL-Statement geschrieben, welches ausgefï¿½hrt wird, um das
 		 * Objekt in die Datenbank einzutragen.
 		 * 
 		 * @author Marius Klepser
@@ -220,19 +171,19 @@ package com.hdm.Application.server.db;
 
 				/**
 				 * Zunaechst schauen wir nach, welches der momentan hoechste
-				 * Primaerschlüsselwert ist.
+				 * Primaerschlï¿½sselwert ist.
 				 */
 				ResultSet rs = stmt.executeQuery("SELECT MAX(id) AS maxid " + "FROM permissions ");
 
 				/**
-				 * Wenn wir etwas zurückerhalten, kann dies nur einzeilig sein
+				 * Wenn wir etwas zurï¿½ckerhalten, kann dies nur einzeilig sein
 				 */
 				if (rs.next()) {
 					/**
 					 * p erhaelt den bisher maximalen, nun um 1 inkrementierten
-					 * Primaerschlüssel.
+					 * Primaerschlï¿½ssel.
 					 */
-					p.setId(rs.getInt("maxid") + 1);
+					p.setPermissionID(rs.getInt("maxid") + 1);
 
 					/**
 					 * Erzeugen eines neuen SQL-Statements.
@@ -241,17 +192,17 @@ package com.hdm.Application.server.db;
 					stmt = con.createStatement();
 
 					/**
-					 * Jetzt erst erfolgt die tatsaechliche Einfügeoperation
+					 * Jetzt erst erfolgt die tatsaechliche Einfï¿½geoperation
 					 */
 					stmt.executeUpdate(
-							"INSERT INTO permissions (id, uID, nID, nbID, permissionType) "
-									+ "VALUES (" + p.getId() + ",'" + p.getuID() + ",'" + p.getnID()
-									+ ",'" + p.getnbID() + ",'" + p.getPermissionType() + "')");
+							"INSERT INTO permissions (id, permissionType, userID, nID, nbID) "
+									+ "VALUES (" + p.getPermissionID() + ",'" + p.getPermissionType() + ",'" + p.getUserID()
+									+ ",'" + p.getNbID() + ",'" + p.getNID() + "')");
 
 					System.out.println(
-							"INSERT INTO permissions (id, uID, nID, nbID, permissionType) "
-									+ "VALUES (" + p.getId() + ",'" + p.getuID() + ",'" + p.getnID()
-									+ ",'" + p.getnbID() + ",'" + p.getPermissionType() + "')");
+							"INSERT INTO permissions (id, permissionType, userID, nID, nbID) "
+									+ "VALUES (" + p.getPermissionID() + ",'" + p.getPermissionType() + ",'" + p.getUserID()
+									+ ",'" + p.getNbID() + ",'" + p.getNID() + "')");
 
 					return p;
 				}
@@ -265,7 +216,7 @@ package com.hdm.Application.server.db;
 		}
 
 		/**
-		 * Delete-Methode - Ein Permission-Objekt wird übergeben, anhand dessen der
+		 * Delete-Methode - Ein Permission-Objekt wird ï¿½bergeben, anhand dessen der
 		 * zugehoerige Eintrag in der Datenbank geloescht wird
 		 * 
 		 * @author Marius Klepser
@@ -285,10 +236,10 @@ package com.hdm.Application.server.db;
 				Statement stmt = con.createStatement();
 
 				/**
-				 * Statement ausfüllen und als Query an die DB schicken
+				 * Statement ausfï¿½llen und als Query an die DB schicken
 				 */
 
-				stmt.executeUpdate("DELETE FROM permissions " + "WHERE id=" + p.getId());
+				stmt.executeUpdate("DELETE FROM permissions " + "WHERE id=" + p.getPermissionID());
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}

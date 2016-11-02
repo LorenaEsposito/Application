@@ -309,10 +309,7 @@ public class UserMapper {
 
 		try {
 			Statement stmt = con.createStatement();
-
-			//SimpleDateFormat mySQLformat = new SimpleDateFormat("yyyy-MM-dd");
-			//String date = mySQLformat.format(u.getDateOfBirth());
-
+			
 			/**
 			 * Statement ausf�llen und als Query an die DB schicken
 			 */
