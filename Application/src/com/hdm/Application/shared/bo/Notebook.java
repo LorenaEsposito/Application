@@ -70,6 +70,7 @@ public class Notebook extends NoteObject {
 	public void setCreDate(Date creDate) {
 		this.creDate = creDate;
 	}
+}
 	
 	
 	

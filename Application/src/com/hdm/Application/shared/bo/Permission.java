@@ -61,7 +61,8 @@ public class Permission implements Serializable{
 	 * Rueckgabe des permissiontypes
 	 * @return permissiontype
 	 */
-	public boolean getPermissiontype(){
+
+	public boolean getPermissionType(){
 		return permissiontype;
 	}
 	
@@ -69,7 +70,7 @@ public class Permission implements Serializable{
 	 * Setzen des permissiontypes
 	 * @param permissiontype
 	 */
-	public void setPermissiontype(boolean permissiontype){
+	public void setPermissionType(boolean permissiontype){
 		this.permissiontype = permissiontype;
 	}
 	

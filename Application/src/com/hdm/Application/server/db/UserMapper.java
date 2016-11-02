@@ -34,8 +34,9 @@ public class UserMapper {
 	protected UserMapper() {
 	}
 
+
 	/**
-	 * Aufruf eines USER-Mappers für Klassen, die keinen Zugriff auf den
+	 * Aufruf eines USER-Mappers fï¿½r Klassen, die keinen Zugriff auf den
 	 * Konstruktor haben.
 	 * 
 	 * @return Einzigartige Mapper-Instanz zur Benutzung in der
@@ -70,19 +71,19 @@ public class UserMapper {
 			Statement stmt = con.createStatement();
 
 			/**
-			 * Statement ausfüllen und als Query an die DB schicken
+			 * Statement ausfï¿½llen und als Query an die DB schicken
 			 */
 			ResultSet rs = stmt.executeQuery("SELECT id, userName FROM users " + "WHERE id='" + id
 					+ "' ORDER BY id");
 
 			/**
-			 * Da id Primaerschlüssel ist, kann max. nur ein Tupel zurückgegeben
-			 * werden. Prüfe, ob ein Ergebnis vorliegt.
+			 * Da id Primaerschlï¿½ssel ist, kann max. nur ein Tupel zurï¿½ckgegeben
+			 * werden. Prï¿½fe, ob ein Ergebnis vorliegt.
 			 */
 			if (rs.next()) {
 
 				User u = new User();
-				u.setId(rs.getInt("id"));
+				u.setUserID(rs.getInt("id"));
 				u.setUserName(rs.getString("userName"));
 				return u;
 			}
@@ -96,8 +97,8 @@ public class UserMapper {
 
 	/**
 	 * Read-Methode - Anhand eines Usernamen wird der dazu gehoerige User in
-	 * der Datenbank gesucht. Diese Methode ist vor Allem für den Login
-	 * relevant, der über die Google-Email-Adresse realisiert wird. Die
+	 * der Datenbank gesucht. Diese Methode ist vor Allem fï¿½r den Login
+	 * relevant, der ï¿½ber die Google-Email-Adresse realisiert wird. Die
 	 * Google-Adresse fungiert also als Username, der von Haus aus eindeutig
 	 * ist.
 	 * 
@@ -119,21 +120,21 @@ public class UserMapper {
 			Statement stmt = con.createStatement();
 
 			/**
-			 * Statement ausfüllen und als Query an die DB schicken
+			 * Statement ausfï¿½llen und als Query an die DB schicken
 			 */
 			ResultSet rs = stmt.executeQuery("SELECT id, userName FROM users " + "WHERE userName='" + name
 					+ "' ORDER BY userName");
 
 			/**
-			 * Da id Primaerschlüssel ist, kann max. nur ein Tupel zurückgegeben
-			 * werden. Prüfe, ob ein Ergebnis vorliegt.
+			 * Da id Primaerschlï¿½ssel ist, kann max. nur ein Tupel zurï¿½ckgegeben
+			 * werden. Prï¿½fe, ob ein Ergebnis vorliegt.
 			 */
 			if (rs.next()) {
 				/**
 				 * Ergebnis-Tupel in Objekt umwandeln
 				 */
 				User u = new User();
-				u.setId(rs.getInt("id"));
+				u.setUserID(rs.getInt("id"));
 				u.setUserName(rs.getString("userName"));
 				
 				return u;
@@ -168,22 +169,22 @@ public class UserMapper {
 			Statement stmt = con.createStatement();
 
 			/**
-			 * Statement ausfüllen und als Query an die DB schicken.
+			 * Statement ausfï¿½llen und als Query an die DB schicken.
 			 */
 
 			ResultSet rs = stmt.executeQuery("SELECT id, userName FROM users" + "ORDER BY id");
 
 			/**
-			 * Für jeden Eintrag im Suchergebnis wird nun ein Profile-Objekt
+			 * Fï¿½r jeden Eintrag im Suchergebnis wird nun ein Profile-Objekt
 			 * erstellt.
 			 */
 			while (rs.next()) {
 				User u = new User();
-				u.setId(rs.getInt("id"));
+				u.setUserID(rs.getInt("id"));
 				u.setUserName(rs.getString("userName"));
 
 				/**
-				 * Hinzufügen des neuen Objekts zum Ergebnisvektor
+				 * Hinzufï¿½gen des neuen Objekts zum Ergebnisvektor
 				 */
 				result.addElement(u);
 			}
@@ -192,14 +193,14 @@ public class UserMapper {
 		}
 
 		/**
-		 * Ergebnisvektor zurückgeben
+		 * Ergebnisvektor zurï¿½ckgeben
 		 */
 		return result;
 	}
 
 	/**
-	 * Insert-Methode - Ein User-Objekt wird übergeben und die zugehoerigen
-	 * Werte in ein SQL-Statement geschrieben, welches ausgeführt wird, um das
+	 * Insert-Methode - Ein User-Objekt wird ï¿½bergeben und die zugehoerigen
+	 * Werte in ein SQL-Statement geschrieben, welches ausgefï¿½hrt wird, um das
 	 * Objekt in die Datenbank einzutragen.
 	 * 
 	 * @author Marius Klepser
@@ -217,19 +218,19 @@ public class UserMapper {
 
 			/**
 			 * Zunaechst schauen wir nach, welches der momentan hoechste
-			 * Primaerschlüsselwert ist.
+			 * Primaerschlï¿½sselwert ist.
 			 */
 			ResultSet rs = stmt.executeQuery("SELECT MAX(id) AS maxid " + "FROM users ");
 
 			/**
-			 * Wenn wir etwas zurückerhalten, kann dies nur einzeilig sein
+			 * Wenn wir etwas zurï¿½ckerhalten, kann dies nur einzeilig sein
 			 */
 			if (rs.next()) {
 				/**
 				 * u erhaelt den bisher maximalen, nun um 1 inkrementierten
-				 * Primaerschlüssel.
+				 * Primaerschlï¿½ssel.
 				 */
-				u.setId(rs.getInt("maxid") + 1);
+				u.setUserID(rs.getInt("maxid") + 1);
 
 				/**
 				 * Erzeugen eines neuen SQL-Statements.
@@ -238,15 +239,15 @@ public class UserMapper {
 				stmt = con.createStatement();
 
 				/**
-				 * Jetzt erst erfolgt die tatsaechliche Einfügeoperation
+				 * Jetzt erst erfolgt die tatsaechliche Einfï¿½geoperation
 				 */
 				stmt.executeUpdate(
 						"INSERT INTO users (id, userName) "
-								+ "VALUES (" + u.getId() + ",'" + u.getUserName() + "')");
+								+ "VALUES (" + u.getUserID() + ",'" + u.getUserName() + "')");
 
 				System.out.println(
 						"INSERT INTO users (id, userName) "
-								+ "VALUES (" + u.getId() + ",'" + u.getUserName() + "')");
+								+ "VALUES (" + u.getUserID() + ",'" + u.getUserName() + "')");
 
 				return u;
 			}
@@ -260,7 +261,7 @@ public class UserMapper {
 	}
 
 	/**
-	 * Delete-Methode - Ein User-Objekt wird übergeben, anhand dessen der
+	 * Delete-Methode - Ein User-Objekt wird ï¿½bergeben, anhand dessen der
 	 * zugehoerige Eintrag in der Datenbank geloescht wird
 	 * 
 	 * @author Marius Klepser
@@ -280,18 +281,18 @@ public class UserMapper {
 			Statement stmt = con.createStatement();
 
 			/**
-			 * Statement ausfüllen und als Query an die DB schicken
+			 * Statement ausfï¿½llen und als Query an die DB schicken
 			 */
 
-			stmt.executeUpdate("DELETE FROM users " + "WHERE id=" + u.getId());
+			stmt.executeUpdate("DELETE FROM users " + "WHERE id=" + u.getUserID());
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
 
 	/**
-	 * Edit-Methode - Ein Profil wird übergeben und die zugehoerigen Werte in ein
-	 * SQL-Statement geschrieben, welches ausgeführt wird, um die
+	 * Edit-Methode - Ein Profil wird ï¿½bergeben und die zugehoerigen Werte in ein
+	 * SQL-Statement geschrieben, welches ausgefï¿½hrt wird, um die
 	 * Informationswerte des Profils in der Datenbank zu aktualisieren.
 	 * 
 	 * @author Marius Klepser
@@ -309,31 +310,30 @@ public class UserMapper {
 
 		try {
 			Statement stmt = con.createStatement();
-
-			SimpleDateFormat mySQLformat = new SimpleDateFormat("yyyy-MM-dd");
-			String date = mySQLformat.format(u.getDateOfBirth());
-
+			
 			/**
-			 * Statement ausfüllen und als Query an die DB schicken
+			 * Statement ausfï¿½llen und als Query an die DB schicken
 			 */
 
 			stmt.executeUpdate("UPDATE users " + "SET userName=\"" + u.getUserName() + "\", "
-			+ " WHERE id=" + u.getId());
+			+ " WHERE id=" + u.getUserID());
 
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 
 		/**
-		 * Um Analogie zu insert(User u) zu wahren, geben wir u zurück
+		 * Um Analogie zu insert(User u) zu wahren, geben wir u zurï¿½ck
 		 */
 		return u;
 	}
 }
 
 	/**
-	 * Read-Methode - Übergabe eines Suchprofils, anhand dessen User ausgelesen werden sollen,
-	 * die Zugriff auf die eigenen Notizen und Notizbücher haben.
+	 * Read-Methode - ï¿½bergabe eines Suchprofils, anhand dessen User ausgelesen werden sollen,
+	 * die Zugriff auf die eigenen Notizen und Notizbï¿½cher haben.
+
+>>>>>>> refs/heads/master
 	 * 
 	 * @author Marius Klepser
 	 * @param searchProfile
