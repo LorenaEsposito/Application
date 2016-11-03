@@ -46,10 +46,11 @@ public class DueDateMapper {
 	
 	
 	/**
-	 * Ein spezielles DueDate wird ueber das dueDate (gesuchtes Datum, dDate) gesucht. Es werden 
-	 * alle Objekte mit dem gewuscnhten duedate zurueckgegeben
-	 * @param dueDate 
-	 * @return Date-Objekte, die das gesuchte dueDate besitzten - null bei nicht vorhandenem Tupel
+	 * Alle DueDate-Objekte mit gesuchtem Datum werden ausgelesen
+	 * 
+	 * @param dueDate
+	 * @return Vektor mit DueDate-Objekten, die das gesuchte DueDate (dDate) enthalten.
+	 * Bei Exceptions wird ein teilweise gefuellter oder leerer Vektor zurueckgegeben
 	 */
 	
 	
@@ -124,23 +125,34 @@ public class DueDateMapper {
 	}
 	
 
+	/**
+	 * Ein spezielles DueDate wird ueber die NoteID (nID) gesucht. Es wird genau ein Objekt zurueck gegeben
+	 * @param nID 
+	 * @return Date-Objekt, das die gesuchte nID besitzt - null bei nicht vorhandenem Tupel
+	 */
 	
-	public Vector<DueDate> findByNoteID(int nID){
+	public Date findByNoteID(int nID){
 		Connection con = DBConnection.connection();
-		Vector<DueDate> result = new Vector<DueDate>();
+		
 		
 		try {
 			Statement stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery("SELECT ddID, dDate, nID" + "FROM DueDate"
 			+ "WHERE nID LIKE'" + nID);
 			
-			while(rs.next()){
+				/*
+		       * Da nID Primärschlüssel ist, kann max. nur ein Tupel zurückgegeben
+		       * werden. Prüfe, ob ein Ergebnis vorliegt.
+		       */
+			
+			if (rs.next()){
+				// Ergebnis-Tupel in Objekt umwandeln
 				Date dueDate = new Date();
 				dueDate.setDdId(rs.getInt("ddID"));
 				dueDate.setdDate(rs.getDate("dDate"));
 				dueDate.setnID(rs.getInt("nID"));
 				
-				result.addElement(dueDate);
+				return dueDate;
 			}
 		}
 		
@@ -148,8 +160,19 @@ public class DueDateMapper {
 			e.printStackTrace();
 		}
 		
-		return result;
+		return null;
 	}
+	
+	
+	
+
+	/**
+	 * Ein DueDate-Objekt wird in der Datenbank hinzugefuegt. Der Primaerschluessel wird ueberprueft 
+	 * und gegebenenfalls neu zugeordnet.
+	 * @param dueDate (Objekt, das gespeichert werden soll)
+	 * @return neu uebergebenes Objekt, mit angepasster ID
+	 */
+	
 	
 	public Date createDueDate(Date dueDate){
 		Connection con = DBConnection.connection();
@@ -157,13 +180,17 @@ public class DueDateMapper {
 		
 		try{
 			Statement stmt = con.createStatement();
+			
+			//Ueberpruefen welches der aktuell hoechste Primaerschluessel ist.
 			ResultSet rs = stmt.executeQuery("SELECT Max(ddID) AS maxDdId+ "FROM DueDate");
 			
 			if(rs.next()){
+				//notebook erhaelt den aktuell hoechsten und um 1 inkrementierten Primaerschluessel
+				
 				dueDate.setDdId(rs.getInt("maxDdId") + 1);
-	
 				stmt = con.createStatement();
 				
+				//Neues Objekt wird eingefuegt
 				stmt.executeUpdate("INSERT INTO DueDate (ddID, dDate, nID)" + "VALUES ("
 				+ dueDate.getDdId() + ",'" + dueDate.getdDate() + "," + dueDate.getnID() + "')" );
 				
@@ -175,9 +202,20 @@ public class DueDateMapper {
 			e.printStackTrace();
 		}
 		
+		/**
+		 * dueDate wird zurueckgegeben, da sich das Objekt eventuell im Laufe der Methode veraendert hat
+		 */
+		
 		return dueDate;
 		
 	}
+	
+	/**
+	 * DueDate-Objekt wird ueberarbeitet in die Datenbank geschrieben
+	 * 
+	 * @param dueDate (Objekt, dass ueberarbeitet in DB geschrieben wird)
+	 * @return als Parameter uebergebenes Objekt.
+	 */
 	
 	public Date updateDueDate(Date dueDate){
 		Connection con = DBConnection.connection();
@@ -195,6 +233,12 @@ public class DueDateMapper {
 		return dueDate;
 	}
 	
+	
+	/**
+	 * Ein DueDate-Objekt soll mit seinen Daten aus der DB geloescht werden.
+	 * 
+	 * @param dueDate (Objekt wird aus DB geloescht)
+	 */
 	
 	public void deleteDueDate(Date dueDate){
 		Connection con = DBConnection.connection();

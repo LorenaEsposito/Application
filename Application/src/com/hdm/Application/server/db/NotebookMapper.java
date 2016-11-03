@@ -193,7 +193,7 @@ private static NotebookMapper notebookMapper = null;
 				notebook.setNbId(rs.getInt("maxnbID") + 1);
 				stmt = con.createStatement();
 				
-				//Nun folgt das einfuegen des neuen Objektes.
+				//Neues Objekt wird eingefuegt
 				stmt.executeUpdate("INSERT INTO Notebook (nbID, userID, nbTitle, nbCreDate, nbModDate)"
 						+ "VALUES (" + notebook.getNbId() + ",'" + notebook.getUserId() + "','" + notebook.getNbTitle() + "','" + notebook.getNbCreDate()
 						+ "','" + notebook.getNbModDate() + "')" );
@@ -213,7 +213,7 @@ private static NotebookMapper notebookMapper = null;
 	}
 	
 	/**
-	 * Notebook-Objekt wird ueberarbeitet ind ie Datenbank geschrieben
+	 * Notebook-Objekt wird ueberarbeitet in die Datenbank geschrieben
 	 * 
 	 * @param notebook (Objekt, dass ueberarbeitet in DB geschrieben wird)
 	 * @return als Parameter uebergebenes Objekt.
