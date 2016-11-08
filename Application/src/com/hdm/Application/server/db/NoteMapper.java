@@ -85,7 +85,7 @@ public class NoteMapper {
 		    	  stmt.executeUpdate("INSERT INTO Note (nID, nbID, nTitle, nSubtitle, nContent, source, nCreDate, nModDate, userID) "
 		    	            + "VALUES (" + note.getnID() + "," + note.getNbID() + ","
 		    	            + note.getnTitle() + "," + note.getnSubtitle() + "," + note.getnContent() + "," + note.getSource() + "," 
-		    	            + note.getncreDate() + "," + note.getnModDate() +  "," + note.getUserID() + "')");
+		    	            + note.getnCreDate() + "," + note.getnModDate() +  "," + note.getUserID() + "')");
 
 		      }
 		    }
@@ -115,7 +115,7 @@ public class NoteMapper {
 		 
 		 try{
 			 Statement stmt = con.createStatement();
-			 stmt.executeUpdate("UPDATE Note" + "SET nTitle=\"" + note.getnTitle() + "\"," + "nSubtitle=\"" + note.getLastName() + "\"" 
+			 stmt.executeUpdate("UPDATE Note" + "SET nTitle=\"" + note.getnTitle() + "\"," + "nSubtitle=\"" + note.getnSubtitle() + "\"" 
 			 	+"nContent=\"" + note.getnContent() +"\"," + "source=\"" + note.getSource() + "\"," + "nCreDate=\"" + note.getnCreDate() 
 			 	+ "nModDate=\"" + note.getnModDate() + "userID=\"" + note.getUserID() + "WHERE nID=" + note.getnID());
 			 //modification Date hinzufuegen --> wie mach ich dass es auf jednefall automatisch hinzugefuegt wird?
@@ -183,6 +183,7 @@ public class NoteMapper {
 			 e.printStackTrace();
 			 return null;
 		 }
+		return null;
 	 }
 	 
 	 
@@ -251,19 +252,19 @@ public class NoteMapper {
 			 
 			//Fuer jeden Eintrag im Suchergebnis wird ein Note-Objekt erstellt.
 			 while(rs.next()) {
-				 Note note = new Note();
-				 note.setnID(rs.getInt("nID"));
-				 note.setNbID(rs.getInt("nbID"));
-				 note.setUserID(rs.getInt("userID"));
-				 note.setnTitle(rs.getString("nTitle"));
-				 note.setnSubtitle(rs.getString("nSubtitle"));
-				 note.setnContent(rs.getString("nContent"));
-				 note.setSource(rs.getString("source"));
-				 note.setnCreDate(rs.getDate("nCreDate"));
-				 note.setnModDate(rs.getDate("nModDate"));
+				 Note note1 = new Note();
+				 note1.setnID(rs.getInt("nID"));
+				 note1.setNbID(rs.getInt("nbID"));
+				 note1.setUserID(rs.getInt("userID"));
+				 note1.setnTitle(rs.getString("nTitle"));
+				 note1.setnSubtitle(rs.getString("nSubtitle"));
+				 note1.setnContent(rs.getString("nContent"));
+				 note1.setSource(rs.getString("source"));
+				 note1.setnCreDate(rs.getDate("nCreDate"));
+				 note1.setnModDate(rs.getDate("nModDate"));
 				 
 				//Neues Objekt wird dem Ergebnisvektor hinzugefuegt
-				 result.addElement(note);
+				 result.addElement(note1);
 				 
 			 }
 		 }
