@@ -54,7 +54,7 @@ public class DueDateMapper {
 	 */
 	
 	
-	public Vector<DueDate> findByDate(Date dueDate){
+	public Vector<DueDate> findByDate(Date dDate){
 		//DB-Verbindung holen
 		Connection con = DBConnection.connection();
 		Vector<DueDate> result = new Vector<DueDate>();
@@ -65,18 +65,18 @@ public class DueDateMapper {
 			
 			//Statement ausfuellen und als Query an DB schicken
 			ResultSet rs = stmt.executeQuery("SELECT ddID, dDate, nID FROM DueDate" 
-					+ "WHERE dDate LIKE" + dueDate + "ORDER BY nID");
+					+ "WHERE dDate LIKE" + dDate + "ORDER BY nID");
 			
 		
 			// Für jeden Eintrag im Suchergebnis wird ein DueDate-Objekt erstellt.
 			while (rs.next()){
-				DueDate dueDate1 = new DueDate();
-				dueDate1.setDdID(rs.getInt("ddID"));
-				dueDate1.setdDate(rs.getDate("dDate"));
-				dueDate1.setnID(rs.getInt("nID"));
+				DueDate dueDate = new DueDate();
+				dueDate.setDdID(rs.getInt("ddID"));
+				dueDate.setdDate(rs.getDate("dDate"));
+				dueDate.setnID(rs.getInt("nID"));
 				
 				 // Hinzufügen des neuen Objekts zum Ergebnisvektor
-				result.addElement(dueDate1);
+				result.addElement(dueDate);
 			}
 		}
 		
