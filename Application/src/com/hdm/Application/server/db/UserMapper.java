@@ -145,6 +145,11 @@ public class UserMapper {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		
+		/**
+		 * Ergebnisvektor zur�ckgeben
+		 */
+		return result;
 	}
 
 	/**
