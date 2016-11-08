@@ -312,8 +312,8 @@ public ArrayList<User> searchForUser(String userName) throws IllegalArgumentExce
 	ArrayList<User> users = new ArrayList<User>(vector);
 	
 	if (this.uMapper.findByName(userName) != null){
-		User user = this.uMapper.findByName(userName);
-		users.add(user);
+//		User user = this.uMapper.findByName(userName);
+//		users.add(user);
 	}
 	return users;
 }
