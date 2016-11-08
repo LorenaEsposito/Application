@@ -16,6 +16,26 @@
     <url-pattern>/application/greet</url-pattern>
   </servlet-mapping>
   
+    <servlet>
+    <servlet-name>noteadministration</servlet-name>
+    <servlet-class>com.hdm.Application.server.NoteAdministrationImpl</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>noteadministration</servlet-name>
+    <url-pattern>/application/noteadministration</url-pattern>
+  </servlet-mapping>
+  
+   <servlet>
+    <servlet-name>loginService</servlet-name>
+    <servlet-class>com.hdm.Application.server.LoginServiceImpl</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>loginService</servlet-name>
+    <url-pattern>/application/login</url-pattern>
+  </servlet-mapping>
+  
   <!-- Default page to serve -->
   <welcome-file-list>
     <welcome-file>Application.html</welcome-file>
