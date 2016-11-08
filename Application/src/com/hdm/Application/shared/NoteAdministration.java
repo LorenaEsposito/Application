@@ -1,5 +1,7 @@
 package com.hdm.Application.shared;
 
+import java.util.ArrayList;
+
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
@@ -40,10 +42,10 @@ public void editDuedate(DueDate dd) throws IllegalArgumentException;
 
 public void deleteDuedate(DueDate dd) throws IllegalArgumentException;
 
-public void searchForUser(String userName) throws IllegalArgumentException;
+public ArrayList<User> searchForUser(String userName) throws IllegalArgumentException;
 
-public void searchForNotebook(String title) throws IllegalArgumentException;
+public ArrayList<Notebook> searchForNotebook(String title) throws IllegalArgumentException;
 
-public void searchForNote(String title) throws IllegalArgumentException;
+public ArrayList<Note> searchForNote(String title) throws IllegalArgumentException;
 
 }

@@ -1,6 +1,7 @@
 package com.hdm.Application.server;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Vector;
 
 import com.hdm.Application.server.db.*;
@@ -121,9 +122,9 @@ public void editUser(User u) throws IllegalArgumentException{
 @Override
 public void deleteUser(User u) throws IllegalArgumentException {
     this.uMapper.delete(u);
-    this.nbMapper.delete(u);
-    this.nMapper.delete(u);
-    this.pMapper.delete(u);
+//    this.nbMapper.delete(u);
+//    this.nMapper.delete(u);
+//    this.pMapper.delete(u);
   }
 
 /**
@@ -151,7 +152,7 @@ this.nbMapper.createNotebook(nb);
  */
 @Override
 public void editNotebook(Notebook nb) throws IllegalArgumentException {
-this.nbMapper.edit(nb);
+this.nbMapper.updateNotebook(nb);
 }
 
 /**
@@ -166,9 +167,9 @@ this.nbMapper.edit(nb);
  */
 @Override
 public void deleteNotebook(Notebook nb) throws IllegalArgumentException {
-this.nbMapper.delete(nb);
-this.nMapper.delete(nb);
-this.pMapper.delete(nb);
+this.nbMapper.deleteNotebook(nb);
+//this.nMapper.delete(nb);
+//this.pMapper.delete(nb);
 	}
 
 /**
@@ -182,7 +183,7 @@ this.pMapper.delete(nb);
  */
 @Override
 public void createNote(Note n) throws IllegalArgumentException {
-this.nMapper.insert(n);
+this.nMapper.createNote(n);
 }
 
 /**
@@ -196,7 +197,7 @@ this.nMapper.insert(n);
  */
 @Override
 public void editNote(Note n) throws IllegalArgumentException {
-this.nMapper.edit(n);
+this.nMapper.updateNote(n);
 }
 
 /**
@@ -211,8 +212,8 @@ this.nMapper.edit(n);
  */
 @Override
 public void deleteNote(Note n) throws IllegalArgumentException {
-    this.nMapper.delete(n);
-	this.pMapper.delete(n);
+    this.nMapper.deleteNote(n);
+//	this.pMapper.delete(n);
   }
 
 /**
@@ -240,7 +241,7 @@ public void createPermission(Permission p) throws IllegalArgumentException{
  */
 @Override
 public void editPermission(Permission p) throws IllegalArgumentException{
-	this.pMapper.edit(p);
+//	this.pMapper.edit(p);
 }
 /**
  * Loescht die uebergebene Permission endgueltig aus der Datenbank.
@@ -265,7 +266,7 @@ public void deletePermission(Permission p) throws IllegalArgumentException {
  */
 @Override
 public void createDuedate(DueDate dd) throws IllegalArgumentException{
-	this.ddMapper.insert(dd);
+//	this.ddMapper.createDueDate(dd);
 }
 
 /**
@@ -279,7 +280,7 @@ public void createDuedate(DueDate dd) throws IllegalArgumentException{
  */
 @Override
 public void editDuedate(DueDate dd) throws IllegalArgumentException{
-	this.ddMapper.edit(dd);
+//	this.ddMapper.updateDueDate(dd);
 }
 /**
  * Loescht das uebergebene Duedate endgueltig aus der Datenbank.
@@ -290,7 +291,7 @@ public void editDuedate(DueDate dd) throws IllegalArgumentException{
  */
 @Override
 public void deleteDuedate(DueDate dd) throws IllegalArgumentException {
-    this.ddMapper.delete(dd);
+//    this.ddMapper.deleteDueDate(dd);
   }
 
 
@@ -307,7 +308,7 @@ public void deleteDuedate(DueDate dd) throws IllegalArgumentException {
  */
 public ArrayList<User> searchForUser(String userName) throws IllegalArgumentException{
 	Vector<User> vector = new Vector<User>();
-	vector = this.uMapper.findByName(userName);
+//	vector = this.uMapper.findByName(userName);
 	
 	ArrayList<User> users = new ArrayList<User>(vector);
 	
@@ -336,8 +337,8 @@ public ArrayList<Notebook> searchForNotebook(String title) throws IllegalArgumen
 	ArrayList<Notebook> notebooks = new ArrayList<Notebook>(vector);
 	
 	if (this.nbMapper.findByTitle(title) != null){
-		Notebook notebook = this.findByTitle(title);
-		notebooks.add(notebook);
+//		Notebook notebook = this.findByTitle(title);
+//		notebooks.add(notebook);
 	}
 	return notebooks;
 }
@@ -355,14 +356,14 @@ public ArrayList<Notebook> searchForNotebook(String title) throws IllegalArgumen
  */
   public ArrayList<Note> searchForNote(String title) throws IllegalArgumentException{
 	Vector<Note> vector = new Vector<Note>();
-	vector = this.nMapper.findByTitle(title);
+//	vector = this.nMapper.findByTitle(title);
 	
 	ArrayList<Note> notes = new ArrayList<Note>(vector);
 	
-	if (this.nMapper.findByTitle(title) != null){
-		Note note = this.findByTitle(title);
-		notes.add(note);
-	}
+//	if (this.nMapper.findByTitle(title) != null){
+//		Note note = this.findByTitle(title);
+//		notes.add(note);
+//	}
 	return notes;
   }
 
