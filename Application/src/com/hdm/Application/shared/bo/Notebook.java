@@ -70,10 +70,6 @@ public class Notebook extends NoteObject {
 	public void setCreDate(Date creDate) {
 		this.creDate = creDate;
 	}
-<<<<<<< HEAD
 }
-=======
->>>>>>> refs/remotes/origin/Sina
-	
-	
+
 	
