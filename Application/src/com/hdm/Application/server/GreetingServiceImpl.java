@@ -1,6 +1,6 @@
 package com.hdm.Application.server;
 
-import com.hdm.Application.client.GreetingService;
+import com.hdm.Application.client.gui.GreetingService;
 import com.hdm.Application.shared.FieldVerifier;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 

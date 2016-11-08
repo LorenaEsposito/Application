@@ -1,8 +1,4 @@
-package com.hdm.Application.client;
-
-import com.hdm.Application.client.Update;
-//import com.hdm.Application.client.ClientsideSettings;
-//import de.hdm.thies.bankProjekt.shared.BankAdministrationAsync;
+package com.hdm.Application.client.gui;
 
 public class NoteOverviewView extends Update{
 
