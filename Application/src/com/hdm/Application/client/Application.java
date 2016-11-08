@@ -16,6 +16,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -30,16 +31,16 @@ public class Application implements EntryPoint {
   */
  
  
- LoginInfo loginInfo = new LoginInfo();
-  private VerticalPanel loginPanel = new VerticalPanel();
-  private Label loginLabel = new Label("Bitte melde dich mit deinem Google Account an, um Notework nutzen zu können. Klicke auf Login und los geht's!");
-  private Anchor signInLink = new Anchor("Login");
-  public Anchor signOutLink = new Anchor("Logout");
-  public final FlowPanel detailPanel = new FlowPanel();
-  final VerticalPanel navigationPanel = new VerticalPanel();
-  LoginServiceAsync loginService = GWT.create(LoginService.class);
- private static final String SERVER_ERROR = "An error occurred while "
-   + "attempting to contact the server. Please check your network " + "connection and try again.";
+// LoginInfo loginInfo = new LoginInfo();
+//  private VerticalPanel loginPanel = new VerticalPanel();
+//  private Label loginLabel = new Label("Bitte melde dich mit deinem Google Account an, um Notework nutzen zu können. Klicke auf Login und los geht's!");
+//  private Anchor signInLink = new Anchor("Login");
+//  public Anchor signOutLink = new Anchor("Logout");
+//  public final FlowPanel detailPanel = new FlowPanel();
+//  final VerticalPanel navigationPanel = new VerticalPanel();
+//  LoginServiceAsync loginService = GWT.create(LoginService.class);
+// private static final String SERVER_ERROR = "An error occurred while "
+//   + "attempting to contact the server. Please check your network " + "connection and try again.";
 
  /**
   * Create a remote service proxy to talk to the server-side Greeting service.
@@ -49,60 +50,59 @@ public class Application implements EntryPoint {
  
  public void onModuleLoad() {
     
-   navigationPanel.setVisible(false); 
-    
-      // Check login status using login service.
-     LoginServiceAsync loginService = GWT.create(LoginService.class);
-     loginService.login("http://127.0.0.1:8888/Application.html", new AsyncCallback<LoginInfo>() {
-     public void onFailure(Throwable error) {
-
-      // DialogBox d = new DialogBox();
-      Window.alert("Fehler: Harter Fehler");
-       // d.show();
-      }
-
-      public void onSuccess(LoginInfo result) {
-        loginInfo = result;  
-      if (loginInfo.isLoggedIn()){ 
-       Window.alert("Erfolgreich eingeloggt");
-       
-        }
-     
-        else{ 
-        	loadLogin();
-            Window.alert("Einloggen fehlgeschlagen");
-           }
-           }
-           });
-          }
+//   navigationPanel.setVisible(false); 
+//    
+//      // Check login status using login service.
+//     LoginServiceAsync loginService = GWT.create(LoginService.class);
+//     loginService.login("http://127.0.0.1:8888/Application.html", new AsyncCallback<LoginInfo>() {
+//     public void onFailure(Throwable error) {
+//
+//      // DialogBox d = new DialogBox();
+//      Window.alert("Fehler: Harter Fehler");
+//       // d.show();
+//      }
+//
+//      public void onSuccess(LoginInfo result) {
+//        loginInfo = result;  
+//      if (loginInfo.isLoggedIn()){ 
+//       Window.alert("Erfolgreich eingeloggt");
+//       
+//        }
+//     
+//        else{ 
+//        	loadLogin();
+//            Window.alert("Einloggen fehlgeschlagen");
+//           }
+//           }
+//           });
+//          }
+// 
  
- 
- private void loadLogin() {
-     
-     Cookies.setCookie("usermail", null);
-     loginPanel.setStyleName("login");
-     signInLink.setHref(loginInfo.getLoginUrl());
-     
-     signInLink.setStyleName("loginLink");
-     loginLabel.setStyleName("loginLink2");
-     
-     
-     loginPanel.add(loginLabel);
-     loginPanel.add(signInLink);
-     
-     Cookies.setCookie("userMail", null);
-     Cookies.setCookie("userID", null);
-     RootPanel.get("Starter").add(loginPanel);     
-    }
- 
- public void loadGUI() {
+// private void loadLogin() {
+//     
+//     Cookies.setCookie("usermail", null);
+//     loginPanel.setStyleName("login");
+//     signInLink.setHref(loginInfo.getLoginUrl());
+//     
+//     signInLink.setStyleName("loginLink");
+//     loginLabel.setStyleName("loginLink2");
+//     
+//     
+//     loginPanel.add(loginLabel);
+//     loginPanel.add(signInLink);
+//     
+//     Cookies.setCookie("userMail", null);
+//     Cookies.setCookie("userID", null);
+//     RootPanel.get("Starter").add(loginPanel);     
+//    }
+// 
+// public void loadGUI() {
 		VerticalPanel navPanel = new VerticalPanel();
-
+		
 	    /*
 	     * Das VerticalPanel wird einem DIV-Element namens "Navigator" in der
 	     * zugehÃ¶rigen HTML-Datei zugewiesen und erhÃ¤lt so seinen Darstellungsort.
 	     */
-	    RootPanel.get("Navigator").add(navPanel);
 	    
 	    /*
 	     * Erstellung des ersten Navibar-Buttons zum hinzufÃ¼gen neuer Notizen
@@ -114,6 +114,7 @@ public class Application implements EntryPoint {
 	    
 	    navPanel.add(createNoteButton);
 	    
+	    RootPanel.get("Navigator").add(navPanel);
 	    createNoteButton.addClickHandler(new ClickHandler() {
 	  	public void onClick(ClickEvent event) {
 	          /*
@@ -125,7 +126,7 @@ public class Application implements EntryPoint {
 	          RootPanel.get("Details").add(update);
 	    }
 	    });
-	    final Button notebookButton = new Button("+");
+	    final Button notebookButton = new Button("My Recipes");
 	    
 	    notebookButton.setStyleName("notework-menubutton");
 	    

@@ -3,6 +3,7 @@ package com.hdm.Application.client.gui;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RichTextArea;
 import com.google.gwt.user.client.ui.RootPanel;
@@ -20,9 +21,12 @@ protected void run() {
 
     // Ankündigung, was nun geschehen wird.
 
-    this.append("Ansicht zur Erstellung von Notizen");
+    this.append("");
 
     VerticalPanel createPanel = new VerticalPanel();
+    HorizontalPanel buttonBox = new HorizontalPanel();
+    
+    
     RootPanel.get("Details").add(createPanel);
     //BankAdministrationAsync bankVerwaltung = ClientsideSettings.getBankVerwaltung();
     
@@ -31,6 +35,9 @@ protected void run() {
     
     TextBox noteHeadline = new TextBox();
     createPanel.add(noteHeadline);
+    
+    Label noticeLabel = new Label("Notice");
+    createPanel.add(noticeLabel);
     
    // RichTextArea area = new RichTextArea();
   //  area.ensureDebugId("cwRichText-area");
@@ -47,13 +54,15 @@ protected void run() {
    // return grid;
     
     TextArea textArea = new TextArea();
-    textArea.setVisibleLines(5);
+    textArea.setVisibleLines(20);
+    textArea.setPixelSize(420, 350);
+    createPanel.add(textArea);
     
     final Button createButton = new Button("Create");
     
     createButton.setStyleName("notework-menubutton");
     
-    createPanel.add(createButton);
+    buttonBox.add(createButton);
     
     createButton.addClickHandler(new ClickHandler() {
   	public void onClick(ClickEvent event) {
@@ -71,7 +80,7 @@ final Button editButton = new Button("Edit");
     
     editButton.setStyleName("notework-menubutton");
     
-    createPanel.add(editButton);
+    buttonBox.add(editButton);
     
     editButton.addClickHandler(new ClickHandler() {
   	public void onClick(ClickEvent event) {
@@ -89,7 +98,7 @@ final Button deleteButton = new Button("Delete");
     
     deleteButton.setStyleName("notework-menubutton");
     
-    createPanel.add(deleteButton);
+    buttonBox.add(deleteButton);
     
     deleteButton.addClickHandler(new ClickHandler() {
   	public void onClick(ClickEvent event) {
@@ -102,6 +111,8 @@ final Button deleteButton = new Button("Delete");
           RootPanel.get("Details").add(update);
     }
     });
+    
+    createPanel.add(buttonBox);
 
 
 }

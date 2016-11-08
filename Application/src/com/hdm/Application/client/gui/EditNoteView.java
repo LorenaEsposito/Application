@@ -47,7 +47,8 @@ protected void run() {
    // return grid;
     
     TextArea textArea = new TextArea();
-    textArea.setVisibleLines(5);
+    textArea.setVisibleLines(20);
+    createPanel.add(textArea);
     
     final Button saveButton = new Button("Save");
     
