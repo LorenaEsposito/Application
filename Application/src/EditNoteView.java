@@ -1,4 +1,4 @@
-
+import com.hdm.Application.client.Update;
 
 public class EditNoteView extends Update{
 

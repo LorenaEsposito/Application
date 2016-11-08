@@ -294,7 +294,6 @@ public void deleteDuedate(DueDate dd) throws IllegalArgumentException {
 //    this.ddMapper.deleteDueDate(dd);
   }
 
-
 /**
  * Es kann nach einem bestimmten User anhand seines Namens gesucht werden.
  * Dazu wird der UserMapper aufgerufen, der eine Methode beinhaltet mit der in
@@ -364,9 +363,8 @@ public ArrayList<Notebook> searchForNotebook(String title) throws IllegalArgumen
 //		Note note = this.findByTitle(title);
 //		notes.add(note);
 //	}
+
 	return notes;
   }
-
-
 
 }

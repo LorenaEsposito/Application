@@ -43,7 +43,7 @@ public class NoteMapper {
 		 * @return NoteMapper-Objekt
 		 */
 	 
-	 public static NoteMapper customerMapper() {
+	 public static NoteMapper noteMapper() {
 		    if (noteMapper == null) {
 		      noteMapper = new NoteMapper();
 		    }
@@ -85,7 +85,7 @@ public class NoteMapper {
 		    	  stmt.executeUpdate("INSERT INTO Note (nID, nbID, nTitle, nSubtitle, nContent, source, nCreDate, nModDate, userID) "
 		    	            + "VALUES (" + note.getnID() + "," + note.getNbID() + ","
 		    	            + note.getnTitle() + "," + note.getnSubtitle() + "," + note.getnContent() + "," + note.getSource() + "," 
-		    	            + note.getncreDate() + "," + note.getnModDate() +  "," + note.getUserID() + "')");
+		    	            + note.getnCreDate() + "," + note.getnModDate() +  "," + note.getUserID() + "')");
 
 		      }
 		    }
@@ -115,7 +115,7 @@ public class NoteMapper {
 		 
 		 try{
 			 Statement stmt = con.createStatement();
-			 stmt.executeUpdate("UPDATE Note" + "SET nTitle=\"" + note.getnTitle() + "\"," + "nSubtitle=\"" + note.getLastName() + "\"" 
+			 stmt.executeUpdate("UPDATE Note" + "SET nTitle=\"" + note.getnTitle() + "\"," + "nSubtitle=\"" + note.getnSubtitle() + "\"" 
 			 	+"nContent=\"" + note.getnContent() +"\"," + "source=\"" + note.getSource() + "\"," + "nCreDate=\"" + note.getnCreDate() 
 			 	+ "nModDate=\"" + note.getnModDate() + "userID=\"" + note.getUserID() + "WHERE nID=" + note.getnID());
 			 //modification Date hinzufuegen --> wie mach ich dass es auf jednefall automatisch hinzugefuegt wird?
@@ -183,6 +183,7 @@ public class NoteMapper {
 			 e.printStackTrace();
 			 return null;
 		 }
+		return null;
 	 }
 	 
 	 
@@ -240,7 +241,7 @@ public class NoteMapper {
 		 */
 		
 	 
-	 public Vector<Note> findByTitle(Note note){
+	 public Vector<Note> findByTitle(String nTitle){
 		 Connection con = DBConnection.connection();
 		 Vector<Note> result = new Vector<Note>();
 		 

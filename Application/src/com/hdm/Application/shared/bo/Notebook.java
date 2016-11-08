@@ -7,21 +7,24 @@ public class Notebook extends NoteObject {
 	
 	private int nbID ; 
 	private String nbTitle; 
-	private Date modDate; 
-	private int unbID ; 
-	private Date creDate;
+	private Date nbModDate;  
+	private Date nbCreDate;
+	private int userID;
+	
 	/**
 	 * @return the nbID
 	 */
 	public int getNbID() {
 		return nbID;
 	}
+	
 	/**
 	 * @param nbID the nbID to set
 	 */
 	public void setNbID(int nbID) {
 		this.nbID = nbID;
 	}
+	
 	/**
 	 * @return the nbTitle
 	 */
@@ -34,43 +37,61 @@ public class Notebook extends NoteObject {
 	public void setNbTitle(String nbTitle) {
 		this.nbTitle = nbTitle;
 	}
+	
 	/**
-	 * @return the modDate
+	 * @return the NbModDate
 	 */
-	public Date getModDate() {
-		return modDate;
+	
+	public Date getNbModDate() {
+		return nbModDate;
 	}
+	
+	
 	/**
-	 * @param modDate the modDate to set
+	 * @param nbModDate the nbModDate to set
 	 */
-	public void setModDate(Date modDate) {
-		this.modDate = modDate;
+
+	public void setNbModDate(Date nbModDate) {
+		this.nbModDate = nbModDate;
 	}
+	
+	
 	/**
-	 * @return the unbID
+	 * @return the NbCreDate
 	 */
-	public int getUnbID() {
-		return unbID;
+	
+	
+	public Date getNbCreDate() {
+		return nbCreDate;
 	}
+	
+	
 	/**
-	 * @param unbID the unbID to set
+	 * @param NbCreDate the NbCreDate to set
 	 */
-	public void setUnbID(int unbID) {
-		this.unbID = unbID;
+	
+	public void setNbCreDate(Date nbCreDate) {
+		this.nbCreDate = nbCreDate;
 	}
+	
+	
 	/**
-	 * @return the creDate
+	 * @return the UserID
 	 */
-	public Date getCreDate() {
-		return creDate;
+	public int getUserID() {
+		return userID;
 	}
+	
 	/**
-	 * @param creDate the creDate to set
+	 * @param userID the userID to set
 	 */
-	public void setCreDate(Date creDate) {
-		this.creDate = creDate;
+	public void setUserID(int userID) {
+		this.userID = userID;
 	}
 
+
+
 }
+
 
 	

@@ -9,32 +9,54 @@ public class DueDate extends BusinessObject {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private Date dueDate; 
+	private Date dDate; 
 	private int nID;
+	private int ddID;
+	
 	/**
-	 * @return the dueDate
+	 * @return the dDate
 	 */
-	public Date getDueDate() {
-		return dueDate;
+	public Date getdDate() {
+		return dDate;
 	}
+	
 	/**
-	 * @param dueDate the dueDate to set
+	 * @param dDate the dDate to set
 	 */
-	public void setDueDate(Date dueDate) {
-		this.dueDate = dueDate;
+	
+	public void setdDate(Date dDate) {
+		this.dDate = dDate;
 	}
+	
 	/**
 	 * @return the nID
 	 */
 	public int getnID() {
 		return nID;
 	}
+	
 	/**
 	 * @param nID the nID to set
 	 */
+	
 	public void setnID(int nID) {
 		this.nID = nID;
 	}
-
+	
+	/**
+	 * @return the ddID
+	 */
+	public int getDdID() {
+		return ddID;
+	}
+	
+	/**
+	 * @param ddID the ddID to set
+	 */
+	public void setDdID(int ddID) {
+		this.ddID = ddID;
+	}
+	
+	
 	
 }

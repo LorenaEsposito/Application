@@ -8,6 +8,17 @@ public class Note extends NoteObject {
 	
 	
 	private int nID; 
+	private String nTitle; 
+	private String nSubtitle; 
+	private int nbID; 
+	private String nContent; 
+	private Date nModDate; 
+	private Date nCreDate;
+	private int userID;
+	private String source;
+	
+	
+	
 	/**
 	 * @return the nID
 	 */
@@ -69,35 +80,70 @@ public class Note extends NoteObject {
 		this.nContent = nContent;
 	}
 	/**
-	 * @return the modDate
+	 * @return the nModDate
 	 */
-	public Date getModDate() {
-		return modDate;
+	
+	public Date getnModDate() {
+		return nModDate;
 	}
+	
 	/**
-	 * @param modDate the modDate to set
+	 * @param nModDate the nModDate to set
 	 */
-	public void setModDate(Date modDate) {
-		this.modDate = modDate;
+	
+	public void setnModDate(Date nModDate) {
+		this.nModDate = nModDate;
 	}
+	
+	
 	/**
-	 * @return the creDate
+	 * @return the nCreDate
 	 */
-	public Date getCreDate() {
-		return creDate;
+	public void setnCreDate(Date nCreDate) {
+		this.nCreDate = nCreDate;
 	}
+	
 	/**
 	 * @param creDate the creDate to set
 	 */
-	public void setCreDate(Date creDate) {
-		this.creDate = creDate;
+	
+	public Date getnCreDate() {
+		return nCreDate;
+		}
+	
+	/**
+	 * @return the userID
+	 */
+	public int getUserID() {
+		return userID;
 	}
-	private String nTitle; 
-	private String nSubtitle; 
-	private int nbID; 
-	private String nContent; 
-	private Date modDate; 
-	private Date creDate;
+	
+	
+	/**
+	 * @param userID the userID to set
+	 */
+	
+	
+	public void setUserID(int userID) {
+		this.userID = userID;
+	}
+	
+
+	/**
+	 * @return the source
+	 */
+	
+	public String getSource() {
+		return source;
+	}
+	
+	/**
+	 * @param source the source to set
+	 */
+	public void setSource(String source) {
+		this.source = source;
+	}
+	
 
 	}
 	
