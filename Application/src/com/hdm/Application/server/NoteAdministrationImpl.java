@@ -8,6 +8,7 @@ import com.hdm.Application.shared.*;
 import com.hdm.Application.shared.bo.*;
 
 
+
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 import com.hdm.Application.shared.NoteAdministration;
@@ -367,30 +368,3 @@ public void deleteDuedate(DueDate dd) throws IllegalArgumentException {
 
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
