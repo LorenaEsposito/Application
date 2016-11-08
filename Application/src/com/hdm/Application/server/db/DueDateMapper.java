@@ -70,13 +70,13 @@ public class DueDateMapper {
 		
 			// Für jeden Eintrag im Suchergebnis wird ein DueDate-Objekt erstellt.
 			while (rs.next()){
-				Date dueDate = new Date();
-				dueDate.setDdId(rs.getInt("ddID"));
-				dueDate.setdDate(rs.getDate("dDate"));
-				dueDate.setnID(rs.getInt("nID"));
+				DueDate dueDate1 = new DueDate();
+				dueDate1.setDdID(rs.getInt("ddID"));
+				dueDate1.setdDate(rs.getDate("dDate"));
+				dueDate1.setnID(rs.getInt("nID"));
 				
 				 // Hinzufügen des neuen Objekts zum Ergebnisvektor
-				result.addElement(dueDate);
+				result.addElement(dueDate1);
 			}
 		}
 		
@@ -107,8 +107,8 @@ public class DueDateMapper {
 			// Fuer jeden Eintrag im Suchergebnis wird nun ein DueDate-Objekt erstellt
 			
 			while(rs.next()){
-				Date dueDate = new Date();
-				dueDate.setDdId(rs.getInt("ddID"));
+				DueDate dueDate = new DueDate();
+				dueDate.setDdID(rs.getInt("ddID"));
 				dueDate.setdDate(rs.getDate("dDate"));
 				dueDate.setnID(rs.getInt("nID"));
 				
@@ -131,7 +131,7 @@ public class DueDateMapper {
 	 * @return Date-Objekt, das die gesuchte nID besitzt - null bei nicht vorhandenem Tupel
 	 */
 	
-	public Date findByNoteID(int nID){
+	public DueDate findByNoteID(int nID){
 		Connection con = DBConnection.connection();
 		
 		
@@ -147,8 +147,8 @@ public class DueDateMapper {
 			
 			if (rs.next()){
 				// Ergebnis-Tupel in Objekt umwandeln
-				Date dueDate = new Date();
-				dueDate.setDdId(rs.getInt("ddID"));
+				DueDate dueDate = new DueDate();
+				dueDate.setDdID(rs.getInt("ddID"));
 				dueDate.setdDate(rs.getDate("dDate"));
 				dueDate.setnID(rs.getInt("nID"));
 				
@@ -174,7 +174,7 @@ public class DueDateMapper {
 	 */
 	
 	
-	public Date createDueDate(Date dueDate){
+	public DueDate createDueDate(DueDate dueDate){
 		Connection con = DBConnection.connection();
 		
 		
@@ -182,17 +182,17 @@ public class DueDateMapper {
 			Statement stmt = con.createStatement();
 			
 			//Ueberpruefen welches der aktuell hoechste Primaerschluessel ist.
-			ResultSet rs = stmt.executeQuery("SELECT Max(ddID) AS maxDdId+ "FROM DueDate");
+			ResultSet rs = stmt.executeQuery("SELECT Max(ddID) AS maxDdId"+ "FROM DueDate") ;
 			
 			if(rs.next()){
 				//notebook erhaelt den aktuell hoechsten und um 1 inkrementierten Primaerschluessel
 				
-				dueDate.setDdId(rs.getInt("maxDdId") + 1);
+				dueDate.setDdID(rs.getInt("maxDdId") + 1);
 				stmt = con.createStatement();
 				
 				//Neues Objekt wird eingefuegt
 				stmt.executeUpdate("INSERT INTO DueDate (ddID, dDate, nID)" + "VALUES ("
-				+ dueDate.getDdId() + ",'" + dueDate.getdDate() + "," + dueDate.getnID() + "')" );
+				+ dueDate.getDdID() + ",'" + dueDate.getdDate() + "," + dueDate.getnID() + "')" );
 				
 			}
 			
@@ -217,13 +217,13 @@ public class DueDateMapper {
 	 * @return als Parameter uebergebenes Objekt.
 	 */
 	
-	public Date updateDueDate(Date dueDate){
+	public DueDate updateDueDate(DueDate dueDate){
 		Connection con = DBConnection.connection();
 		
 		try{
 			Statement stmt = con.createStatement();
 			
-			stmt.executeUpdate("UPDATE DueDate" + "SET ddID=\"" + dueDate.getDdId()
+			stmt.executeUpdate("UPDATE DueDate" + "SET ddID=\"" + dueDate.getDdID()
 			+ "SET dDate=\"" + dueDate.getdDate() + "WHERE nID" + dueDate.getnID());
 			
 		}
@@ -240,12 +240,12 @@ public class DueDateMapper {
 	 * @param dueDate (Objekt wird aus DB geloescht)
 	 */
 	
-	public void deleteDueDate(Date dueDate){
+	public void deleteDueDate(DueDate dueDate){
 		Connection con = DBConnection.connection();
 		
 		try{
 			Statement stmt = con.createStatement();
-			stmt.executeUpdate("DELETE FROM DueDate" + "WHERE ddID=" + dueDate.getDdId());
+			stmt.executeUpdate("DELETE FROM DueDate" + "WHERE ddID=" + dueDate.getDdID());
 		}
 		catch (SQLException e){
 			e.printStackTrace();
