@@ -1,6 +1,6 @@
+
 package com.hdm.Application.shared;
 
-import java.util.Vector;
 
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
@@ -41,5 +41,11 @@ public void createDuedate(DueDate dd) throws IllegalArgumentException;
 public void editDuedate(DueDate dd) throws IllegalArgumentException;
 
 public void deleteDuedate(DueDate dd) throws IllegalArgumentException;
+
+public void searchForUser(String userName) throws IllegalArgumentException;
+
+public void searchForNotebook(String title) throws IllegalArgumentException;
+
+public void searchForNote(String title) throws IllegalArgumentException;
 
 }

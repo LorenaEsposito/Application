@@ -17,12 +17,14 @@ public class Notebook extends NoteObject {
 	public int getNbID() {
 		return nbID;
 	}
+	
 	/**
 	 * @param nbID the nbID to set
 	 */
 	public void setNbID(int nbID) {
 		this.nbID = nbID;
 	}
+	
 	/**
 	 * @return the nbTitle
 	 */
@@ -86,10 +88,13 @@ public class Notebook extends NoteObject {
 	public void setUserID(int userID) {
 		this.userID = userID;
 	}
-	
+
 
 
 }
 	
 	
+
+
+
 	
