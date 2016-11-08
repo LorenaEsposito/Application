@@ -73,8 +73,8 @@ private static NotebookMapper notebookMapper = null;
 			if (rs.next()){
 				//Ergebnis-Tupel in Objekt umwandeln
 				Notebook notebook = new Notebook();
-				notebook.setNbId(rs.getInt("nbID"));
-				notebook.setUserId(rs.getInt("userID"));
+				notebook.setNbID(rs.getInt("nbID"));
+				notebook.setUserID(rs.getInt("userID"));
 				notebook.setNbTitle(rs.getString("nbTitle"));
 				notebook.setNbCreDate(rs.getDate("nbCreDate"));
 				notebook.setNbModDate(rs.getDate("nbModDate"));
@@ -110,8 +110,8 @@ private static NotebookMapper notebookMapper = null;
 			while (rs.next()){
 				
 				Notebook notebook = new Notebook();
-				notebook.setNbId(rs.getInt("nbID"));
-				notebook.setUserId(rs.getInt("userID"));
+				notebook.setNbID(rs.getInt("nbID"));
+				notebook.setUserID(rs.getInt("userID"));
 				notebook.setNbTitle(rs.getString("nbTitle"));
 				notebook.setNbCreDate(rs.getDate("nbCreDate"));
 				notebook.setNbModDate(rs.getDate("nbModDate"));
@@ -152,8 +152,8 @@ private static NotebookMapper notebookMapper = null;
 			//Fuer jeden Eintrag im Suchergebnis wird ein Notebook-Objekt erstellt.
 			while(rs.next()){
 				Notebook notebook = new Notebook();
-				notebook.setNbId(rs.getInt("nbID"));
-				notebook.setUserId(rs.getInt("userID"));
+				notebook.setNbID(rs.getInt("nbID"));
+				notebook.setUserID(rs.getInt("userID"));
 				notebook.setNbTitle(rs.getString("nbTitle"));
 				notebook.setNbCreDate(rs.getDate("nbCreDate"));
 				notebook.setNbModDate(rs.getDate("nbModDate"));
@@ -190,12 +190,12 @@ private static NotebookMapper notebookMapper = null;
 			if(rs.next()){
 				//notebook erhaelt den aktuell hoechsten und um 1 inkrementierten Primaerschluessel
 				
-				notebook.setNbId(rs.getInt("maxnbID") + 1);
+				notebook.setNbID(rs.getInt("maxnbID") + 1);
 				stmt = con.createStatement();
 				
 				//Neues Objekt wird eingefuegt
 				stmt.executeUpdate("INSERT INTO Notebook (nbID, userID, nbTitle, nbCreDate, nbModDate)"
-						+ "VALUES (" + notebook.getNbId() + ",'" + notebook.getUserId() + "','" + notebook.getNbTitle() + "','" + notebook.getNbCreDate()
+						+ "VALUES (" + notebook.getNbID() + ",'" + notebook.getUserID() + "','" + notebook.getNbTitle() + "','" + notebook.getNbCreDate()
 						+ "','" + notebook.getNbModDate() + "')" );
 
 			}
@@ -227,7 +227,7 @@ private static NotebookMapper notebookMapper = null;
 			Statement stmt = con.createStatement();
 			
 			stmt.executeUpdate("UPDATE Notebook" + "SET nbTitle=\"" + notebook.getNbTitle()
-			+ "\"," + "WHERE nbID=" + notebook.getNbId());
+			+ "\"," + "WHERE nbID=" + notebook.getNbID());
 		}
 		catch(SQLException e){
 			e.printStackTrace();
@@ -249,7 +249,7 @@ private static NotebookMapper notebookMapper = null;
 		
 		try{
 			Statement stmt = con.createStatement();
-			stmt.executeUpdate("DELETE FROM Notebook" + "WHERE nbID=" + notebook.getNbId());
+			stmt.executeUpdate("DELETE FROM Notebook" + "WHERE nbID=" + notebook.getNbID());
 		}
 		catch (SQLException e){
 			e.printStackTrace();
@@ -257,20 +257,6 @@ private static NotebookMapper notebookMapper = null;
 	}
 	
 	
-	/**
-	 * Zugehoerige Notebook-Elemente eines gegebenen Users auslesen
-	 * @param user, dessen Notebooks ausgelesen werden sollen
-	 * @return ein Vektor mit allen Notebooks des Users
-	 */
 	
-	
-	public Vector<Notebook> getNotebookOfUser(User user){
-		
-		/**
-		 * Der UserMapper wird benoetigt. Diesem wird der in den User-Objekten enthaltene 
-		 * Primaerschluessel uebergeben. Der Notebook Mapper loest diese ID in eine Reihe von Notebook-Objekten auf.
-		 */
-		return UserMapper.userMapper().findByUser(user);
-	}
 
 }
