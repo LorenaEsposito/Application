@@ -50,4 +50,10 @@ public interface NoteAdministrationAsync {
 
 	public void deleteDuedate(DueDate dd, AsyncCallback<Void> callback) throws IllegalArgumentException;
 
+	public void searchForUser(String userName, AsyncCallback<Void> callback) throws IllegalArgumentException;
+	
+	public void searchForNotebook(String title, AsyncCallback<Void> callback) throws IllegalArgumentException;
+	
+	public void searchForNote(String title, AsyncCallback<Void> callback) throws IllegalArgumentException;
+	
 }
