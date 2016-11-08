@@ -241,7 +241,7 @@ public class NoteMapper {
 		 */
 		
 	 
-	 public Vector<Note> findByTitle(Note note){
+	 public Vector<Note> findByTitle(String nTitle){
 		 Connection con = DBConnection.connection();
 		 Vector<Note> result = new Vector<Note>();
 		 
@@ -252,19 +252,19 @@ public class NoteMapper {
 			 
 			//Fuer jeden Eintrag im Suchergebnis wird ein Note-Objekt erstellt.
 			 while(rs.next()) {
-				 Note note1 = new Note();
-				 note1.setnID(rs.getInt("nID"));
-				 note1.setNbID(rs.getInt("nbID"));
-				 note1.setUserID(rs.getInt("userID"));
-				 note1.setnTitle(rs.getString("nTitle"));
-				 note1.setnSubtitle(rs.getString("nSubtitle"));
-				 note1.setnContent(rs.getString("nContent"));
-				 note1.setSource(rs.getString("source"));
-				 note1.setnCreDate(rs.getDate("nCreDate"));
-				 note1.setnModDate(rs.getDate("nModDate"));
+				 Note note = new Note();
+				 note.setnID(rs.getInt("nID"));
+				 note.setNbID(rs.getInt("nbID"));
+				 note.setUserID(rs.getInt("userID"));
+				 note.setnTitle(rs.getString("nTitle"));
+				 note.setnSubtitle(rs.getString("nSubtitle"));
+				 note.setnContent(rs.getString("nContent"));
+				 note.setSource(rs.getString("source"));
+				 note.setnCreDate(rs.getDate("nCreDate"));
+				 note.setnModDate(rs.getDate("nModDate"));
 				 
 				//Neues Objekt wird dem Ergebnisvektor hinzugefuegt
-				 result.addElement(note1);
+				 result.addElement(note);
 				 
 			 }
 		 }
