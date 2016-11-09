@@ -4,8 +4,7 @@ import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
-
-import com.hdm.Application.client.LoginService;
+import com.hdm.Application.client.gui.LoginService;
 import com.hdm.Application.shared.LoginInfo;
 
 /**

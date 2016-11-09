@@ -1,5 +1,7 @@
 package com.hdm.Application.shared;
 
+import java.util.ArrayList;
+
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 import com.hdm.Application.shared.bo.*;
@@ -50,4 +52,10 @@ public interface NoteAdministrationAsync {
 
 	public void deleteDuedate(DueDate dd, AsyncCallback<Void> callback) throws IllegalArgumentException;
 
+	public void searchForUser(String userName, AsyncCallback<ArrayList<User>> callback) throws IllegalArgumentException;
+	
+	public void searchForNotebook(String title, AsyncCallback<ArrayList<Notebook>> callback) throws IllegalArgumentException;
+	
+	public void searchForNote(String title, AsyncCallback<ArrayList<Note>> callback) throws IllegalArgumentException;
+	
 }
