@@ -11,24 +11,36 @@ import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
+import com.hdm.Application.client.ClientsideSettings;
+import com.hdm.Application.shared.NoteAdministrationAsync;
+import com.hdm.Application.shared.bo.Note;
+
 public class CreateNoteView extends Update{
 
+	
+	/**
+	 * Die AdministrationService ermoeglicht die asynchrone Kommunikation mit der
+	 * Applikationslogik.
+	 */
+	private NoteAdministrationAsync adminService = ClientsideSettings.getAdministration();
 	protected String getHeadlineText() {
 	    return "Create Note";
 }
+	
+//	private Note currentNote = null;
 
 protected void run() {
 
     // Ankündigung, was nun geschehen wird.
 
-    this.append("");
+    this.append("Hier kann eine neue Notiz angelegt werden");
 
     VerticalPanel createPanel = new VerticalPanel();
     HorizontalPanel buttonBox = new HorizontalPanel();
     
     
     RootPanel.get("Details").add(createPanel);
-    //BankAdministrationAsync bankVerwaltung = ClientsideSettings.getBankVerwaltung();
+    adminService = ClientsideSettings.getAdministration();
     
     Label headlineLabel = new Label("Headline");
     createPanel.add(headlineLabel);
@@ -66,6 +78,15 @@ protected void run() {
     
     createButton.addClickHandler(new ClickHandler() {
   	public void onClick(ClickEvent event) {
+  		
+  		/*
+		 * Speichern der eingegebenen Werte blockieren, um
+		 * Mehrfach-Klicks und daraus entstehende, unnoetige Eintraege in
+		 * der Datenbank zu verhindern.
+		 */
+		createButton.setEnabled(false);
+		createButton.setStylePrimaryName("");
+
           /*
            * Showcase instantiieren.
            */

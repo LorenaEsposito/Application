@@ -76,7 +76,6 @@ public class Application implements EntryPoint {
 //           });
 //          }
 // 
- 
 // private void loadLogin() {
 //     
 //     Cookies.setCookie("usermail", null);
