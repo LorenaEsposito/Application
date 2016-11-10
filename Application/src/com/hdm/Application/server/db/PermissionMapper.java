@@ -9,6 +9,7 @@ package com.hdm.Application.server.db;
 	import java.util.Vector;
 
 	import com.hdm.Application.shared.bo.Permission;
+import com.hdm.Application.shared.bo.User;
 
 	/**
 	 * Die Mapper-Klasse PermissionMapper stellt eine Schnittstelle zwischen Applikation
@@ -244,7 +245,67 @@ package com.hdm.Application.server.db;
 				e.printStackTrace();
 			}
 		}
+		
+		/**
+		 * Delete-Methode - Anhand eines übergebenen User-Objekts werden alle Permissions gelöscht,
+		 * die diesen User betreffen.
+		 * 
+		 * @author Marius Klepser
+		 * @param u
+		 *            User, dessen Permissions gelöscht werden sollen
+		 */
+
+		
+		public static void deleteAllUserPermissions(User u) {
+
+			/**
+			 * DB-Verbindung holen & Erzeugen eines neuen SQL-Statements.
+			 */
+
+			Connection con = DBConnection.connection();
+
+			try {
+				Statement stmt = con.createStatement();
+
+				/**
+				 * Statement ausf�llen und als Query an die DB schicken
+				 */
+
+				stmt.executeUpdate("DELETE FROM permissions " + "WHERE userid=" + u.getUserID());
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		public Permission edit(Permission p) {
+
+			/**
+			 * DB-Verbindung holen & Erzeugen eines neuen SQL-Statements.
+			 */
+
+			Connection con = DBConnection.connection();
+
+			try {
+				Statement stmt = con.createStatement();
+				
+				/**
+				 * Statement ausf�llen und als Query an die DB schicken
+				 */
+
+				stmt.executeUpdate("UPDATE permissions " + "SET permtype=\"" + p.getPermissionType() + "\", "
+				+ " WHERE id=" + p.getPermissionID());
+
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+
+			/**
+			 * Um Analogie zu insert (Permission p) zu wahren, geben wir p zur�ck
+			 */
+			return p;
+		}
 	}
+
 	
 
 		

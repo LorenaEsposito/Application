@@ -333,7 +333,6 @@ public ArrayList<Notebook> searchForNotebook(String title) throws IllegalArgumen
 
 	return notebooks;
 }
-
 /**
  *Es kann nach einer bestimmten Note anhand ihres Titels gesucht werden.
  * Dazu wird der NoteMapper aufgerufen, der eine Methode beinhaltet mit der
