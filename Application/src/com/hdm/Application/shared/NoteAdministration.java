@@ -48,4 +48,6 @@ public ArrayList<Notebook> searchForNotebook(String title) throws IllegalArgumen
 
 public ArrayList<Note> searchForNote(String title) throws IllegalArgumentException;
 
+public ArrayList<Note> searchForNoteByDD(DueDate duedate) throws IllegalArgumentException;
+
 }

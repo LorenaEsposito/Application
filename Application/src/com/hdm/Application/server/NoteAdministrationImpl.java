@@ -307,14 +307,10 @@ public void deleteDuedate(DueDate dd) throws IllegalArgumentException {
  */
 public ArrayList<User> searchForUser(String userName) throws IllegalArgumentException{
 	Vector<User> vector = new Vector<User>();
-//	vector = this.uMapper.findByName(userName);
+	vector = this.uMapper.findByName(userName);
 	
 	ArrayList<User> users = new ArrayList<User>(vector);
-	
-	if (this.uMapper.findByName(userName) != null){
-//		User user = this.uMapper.findByName(userName);
-//		users.add(user);
-	}
+
 	return users;
 }
 
@@ -334,11 +330,7 @@ public ArrayList<Notebook> searchForNotebook(String title) throws IllegalArgumen
 	vector = this.nbMapper.findByTitle(title);
 	
 	ArrayList<Notebook> notebooks = new ArrayList<Notebook>(vector);
-	
-	if (this.nbMapper.findByTitle(title) != null){
-//		Notebook notebook = this.findByTitle(title);
-//		notebooks.add(notebook);
-	}
+
 	return notebooks;
 }
 
@@ -355,16 +347,31 @@ public ArrayList<Notebook> searchForNotebook(String title) throws IllegalArgumen
  */
   public ArrayList<Note> searchForNote(String title) throws IllegalArgumentException{
 	Vector<Note> vector = new Vector<Note>();
-//	vector = this.nMapper.findByTitle(title);
+	vector = this.nMapper.findByTitle(title);
 	
 	ArrayList<Note> notes = new ArrayList<Note>(vector);
-	
-//	if (this.nMapper.findByTitle(title) != null){
-//		Note note = this.findByTitle(title);
-//		notes.add(note);
-//	}
 
 	return notes;
   }
+
+  /**
+   *Es kann nach einer bestimmten Note anhand ihres Faelligkeitsdatums gesucht werden.
+   * Dazu wird der NoteMapper aufgerufen, der eine Methode beinhaltet mit der
+   * in der Datenbank nach einem bestimmten Faelligkeitsdatum gesucht wird. In der Methode wird
+   * eine ArrayList erstellt, die mit den Suchergebnissen befuellt wird. 
+   * 
+   * @author Lorena Esposito
+   * @param duedate
+   * @return notes
+   * @throws IllegalArgumentException
+   */
+    public ArrayList<Note> searchForNoteByDD(DueDate duedate) throws IllegalArgumentException{
+  	Vector<Note> vector = new Vector<Note>();
+//  	vector = this.nMapper.findByDuedate(duedate);
+  	
+  	ArrayList<Note> notes = new ArrayList<Note>(vector);
+
+  	return notes;
+    }
 
 }

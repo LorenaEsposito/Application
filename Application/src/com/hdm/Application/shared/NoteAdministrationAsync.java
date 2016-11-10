@@ -58,4 +58,6 @@ public interface NoteAdministrationAsync {
 	
 	public void searchForNote(String title, AsyncCallback<ArrayList<Note>> callback) throws IllegalArgumentException;
 	
+	public void searchForNoteByDD(DueDate duedate, AsyncCallback<ArrayList<Note>> callback) throws IllegalArgumentException;
+	
 }
