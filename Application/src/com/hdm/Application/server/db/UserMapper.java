@@ -281,7 +281,11 @@ public class UserMapper {
 		 */
 
 		Connection con = DBConnection.connection();
-
+		
+	//	NotebookMapper.deleteAllUserNotebooks(u);
+	//	NoteMapper.deleteAllUserNotes(u);
+		PermissionMapper.deleteAllUserPermissions(u);
+		
 		try {
 			Statement stmt = con.createStatement();
 
@@ -293,7 +297,11 @@ public class UserMapper {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		
+
+		
 	}
+
 
 	/**
 	 * Edit-Methode - Ein Profil wird �bergeben und die zugehoerigen Werte in ein
