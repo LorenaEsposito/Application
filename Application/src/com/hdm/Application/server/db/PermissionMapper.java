@@ -246,6 +246,37 @@ import com.hdm.Application.shared.bo.User;
 			}
 		}
 		
+		/**
+		 * Delete-Methode - Anhand eines übergebenen User-Objekts werden alle Permissions gelöscht,
+		 * die diesen User betreffen.
+		 * 
+		 * @author Marius Klepser
+		 * @param u
+		 *            User, dessen Permissions gelöscht werden sollen
+		 */
+
+		
+		public static void deleteAllUserPermissions(User u) {
+
+			/**
+			 * DB-Verbindung holen & Erzeugen eines neuen SQL-Statements.
+			 */
+
+			Connection con = DBConnection.connection();
+
+			try {
+				Statement stmt = con.createStatement();
+
+				/**
+				 * Statement ausf�llen und als Query an die DB schicken
+				 */
+
+				stmt.executeUpdate("DELETE FROM permissions " + "WHERE userid=" + u.getUserID());
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
 		public Permission edit(Permission p) {
 
 			/**
