@@ -12,11 +12,11 @@ public interface NoteAdministration extends RemoteService {
 
 public void init() throws IllegalArgumentException;
 
-public void createUser(User u) throws IllegalArgumentException;
+public void createUser(AppUser u) throws IllegalArgumentException;
 
-public void editUser(User u) throws IllegalArgumentException;
+public void editUser(AppUser u) throws IllegalArgumentException;
 
-public void deleteUser(User u) throws IllegalArgumentException;
+public void deleteUser(AppUser u) throws IllegalArgumentException;
 
 public void createNotebook(Notebook nb) throws IllegalArgumentException;
 
@@ -42,7 +42,7 @@ public void editDuedate(DueDate dd) throws IllegalArgumentException;
 
 public void deleteDuedate(DueDate dd) throws IllegalArgumentException;
 
-public ArrayList<User> searchForUser(String userName) throws IllegalArgumentException;
+public ArrayList<AppUser> searchForUser(String userName) throws IllegalArgumentException;
 
 public ArrayList<Notebook> searchForNotebook(String title) throws IllegalArgumentException;
 

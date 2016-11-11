@@ -54,8 +54,7 @@ h1 {
 }
 
 div#TopLevelFrame {
-	width: 800px;
-	min-width: 300px;
+	width: 90%;
 	border: 1px solid silver;
 	margin: 0 auto;      /* standardkonforme horizontale Zentrierung */
  }

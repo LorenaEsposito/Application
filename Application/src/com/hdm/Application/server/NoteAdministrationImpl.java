@@ -21,12 +21,6 @@ public class NoteAdministrationImpl extends RemoteServiceServlet
     implements NoteAdministration {
 
 	/**
-	 * Das Profil des aktuellen Benutzer. Hier hinterlegt, um schnell darauf
-	 * zurueckgreifen zu koennen.
-	 */
-	private User currentUser = null;
-
-	/**
 	 * Eindeutige SerialVersion ID. Wird zum Serialisieren der Klasse benoetigt.
 	 */
 	private static final long serialVersionUID = 1L;
@@ -35,7 +29,7 @@ public class NoteAdministrationImpl extends RemoteServiceServlet
   /**
    * Referenz auf das zugehörige Note-Objekt.
    */
-  private Note Note = null;
+  private Note note = null;
   
   /**
 	 * Referenz auf den DatenbankMapper, der Userobjekte mit der Datenbank
@@ -92,7 +86,7 @@ public void init() throws IllegalArgumentException {
  *            Der User, der in die Datenbank eingefuegt werden soll
  */
 @Override
-public void createUser(User u) throws IllegalArgumentException{
+public void createUser(AppUser u) throws IllegalArgumentException{
 	this.uMapper.insert(u);
 }
 
@@ -106,7 +100,7 @@ public void createUser(User u) throws IllegalArgumentException{
  *            Der User, der aktualisiert werden soll
  */
 @Override
-public void editUser(User u) throws IllegalArgumentException{
+public void editUser(AppUser u) throws IllegalArgumentException{
 	this.uMapper.edit(u);
 }
 
@@ -121,7 +115,7 @@ public void editUser(User u) throws IllegalArgumentException{
  *            Der User, der aus der Datenbank entfernt werden soll
  */
 @Override
-public void deleteUser(User u) throws IllegalArgumentException {
+public void deleteUser(AppUser u) throws IllegalArgumentException {
     this.uMapper.delete(u);
 //    this.nbMapper.delete(u);
 //    this.nMapper.delete(u);
@@ -315,11 +309,11 @@ public void deleteDuedate(DueDate dd) throws IllegalArgumentException {
  * @return users
  * @throws IllegalArgumentException
  */
-public ArrayList<User> searchForUser(String userName) throws IllegalArgumentException{
-	Vector<User> vector = new Vector<User>();
+public ArrayList<AppUser> searchForUser(String userName) throws IllegalArgumentException{
+	Vector<AppUser> vector = new Vector<AppUser>();
 	vector = this.uMapper.findByName(userName);
 	
-	ArrayList<User> users = new ArrayList<User>(vector);
+	ArrayList<AppUser> users = new ArrayList<AppUser>(vector);
 
 	return users;
 }

@@ -8,7 +8,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Vector;
 
-import com.hdm.Application.shared.bo.User;
+import com.hdm.Application.shared.bo.AppUser;
 
 /**
  * Die Mapper-Klasse UserMapper stellt eine Schnittstelle zwischen Applikation
@@ -61,7 +61,7 @@ public class UserMapper {
 	 * 
 	 */
 
-	public User findByKey(int id) {
+	public AppUser findByKey(int id) {
 		/**
 		 * DB-Verbindung holen & Erzeugen eines neuen SQL-Statements.
 		 */
@@ -82,7 +82,7 @@ public class UserMapper {
 			 */
 			if (rs.next()) {
 
-				User u = new User();
+				AppUser u = new AppUser();
 				u.setUserID(rs.getInt("id"));
 				u.setUserName(rs.getString("userName"));
 				return u;
@@ -110,13 +110,13 @@ public class UserMapper {
 	 * 
 	 */
 
-	public Vector<User> findByName(String name) {
+	public Vector<AppUser> findByName(String name) {
 		/**
 		 * DB-Verbindung holen & Erzeugen eines neuen SQL-Statements.
 		 */
 		Connection con = DBConnection.connection();
 
-		Vector<User> result = new Vector<User>();
+		Vector<AppUser> result = new Vector<AppUser>();
 		
 		try {
 			Statement stmt = con.createStatement();
@@ -133,7 +133,7 @@ public class UserMapper {
 			 */
 			
 			while (rs.next()) {
-				User u = new User();
+				AppUser u = new AppUser();
 				u.setUserID(rs.getInt("id"));
 				u.setUserName(rs.getString("userName"));
 
@@ -159,12 +159,12 @@ public class UserMapper {
 	 * @return Liste aller derzeit in der Datenbank eingetragenen User.
 	 */
 
-	public Vector<User> findAll() {
+	public Vector<AppUser> findAll() {
 		Connection con = DBConnection.connection();
 		/**
 		 * Ergebnisvektor vorbereiten
 		 */
-		Vector<User> result = new Vector<User>();
+		Vector<AppUser> result = new Vector<AppUser>();
 
 		/**
 		 * Erzeugen eines neuen SQL-Statements.
@@ -184,7 +184,7 @@ public class UserMapper {
 			 * erstellt.
 			 */
 			while (rs.next()) {
-				User u = new User();
+				AppUser u = new AppUser();
 				u.setUserID(rs.getInt("id"));
 				u.setUserName(rs.getString("userName"));
 
@@ -214,7 +214,7 @@ public class UserMapper {
 	 * @return User-Objekt, das in die Datenbank geschrieben wurde
 	 */
 
-	public User insert(User u) {
+	public AppUser insert(AppUser u) {
 
 		Connection con = DBConnection.connection();
 
@@ -274,7 +274,7 @@ public class UserMapper {
 	 *            User, der geloescht werden soll
 	 */
 
-	public void delete(User u) {
+	public void delete(AppUser u) {
 
 		/**
 		 * DB-Verbindung holen & Erzeugen eines neuen SQL-Statements.
@@ -313,7 +313,7 @@ public class UserMapper {
 	 *            Der User, dessen Variablen in der DB geaendert werden soll.
 	 */
 
-	public User edit(User u) {
+	public AppUser edit(AppUser u) {
 
 		/**
 		 * DB-Verbindung holen & Erzeugen eines neuen SQL-Statements.

@@ -5,7 +5,7 @@ import java.io.Serializable;
 import com.google.gwt.view.client.ProvidesKey;
 
 
-public class User implements Serializable {
+public class AppUser implements Serializable {
 
 	/*
 	 * Attribute
@@ -16,7 +16,7 @@ public class User implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public static final ProvidesKey<User> KEY_PROVIDER = null;
+	public static final ProvidesKey<AppUser> KEY_PROVIDER = null;
 	
 	/**
 	 * Die id des Users - eindeutiger Primaerschluessel fuer die Datenbank

@@ -22,11 +22,11 @@ public interface NoteAdministrationAsync {
 
 	public void init(AsyncCallback<Void> callback) throws IllegalArgumentException;
 	
-	public void createUser(User u, AsyncCallback<Void> callback) throws IllegalArgumentException;
+	public void createUser(AppUser u, AsyncCallback<Void> callback) throws IllegalArgumentException;
 
-	public void editUser(User u, AsyncCallback<Void> callback) throws IllegalArgumentException;
+	public void editUser(AppUser u, AsyncCallback<Void> callback) throws IllegalArgumentException;
 
-	public void deleteUser(User u, AsyncCallback<Void> callback) throws IllegalArgumentException;
+	public void deleteUser(AppUser u, AsyncCallback<Void> callback) throws IllegalArgumentException;
 
 	public void createNotebook(Notebook nb, AsyncCallback<Void> callback) throws IllegalArgumentException;
 
@@ -52,7 +52,7 @@ public interface NoteAdministrationAsync {
 
 	public void deleteDuedate(DueDate dd, AsyncCallback<Void> callback) throws IllegalArgumentException;
 
-	public void searchForUser(String userName, AsyncCallback<ArrayList<User>> callback) throws IllegalArgumentException;
+	public void searchForUser(String userName, AsyncCallback<ArrayList<AppUser>> callback) throws IllegalArgumentException;
 	
 	public void searchForNotebook(String title, AsyncCallback<ArrayList<Notebook>> callback) throws IllegalArgumentException;
 	

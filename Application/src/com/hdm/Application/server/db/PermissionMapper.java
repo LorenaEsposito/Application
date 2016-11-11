@@ -9,7 +9,7 @@ package com.hdm.Application.server.db;
 	import java.util.Vector;
 
 	import com.hdm.Application.shared.bo.Permission;
-import com.hdm.Application.shared.bo.User;
+import com.hdm.Application.shared.bo.AppUser;
 
 	/**
 	 * Die Mapper-Klasse PermissionMapper stellt eine Schnittstelle zwischen Applikation
@@ -256,7 +256,7 @@ import com.hdm.Application.shared.bo.User;
 		 */
 
 		
-		public static void deleteAllUserPermissions(User u) {
+		public static void deleteAllUserPermissions(AppUser u) {
 
 			/**
 			 * DB-Verbindung holen & Erzeugen eines neuen SQL-Statements.
