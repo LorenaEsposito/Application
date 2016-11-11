@@ -8,7 +8,8 @@ import com.hdm.Application.server.db.*;
 import com.hdm.Application.shared.*;
 
 import com.hdm.Application.shared.bo.*;
-
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 import com.hdm.Application.shared.NoteAdministration;
@@ -126,6 +127,15 @@ public void deleteUser(User u) throws IllegalArgumentException {
 //    this.nMapper.delete(u);
 //    this.pMapper.delete(u);
   }
+
+//public User getCurrentUser() throws IllegalArgumentException {
+//	
+//	UserService userService = UserServiceFactory.getUserService();
+//	User user = userService.getCurrentUser();
+//	int atIndex = user.getEmail().indexOf("@");
+//	String userName = user.getEmail().substring(0, atIndex);
+//	currentUser = this.Name(userName);
+//}
 
 /**
  * Erstellt ein neues Notebook in der Datenbank. Dazu ruft sie mit dem

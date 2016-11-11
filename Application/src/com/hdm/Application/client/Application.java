@@ -95,6 +95,8 @@ public class Application implements EntryPoint {
 //    }
 // 
 // public void loadGUI() {
+	 
+	 HorizontalPanel headPanel = new HorizontalPanel();
 		VerticalPanel navPanel = new VerticalPanel();
 		
 	    /*
@@ -108,10 +110,13 @@ public class Application implements EntryPoint {
 	    
 	    final Button createNoteButton = new Button("+");
 	    
+	    final Label headerLabel = new Label("Notework");
+	    
+	    headerLabel.setStyleName("notework-headline");
 	    createNoteButton.setStyleName("notework-menubutton");
-	    
+	    headPanel.add(headerLabel);
 	    navPanel.add(createNoteButton);
-	    
+	    RootPanel.get("Header").add(headPanel);
 	    RootPanel.get("Navigator").add(navPanel);
 	    createNoteButton.addClickHandler(new ClickHandler() {
 	  	public void onClick(ClickEvent event) {
