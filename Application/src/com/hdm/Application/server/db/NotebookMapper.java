@@ -7,7 +7,7 @@ import java.sql.Statement;
 import java.util.Vector;
 
 import com.hdm.Application.shared.bo.Notebook;
-import com.hdm.Application.shared.bo.User;
+import com.hdm.Application.shared.bo.AppUser;
 
 
 /**Notebook Mapper Klasse bildet Notebook-Objekte auf eine relationale Datenbank ab.

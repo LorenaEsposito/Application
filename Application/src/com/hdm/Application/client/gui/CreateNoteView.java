@@ -135,7 +135,6 @@ final Button deleteButton = new Button("Delete");
     
     createPanel.add(buttonBox);
 
-
-}
+	}
 }
 
