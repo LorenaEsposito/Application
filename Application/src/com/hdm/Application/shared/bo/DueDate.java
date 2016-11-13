@@ -9,14 +9,14 @@ public class DueDate extends BusinessObject {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private DueDate dDate; 
+	private Date dDate; 
 	private int nID;
 	private int ddID;
 	
 	/**
 	 * @return the dDate
 	 */
-	public DueDate getdDate() {
+	public Date getdDate() {
 		return dDate;
 	}
 	
@@ -24,7 +24,7 @@ public class DueDate extends BusinessObject {
 	 * @param dDate the dDate to set
 	 */
 	
-	public void setdDate(DueDate dDate) {
+	public void setdDate(Date dDate) {
 		this.dDate = dDate;
 	}
 	

@@ -56,7 +56,7 @@ public class DueDateMapper {
 
 	
 	
-	public Vector<DueDate> findByDate(DueDate dDate){
+	public Vector<DueDate> findByDate(Date dDate){
 		//DB-Verbindung holen
 		Connection con = DBConnection.connection();
 		Vector<DueDate> result = new Vector<DueDate>();
