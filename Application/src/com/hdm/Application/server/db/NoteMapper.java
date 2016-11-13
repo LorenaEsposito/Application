@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Date;
 import java.util.Vector;
 
 import com.hdm.Application.shared.bo.DueDate;
@@ -146,7 +147,7 @@ public class NoteMapper {
 		 Connection con = DBConnection.connection();
 		 
 		 DueDateMapper.deleteNoteDueDates(note);
-		 Permission.deleteAllNotePermissions(note);
+		 PermissionMapper.deleteAllNotePermissions(note);
 		 
 		 try{
 			 Statement stmt = con.createStatement();
@@ -261,7 +262,7 @@ public class NoteMapper {
 		 * Trifft eine Exception ein wird ein teilweise gefuellter oder leerer Vektor ausgegeben
 		 */
 	 
-	 public Vector<Note> findByDueDate(DueDate dDate){
+	 public Vector<Note> findByDueDate(Date dDate){
 		 Connection con = DBConnection.connection();
 		 Vector<Note> result = new Vector<Note>();
 		 
