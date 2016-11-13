@@ -73,7 +73,7 @@ public class UserMapper {
 			/**
 			 * Statement ausf�llen und als Query an die DB schicken
 			 */
-			ResultSet rs = stmt.executeQuery("SELECT id, userName FROM users " + "WHERE id='" + id
+			ResultSet rs = stmt.executeQuery("SELECT id, gid, name FROM users " + "WHERE id='" + id
 					+ "' ORDER BY id");
 
 			/**
@@ -110,41 +110,46 @@ public class UserMapper {
 	 * 
 	 */
 
-	public User findByName(String name) {
+	public Vector<User> findByName(String name) {
 		/**
 		 * DB-Verbindung holen & Erzeugen eines neuen SQL-Statements.
 		 */
 		Connection con = DBConnection.connection();
 
+		Vector<User> result = new Vector<User>();
+		
 		try {
 			Statement stmt = con.createStatement();
 
 			/**
 			 * Statement ausf�llen und als Query an die DB schicken
 			 */
-			ResultSet rs = stmt.executeQuery("SELECT id, userName FROM users " + "WHERE userName='" + name
+			ResultSet rs = stmt.executeQuery("SELECT id, , gid, name FROM users " + "WHERE userName='" + name
 					+ "' ORDER BY userName");
 
 			/**
-			 * Da id Primaerschl�ssel ist, kann max. nur ein Tupel zur�ckgegeben
-			 * werden. Pr�fe, ob ein Ergebnis vorliegt.
+			 * F�r jeden Eintrag im Suchergebnis wird nun ein Profile-Objekt
+			 * erstellt.
 			 */
-			if (rs.next()) {
-				/**
-				 * Ergebnis-Tupel in Objekt umwandeln
-				 */
+			
+			while (rs.next()) {
 				User u = new User();
 				u.setUserID(rs.getInt("id"));
 				u.setUserName(rs.getString("userName"));
-				
-				return u;
+
+				/**
+				 * Hinzuf�gen des neuen Objekts zum Ergebnisvektor
+				 */
+				result.addElement(u);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-			return null;
 		}
-
-		return null;
+		
+		/**
+		 * Ergebnisvektor zur�ckgeben
+		 */
+		return result;
 	}
 
 	/**
@@ -172,7 +177,7 @@ public class UserMapper {
 			 * Statement ausf�llen und als Query an die DB schicken.
 			 */
 
-			ResultSet rs = stmt.executeQuery("SELECT id, userName FROM users" + "ORDER BY id");
+			ResultSet rs = stmt.executeQuery("SELECT id, gid, name FROM users" + "ORDER BY id");
 
 			/**
 			 * F�r jeden Eintrag im Suchergebnis wird nun ein Profile-Objekt
@@ -328,17 +333,3 @@ public class UserMapper {
 		return u;
 	}
 }
-
-	/**
-	 * Read-Methode - �bergabe eines Suchprofils, anhand dessen User ausgelesen werden sollen,
-	 * die Zugriff auf die eigenen Notizen und Notizb�cher haben.
-
->>>>>>> refs/heads/master
-	 * 
-	 * @author Marius Klepser
-	 * @param searchProfile
-	 *            Suchprofil mit Werten, nach denen die auszugebenden User
-	 *            selektiert werden sollen
-	 * @return Ausgabe aller User, die den Kriterien des Suchprofils
-	 *         entsprechen
-	 */

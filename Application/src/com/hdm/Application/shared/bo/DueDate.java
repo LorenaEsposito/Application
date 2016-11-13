@@ -1,6 +1,6 @@
 package com.hdm.Application.shared.bo;
-import java.util.Date;
 
+import java.sql.Date;
 
 public class DueDate extends BusinessObject {
 
@@ -9,14 +9,14 @@ public class DueDate extends BusinessObject {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private Date dDate; 
+	private DueDate dDate; 
 	private int nID;
 	private int ddID;
 	
 	/**
 	 * @return the dDate
 	 */
-	public Date getdDate() {
+	public DueDate getdDate() {
 		return dDate;
 	}
 	
@@ -24,7 +24,7 @@ public class DueDate extends BusinessObject {
 	 * @param dDate the dDate to set
 	 */
 	
-	public void setdDate(Date dDate) {
+	public void setdDate(DueDate dDate) {
 		this.dDate = dDate;
 	}
 	
@@ -56,6 +56,8 @@ public class DueDate extends BusinessObject {
 	public void setDdID(int ddID) {
 		this.ddID = ddID;
 	}
+
+
 	
 	
 	

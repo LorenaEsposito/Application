@@ -1,15 +1,13 @@
 package com.hdm.Application.server;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Vector;
 
 import com.hdm.Application.server.db.*;
 import com.hdm.Application.shared.*;
 
 import com.hdm.Application.shared.bo.*;
-
-
-
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
@@ -48,25 +46,25 @@ private UserMapper uMapper = null;
  * Referenz auf den DatenbankMapper, der Noteobjekte mit der Datenbank
  * abgleicht.
  */
-//private NoteMapper nMapper;
+private NoteMapper nMapper;
 
 /**
  * Referenz auf den DatenbankMapper, der Permissionobjekte mit der Datenbank
  * abgleicht.
  */
-//private PermissionMapper pMapper;
+private PermissionMapper pMapper;
 
 /**
  * Referenz auf den DatenbankMapper, der Notebookobjekte mit der Datenbank
  * abgleicht.
  */
-//private NotebookMapper nbMapper;
+private NotebookMapper nbMapper;
 
 /**
  * Referenz auf den DatenbankMapper, der Duedateobjekte mit der Datenbank
  * abgleicht.
  */
-//private DueDateMapper ddMapper;
+private DueDateMapper ddMapper;
 
    
   public NoteAdministrationImpl() throws IllegalArgumentException {
@@ -76,10 +74,10 @@ private UserMapper uMapper = null;
 public void init() throws IllegalArgumentException {
 
     this.uMapper = UserMapper.userMapper();
-    //this.nMapper = NoteMapper.noteMapper();
-    //this.pMapper = PermissionMapper.permissionMapper();
-    //this.ddMapper = DueDateMapper.duedateMapper();
-    //this.nbMapper = NotebookMapper.notebookMapper();
+    this.nMapper = NoteMapper.noteMapper();
+    this.pMapper = PermissionMapper.permissionMapper();
+    this.ddMapper = DueDateMapper.dueDateMapper();
+    this.nbMapper = NotebookMapper.notebookMapper();
     
   }
 
@@ -124,9 +122,9 @@ public void editUser(User u) throws IllegalArgumentException{
 @Override
 public void deleteUser(User u) throws IllegalArgumentException {
     this.uMapper.delete(u);
-    //this.nbMapper.delete(u);
-    //this.nMapper.delete(u);
-    //this.pMapper.delete(u);
+//    this.nbMapper.delete(u);
+//    this.nMapper.delete(u);
+//    this.pMapper.delete(u);
   }
 
 /**
@@ -140,7 +138,7 @@ public void deleteUser(User u) throws IllegalArgumentException {
  */
 @Override
 public void createNotebook(Notebook nb) throws IllegalArgumentException {
-//this.nbMapper.insert(nb);
+this.nbMapper.createNotebook(nb);
 }
 
 /**
@@ -154,7 +152,7 @@ public void createNotebook(Notebook nb) throws IllegalArgumentException {
  */
 @Override
 public void editNotebook(Notebook nb) throws IllegalArgumentException {
-//this.nbMapper.edit(nb);
+this.nbMapper.updateNotebook(nb);
 }
 
 /**
@@ -169,7 +167,7 @@ public void editNotebook(Notebook nb) throws IllegalArgumentException {
  */
 @Override
 public void deleteNotebook(Notebook nb) throws IllegalArgumentException {
-//this.nbMapper.delete(nb);
+this.nbMapper.deleteNotebook(nb);
 //this.nMapper.delete(nb);
 //this.pMapper.delete(nb);
 	}
@@ -185,7 +183,7 @@ public void deleteNotebook(Notebook nb) throws IllegalArgumentException {
  */
 @Override
 public void createNote(Note n) throws IllegalArgumentException {
-//this.nMapper.insert(n);
+this.nMapper.createNote(n);
 }
 
 /**
@@ -199,7 +197,7 @@ public void createNote(Note n) throws IllegalArgumentException {
  */
 @Override
 public void editNote(Note n) throws IllegalArgumentException {
-//this.nMapper.edit(n);
+this.nMapper.updateNote(n);
 }
 
 /**
@@ -214,8 +212,8 @@ public void editNote(Note n) throws IllegalArgumentException {
  */
 @Override
 public void deleteNote(Note n) throws IllegalArgumentException {
-    //this.nMapper.delete(n);
-	//this.pMapper.delete(n);
+    this.nMapper.deleteNote(n);
+//	this.pMapper.delete(n);
   }
 
 /**
@@ -229,7 +227,7 @@ public void deleteNote(Note n) throws IllegalArgumentException {
  */
 @Override
 public void createPermission(Permission p) throws IllegalArgumentException{
-	//this.pMapper.insert(p);
+	this.pMapper.insert(p);
 }
 
 /**
@@ -254,7 +252,7 @@ public void editPermission(Permission p) throws IllegalArgumentException{
  */
 @Override
 public void deletePermission(Permission p) throws IllegalArgumentException {
-//    this.pMapper.delete(p);
+    this.pMapper.delete(p);
   }
 
 /**
@@ -268,7 +266,7 @@ public void deletePermission(Permission p) throws IllegalArgumentException {
  */
 @Override
 public void createDuedate(DueDate dd) throws IllegalArgumentException{
-//	this.ddMapper.insert(dd);
+//	this.ddMapper.createDueDate(dd);
 }
 
 /**
@@ -282,7 +280,7 @@ public void createDuedate(DueDate dd) throws IllegalArgumentException{
  */
 @Override
 public void editDuedate(DueDate dd) throws IllegalArgumentException{
-//	this.ddMapper.edit(dd);
+//	this.ddMapper.updateDueDate(dd);
 }
 /**
  * Loescht das uebergebene Duedate endgueltig aus der Datenbank.
@@ -293,26 +291,36 @@ public void editDuedate(DueDate dd) throws IllegalArgumentException{
  */
 @Override
 public void deleteDuedate(DueDate dd) throws IllegalArgumentException {
-//    this.ddMapper.delete(dd);
+//    this.ddMapper.deleteDueDate(dd);
   }
 
-@Override
-public void searchForUser(String userName) throws IllegalArgumentException {
-	// TODO Auto-generated method stub
+/**
+ * Es kann nach einem bestimmten User anhand seines Namens gesucht werden.
+ * Dazu wird der UserMapper aufgerufen, der eine Methode beinhaltet mit der in
+ * der Datenbank nach dem gesuchten Namen gesucht wird. In der Methode wird
+ * eine ArrayList erstellt, die mit den Suchergebnissen befuellt wird.
+ * 
+ * @author Lorena Esposito
+ * @param userName
+ * @return users
+ * @throws IllegalArgumentException
+ */
+public ArrayList<User> searchForUser(String userName) throws IllegalArgumentException{
+	Vector<User> vector = new Vector<User>();
+//	vector = this.uMapper.findByName(userName);
 	
+	ArrayList<User> users = new ArrayList<User>(vector);
+	
+	if (this.uMapper.findByName(userName) != null){
+//		User user = this.uMapper.findByName(userName);
+//		users.add(user);
+	}
+	return users;
+
 }
 
-@Override
-public void searchForNotebook(String title) throws IllegalArgumentException {
-	// TODO Auto-generated method stub
-	
-}
 
-@Override
-public void searchForNote(String title) throws IllegalArgumentException {
-	// TODO Auto-generated method stub
-	
-}
+
 
 
 /**
@@ -388,5 +396,54 @@ public void searchForNote(String title) throws IllegalArgumentException {
 //  }
 
 
+/**
+ * Es kann nach einem bestimmten Notebook anhand seines Titels gesucht werden.
+ * Dazu wird der NotebookMapper aufgerufen, der eine Methode beinhaltet mit der
+ * in der Datenbank nach einem bestimmten Titel gesucht wird. In der Methode wird
+ * eine ArrayList erstellt, die mit den Suchergebnissen befuellt wird.
+ * 
+ * @author Lorena Esposito
+ * @param title
+ * @return notebooks
+ * @throws IllegalArgumentException
+ */
+public ArrayList<Notebook> searchForNotebook(String title) throws IllegalArgumentException{
+	Vector<Notebook> vector = new Vector<Notebook>();
+	vector = this.nbMapper.findByTitle(title);
+	
+	ArrayList<Notebook> notebooks = new ArrayList<Notebook>(vector);
+	
+	if (this.nbMapper.findByTitle(title) != null){
+//		Notebook notebook = this.findByTitle(title);
+//		notebooks.add(notebook);
+	}
+	return notebooks;
+}
+
+
+/**
+ *Es kann nach einer bestimmten Note anhand ihres Titels gesucht werden.
+ * Dazu wird der NoteMapper aufgerufen, der eine Methode beinhaltet mit der
+ * in der Datenbank nach einem bestimmten Titel gesucht wird. In der Methode wird
+ * eine ArrayList erstellt, die mit den Suchergebnissen befuellt wird. 
+ * 
+ * @author Lorena Esposito
+ * @param title
+ * @return notes
+ * @throws IllegalArgumentException
+ */
+  public ArrayList<Note> searchForNote(String title) throws IllegalArgumentException{
+	Vector<Note> vector = new Vector<Note>();
+//	vector = this.nMapper.findByTitle(title);
+	
+	ArrayList<Note> notes = new ArrayList<Note>(vector);
+	
+//	if (this.nMapper.findByTitle(title) != null){
+//		Note note = this.findByTitle(title);
+//		notes.add(note);
+//	}
+
+	return notes;
+  }
 
 }

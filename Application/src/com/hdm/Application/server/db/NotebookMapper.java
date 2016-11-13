@@ -9,6 +9,10 @@ import java.util.Vector;
 import com.hdm.Application.shared.bo.Notebook;
 import com.hdm.Application.shared.bo.User;
 
+import com.hdm.Application.server.db.UserMapper;
+import com.hdm.Application.server.db.NoteMapper;
+import com.hdm.Application.server.db.PermissionMapper;
+import com.hdm.Application.server.db.DueDateMapper;
 
 /**Notebook Mapper Klasse bildet Notebook-Objekte auf eine relationale Datenbank ab.
  * Diese Klasse stellt Methoden zur Verfuegung, die das erstellen, editieren, auslesen/suchen und loeschen 
@@ -247,6 +251,10 @@ private static NotebookMapper notebookMapper = null;
 	public void deleteNotebook(Notebook notebook){
 		Connection con = DBConnection.connection();
 		
+		NoteMapper.deleteAllNotebookNotes(notebook);
+		PermissionMapper.deleteAllNotebookPermissions(notebook);
+		
+		
 		try{
 			Statement stmt = con.createStatement();
 			stmt.executeUpdate("DELETE FROM Notebook" + "WHERE nbID=" + notebook.getNbID());
@@ -256,6 +264,18 @@ private static NotebookMapper notebookMapper = null;
 		}
 	}
 	
+
+	public void deleteAllUserNotebooks(User u){
+		Connection con = DBConnection.connection();
+		
+		try{
+			Statement stmt = con.createStatement();
+			stmt.executeUpdate("DELETE FROM Notebook" + "WHERE userID=" + u.getUserID());
+		}
+		catch (SQLException e){
+			e.printStackTrace();
+		}
+	}
 	
 	
 
