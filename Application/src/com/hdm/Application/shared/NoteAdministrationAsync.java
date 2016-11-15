@@ -62,6 +62,6 @@ public interface NoteAdministrationAsync {
 	
 	public void searchForNoteByDD(DueDate duedate, AsyncCallback<ArrayList<Note>> callback) throws IllegalArgumentException;
 	
-	public void getNotebooksOfUser(String userID, AsyncCallback<ArrayList<Notebook>> callback) throws IllegalArgumentException;
+	public void getNotebooksOfUser(AppUser user, AsyncCallback<ArrayList<Notebook>> callback) throws IllegalArgumentException;
 	
 }

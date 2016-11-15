@@ -53,6 +53,6 @@ public ArrayList<Note> searchForNote(String title) throws IllegalArgumentExcepti
 
 public ArrayList<Note> searchForNoteByDD(DueDate duedate) throws IllegalArgumentException;
 
-public ArrayList<Notebook> getNotebooksOfUser(String userID) throws IllegalArgumentException;
+public ArrayList<Notebook> getNotebooksOfUser(AppUser user) throws IllegalArgumentException;
 
 }
