@@ -1,19 +1,8 @@
-<<<<<<< HEAD
-package com.hdm.Application.shared;
-=======
->>>>>>> refs/remotes/origin/Sina
-
-<<<<<<< HEAD
-=======
 package com.hdm.Application.shared;
 
->>>>>>> refs/remotes/origin/Sina
+
 import java.util.ArrayList;
 
-<<<<<<< HEAD
-=======
-
->>>>>>> refs/remotes/origin/Sina
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
@@ -54,24 +43,14 @@ public void editDuedate(DueDate dd) throws IllegalArgumentException;
 
 public void deleteDuedate(DueDate dd) throws IllegalArgumentException;
 
-<<<<<<< HEAD
 public ArrayList<AppUser> searchForUser(String userName) throws IllegalArgumentException;
-=======
 
-public ArrayList<User> searchForUser(String userName) throws IllegalArgumentException;
->>>>>>> refs/remotes/origin/Sina
 
-<<<<<<< HEAD
+
 public ArrayList<Notebook> searchForNotebook(String title) throws IllegalArgumentException;
 
 public ArrayList<Note> searchForNote(String title) throws IllegalArgumentException;
 
 public ArrayList<Note> searchForNoteByDD(DueDate duedate) throws IllegalArgumentException;
-=======
-public ArrayList<Notebook> searchForNotebook(String title) throws IllegalArgumentException;
-
-public ArrayList<Note> searchForNote(String title) throws IllegalArgumentException;
-
->>>>>>> refs/remotes/origin/Sina
 
 }

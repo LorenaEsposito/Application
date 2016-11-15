@@ -7,14 +7,10 @@ import java.util.Vector;
 import com.hdm.Application.server.db.*;
 import com.hdm.Application.shared.*;
 
-<<<<<<< HEAD
+
 import com.hdm.Application.shared.bo.*;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
-=======
-import com.hdm.Application.shared.bo.*;
-
->>>>>>> refs/remotes/origin/Sina
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 import com.hdm.Application.shared.NoteAdministration;
@@ -324,10 +320,6 @@ public ArrayList<AppUser> searchForUser(String userName) throws IllegalArgumentE
 
 }
 
-<<<<<<< HEAD
-=======
-
-
 
 
 /**
@@ -402,8 +394,6 @@ public ArrayList<AppUser> searchForUser(String userName) throws IllegalArgumentE
 //	return notes;
 //  }
 
-
->>>>>>> refs/remotes/origin/Sina
 /**
  * Es kann nach einem bestimmten Notebook anhand seines Titels gesucht werden.
  * Dazu wird der NotebookMapper aufgerufen, der eine Methode beinhaltet mit der
@@ -422,13 +412,9 @@ public ArrayList<Notebook> searchForNotebook(String title) throws IllegalArgumen
 	ArrayList<Notebook> notebooks = new ArrayList<Notebook>(vector);
 	
 	return notebooks;
-<<<<<<< HEAD
-}
-=======
+
 }
 
-
->>>>>>> refs/remotes/origin/Sina
 /**
  *Es kann nach einer bestimmten Note anhand ihres Titels gesucht werden.
  * Dazu wird der NoteMapper aufgerufen, der eine Methode beinhaltet mit der
@@ -448,7 +434,6 @@ public ArrayList<Notebook> searchForNotebook(String title) throws IllegalArgumen
 
 	return notes;
   }
-<<<<<<< HEAD
 
   /**
    *Es kann nach einer bestimmten Note anhand ihres Faelligkeitsdatums gesucht werden.
@@ -469,8 +454,4 @@ public ArrayList<Notebook> searchForNotebook(String title) throws IllegalArgumen
 
   	return notes;
     }
-
-=======
-
->>>>>>> refs/remotes/origin/Sina
 }

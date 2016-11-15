@@ -93,13 +93,4 @@ public class Notebook extends NoteObject {
 
 
 }
-<<<<<<< HEAD
-
-=======
-	
-	
-
-
->>>>>>> refs/remotes/origin/Sina
-
 	
