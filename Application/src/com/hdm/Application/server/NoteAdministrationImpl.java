@@ -94,22 +94,23 @@ public AppUser getCurrentUser() throws IllegalArgumentException {
 }
 
 public AppUser getUserByGoogleID(String name){
+	ArrayList<AppUser> users = new ArrayList<AppUser>();
+	
 	if (this.uMapper.findByGoogleID(name) == null){
-		AppUser user = new AppUser();
-		user.setGoogleID(name);
-		this.createUser(user);
+		AppUser cUser = new AppUser();
+		cUser.setGoogleID(name);
+		this.createUser(cUser);
 		
+		AppUser user2 = new AppUser();
+		user2 = this.uMapper.findByGoogleID(name);
+		users.add(user2);
+	}
+	if (this.uMapper.findByGoogleID(name) != null){
 		AppUser cUser = new AppUser();
 		cUser = this.uMapper.findByGoogleID(name);
-		
-		return cUser;
+		users.add(cUser);
 	}
-	else{
-		AppUser cUser = new AppUser();
-		cUser = this.uMapper.findByGoogleID(name);
-		
-		return cUser;
-	}
+	return users.get(0);
 }
 
 /**

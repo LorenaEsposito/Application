@@ -10,18 +10,26 @@ import com.hdm.Application.client.gui.LoginServiceAsync;
 import com.hdm.Application.client.gui.NoteOverviewView;
 import com.hdm.Application.client.gui.Update;
 import com.hdm.Application.shared.LoginInfo;
+import com.hdm.Application.shared.NoteAdministrationAsync;
+import com.hdm.Application.shared.bo.AppUser;
+import com.hdm.Application.shared.bo.Notebook;
 import com.hdm.Application.client.ClientsideSettings;
+
+import java.util.ArrayList;
+
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Cookies;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
@@ -43,6 +51,23 @@ public class Application implements EntryPoint {
 	  private LoginInfo loginInfo = null;
 	  
 	  /**
+		 * Die AdministrationService ermoeglicht die asynchrone Kommunikation mit der
+		 * Applikationslogik.
+		 */
+		private NoteAdministrationAsync adminService = ClientsideSettings.getAdministration();
+
+		/**
+		 * Die Instanz des aktuellen Benutzers ermoeglicht den schnellen Zugriff auf
+		 * dessen Profileigenschaften.
+		 */
+		private AppUser currentUser = null;
+		
+		/**
+		 * Eine ArrayList, in der Notebook-Objekte gespeichert werden
+		 */
+		private ArrayList<Notebook> notebooks = null;
+	  
+	  /**
 	   * The message displayed to the user when the server cannot be reached or
 	   * returns an error.
 	   */
@@ -61,10 +86,12 @@ public class Application implements EntryPoint {
 	   * Erstellung aller Widgets
 	   */
 	  private Label loginLabel = new Label("Bitte melde dich mit deinem Google Account an, um Notework nutzen zu k�nnen. Klicke auf Login und los geht's!");
+	  final Label headerLabel = new Label("Notework");
+
 	  private Anchor signInLink = new Anchor("Login");
+	  final ListBox listbox = new ListBox();
 	  final Button createNoteButton = new Button("+");
 	  final Button noteButton = new Button("My Recipes");
-	  final Label headerLabel = new Label("Notework");
 	  final Button signOutButton = new Button("Sign out");
 
  /**
@@ -101,6 +128,15 @@ public class Application implements EntryPoint {
  }
 
      public void loadGUI() {
+    	 
+ 	    /**
+ 	     * Befuellen der ListBox mit den Notebooks des aktuellen Users
+ 	     */
+ 	    adminService.getCurrentUser(getCurrentUserCallback());
+ 	    adminService.getNotebooksOfUser(currentUser, getNotebooksOfUserCallback());
+    	 
+	   	  //final Label userLabel = new Label(currentUser.getGoogleID());
+ 	    
 	    /**
 	     * Zuweisung eines Styles fuer die jeweiligen Widgets
 	     **/
@@ -108,12 +144,16 @@ public class Application implements EntryPoint {
 	    createNoteButton.setStyleName("notework-menubutton");
 	    noteButton.setStyleName("notework-menubutton");
 	    signOutButton.setStyleName("notework-menubutton");
+	    listbox.setStyleName("");
 	    
 	    
 	    /**
 	     * Zuteilung der Widgets zum jeweiligen Panel
 	     */
+	    //headPanel.add(userLabel);
 	    headPanel.add(headerLabel);
+	    headPanel.add(signOutButton);
+	    navPanel.add(listbox);
 	    navPanel.add(createNoteButton);
 	    navPanel.add(noteButton);
 	    RootPanel.get("Header").add(headPanel);
@@ -145,6 +185,20 @@ public class Application implements EntryPoint {
 	    }
 	    });
 	    
+	    signOutButton.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				
+				/*
+				 * Laden der Logout-URL der Google Accounts API und Anzeige des
+				 * LoginPanel.
+				 */
+				RootPanel.get("Details").setWidth("65%");
+				Window.open(ClientsideSettings.getLoginInfo().getLogoutUrl(), "_self", "");
+
+			}
+		});
+	    
 	}
  
  private void loadLogin() {
@@ -165,5 +219,45 @@ public class Application implements EntryPoint {
      RootPanel.get("Details").clear();
      RootPanel.get("Details").add(loginPanel);     
     }
-  }
+ 
+ private AsyncCallback<AppUser> getCurrentUserCallback() {
+	 AsyncCallback<AppUser> asyncCallback = new AsyncCallback<AppUser>() {
+	 
+	 @Override
+		public void onFailure(Throwable caught) {
+			ClientsideSettings.getLogger().severe("Error: " + caught.getMessage());
+		}
+	 
+	 @Override
+	 public void onSuccess(AppUser result){
+		 ClientsideSettings.getLogger()
+			.severe("Success GetCurrentUserCallback: " + result.getClass().getSimpleName());
+	currentUser = result;
+	 }
+	 };
+	 return asyncCallback;
+ }
+ 
+ private AsyncCallback<ArrayList<Notebook>> getNotebooksOfUserCallback() {
+	 AsyncCallback<ArrayList<Notebook>> asyncCallback = new AsyncCallback<ArrayList<Notebook>>() {
+		 
+		 @Override
+			public void onFailure(Throwable caught) {
+				ClientsideSettings.getLogger().severe("Error: " + caught.getMessage());
+			}
+		 
+		 @Override
+		 public void onSuccess(ArrayList<Notebook> result){
+			 ClientsideSettings.getLogger()
+				.severe("Success GetNotebooksOfUserCallback: " + result.getClass().getSimpleName());
+			 notebooks = result;
+			 
+			 for (int x = 0; x < notebooks.size(); x++ ){
+				 listbox.addItem(notebooks.get(x).getNbTitle());
+			 }
+		 }
+	 };
+	 return asyncCallback;
+ }
+ }
 
