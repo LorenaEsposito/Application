@@ -95,7 +95,7 @@ public class UserMapper {
 		return null;
 	}
 
-	public AppUser findByGoogleID(int gid) {
+	public AppUser findByGoogleID(String gid) {
 		/**
 		 * DB-Verbindung holen & Erzeugen eines neuen SQL-Statements.
 		 */
