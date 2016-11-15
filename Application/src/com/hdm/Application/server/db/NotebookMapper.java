@@ -9,6 +9,10 @@ import java.util.Vector;
 import com.hdm.Application.shared.bo.Notebook;
 import com.hdm.Application.shared.bo.AppUser;
 
+import com.hdm.Application.server.db.UserMapper;
+import com.hdm.Application.server.db.NoteMapper;
+import com.hdm.Application.server.db.PermissionMapper;
+import com.hdm.Application.server.db.DueDateMapper;
 
 /**Notebook Mapper Klasse bildet Notebook-Objekte auf eine relationale Datenbank ab.
  * Diese Klasse stellt Methoden zur Verfuegung, die das erstellen, editieren, auslesen/suchen und loeschen 
@@ -87,6 +91,44 @@ private static NotebookMapper notebookMapper = null;
 		}
 		
 		return null;
+		
+	}
+	
+	public Vector<Notebook> findByUser(AppUser user){
+		
+		//DB-Verbindung holen
+		
+		Connection con = DBConnection.connection();
+		
+		Vector<Notebook> result = new Vector<Notebook>();
+		
+		try{
+			//Leeres SQL Statement anlegen
+			Statement stmt = con.createStatement();
+			
+			//Statement ausfuellen und als Query an DB schicken
+			ResultSet rs = stmt.executeQuery("SELECT nbid, userid FROM permissions"
+					+ "WHERE userid=" + user.getUserID() + "AND WHERE isowner = 1" );
+			
+			// Fuer jeden Eintrag wird ein Notebook-Objekt erstellt	
+			while (rs.next()){
+				
+				Notebook notebook = new Notebook();
+				notebook.setNbID(rs.getInt("nbid"));
+				notebook.setTitle(rs.getString("title"));
+				notebook.setNbCreDate(rs.getDate("creadate"));
+				notebook.setNbModDate(rs.getDate("moddate"));
+				
+				// Neues Objekt wird dem Ergebnisvektor hinzugefuegt
+				result.addElement(notebook);
+			}
+		}
+		catch (SQLException e){
+			e.printStackTrace();
+			return null;
+		}
+		
+		return result;
 		
 	}
 	
@@ -247,6 +289,12 @@ private static NotebookMapper notebookMapper = null;
 	public void deleteNotebook(Notebook notebook){
 		Connection con = DBConnection.connection();
 		
+		DueDateMapper.deleteAllNotebookDueDates(notebook);
+		NoteMapper.deleteAllNotebookNotes(notebook);
+		PermissionMapper.deleteAllNotebookPermissions(notebook);
+
+		
+		
 		try{
 			Statement stmt = con.createStatement();
 			stmt.executeUpdate("DELETE FROM Notebook" + "WHERE nbID=" + notebook.getNbID());
@@ -255,4 +303,33 @@ private static NotebookMapper notebookMapper = null;
 			e.printStackTrace();
 		}
 	}
+	
+
+	public static void deleteAllUserNotebooks(AppUser u){
+		
+	
+		Connection con = DBConnection.connection();
+		
+		try{
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT userid, nbid, FROM permissions" 
+					+ "WHERE userid =" + u.getUserID() + "AND WHERE isowner = 1");
+			
+			// Fuer jeden Eintrag wird ein Notebook-Objekt erstellt	
+			while (rs.next()){
+				
+				Integer idInt = new Integer(rs.getInt("nid"));
+				Statement stmt2 = con.createStatement();
+				stmt2.executeUpdate("DELETE FROM notebooks"
+						+ "WHERE nbID=" + idInt.intValue()); 
+			}
+		}
+	
+			catch (SQLException e){
+				e.printStackTrace();
+			}
+		}
 }
+	
+	
+

@@ -26,7 +26,7 @@ public class NoteAdministrationImpl extends RemoteServiceServlet
 	 */
 	private static final long serialVersionUID = 1L;
     
-	private AppUser currentUserProfile = null;
+	private AppUser currentUser = null;
 
   /**
    * Referenz auf das zugehörige Note-Objekt.
@@ -325,6 +325,9 @@ public void deleteDuedate(DueDate dd) throws IllegalArgumentException {
 //    this.ddMapper.deleteDueDate(dd);
   }
 
+
+
+
 /**
  * Es kann nach einem bestimmten User anhand seines Namens gesucht werden.
  * Dazu wird der UserMapper aufgerufen, der eine Methode beinhaltet mit der in
@@ -341,7 +344,6 @@ public ArrayList<AppUser> searchForUser(String userName) throws IllegalArgumentE
 	vector = this.uMapper.findByName(userName);
 	
 	ArrayList<AppUser> users = new ArrayList<AppUser>(vector);
-
 	return users;
 }
 
@@ -361,9 +363,11 @@ public ArrayList<Notebook> searchForNotebook(String title) throws IllegalArgumen
 	vector = this.nbMapper.findByTitle(title);
 	
 	ArrayList<Notebook> notebooks = new ArrayList<Notebook>(vector);
-
+	
 	return notebooks;
+
 }
+
 /**
  *Es kann nach einer bestimmten Note anhand ihres Titels gesucht werden.
  * Dazu wird der NoteMapper aufgerufen, der eine Methode beinhaltet mit der

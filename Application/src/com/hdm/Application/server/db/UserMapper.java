@@ -73,7 +73,7 @@ public class UserMapper {
 			/**
 			 * Statement ausf�llen und als Query an die DB schicken
 			 */
-			ResultSet rs = stmt.executeQuery("SELECT id, gid, name FROM users " + "WHERE id='" + id
+			ResultSet rs = stmt.executeQuery("SELECT uid, gid, username FROM users " + "WHERE uid='" + id
 					+ "' ORDER BY id");
 
 			/**
@@ -83,8 +83,8 @@ public class UserMapper {
 			if (rs.next()) {
 
 				AppUser u = new AppUser();
-				u.setUserID(rs.getInt("id"));
-				u.setUserName(rs.getString("userName"));
+				u.setUserID(rs.getInt("uid"));
+				u.setUserName(rs.getString("username"));
 				return u;
 			}
 		} catch (SQLException e) {
@@ -95,6 +95,41 @@ public class UserMapper {
 		return null;
 	}
 
+	public AppUser findByGoogleID(int gid) {
+		/**
+		 * DB-Verbindung holen & Erzeugen eines neuen SQL-Statements.
+		 */
+		Connection con = DBConnection.connection();
+
+		try {
+			Statement stmt = con.createStatement();
+
+			/**
+			 * Statement ausf�llen und als Query an die DB schicken
+			 */
+			ResultSet rs = stmt.executeQuery("SELECT uid, gid, username FROM users " + "WHERE gid='" + gid
+					+ "' ORDER BY gid");
+
+			/**
+			 * Da id Primaerschl�ssel ist, kann max. nur ein Tupel zur�ckgegeben
+			 * werden. Pr�fe, ob ein Ergebnis vorliegt.
+			 */
+			if (rs.next()) {
+
+				AppUser u = new AppUser();
+				u.setUserID(rs.getInt("uid"));
+				u.setUserName(rs.getString("username"));
+				u.setGoogleID(rs.getString("gid"));
+				return u;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+
+		return null;
+	}
+	
 	/**
 	 * Read-Methode - Anhand eines Usernamen wird der dazu gehoerige User in
 	 * der Datenbank gesucht. Diese Methode ist vor Allem f�r den Login
@@ -124,7 +159,7 @@ public class UserMapper {
 			/**
 			 * Statement ausf�llen und als Query an die DB schicken
 			 */
-			ResultSet rs = stmt.executeQuery("SELECT id, , gid, name FROM users " + "WHERE userName='" + name
+			ResultSet rs = stmt.executeQuery("SELECT uid, , gid, username FROM users " + "WHERE username='" + name
 					+ "' ORDER BY userName");
 
 			/**
@@ -134,8 +169,9 @@ public class UserMapper {
 			
 			while (rs.next()) {
 				AppUser u = new AppUser();
-				u.setUserID(rs.getInt("id"));
-				u.setUserName(rs.getString("userName"));
+				u.setUserID(rs.getInt("uid"));
+				u.setUserName(rs.getString("username"));
+
 
 				/**
 				 * Hinzuf�gen des neuen Objekts zum Ergebnisvektor
@@ -177,7 +213,7 @@ public class UserMapper {
 			 * Statement ausf�llen und als Query an die DB schicken.
 			 */
 
-			ResultSet rs = stmt.executeQuery("SELECT id, gid, name FROM users" + "ORDER BY id");
+			ResultSet rs = stmt.executeQuery("SELECT uid, gid, username FROM users" + "ORDER BY uid");
 
 			/**
 			 * F�r jeden Eintrag im Suchergebnis wird nun ein Profile-Objekt
@@ -185,8 +221,8 @@ public class UserMapper {
 			 */
 			while (rs.next()) {
 				AppUser u = new AppUser();
-				u.setUserID(rs.getInt("id"));
-				u.setUserName(rs.getString("userName"));
+				u.setUserID(rs.getInt("uid"));
+				u.setUserName(rs.getString("username"));
 
 				/**
 				 * Hinzuf�gen des neuen Objekts zum Ergebnisvektor
@@ -247,11 +283,11 @@ public class UserMapper {
 				 * Jetzt erst erfolgt die tatsaechliche Einf�geoperation
 				 */
 				stmt.executeUpdate(
-						"INSERT INTO users (id, userName) "
+						"INSERT INTO users (uid, username) "
 								+ "VALUES (" + u.getUserID() + ",'" + u.getUserName() + "')");
 
 				System.out.println(
-						"INSERT INTO users (id, userName) "
+						"INSERT INTO users (uid, username) "
 								+ "VALUES (" + u.getUserID() + ",'" + u.getUserName() + "')");
 
 				return u;
@@ -282,8 +318,9 @@ public class UserMapper {
 
 		Connection con = DBConnection.connection();
 		
-	//	NotebookMapper.deleteAllUserNotebooks(u);
-	//	NoteMapper.deleteAllUserNotes(u);
+		DueDateMapper.deleteAllUserDueDates(u);
+		NoteMapper.deleteAllUserNotes(u);
+		NotebookMapper.deleteAllUserNotebooks(u);
 		PermissionMapper.deleteAllUserPermissions(u);
 		
 		try {
@@ -293,7 +330,7 @@ public class UserMapper {
 			 * Statement ausf�llen und als Query an die DB schicken
 			 */
 
-			stmt.executeUpdate("DELETE FROM users " + "WHERE id=" + u.getUserID());
+			stmt.executeUpdate("DELETE FROM users " + "WHERE uid=" + u.getUserID());
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

@@ -9,7 +9,9 @@ package com.hdm.Application.server.db;
 	import java.util.Vector;
 
 	import com.hdm.Application.shared.bo.Permission;
-import com.hdm.Application.shared.bo.AppUser;
+	import com.hdm.Application.shared.bo.AppUser;
+	import com.hdm.Application.shared.bo.Notebook;
+	import com.hdm.Application.shared.bo.Note;
 
 	/**
 	 * Die Mapper-Klasse PermissionMapper stellt eine Schnittstelle zwischen Applikation
@@ -272,6 +274,68 @@ import com.hdm.Application.shared.bo.AppUser;
 				 */
 
 				stmt.executeUpdate("DELETE FROM permissions " + "WHERE userid=" + u.getUserID());
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		/**
+		 * Delete-Methode - Anhand eines übergebenen Notebook-Objekts werden alle Permissions gelöscht,
+		 * die dieses Notebook betreffen.
+		 * 
+		 * @author Marius Klepser
+		 * @param nb
+		 *            Notebook, dessen Permissions gelöscht werden sollen
+		 */
+
+		
+		public static void deleteAllNotebookPermissions(Notebook nb) {
+
+			/**
+			 * DB-Verbindung holen & Erzeugen eines neuen SQL-Statements.
+			 */
+
+			Connection con = DBConnection.connection();
+
+			try {
+				Statement stmt = con.createStatement();
+
+				/**
+				 * Statement ausf�llen und als Query an die DB schicken
+				 */
+
+				stmt.executeUpdate("DELETE FROM permissions " + "WHERE nbid=" + nb.getNbID());
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		/**
+		 * Delete-Methode - Anhand eines übergebenen Note-Objekts werden alle Permissions gelöscht,
+		 * die diese Note betreffen.
+		 * 
+		 * @author Marius Klepser
+		 * @param n
+		 *            Note, deren Permissions gelöscht werden sollen
+		 */
+
+		
+		public static void deleteAllNotePermissions(Note n) {
+
+			/**
+			 * DB-Verbindung holen & Erzeugen eines neuen SQL-Statements.
+			 */
+
+			Connection con = DBConnection.connection();
+
+			try {
+				Statement stmt = con.createStatement();
+
+				/**
+				 * Statement ausf�llen und als Query an die DB schicken
+				 */
+
+				stmt.executeUpdate("DELETE FROM permissions " + "WHERE nid=" + n.getnID());
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
