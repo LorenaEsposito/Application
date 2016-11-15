@@ -49,6 +49,7 @@ public class Notebook extends NoteObject {
 	
 	/**
 	 * @param nbModDate the nbModDate to set
+
 	 */
 
 	public void setNbModDate(Date nbModDate) {
@@ -92,6 +93,4 @@ public class Notebook extends NoteObject {
 
 
 }
-
-
 	

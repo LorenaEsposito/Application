@@ -1,5 +1,9 @@
 package com.hdm.Application.client;
 
+
+import com.hdm.Application.shared.FieldVerifier;
+
+
 import com.hdm.Application.client.gui.CreateNoteView;
 import com.hdm.Application.client.gui.LoginService;
 import com.hdm.Application.client.gui.LoginServiceAsync;
@@ -62,10 +66,43 @@ public class Application implements EntryPoint {
   */
 // private final GreetingServiceAsync greetingService = GWT.create(GreetingService.class);
 
- 
- public void onModuleLoad() {
-	 
-   //navigationPanel.setVisible(false); 
+
+	/**
+	 * This is the entry point method.
+	 */
+	public void onModuleLoad() {
+		VerticalPanel navPanel = new VerticalPanel();
+
+	    /*
+	     * Das VerticalPanel wird einem DIV-Element namens "Navigator" in der
+	     * zugehörigen HTML-Datei zugewiesen und erhält so seinen Darstellungsort.
+	     */
+	    RootPanel.get("Navigator").add(navPanel);
+	    
+	    /*
+	     * Erstellung des ersten Navibar-Buttons zum hinzufügen neuer Notizen
+	     */
+	    
+	    final Button createNoteButton = new Button("+");
+	    
+	    createNoteButton.setStyleName("notework-menubutton");
+	    
+	    navPanel.add(createNoteButton);
+	    
+	    createNoteButton.addClickHandler(new ClickHandler() {
+	  	public void onClick(ClickEvent event) {
+	          /*
+	           * Showcase instantiieren.
+	           */
+	          Update update = new CreateNoteView();
+	          
+	          RootPanel.get("Details").clear();
+	          RootPanel.get("Details").add(update);
+	    }
+	    });
+final Button notebookButton = new Button("+");
+
+ //public void onModuleLoad() {
     
       // Check login status using login service.
      LoginServiceAsync loginService = GWT.create(LoginService.class);

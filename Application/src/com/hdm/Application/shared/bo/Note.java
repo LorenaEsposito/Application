@@ -16,7 +16,7 @@ public class Note extends NoteObject {
 	private Date nCreDate;
 	private int userID;
 	private String source;
-	
+	private DueDate dDate;
 	
 	
 	/**
