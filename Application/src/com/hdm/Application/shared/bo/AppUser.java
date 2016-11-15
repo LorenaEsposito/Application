@@ -42,7 +42,6 @@ public class AppUser implements Serializable {
 	 * Die Information, ob der User in der aktuellen Session durch einen Login
 	 * mit einer bisher nicht bekannten Googlemail erstellt wurde.
 	 */
-	//private boolean createdOnLogin;
 
 	/*
 	 * Get-/Set-Operations

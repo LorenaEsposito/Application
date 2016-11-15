@@ -98,17 +98,9 @@ public class Application implements EntryPoint {
            }
          }
        });
-     }
- 
- 
- public void loadGUI() {
+ }
 
-	    /*
-	     * Das VerticalPanel wird einem DIV-Element namens "Navigator" in der
-	     * zugehörigen HTML-Datei zugewiesen und erhält so seinen Darstellungsort.
-	     */
-	    RootPanel.get("Navigator").add(navPanel);
-	    
+     public void loadGUI() {
 	    /**
 	     * Zuweisung eines Styles fuer die jeweiligen Widgets
 	     */
@@ -142,6 +134,7 @@ public class Application implements EntryPoint {
 	    });	    
 
 	    
+
 	    noteButton.addClickHandler(new ClickHandler() {
 	  	public void onClick(ClickEvent event) {
 	          /*
@@ -174,6 +167,5 @@ public class Application implements EntryPoint {
      RootPanel.get("Details").clear();
      RootPanel.get("Details").add(loginPanel);     
     }
- 
   }
 

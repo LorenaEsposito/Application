@@ -81,7 +81,6 @@ public class UserMapper {
 			 * werden. Pr�fe, ob ein Ergebnis vorliegt.
 			 */
 			if (rs.next()) {
-
 				AppUser u = new AppUser();
 				u.setUserID(rs.getInt("uid"));
 				u.setUserName(rs.getString("username"));
@@ -223,7 +222,7 @@ public class UserMapper {
 				AppUser u = new AppUser();
 				u.setUserID(rs.getInt("uid"));
 				u.setUserName(rs.getString("username"));
-
+				
 				/**
 				 * Hinzuf�gen des neuen Objekts zum Ergebnisvektor
 				 */

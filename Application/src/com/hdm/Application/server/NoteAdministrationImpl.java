@@ -157,7 +157,6 @@ public void deleteUser(AppUser u) throws IllegalArgumentException {
 //    this.pMapper.delete(u);
   }
 
-
 /**
  * Erstellt ein neues Notebook in der Datenbank. Dazu ruft sie mit dem
  * uebergebenen Notebook den NotebookMapper auf, der dieses dann ueber eine
@@ -402,7 +401,6 @@ public ArrayList<Notebook> searchForNotebook(String title) throws IllegalArgumen
     public ArrayList<Note> searchForNoteByDD(DueDate duedate) throws IllegalArgumentException{
   	Vector<Note> vector = new Vector<Note>();
 //  	vector = this.nMapper.findByDuedate(duedate);
-  	
   	ArrayList<Note> notes = new ArrayList<Note>(vector);
 
   	return notes;
@@ -416,5 +414,4 @@ public ArrayList<Notebook> searchForNotebook(String title) throws IllegalArgumen
     	
     	return notebooks;
     }
-
 }
