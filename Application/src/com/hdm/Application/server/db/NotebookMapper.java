@@ -94,6 +94,44 @@ private static NotebookMapper notebookMapper = null;
 		
 	}
 	
+	public Vector<Notebook> findByUser(AppUser user){
+		
+		//DB-Verbindung holen
+		
+		Connection con = DBConnection.connection();
+		
+		Vector<Notebook> result = new Vector<Notebook>();
+		
+		try{
+			//Leeres SQL Statement anlegen
+			Statement stmt = con.createStatement();
+			
+			//Statement ausfuellen und als Query an DB schicken
+			ResultSet rs = stmt.executeQuery("SELECT nbid, userid FROM permissions"
+					+ "WHERE userid=" + user.getUserID() + "AND WHERE isowner = 1" );
+			
+			// Fuer jeden Eintrag wird ein Notebook-Objekt erstellt	
+			while (rs.next()){
+				
+				Notebook notebook = new Notebook();
+				notebook.setNbID(rs.getInt("nbid"));
+				notebook.setTitle(rs.getString("title"));
+				notebook.setNbCreDate(rs.getDate("creadate"));
+				notebook.setNbModDate(rs.getDate("moddate"));
+				
+				// Neues Objekt wird dem Ergebnisvektor hinzugefuegt
+				result.addElement(notebook);
+			}
+		}
+		catch (SQLException e){
+			e.printStackTrace();
+			return null;
+		}
+		
+		return result;
+		
+	}
+	
 	/**
 	 * Auslesen aller Notebooks
 	 * @return Vektor mit Notebook Objekten, der alle Notebooks enthaelt. 
