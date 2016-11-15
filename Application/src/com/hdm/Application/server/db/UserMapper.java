@@ -285,6 +285,7 @@ public class UserMapper {
 	//	NotebookMapper.deleteAllUserNotebooks(u);
 	//	NoteMapper.deleteAllUserNotes(u);
 		PermissionMapper.deleteAllUserPermissions(u);
+	//	DueDateMapper.deleteAllUserDueDates(u);
 		
 		try {
 			Statement stmt = con.createStatement();
