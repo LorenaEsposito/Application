@@ -311,12 +311,12 @@ package com.hdm.Application.server.db;
 		}
 		
 		/**
-		 * Delete-Methode - Anhand eines übergebenen Notebook-Objekts werden alle Permissions gelöscht,
-		 * die dieses Notebook betreffen.
+		 * Delete-Methode - Anhand eines übergebenen Note-Objekts werden alle Permissions gelöscht,
+		 * die diese Note betreffen.
 		 * 
 		 * @author Marius Klepser
-		 * @param nb
-		 *            Notebook, dessen Permissions gelöscht werden sollen
+		 * @param n
+		 *            Note, deren Permissions gelöscht werden sollen
 		 */
 
 		

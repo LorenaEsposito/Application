@@ -5,6 +5,8 @@ import java.util.Vector;
 
 import com.hdm.Application.shared.bo.DueDate;
 import com.hdm.Application.shared.bo.Note;
+import com.hdm.Application.shared.bo.Notebook;
+import com.hdm.Application.shared.bo.AppUser;
 
 /**DueDate Mapper Klasse bildet DueDate-Objekte auf eine relationale Datenbank ab.
  * Diese Klasse stellt Methoden zur Verfuegung, die das erstellen, editieren, auslesen/suchen und loeschen 
@@ -247,25 +249,78 @@ public class DueDateMapper {
 		
 		try{
 			Statement stmt = con.createStatement();
-			stmt.executeUpdate("DELETE FROM DueDate" + "WHERE ddID=" + dueDate.getDdID());
+			stmt.executeUpdate("DELETE FROM duedates" + "WHERE ddID=" + dueDate.getDdID());
 		}
 		catch (SQLException e){
 			e.printStackTrace();
 		}
 	}
 	
-	public static void deleteNoteDueDates(Note note){
+	public static void deleteAllNoteDueDates(Note note){
 			Connection con = DBConnection.connection();
 		
 		try{
 			Statement stmt = con.createStatement();
-			stmt.executeUpdate("DELETE FROM DueDate" + "WHERE nID=" + note.getnID());
+			stmt.executeUpdate("DELETE FROM duedates" + "WHERE nID=" + note.getnID());
 		}
 		catch (SQLException e){
 			e.printStackTrace();
 		}
 	}
-	}
+	
+	public static void deleteAllNotebookDueDates(Notebook nb){
+		
+			Connection con = DBConnection.connection();
+			
+			try{
+				Statement stmt = con.createStatement();
+				ResultSet rs = stmt.executeQuery("SELECT nid, nbid, FROM notes" 
+						+ "WHERE nbid =" + nb.getNbID());
+				
+				// Fuer jeden Eintrag wird ein Notebook-Objekt erstellt	
+				while (rs.next()){
+					
+					Integer idInt = new Integer(rs.getInt("nid"));
+					Statement stmt2 = con.createStatement();
+					stmt2.executeUpdate("DELETE FROM duedates"
+							+ "WHERE nID=" + idInt.intValue()); 
+				}
+				
+			}
+			
+			catch (SQLException e){
+				e.printStackTrace();
+			}
+
+}
+	
+	public static void deleteAllUserDueDates(AppUser u){
+		Connection con = DBConnection.connection();
+	
+		try{
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT userid, nid, FROM permissions" 
+					+ "WHERE userid =" + u.getUserID() + "AND WHERE isowner = 1");
+			
+			// Fuer jeden Eintrag wird ein Notebook-Objekt erstellt	
+			while (rs.next()){
+				
+				Integer idInt = new Integer(rs.getInt("nid"));
+				Statement stmt2 = con.createStatement();
+				stmt2.executeUpdate("DELETE FROM duedates"
+						+ "WHERE nID=" + idInt.intValue()); 
+			}
+			
+		}
+		
+		catch (SQLException e){
+			e.printStackTrace();
+		}
+		
+	}	
+	
+
+}
 	
 	
 	

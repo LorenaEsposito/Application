@@ -251,8 +251,10 @@ private static NotebookMapper notebookMapper = null;
 	public void deleteNotebook(Notebook notebook){
 		Connection con = DBConnection.connection();
 		
+		DueDateMapper.deleteAllNotebookDueDates(notebook);
 		NoteMapper.deleteAllNotebookNotes(notebook);
 		PermissionMapper.deleteAllNotebookPermissions(notebook);
+
 		
 		
 		try{
@@ -265,18 +267,31 @@ private static NotebookMapper notebookMapper = null;
 	}
 	
 
-	public void deleteAllUserNotebooks(User u){
+	public static void deleteAllUserNotebooks(AppUser u){
+		
+	
 		Connection con = DBConnection.connection();
 		
 		try{
 			Statement stmt = con.createStatement();
-			stmt.executeUpdate("DELETE FROM Notebook" + "WHERE userID=" + u.getUserID());
+			ResultSet rs = stmt.executeQuery("SELECT userid, nbid, FROM permissions" 
+					+ "WHERE userid =" + u.getUserID() + "AND WHERE isowner = 1");
+			
+			// Fuer jeden Eintrag wird ein Notebook-Objekt erstellt	
+			while (rs.next()){
+				
+				Integer idInt = new Integer(rs.getInt("nid"));
+				Statement stmt2 = con.createStatement();
+				stmt2.executeUpdate("DELETE FROM notebooks"
+						+ "WHERE nbID=" + idInt.intValue()); 
+			}
 		}
-		catch (SQLException e){
-			e.printStackTrace();
+	
+			catch (SQLException e){
+				e.printStackTrace();
+			}
 		}
-	}
+}
 	
 	
 
-}

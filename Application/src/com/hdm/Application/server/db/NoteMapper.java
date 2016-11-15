@@ -11,7 +11,7 @@ import java.util.Vector;
 import com.hdm.Application.shared.bo.DueDate;
 import com.hdm.Application.shared.bo.Note;
 import com.hdm.Application.shared.bo.Notebook;
-
+import com.hdm.Application.shared.bo.AppUser;
 import com.hdm.Application.server.db.NotebookMapper;
 
 /**Notebook Mapper Klasse bildet Note-Objekte auf eine relationale Datenbank ab.
@@ -76,7 +76,7 @@ public class NoteMapper {
 		    	//Leeres SQL Statement anlegen
 		      Statement stmt = con.createStatement();
 		    //Statement ausfuellen und als Query an DB schicken
-		      ResultSet rs = stmt.executeQuery("SELECT MAX(nID) AS maxnID" + "FROM Note");
+		      ResultSet rs = stmt.executeQuery("SELECT MAX(nID) AS maxnID" + "FROM notes");
 
 		      	/**
 				 * Es kann max. ein Ergebnis zurueck gegeben werden, da die id der Primaerschluessel ist.
@@ -88,7 +88,7 @@ public class NoteMapper {
 		    	  note.setId(rs.getInt("maxnID") + 1);
 		    	  stmt = con.createStatement();
 		    	  
-		    	  stmt.executeUpdate("INSERT INTO Note (nID, nbID, nTitle, nSubtitle, nContent, source, nCreDate, nModDate, userID) "
+		    	  stmt.executeUpdate("INSERT INTO notes (nID, nbID, nTitle, nSubtitle, nContent, source, nCreDate, nModDate, userID) "
 		    	            + "VALUES (" + note.getnID() + "," + note.getNbID() + ","
 		    	            + note.getnTitle() + "," + note.getnSubtitle() + "," + note.getnContent() + "," + note.getSource() + "," 
 		    	            + note.getnCreDate() + "," + note.getnModDate() +  "," + note.getUserID() + "')");
@@ -121,7 +121,7 @@ public class NoteMapper {
 		 
 		 try{
 			 Statement stmt = con.createStatement();
-			 stmt.executeUpdate("UPDATE Note" + "SET nTitle=\"" + note.getnTitle() + "\"," + "nSubtitle=\"" + note.getnSubtitle() + "\"" 
+			 stmt.executeUpdate("UPDATE notes " + "SET nTitle=\"" + note.getnTitle() + "\"," + "nSubtitle=\"" + note.getnSubtitle() + "\"" 
 			 	+"nContent=\"" + note.getnContent() +"\"," + "source=\"" + note.getSource() + "\"," + "nCreDate=\"" + note.getnCreDate() 
 			 	+ "nModDate=\"" + note.getnModDate() + "userID=\"" + note.getUserID() + "WHERE nID=" + note.getnID());
 			 //modification Date hinzufuegen --> wie mach ich dass es auf jednefall automatisch hinzugefuegt wird?
@@ -146,31 +146,68 @@ public class NoteMapper {
 	 public void deleteNote(Note note){
 		 Connection con = DBConnection.connection();
 		 
-		 DueDateMapper.deleteNoteDueDates(note);
+		 DueDateMapper.deleteAllNoteDueDates(note);
 		 PermissionMapper.deleteAllNotePermissions(note);
 		 
 		 try{
 			 Statement stmt = con.createStatement();
-			 stmt.executeUpdate("DELETE FROM Note" + "WHERE nID=" +note.getnID());	 
+			 stmt.executeUpdate("DELETE FROM notes" + "WHERE nID=" +note.getnID());	 
 		 }
 		 catch (SQLException e){
 			 e.printStackTrace();
 		 }
 	 }
 	 
-	 public static void deleteAllNotebookNotes(Notebook notebook){
+	 public static void deleteAllNotebookNotes(Notebook nb){
 		 
+			Connection con = DBConnection.connection();
+			
+			try{
+				Statement stmt = con.createStatement();
+				ResultSet rs = stmt.executeQuery("SELECT nbid, nid, FROM permissions" 
+						+ "WHERE nbid =" + nb.getNbID());
+				
+				while (rs.next()){
+					
+					Integer idInt = new Integer(rs.getInt("nid"));
+					Statement stmt2 = con.createStatement();
+					stmt2.executeUpdate("DELETE FROM notes"
+							+ "WHERE nID=" + idInt.intValue()); 
+				}
+				
+			}
+			
+			catch (SQLException e){
+				e.printStackTrace();
+			}
+			
+		}	
+		
 		 
+
+	 
+	 public static void deleteAllUserNotes(AppUser u){
 		 
-		 Connection con = DBConnection.connection();
-		 
-		 try{
-			 Statement stmt = con.createStatement();
-			 stmt.executeUpdate("DELETE FROM Note" + "WHERE nbID=" +notebook.getNbID());	 
-		 }
-		 catch (SQLException e){
-			 e.printStackTrace();
-		 }
+			Connection con = DBConnection.connection();
+			
+			try{
+				Statement stmt = con.createStatement();
+				ResultSet rs = stmt.executeQuery("SELECT userid, nid, FROM permissions" 
+						+ "WHERE userid =" + u.getUserID() + "AND WHERE isowner = 1");
+				
+				while (rs.next()){
+					
+					Integer idInt = new Integer(rs.getInt("nid"));
+					Statement stmt2 = con.createStatement();
+					stmt2.executeUpdate("DELETE FROM notes"
+							+ "WHERE nID=" + idInt.intValue()); 
+				}
+				
+			}
+			
+			catch (SQLException e){
+				e.printStackTrace();
+			}
 		 
 	 }
 	 
@@ -227,7 +264,7 @@ public class NoteMapper {
 		 try {
 			 Statement stmt = con.createStatement();
 			 ResultSet rs = stmt.executeQuery("SELECT nID, nbID, userID, nTitle, nSubtitle, nContent, source, nCreDate, nModDate"
-					 + "FROM Note" + "ORDER BY nbID");
+					 + "FROM notes" + "ORDER BY nbID");
 			
 			 // Fuer jeden Eintrag wird ein Notebook-Objekt erstellt	
 			 while(rs.next()){
@@ -269,7 +306,7 @@ public class NoteMapper {
 		 try{
 			 Statement stmt = con.createStatement();
 			 ResultSet rs = stmt.executeQuery("SELECT nID, nbID, userID, nTitle, nSubtitle, nContent, source, nCreDate, nModDate"
-					 + "FROM Note" + "WHERE dDate LIKE '" + dDate + "'ORDER BY nTitle");
+					 + "FROM notes" + "WHERE dDate LIKE '" + dDate + "'ORDER BY nTitle");
 			 
 			//Fuer jeden Eintrag im Suchergebnis wird ein Note-Objekt erstellt.
 			 while(rs.next()) {
@@ -314,7 +351,7 @@ public class NoteMapper {
 		 try{
 			 Statement stmt = con.createStatement();
 			 ResultSet rs = stmt.executeQuery("SELECT nID, nbID, userID, nTitle, nSubtitle, nContent, source, nCreDate, nModDate"
-					 + "FROM Note" + "WHERE nTitle LIKE '" + nTitle + "'ORDER BY nCreDate");
+					 + "FROM notes" + "WHERE nTitle LIKE '" + nTitle + "'ORDER BY nCreDate");
 			 
 			//Fuer jeden Eintrag im Suchergebnis wird ein Note-Objekt erstellt.
 			 while(rs.next()) {
