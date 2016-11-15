@@ -23,7 +23,7 @@ public interface NoteAdministrationAsync {
 	public void init(AsyncCallback<Void> callback) throws IllegalArgumentException;
 	
 	public void getCurrentUser(AsyncCallback<AppUser> callback) throws IllegalArgumentException;
-	
+
 	public void createUser(AppUser u, AsyncCallback<Void> callback) throws IllegalArgumentException;
 
 	public void editUser(AppUser u, AsyncCallback<Void> callback) throws IllegalArgumentException;

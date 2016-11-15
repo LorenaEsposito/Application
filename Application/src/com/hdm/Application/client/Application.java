@@ -103,7 +103,7 @@ public class Application implements EntryPoint {
      public void loadGUI() {
 	    /**
 	     * Zuweisung eines Styles fuer die jeweiligen Widgets
-	     */
+	     **/
 	    headerLabel.setStyleName("notework-headline");
 	    createNoteButton.setStyleName("notework-menubutton");
 	    noteButton.setStyleName("notework-menubutton");
@@ -132,8 +132,6 @@ public class Application implements EntryPoint {
 	          RootPanel.get("Details").add(update);
 	    }
 	    });	    
-
-	    
 
 	    noteButton.addClickHandler(new ClickHandler() {
 	  	public void onClick(ClickEvent event) {

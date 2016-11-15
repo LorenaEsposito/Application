@@ -9,6 +9,7 @@ import com.hdm.Application.shared.*;
 
 import com.hdm.Application.shared.bo.*;
 import com.google.appengine.api.users.User;
+
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
@@ -341,7 +342,7 @@ public void deleteDuedate(DueDate dd) throws IllegalArgumentException {
 public ArrayList<AppUser> searchForUser(String userName) throws IllegalArgumentException{
 	Vector<AppUser> vector = new Vector<AppUser>();
 	vector = this.uMapper.findByName(userName);
-	
+
 	ArrayList<AppUser> users = new ArrayList<AppUser>(vector);
 	return users;
 }

@@ -80,7 +80,9 @@ public class UserMapper {
 			 * Da id Primaerschl�ssel ist, kann max. nur ein Tupel zur�ckgegeben
 			 * werden. Pr�fe, ob ein Ergebnis vorliegt.
 			 */
+
 			if (rs.next()) {
+				
 				AppUser u = new AppUser();
 				u.setUserID(rs.getInt("uid"));
 				u.setUserName(rs.getString("username"));
