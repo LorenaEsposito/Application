@@ -96,7 +96,7 @@ public class UserMapper {
 		return null;
 	}
 
-	public AppUser findByGoogleID(int gid) {
+	public AppUser findByGoogleID(String gid) {
 		/**
 		 * DB-Verbindung holen & Erzeugen eines neuen SQL-Statements.
 		 */
@@ -167,7 +167,7 @@ public class UserMapper {
 			 * F�r jeden Eintrag im Suchergebnis wird nun ein Profile-Objekt
 			 * erstellt.
 			 */
-			
+
 			while (rs.next()) {
 				AppUser u = new AppUser();
 				u.setUserID(rs.getInt("uid"));
@@ -219,7 +219,7 @@ public class UserMapper {
 			/**
 			 * F�r jeden Eintrag im Suchergebnis wird nun ein Profile-Objekt
 			 * erstellt.
-			 */
+			 **/
 			while (rs.next()) {
 				AppUser u = new AppUser();
 				u.setUserID(rs.getInt("uid"));

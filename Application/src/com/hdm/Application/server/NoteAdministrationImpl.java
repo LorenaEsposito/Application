@@ -336,13 +336,17 @@ public void deleteDuedate(DueDate dd) throws IllegalArgumentException {
  * 
  * @author Lorena Esposito
  * @param userName
+<<<<<<< HEAD
  * @return users
  * @throws IllegalArgumentException
+=======
+ * @return users
+ * @throws IllegalArgumentException
+>>>>>>> refs/remotes/origin/master
  */
 public ArrayList<AppUser> searchForUser(String userName) throws IllegalArgumentException{
 	Vector<AppUser> vector = new Vector<AppUser>();
 	vector = this.uMapper.findByName(userName);
-
 	ArrayList<AppUser> users = new ArrayList<AppUser>(vector);
 	return users;
 }

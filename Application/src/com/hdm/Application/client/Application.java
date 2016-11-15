@@ -73,7 +73,7 @@ public class Application implements EntryPoint {
 // private final GreetingServiceAsync greetingService = GWT.create(GreetingService.class);
 
 /**
- * Das ist die EntryPointKlasse 
+ * Das ist die EntryPointMethode 
  */
  public void onModuleLoad() {
 	  
