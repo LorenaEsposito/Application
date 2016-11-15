@@ -24,6 +24,11 @@ public class AppUser implements Serializable {
 	private int userID;
 	
 	/**
+	 * Die GoogleID des Users - ebenfalls eindeutiger Primaerschluessel
+	 */
+	private String googleID;
+	
+	/**
 	 * Der Name des Users
 	 */
 	private String userName;
@@ -57,6 +62,22 @@ public class AppUser implements Serializable {
 	 */
 	public void setUserID(int userID){
 		this.userID = userID;
+	}
+	
+	/**
+	 * Rueckgabe der GoogleID
+	 * @return googleID
+	 */
+	public String getGoogleID(){
+		return this.googleID;
+	}
+	
+	/**
+	 * Setzen der GoogleID
+	 * @param googleID
+	 */
+	public void setGoogleID(String googleID){
+		this.googleID = googleID;
 	}
 	
 	/**

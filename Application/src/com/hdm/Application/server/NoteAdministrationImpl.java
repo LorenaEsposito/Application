@@ -8,6 +8,7 @@ import com.hdm.Application.server.db.*;
 import com.hdm.Application.shared.*;
 
 import com.hdm.Application.shared.bo.*;
+import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
@@ -24,7 +25,8 @@ public class NoteAdministrationImpl extends RemoteServiceServlet
 	 * Eindeutige SerialVersion ID. Wird zum Serialisieren der Klasse benoetigt.
 	 */
 	private static final long serialVersionUID = 1L;
-     
+    
+	private AppUser currentUserProfile = null;
 
   /**
    * Referenz auf das zugehörige Note-Objekt.
@@ -76,6 +78,39 @@ public void init() throws IllegalArgumentException {
     
   }
 
+/*
+ * Auslesen des aktuellen Benutzernamen aus der Google Accounts API, um
+ * das Profil des aktuellen Benutzers aus der Datenbank zu lesen.
+ */
+public AppUser getCurrentUser() throws IllegalArgumentException {
+	AppUser currentUser = new AppUser();
+	UserService userService = UserServiceFactory.getUserService();
+	User user = userService.getCurrentUser();
+	int atIndex = user.getEmail().indexOf("@");
+	String userName = user.getEmail().substring(0, atIndex);
+	currentUser = this.getUserByGoogleID(userName);
+	return currentUser;
+}
+
+public AppUser getUserByGoogleID(String name){
+	if (this.uMapper.findByGoogleID(name) == null){
+		AppUser user = new AppUser();
+		user.setGoogleID(name);
+		this.createUser(user);
+		
+		AppUser cUser = new AppUser();
+		cUser = this.uMapper.findByGoogleID(name);
+		
+		return cUser;
+	}
+	else{
+		AppUser cUser = new AppUser();
+		cUser = this.uMapper.findByGoogleID(name);
+		
+		return cUser;
+	}
+}
+
 /**
  * Erstellt einen neuen User in der Datenbank. Dazu ruft sie mit dem
  * uebergebenen User den UserMapper auf, der dieses dann ueber eine
@@ -122,14 +157,6 @@ public void deleteUser(AppUser u) throws IllegalArgumentException {
 //    this.pMapper.delete(u);
   }
 
-//public User getCurrentUser() throws IllegalArgumentException {
-//	
-//	UserService userService = UserServiceFactory.getUserService();
-//	User user = userService.getCurrentUser();
-//	int atIndex = user.getEmail().indexOf("@");
-//	String userName = user.getEmail().substring(0, atIndex);
-//	currentUser = this.Name(userName);
-//}
 
 /**
  * Erstellt ein neues Notebook in der Datenbank. Dazu ruft sie mit dem
@@ -375,6 +402,15 @@ public ArrayList<Notebook> searchForNotebook(String title) throws IllegalArgumen
   	ArrayList<Note> notes = new ArrayList<Note>(vector);
 
   	return notes;
+    }
+    
+    public ArrayList<Notebook> getNotebooksOfUser(AppUser u) throws IllegalArgumentException{
+    	Vector<Notebook> vector = new Vector<Notebook>();
+//    	vector = this.nbMapper.findByUser(u);
+    	
+    	ArrayList<Notebook> notebooks = new ArrayList<Notebook>(vector);
+    	
+    	return notebooks;
     }
 
 }
