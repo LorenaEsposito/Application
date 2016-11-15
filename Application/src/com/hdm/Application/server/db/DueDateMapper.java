@@ -4,6 +4,7 @@ import java.sql.*;
 import java.util.Vector;
 
 import com.hdm.Application.shared.bo.DueDate;
+import com.hdm.Application.shared.bo.Note;
 
 /**DueDate Mapper Klasse bildet DueDate-Objekte auf eine relationale Datenbank ab.
  * Diese Klasse stellt Methoden zur Verfuegung, die das erstellen, editieren, auslesen/suchen und loeschen 
@@ -52,6 +53,9 @@ public class DueDateMapper {
 	 * @return Vektor mit DueDate-Objekten, die das gesuchte DueDate (dDate) enthalten.
 	 * Bei Exceptions wird ein teilweise gefuellter oder leerer Vektor zurueckgegeben
 	 */
+
+	
+	
 	public Vector<DueDate> findByDate(Date dDate){
 		//DB-Verbindung holen
 		Connection con = DBConnection.connection();
@@ -248,5 +252,23 @@ public class DueDateMapper {
 		catch (SQLException e){
 			e.printStackTrace();
 		}
-	}	
-}
+	}
+	
+	public static void deleteNoteDueDates(Note note){
+			Connection con = DBConnection.connection();
+		
+		try{
+			Statement stmt = con.createStatement();
+			stmt.executeUpdate("DELETE FROM DueDate" + "WHERE nID=" + note.getnID());
+		}
+		catch (SQLException e){
+			e.printStackTrace();
+		}
+	}
+	}
+	
+	
+	
+	
+
+	

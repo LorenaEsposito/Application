@@ -1,7 +1,15 @@
 package com.hdm.Application.shared;
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> refs/remotes/origin/Sina
 import java.util.ArrayList;
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> refs/remotes/origin/Sina
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 import com.hdm.Application.shared.bo.*;
@@ -50,6 +58,10 @@ public interface NoteAdministrationAsync {
 
 	public void editDuedate(DueDate dd, AsyncCallback<Void> callback) throws IllegalArgumentException;
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> refs/remotes/origin/Sina
 	public void deleteDuedate(DueDate dd, AsyncCallback<Void> callback) throws IllegalArgumentException;
 
 	public void searchForUser(String userName, AsyncCallback<ArrayList<AppUser>> callback) throws IllegalArgumentException;

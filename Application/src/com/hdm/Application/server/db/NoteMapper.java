@@ -5,10 +5,14 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Date;
 import java.util.Vector;
 
+import com.hdm.Application.shared.bo.DueDate;
 import com.hdm.Application.shared.bo.Note;
+import com.hdm.Application.shared.bo.Notebook;
 
+import com.hdm.Application.server.db.NotebookMapper;
 
 /**Notebook Mapper Klasse bildet Note-Objekte auf eine relationale Datenbank ab.
  * Diese Klasse stellt Methoden zur Verfuegung, die das erstellen, editieren, auslesen/suchen und loeschen 
@@ -43,7 +47,9 @@ public class NoteMapper {
 		 * @return NoteMapper-Objekt
 		 */
 	 
+
 	 public static NoteMapper noteMapper() {
+
 		    if (noteMapper == null) {
 		      noteMapper = new NoteMapper();
 		    }
@@ -140,6 +146,9 @@ public class NoteMapper {
 	 public void deleteNote(Note note){
 		 Connection con = DBConnection.connection();
 		 
+		 DueDateMapper.deleteNoteDueDates(note);
+		 PermissionMapper.deleteAllNotePermissions(note);
+		 
 		 try{
 			 Statement stmt = con.createStatement();
 			 stmt.executeUpdate("DELETE FROM Note" + "WHERE nID=" +note.getnID());	 
@@ -149,6 +158,21 @@ public class NoteMapper {
 		 }
 	 }
 	 
+	 public static void deleteAllNotebookNotes(Notebook notebook){
+		 
+		 
+		 
+		 Connection con = DBConnection.connection();
+		 
+		 try{
+			 Statement stmt = con.createStatement();
+			 stmt.executeUpdate("DELETE FROM Note" + "WHERE nbID=" +notebook.getNbID());	 
+		 }
+		 catch (SQLException e){
+			 e.printStackTrace();
+		 }
+		 
+	 }
 	 
 	 	/**
 		 * Eine spezielle Notiz (Note) wird ueber die NoteID (nbID) gesucht. Es wird genau ein Objekt zurueck gegeben
@@ -231,6 +255,48 @@ public class NoteMapper {
 		 return result;
 	 }
 
+
+	 /**
+		 * Auslesen aller Notes
+		 * @return Vektor mit Note Objekten, der alle Notes enthaelt. 
+		 * Trifft eine Exception ein wird ein teilweise gefuellter oder leerer Vektor ausgegeben
+		 */
+	 
+	 public Vector<Note> findByDueDate(Date dDate){
+		 Connection con = DBConnection.connection();
+		 Vector<Note> result = new Vector<Note>();
+		 
+		 try{
+			 Statement stmt = con.createStatement();
+			 ResultSet rs = stmt.executeQuery("SELECT nID, nbID, userID, nTitle, nSubtitle, nContent, source, nCreDate, nModDate"
+					 + "FROM Note" + "WHERE dDate LIKE '" + dDate + "'ORDER BY nTitle");
+			 
+			//Fuer jeden Eintrag im Suchergebnis wird ein Note-Objekt erstellt.
+			 while(rs.next()) {
+				 Note note = new Note();
+				 note.setnID(rs.getInt("nID"));
+				 note.setNbID(rs.getInt("nbID"));
+				 note.setUserID(rs.getInt("userID"));
+				 note.setnTitle(rs.getString("nTitle"));
+				 note.setnSubtitle(rs.getString("nSubtitle"));
+				 note.setnContent(rs.getString("nContent"));
+				 note.setSource(rs.getString("source"));
+				 note.setnCreDate(rs.getDate("nCreDate"));
+				 note.setnModDate(rs.getDate("nModDate"));
+				 
+				//Neues Objekt wird dem Ergebnisvektor hinzugefuegt
+				 result.addElement(note);
+				 
+			 }
+		 }
+		 
+		 catch (SQLException e){
+			 e.printStackTrace();
+		 }
+		 
+		//Vektor wird zurueckgegeben
+		 return result; 
+	 }
 	 
 	 /**
 		 * Alle Note-Objekte mit gesuchtem Titel werden ausgelesen

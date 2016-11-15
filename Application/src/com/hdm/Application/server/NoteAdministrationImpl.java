@@ -7,9 +7,14 @@ import java.util.Vector;
 import com.hdm.Application.server.db.*;
 import com.hdm.Application.shared.*;
 
+<<<<<<< HEAD
 import com.hdm.Application.shared.bo.*;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
+=======
+import com.hdm.Application.shared.bo.*;
+
+>>>>>>> refs/remotes/origin/Sina
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 import com.hdm.Application.shared.NoteAdministration;
@@ -316,8 +321,89 @@ public ArrayList<AppUser> searchForUser(String userName) throws IllegalArgumentE
 	ArrayList<AppUser> users = new ArrayList<AppUser>(vector);
 
 	return users;
+
 }
 
+<<<<<<< HEAD
+=======
+
+
+
+
+/**
+ * Es kann nach einem bestimmten User anhand seines Namens gesucht werden.
+ * Dazu wird der UserMapper aufgerufen, der eine Methode beinhaltet mit der in
+ * der Datenbank nach dem gesuchten Namen gesucht wird. In der Methode wird
+ * eine ArrayList erstellt, die mit den Suchergebnissen befuellt wird.
+ * 
+ * @author Lorena Esposito
+ * @param userName
+ * @return users
+ * @throws IllegalArgumentException
+ */
+//public ArrayList<User> searchForUser(String userName) throws IllegalArgumentException{
+//	Vector<User> vector = new Vector<User>();
+//	vector = this.uMapper.findByName(userName);
+//	
+//	ArrayList<User> users = new ArrayList<User>(vector);
+//	
+//	if (this.uMapper.findByName(userName) != null){
+//		User user = this.uMapper.findByName(userName);
+//		users.add(user);
+//	}
+//	return users;
+//}
+
+/**
+ * Es kann nach einem bestimmten Notebook anhand seines Titels gesucht werden.
+ * Dazu wird der NotebookMapper aufgerufen, der eine Methode beinhaltet mit der
+ * in der Datenbank nach einem bestimmten Titel gesucht wird. In der Methode wird
+ * eine ArrayList erstellt, die mit den Suchergebnissen befuellt wird.
+ * 
+ * @author Lorena Esposito
+ * @param title
+ * @return notebooks
+ * @throws IllegalArgumentException
+ */
+//public ArrayList<Notebook> searchForNotebook(String title) throws IllegalArgumentException{
+//	Vector<Notebook> vector = new Vector<Notebook>();
+//	vector = this.nbMapper.findByTitle(title);
+//	
+//	ArrayList<Notebook> notebooks = new ArrayList<Notebook>(vector);
+//	
+//	if (this.nbMapper.findByTitle(title) != null){
+//		Notebook notebook = this.findByTitle(title);
+//		notebooks.add(notebook);
+//	}
+//	return notebooks;
+//}
+
+/**
+ *Es kann nach einer bestimmten Note anhand ihres Titels gesucht werden.
+ * Dazu wird der NoteMapper aufgerufen, der eine Methode beinhaltet mit der
+ * in der Datenbank nach einem bestimmten Titel gesucht wird. In der Methode wird
+ * eine ArrayList erstellt, die mit den Suchergebnissen befuellt wird. 
+ * 
+ * @author Lorena Esposito
+ * @param title
+ * @return notes
+ * @throws IllegalArgumentException
+ */
+//  public ArrayList<Note> searchForNote(String title) throws IllegalArgumentException{
+//	Vector<Note> vector = new Vector<Note>();
+//	vector = this.nMapper.findByTitle(title);
+//	
+//	ArrayList<Note> notes = new ArrayList<Note>(vector);
+//	
+//	if (this.nMapper.findByTitle(title) != null){
+//		Note note = this.findByTitle(title);
+//		notes.add(note);
+//	}
+//	return notes;
+//  }
+
+
+>>>>>>> refs/remotes/origin/Sina
 /**
  * Es kann nach einem bestimmten Notebook anhand seines Titels gesucht werden.
  * Dazu wird der NotebookMapper aufgerufen, der eine Methode beinhaltet mit der
@@ -336,7 +422,13 @@ public ArrayList<Notebook> searchForNotebook(String title) throws IllegalArgumen
 	ArrayList<Notebook> notebooks = new ArrayList<Notebook>(vector);
 	
 	return notebooks;
+<<<<<<< HEAD
 }
+=======
+}
+
+
+>>>>>>> refs/remotes/origin/Sina
 /**
  *Es kann nach einer bestimmten Note anhand ihres Titels gesucht werden.
  * Dazu wird der NoteMapper aufgerufen, der eine Methode beinhaltet mit der
@@ -356,6 +448,7 @@ public ArrayList<Notebook> searchForNotebook(String title) throws IllegalArgumen
 
 	return notes;
   }
+<<<<<<< HEAD
 
   /**
    *Es kann nach einer bestimmten Note anhand ihres Faelligkeitsdatums gesucht werden.
@@ -377,4 +470,7 @@ public ArrayList<Notebook> searchForNotebook(String title) throws IllegalArgumen
   	return notes;
     }
 
+=======
+
+>>>>>>> refs/remotes/origin/Sina
 }
