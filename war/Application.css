@@ -41,6 +41,18 @@ h1 {
 	width: 15em;
 }
 
+
+.notework-addbutton {
+	background: url(http://img5.fotos-hochladen.net/uploads/untitled56il1h9o4g.png);
+	background-size: 100%;
+	font-size: 100%;
+	font-weight: bold;
+	width: 18em;
+	height:4em;
+	margin-bottom: 1em;
+	border: 0px;
+}
+
 .notework-menubutton {
 	font-size: 100%;
 	font-weight: bold;
@@ -56,7 +68,6 @@ h1 {
 div#TopLevelFrame {
 	width: 800px;
 	min-width: 300px;
-	border: 1px solid silver;
 	margin: 0 auto;      /* standardkonforme horizontale Zentrierung */
  }
 
@@ -65,22 +76,20 @@ div#Details {
 	min-height: 400px;
 	max-height: 500px;
 	padding: 1em 1em;
-	border-top: 1px dashed silver;
-	border-left: 1px dashed silver;
-	overflow:scroll;
+	border-left: 1px dotted silver;
 }
 
 div#Navigator {
-	background: #f4f4f4;
 	float: left;
 	width: 18em;
 	min-height: 400px;
 	padding: 1em 1em;
-	border-top: 1px dashed silver;
 }
 
 div#Header {
-	height: 40px;
+	background: url(http://img5.fotos-hochladen.net/uploads/captureuqw9avorl8.png);
+	background-size: 100%;
+	height: 65px;
 	margin: 0 auto;      /* standardkonforme horizontale Zentrierung */
 	/* border: 1px dashed silver; */
 }
