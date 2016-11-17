@@ -4,6 +4,7 @@ import com.hdm.Application.client.gui.CreateNoteView;
 import com.hdm.Application.client.gui.LoginService;
 import com.hdm.Application.client.gui.LoginServiceAsync;
 import com.hdm.Application.client.gui.NoteOverviewView;
+import com.hdm.Application.client.gui.SearchView;
 import com.hdm.Application.client.gui.Update;
 import com.hdm.Application.shared.LoginInfo;
 import com.google.gwt.core.client.EntryPoint;
@@ -108,9 +109,9 @@ public class Application implements EntryPoint {
 	     * Erstellung des ersten Navibar-Buttons zum hinzufügen neuer Notizen
 	     */
 	    
-	    final Button createNoteButton = new Button("+");
+	    final Button createNoteButton = new Button("");
 	    
-	    createNoteButton.setStyleName("notework-menubutton");
+	    createNoteButton.setStyleName("notework-addbutton");
 	    
 	    navPanel.add(createNoteButton);
 	    
@@ -143,6 +144,25 @@ public class Application implements EntryPoint {
 	          RootPanel.get("Details").add(update);
 	    }
 	    });
+	    
+ final Button searchButton = new Button("Search");
+	    
+	    searchButton.setStyleName("notework-menubutton");
+	    
+	    navPanel.add(searchButton);
+	    
+	    searchButton.addClickHandler(new ClickHandler() {
+	  	public void onClick(ClickEvent event) {
+	          /*
+	           * Showcase instantiieren.
+	           */
+	          Update update = new SearchView();
+	          
+	          RootPanel.get("Details").clear();
+	          RootPanel.get("Details").add(update);
+	    }
+	    });
+	    
 	    
 	}
      }
