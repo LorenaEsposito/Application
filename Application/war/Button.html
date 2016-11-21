@@ -2,9 +2,28 @@
 <html>
 <body>
 
-<p id="demo" style="display:none">Hier wird weitegeleitet</p>
+<p>Klicke den Button um zu Notework weitergeleitet zu werden</p>
 
-<button type="button" onclick="document.getElementById('demo').style.display='block'">Notework</button>
+<button onclick="myFunction()">Versuche es!</button>
+
+<script>
+function myFunction() {
+ var currentPageUrlIs = "";
+ if (typeof this.href != "undefined") {
+        currentPageUrlIs = this.href.toString().toLowerCase(); 
+ }else{ 
+        currentPageUrlIs = document.location.toString().toLowerCase();
+ }
+ alert("Sie werden zur http://127.0.0.1:8888/Application.html weitergeleitet" );
+
+ var url = 'http://127.0.0.1:8888/Application.html?url='+currentPageUrlIs;
+ window.location.href = url;
+ 
+ 
+
+
+}
+</script>
 
 </body>
 </html>
