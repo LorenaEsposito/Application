@@ -17,6 +17,7 @@ import com.hdm.Application.client.ClientsideSettings;
 
 import java.util.ArrayList;
 
+import com.hdm.Application.client.gui.SearchView;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -90,10 +91,10 @@ public class Application implements EntryPoint {
 	  final Label userLabel = new Label();
 	  private Anchor signInLink = new Anchor("Login");
 	  final ListBox listbox = new ListBox();
-	  final Button createNoteButton = new Button("+");
+	  final Button createNoteButton = new Button("");
 	  final Button noteButton = new Button("My Recipes");
 	  final Button signOutButton = new Button("Sign out");
-
+	  final Button searchButton = new Button("Search");
  /**
   * Create a remote service proxy to talk to the server-side Greeting service.
   */
@@ -153,9 +154,10 @@ public class Application implements EntryPoint {
 	    /**
 	     * Zuweisung eines Styles fuer die jeweiligen Widgets
 	     **/
-	    createNoteButton.setStyleName("notework-menubutton");
+	    createNoteButton.setStyleName("notework-addbutton");
 	    noteButton.setStyleName("notework-menubutton");
 	    signOutButton.setStyleName("notework-menubutton");
+	    searchButton.setStyleName("notework-menubutton");
 	    listbox.setStyleName("");
 	    
 	    
@@ -167,6 +169,7 @@ public class Application implements EntryPoint {
 	    navPanel.add(listbox);
 	    navPanel.add(createNoteButton);
 	    navPanel.add(noteButton);
+	    navPanel.add(searchButton);
 	    RootPanel.get("Header").add(headPanel);
 	    RootPanel.get("Navigator").add(navPanel);
 	    
@@ -209,6 +212,18 @@ public class Application implements EntryPoint {
 
 			}
 		});
+	    
+	    searchButton.addClickHandler(new ClickHandler() {
+	  	public void onClick(ClickEvent event) {
+	          /*
+	           * Showcase instantiieren.
+	           */
+	          Update update = new SearchView();
+	          
+	          RootPanel.get("Details").clear();
+	          RootPanel.get("Details").add(update);
+	    }
+	    });
 	    
 	}
  

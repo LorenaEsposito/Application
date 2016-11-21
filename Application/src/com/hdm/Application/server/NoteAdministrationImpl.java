@@ -419,15 +419,15 @@ public ArrayList<Notebook> searchForNotebook(String title) throws IllegalArgumen
     public ArrayList<Notebook> getNotebooksOfUser(AppUser u) throws IllegalArgumentException{
     	Vector<Notebook> vector = new Vector<Notebook>();
     	
-    	if(this.nbMapper.findByUser(u) != null){
-    	vector = this.nbMapper.findByUser(u);
-    	}
-    	
     	if(this.nbMapper.findByUser(u) == null){
     		Notebook notebook = new Notebook();
     		notebook.setNbTitle("Dein erstes eigenes Notizbuch");
     		this.createNotebook(notebook);
     		vector = this.nbMapper.findByUser(u);
+    	}
+    	
+    	if(this.nbMapper.findByUser(u) != null){
+    	vector = this.nbMapper.findByUser(u);
     	}
 
     	ArrayList<Notebook> notebooks = new ArrayList<Notebook>(vector);
