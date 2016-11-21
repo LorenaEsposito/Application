@@ -24,6 +24,8 @@ public interface NoteAdministrationAsync {
 	
 	public void getCurrentUser(AsyncCallback<AppUser> callback) throws IllegalArgumentException;
 
+	public void getUserByGoogleID(String name, AsyncCallback<AppUser> callback) throws IllegalArgumentException;
+	
 	public void createUser(AppUser u, AsyncCallback<Void> callback) throws IllegalArgumentException;
 
 	public void editUser(AppUser u, AsyncCallback<Void> callback) throws IllegalArgumentException;

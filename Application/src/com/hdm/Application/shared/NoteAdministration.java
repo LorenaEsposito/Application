@@ -15,6 +15,8 @@ public void init() throws IllegalArgumentException;
 
 public AppUser getCurrentUser() throws IllegalArgumentException;
 
+public AppUser getUserByGoogleID(String name) throws IllegalArgumentException;
+
 public void createUser(AppUser u) throws IllegalArgumentException;
 
 public void editUser(AppUser u) throws IllegalArgumentException;

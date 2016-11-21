@@ -87,7 +87,7 @@ public class Application implements EntryPoint {
 	   */
 	  private Label loginLabel = new Label("Bitte melde dich mit deinem Google Account an, um Notework nutzen zu k�nnen. Klicke auf Login und los geht's!");
 	  final Label headerLabel = new Label("Notework");
-
+	  final Label userLabel = new Label();
 	  private Anchor signInLink = new Anchor("Login");
 	  final ListBox listbox = new ListBox();
 	  final Button createNoteButton = new Button("+");
@@ -104,6 +104,11 @@ public class Application implements EntryPoint {
  */
  public void onModuleLoad() {
 	  
+	 /**
+	  * Setzen des headerLabel 
+	  */
+	  headerLabel.setStyleName("notework-headline");
+	  headPanel.add(headerLabel);
     
       // Check login status using login service.
      LoginServiceAsync loginService = GWT.create(LoginService.class);
@@ -129,18 +134,25 @@ public class Application implements EntryPoint {
 
      public void loadGUI() {
     	 
- 	    /**
- 	     * Befuellen der ListBox mit den Notebooks des aktuellen Users
- 	     */
- 	    adminService.getCurrentUser(getCurrentUserCallback());
- 	    adminService.getNotebooksOfUser(currentUser, getNotebooksOfUserCallback());
+    	 /**
+ 		 * Auslesen des Profils vom aktuellen Benutzer aus der Datenbank.
+ 		 */
+ 		int atIndex = ClientsideSettings.getLoginInfo().getEmailAddress().indexOf("@");
+ 		adminService.getUserByGoogleID(ClientsideSettings.getLoginInfo().getEmailAddress().substring(0, atIndex),
+ 				getCurrentUserCallback());
+ 		adminService.getNotebooksOfUser(currentUser, getNotebooksOfUserCallback());
+    	 
+// 	    /**
+// 	     * Befuellen der ListBox mit den Notebooks des aktuellen Users
+// 	     */
+// 	    adminService.getCurrentUser(getCurrentUserCallback());
+// 	    adminService.getNotebooksOfUser(currentUser, getNotebooksOfUserCallback());
     	 
 	   	  //final Label userLabel = new Label(currentUser.getGoogleID());
  	    
 	    /**
 	     * Zuweisung eines Styles fuer die jeweiligen Widgets
 	     **/
-	    headerLabel.setStyleName("notework-headline");
 	    createNoteButton.setStyleName("notework-menubutton");
 	    noteButton.setStyleName("notework-menubutton");
 	    signOutButton.setStyleName("notework-menubutton");
@@ -150,8 +162,7 @@ public class Application implements EntryPoint {
 	    /**
 	     * Zuteilung der Widgets zum jeweiligen Panel
 	     */
-	    //headPanel.add(userLabel);
-	    headPanel.add(headerLabel);
+	    headPanel.add(userLabel);
 	    headPanel.add(signOutButton);
 	    navPanel.add(listbox);
 	    navPanel.add(createNoteButton);
@@ -232,7 +243,9 @@ public class Application implements EntryPoint {
 	 public void onSuccess(AppUser result){
 		 ClientsideSettings.getLogger()
 			.severe("Success GetCurrentUserCallback: " + result.getClass().getSimpleName());
-	currentUser = result;
+		 currentUser = result;
+		 
+		 userLabel.setText(currentUser.getGoogleID());
 	 }
 	 };
 	 return asyncCallback;
@@ -252,8 +265,11 @@ public class Application implements EntryPoint {
 				.severe("Success GetNotebooksOfUserCallback: " + result.getClass().getSimpleName());
 			 notebooks = result;
 			 
+			 ListBox listbox = new ListBox();
 			 for (int x = 0; x < notebooks.size(); x++ ){
 				 listbox.addItem(notebooks.get(x).getNbTitle());
+				 
+				 listbox.setVisibleItemCount(1);
 			 }
 		 }
 	 };

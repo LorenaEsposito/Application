@@ -96,19 +96,28 @@ public AppUser getCurrentUser() throws IllegalArgumentException {
 public AppUser getUserByGoogleID(String name){
 	ArrayList<AppUser> users = new ArrayList<AppUser>();
 	
-	if (this.uMapper.findByGoogleID(name) == null){
+	if (this.uMapper.findByGoogleID(name) != null){
+		AppUser user = new AppUser();
+		user = this.uMapper.findByGoogleID(name);
+		users.add(user);
+	}
+	else{
 		AppUser cUser = new AppUser();
 		cUser.setGoogleID(name);
 		this.createUser(cUser);
 		
+		Notebook notebook = new Notebook();
+		notebook.setNbTitle("Dein erstes eigenes Notizbuch");
+		this.createNotebook(notebook);
+		
+		Permission permission = new Permission();
+		permission.setNbID(notebook.getNbID());
+		permission.setUserID(cUser.getUserID());
+		this.createPermission(permission);
+		
 		AppUser user2 = new AppUser();
 		user2 = this.uMapper.findByGoogleID(name);
 		users.add(user2);
-	}
-	if (this.uMapper.findByGoogleID(name) != null){
-		AppUser cUser = new AppUser();
-		cUser = this.uMapper.findByGoogleID(name);
-		users.add(cUser);
 	}
 	return users.get(0);
 }
@@ -337,13 +346,8 @@ public void deleteDuedate(DueDate dd) throws IllegalArgumentException {
  * 
  * @author Lorena Esposito
  * @param userName
-<<<<<<< HEAD
  * @return users
  * @throws IllegalArgumentException
-=======
- * @return users
- * @throws IllegalArgumentException
->>>>>>> refs/remotes/origin/master
  */
 public ArrayList<AppUser> searchForUser(String userName) throws IllegalArgumentException{
 	Vector<AppUser> vector = new Vector<AppUser>();
@@ -414,10 +418,19 @@ public ArrayList<Notebook> searchForNotebook(String title) throws IllegalArgumen
     
     public ArrayList<Notebook> getNotebooksOfUser(AppUser u) throws IllegalArgumentException{
     	Vector<Notebook> vector = new Vector<Notebook>();
-//    	vector = this.nbMapper.findByUser(u);
     	
+    	if(this.nbMapper.findByUser(u) != null){
+    	vector = this.nbMapper.findByUser(u);
+    	}
+    	
+    	if(this.nbMapper.findByUser(u) == null){
+    		Notebook notebook = new Notebook();
+    		notebook.setNbTitle("Dein erstes eigenes Notizbuch");
+    		this.createNotebook(notebook);
+    		vector = this.nbMapper.findByUser(u);
+    	}
+
     	ArrayList<Notebook> notebooks = new ArrayList<Notebook>(vector);
-    	
     	return notebooks;
     }
 }
