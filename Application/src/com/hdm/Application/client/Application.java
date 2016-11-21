@@ -10,18 +10,27 @@ import com.hdm.Application.client.gui.LoginServiceAsync;
 import com.hdm.Application.client.gui.NoteOverviewView;
 import com.hdm.Application.client.gui.Update;
 import com.hdm.Application.shared.LoginInfo;
+import com.hdm.Application.shared.NoteAdministrationAsync;
+import com.hdm.Application.shared.bo.AppUser;
+import com.hdm.Application.shared.bo.Notebook;
 import com.hdm.Application.client.ClientsideSettings;
+
+import java.util.ArrayList;
+
+import com.hdm.Application.client.gui.SearchView;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Cookies;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
@@ -43,74 +52,69 @@ public class Application implements EntryPoint {
 	  private LoginInfo loginInfo = null;
 	  
 	  /**
+		 * Die AdministrationService ermoeglicht die asynchrone Kommunikation mit der
+		 * Applikationslogik.
+		 */
+		private NoteAdministrationAsync adminService = ClientsideSettings.getAdministration();
+
+		/**
+		 * Die Instanz des aktuellen Benutzers ermoeglicht den schnellen Zugriff auf
+		 * dessen Profileigenschaften.
+		 */
+		private AppUser currentUser = null;
+		
+		/**
+		 * Eine ArrayList, in der Notebook-Objekte gespeichert werden
+		 */
+		private ArrayList<Notebook> notebooks = null;
+	  
+	  /**
 	   * The message displayed to the user when the server cannot be reached or
 	   * returns an error.
 	   */
-	  private static final String SERVER_ERROR = "An error occurred while "
-			   + "attempting to contact the server. Please check your network " + "connection and try again.";
+//	  private static final String SERVER_ERROR = "An error occurred while "
+//			   + "attempting to contact the server. Please check your network " + "connection and try again.";
 	  
+	  /**
+	   * Erstellung aller Panels
+	   */
 	  private VerticalPanel loginPanel = new VerticalPanel();
-	  private Label loginLabel = new Label("Bitte melde dich mit deinem Google Account an, um Notework nutzen zu k�nnen. Klicke auf Login und los geht's!");
-	  private Anchor signInLink = new Anchor("Login");
-	  //public Anchor signOutLink = new Anchor("Logout");
 	  public final FlowPanel detailPanel = new FlowPanel();
-	  //final VerticalPanel navigationPanel = new VerticalPanel();
 	  private HorizontalPanel headPanel = new HorizontalPanel();
 	  private VerticalPanel navPanel = new VerticalPanel();
-	  final Button createNoteButton = new Button("+");
+	  
+	  /**
+	   * Erstellung aller Widgets
+	   */
+	  private Label loginLabel = new Label("Bitte melde dich mit deinem Google Account an, um Notework nutzen zu k�nnen. Klicke auf Login und los geht's!");
 	  final Label headerLabel = new Label("Notework");
-
-
+	  final Label userLabel = new Label();
+	  private Anchor signInLink = new Anchor("Login");
+	  final ListBox listbox = new ListBox();
+	  final Button createNoteButton = new Button("");
+	  final Button noteButton = new Button("My Recipes");
+	  final Button signOutButton = new Button("Sign out");
+	  final Button searchButton = new Button("Search");
  /**
   * Create a remote service proxy to talk to the server-side Greeting service.
   */
 // private final GreetingServiceAsync greetingService = GWT.create(GreetingService.class);
 
-
-	/**
-	 * This is the entry point method.
-	 */
-	public void onModuleLoad() {
-		VerticalPanel navPanel = new VerticalPanel();
-
-	    /*
-	     * Das VerticalPanel wird einem DIV-Element namens "Navigator" in der
-	     * zugehörigen HTML-Datei zugewiesen und erhält so seinen Darstellungsort.
-	     */
-	    RootPanel.get("Navigator").add(navPanel);
-	    
-	    /*
-	     * Erstellung des ersten Navibar-Buttons zum hinzufügen neuer Notizen
-	     */
-	    
-	    final Button createNoteButton = new Button("+");
-	    
-	    createNoteButton.setStyleName("notework-menubutton");
-	    
-	    navPanel.add(createNoteButton);
-	    
-	    createNoteButton.addClickHandler(new ClickHandler() {
-	  	public void onClick(ClickEvent event) {
-	          /*
-	           * Showcase instantiieren.
-	           */
-	          Update update = new CreateNoteView();
-	          
-	          RootPanel.get("Details").clear();
-	          RootPanel.get("Details").add(update);
-	    }
-	    });
-final Button notebookButton = new Button("+");
-
- //public void onModuleLoad() {
+/**
+ * Das ist die EntryPointMethode 
+ */
+ public void onModuleLoad() {
+	  
+	 /**
+	  * Setzen des headerLabel 
+	  */
+	  headerLabel.setStyleName("notework-headline");
+	  headPanel.add(headerLabel);
     
       // Check login status using login service.
      LoginServiceAsync loginService = GWT.create(LoginService.class);
      loginService.login("http://127.0.0.1:8888/Application.html", new AsyncCallback<LoginInfo>() {
      public void onFailure(Throwable error) {
-//      DialogBox d = new DialogBox();
-//      Window.alert("Fehler: Harter Fehler");
-//      d.show();
       }
 
       public void onSuccess(LoginInfo result) {
@@ -127,8 +131,101 @@ final Button notebookButton = new Button("+");
            }
          }
        });
-     }
- 
+ }
+
+     public void loadGUI() {
+    	 
+    	 /**
+ 		 * Auslesen des Profils vom aktuellen Benutzer aus der Datenbank.
+ 		 */
+ 		int atIndex = ClientsideSettings.getLoginInfo().getEmailAddress().indexOf("@");
+ 		adminService.getUserByGoogleID(ClientsideSettings.getLoginInfo().getEmailAddress().substring(0, atIndex),
+ 				getCurrentUserCallback());
+ 		adminService.getNotebooksOfUser(currentUser, getNotebooksOfUserCallback());
+    	 
+// 	    /**
+// 	     * Befuellen der ListBox mit den Notebooks des aktuellen Users
+// 	     */
+// 	    adminService.getCurrentUser(getCurrentUserCallback());
+// 	    adminService.getNotebooksOfUser(currentUser, getNotebooksOfUserCallback());
+    	 
+	   	  //final Label userLabel = new Label(currentUser.getGoogleID());
+ 	    
+	    /**
+	     * Zuweisung eines Styles fuer die jeweiligen Widgets
+	     **/
+	    createNoteButton.setStyleName("notework-addbutton");
+	    noteButton.setStyleName("notework-menubutton");
+	    signOutButton.setStyleName("notework-menubutton");
+	    searchButton.setStyleName("notework-menubutton");
+	    listbox.setStyleName("");
+	    
+	    
+	    /**
+	     * Zuteilung der Widgets zum jeweiligen Panel
+	     */
+	    headPanel.add(userLabel);
+	    headPanel.add(signOutButton);
+	    navPanel.add(listbox);
+	    navPanel.add(createNoteButton);
+	    navPanel.add(noteButton);
+	    navPanel.add(searchButton);
+	    RootPanel.get("Header").add(headPanel);
+	    RootPanel.get("Navigator").add(navPanel);
+	    
+	    /**
+	     * Implementierung der jeweiligen ClickHandler fuer die einzelnen Widgets
+	     */
+	    createNoteButton.addClickHandler(new ClickHandler() {
+	  	public void onClick(ClickEvent event) {
+	          /*
+	           * Showcase instantiieren.
+	           */
+	          Update update = new CreateNoteView();
+	          RootPanel.get("Details").clear();
+	          RootPanel.get("Details").add(update);
+	    }
+	    });	    
+
+	    noteButton.addClickHandler(new ClickHandler() {
+	  	public void onClick(ClickEvent event) {
+	          /*
+	           * Showcase instantiieren.
+	           */
+	          Update update = new NoteOverviewView();
+	          
+	          RootPanel.get("Details").clear();
+	          RootPanel.get("Details").add(update);
+	    }
+	    });
+	    
+	    signOutButton.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				
+				/*
+				 * Laden der Logout-URL der Google Accounts API und Anzeige des
+				 * LoginPanel.
+				 */
+				RootPanel.get("Details").setWidth("65%");
+				Window.open(ClientsideSettings.getLoginInfo().getLogoutUrl(), "_self", "");
+
+			}
+		});
+	    
+	    searchButton.addClickHandler(new ClickHandler() {
+	  	public void onClick(ClickEvent event) {
+	          /*
+	           * Showcase instantiieren.
+	           */
+	          Update update = new SearchView();
+	          
+	          RootPanel.get("Details").clear();
+	          RootPanel.get("Details").add(update);
+	    }
+	    });
+	    
+	}
  
  private void loadLogin() {
      
@@ -149,55 +246,49 @@ final Button notebookButton = new Button("+");
      RootPanel.get("Details").add(loginPanel);     
     }
  
- public void loadGUI() {
+ private AsyncCallback<AppUser> getCurrentUserCallback() {
+	 AsyncCallback<AppUser> asyncCallback = new AsyncCallback<AppUser>() {
 	 
-		
-	    /*
-	     * Das VerticalPanel wird einem DIV-Element namens "Navigator" in der
-	     * zugehörigen HTML-Datei zugewiesen und erhält so seinen Darstellungsort.
-	     */
-	    
-	    /*
-	     * Erstellung des ersten Navibar-Buttons zum hinzufügen neuer Notizen
-	     */
-	    
-
-	    
-	    headerLabel.setStyleName("notework-headline");
-	    createNoteButton.setStyleName("notework-menubutton");
-	    headPanel.add(headerLabel);
-	    navPanel.add(createNoteButton);
-	    RootPanel.get("Header").add(headPanel);
-	    RootPanel.get("Navigator").add(navPanel);
-	    createNoteButton.addClickHandler(new ClickHandler() {
-	  	public void onClick(ClickEvent event) {
-	          /*
-	           * Showcase instantiieren.
-	           */
-	          Update update = new CreateNoteView();
-	          
-	          RootPanel.get("Details").clear();
-	          RootPanel.get("Details").add(update);
-	    }
-	    });
-	    final Button notebookButton = new Button("My Recipes");
-	    
-	    notebookButton.setStyleName("notework-menubutton");
-	    navPanel.add(notebookButton);
-	    navPanel.add(createNoteButton);
-	    
-	    notebookButton.addClickHandler(new ClickHandler() {
-	  	public void onClick(ClickEvent event) {
-	          /*
-	           * Showcase instantiieren.
-	           */
-	          Update update = new NoteOverviewView();
-	          
-	          RootPanel.get("Details").clear();
-	          RootPanel.get("Details").add(update);
-	    }
-	    });
-	    
-	}
-  }
+	 @Override
+		public void onFailure(Throwable caught) {
+			ClientsideSettings.getLogger().severe("Error: " + caught.getMessage());
+		}
+	 
+	 @Override
+	 public void onSuccess(AppUser result){
+		 ClientsideSettings.getLogger()
+			.severe("Success GetCurrentUserCallback: " + result.getClass().getSimpleName());
+		 currentUser = result;
+		 
+		 userLabel.setText(currentUser.getGoogleID());
+	 }
+	 };
+	 return asyncCallback;
+ }
+ 
+ private AsyncCallback<ArrayList<Notebook>> getNotebooksOfUserCallback() {
+	 AsyncCallback<ArrayList<Notebook>> asyncCallback = new AsyncCallback<ArrayList<Notebook>>() {
+		 
+		 @Override
+			public void onFailure(Throwable caught) {
+				ClientsideSettings.getLogger().severe("Error: " + caught.getMessage());
+			}
+		 
+		 @Override
+		 public void onSuccess(ArrayList<Notebook> result){
+			 ClientsideSettings.getLogger()
+				.severe("Success GetNotebooksOfUserCallback: " + result.getClass().getSimpleName());
+			 notebooks = result;
+			 
+			 ListBox listbox = new ListBox();
+			 for (int x = 0; x < notebooks.size(); x++ ){
+				 listbox.addItem(notebooks.get(x).getNbTitle());
+				 
+				 listbox.setVisibleItemCount(1);
+			 }
+		 }
+	 };
+	 return asyncCallback;
+ }
+ }
 

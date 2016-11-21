@@ -73,6 +73,7 @@ public class UserMapper {
 			/**
 			 * Statement ausf�llen und als Query an die DB schicken
 			 */
+
 			ResultSet rs = stmt.executeQuery("SELECT uid, gid, username FROM users " + "WHERE uid='" + id
 					+ "' ORDER BY id");
 
@@ -146,6 +147,7 @@ public class UserMapper {
 	 */
 
 	public Vector<AppUser> findByName(String name) {
+
 		/**
 		 * DB-Verbindung holen & Erzeugen eines neuen SQL-Statements.
 		 */
@@ -159,6 +161,7 @@ public class UserMapper {
 			/**
 			 * Statement ausf�llen und als Query an die DB schicken
 			 */
+			
 			ResultSet rs = stmt.executeQuery("SELECT uid, , gid, username FROM users " + "WHERE username='" + name
 					+ "' ORDER BY userName");
 

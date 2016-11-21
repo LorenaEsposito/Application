@@ -6,9 +6,9 @@ import java.util.Vector;
 
 import com.hdm.Application.server.db.*;
 import com.hdm.Application.shared.*;
-
-
 import com.hdm.Application.shared.bo.*;
+
+import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
@@ -25,7 +25,8 @@ public class NoteAdministrationImpl extends RemoteServiceServlet
 	 * Eindeutige SerialVersion ID. Wird zum Serialisieren der Klasse benoetigt.
 	 */
 	private static final long serialVersionUID = 1L;
-     
+    
+	private AppUser currentUser = null;
 
   /**
    * Referenz auf das zugehörige Note-Objekt.
@@ -77,6 +78,49 @@ public void init() throws IllegalArgumentException {
     
   }
 
+/*
+ * Auslesen des aktuellen Benutzernamen aus der Google Accounts API, um
+ * das Profil des aktuellen Benutzers aus der Datenbank zu lesen.
+ */
+public AppUser getCurrentUser() throws IllegalArgumentException {
+	AppUser currentUser = new AppUser();
+	UserService userService = UserServiceFactory.getUserService();
+	User user = userService.getCurrentUser();
+	int atIndex = user.getEmail().indexOf("@");
+	String userName = user.getEmail().substring(0, atIndex);
+	currentUser = this.getUserByGoogleID(userName);
+	return currentUser;
+}
+
+public AppUser getUserByGoogleID(String name){
+	ArrayList<AppUser> users = new ArrayList<AppUser>();
+	
+	if (this.uMapper.findByGoogleID(name) != null){
+		AppUser user = new AppUser();
+		user = this.uMapper.findByGoogleID(name);
+		users.add(user);
+	}
+	else{
+		AppUser cUser = new AppUser();
+		cUser.setGoogleID(name);
+		this.createUser(cUser);
+		
+		Notebook notebook = new Notebook();
+		notebook.setNbTitle("Dein erstes eigenes Notizbuch");
+		this.createNotebook(notebook);
+		
+		Permission permission = new Permission();
+		permission.setNbID(notebook.getNbID());
+		permission.setUserID(cUser.getUserID());
+		this.createPermission(permission);
+		
+		AppUser user2 = new AppUser();
+		user2 = this.uMapper.findByGoogleID(name);
+		users.add(user2);
+	}
+	return users.get(0);
+}
+
 /**
  * Erstellt einen neuen User in der Datenbank. Dazu ruft sie mit dem
  * uebergebenen User den UserMapper auf, der dieses dann ueber eine
@@ -122,15 +166,6 @@ public void deleteUser(AppUser u) throws IllegalArgumentException {
 //    this.nMapper.delete(u);
 //    this.pMapper.delete(u);
   }
-
-//public User getCurrentUser() throws IllegalArgumentException {
-//	
-//	UserService userService = UserServiceFactory.getUserService();
-//	User user = userService.getCurrentUser();
-//	int atIndex = user.getEmail().indexOf("@");
-//	String userName = user.getEmail().substring(0, atIndex);
-//	currentUser = this.Name(userName);
-//}
 
 /**
  * Erstellt ein neues Notebook in der Datenbank. Dazu ruft sie mit dem
@@ -299,6 +334,9 @@ public void deleteDuedate(DueDate dd) throws IllegalArgumentException {
 //    this.ddMapper.deleteDueDate(dd);
   }
 
+
+
+
 /**
  * Es kann nach einem bestimmten User anhand seines Namens gesucht werden.
  * Dazu wird der UserMapper aufgerufen, der eine Methode beinhaltet mit der in
@@ -313,86 +351,10 @@ public void deleteDuedate(DueDate dd) throws IllegalArgumentException {
 public ArrayList<AppUser> searchForUser(String userName) throws IllegalArgumentException{
 	Vector<AppUser> vector = new Vector<AppUser>();
 	vector = this.uMapper.findByName(userName);
-	
 	ArrayList<AppUser> users = new ArrayList<AppUser>(vector);
-
 	return users;
-
 }
 
-
-
-/**
- * Es kann nach einem bestimmten User anhand seines Namens gesucht werden.
- * Dazu wird der UserMapper aufgerufen, der eine Methode beinhaltet mit der in
- * der Datenbank nach dem gesuchten Namen gesucht wird. In der Methode wird
- * eine ArrayList erstellt, die mit den Suchergebnissen befuellt wird.
- * 
- * @author Lorena Esposito
- * @param userName
- * @return users
- * @throws IllegalArgumentException
- */
-//public ArrayList<User> searchForUser(String userName) throws IllegalArgumentException{
-//	Vector<User> vector = new Vector<User>();
-//	vector = this.uMapper.findByName(userName);
-//	
-//	ArrayList<User> users = new ArrayList<User>(vector);
-//	
-//	if (this.uMapper.findByName(userName) != null){
-//		User user = this.uMapper.findByName(userName);
-//		users.add(user);
-//	}
-//	return users;
-//}
-
-/**
- * Es kann nach einem bestimmten Notebook anhand seines Titels gesucht werden.
- * Dazu wird der NotebookMapper aufgerufen, der eine Methode beinhaltet mit der
- * in der Datenbank nach einem bestimmten Titel gesucht wird. In der Methode wird
- * eine ArrayList erstellt, die mit den Suchergebnissen befuellt wird.
- * 
- * @author Lorena Esposito
- * @param title
- * @return notebooks
- * @throws IllegalArgumentException
- */
-//public ArrayList<Notebook> searchForNotebook(String title) throws IllegalArgumentException{
-//	Vector<Notebook> vector = new Vector<Notebook>();
-//	vector = this.nbMapper.findByTitle(title);
-//	
-//	ArrayList<Notebook> notebooks = new ArrayList<Notebook>(vector);
-//	
-//	if (this.nbMapper.findByTitle(title) != null){
-//		Notebook notebook = this.findByTitle(title);
-//		notebooks.add(notebook);
-//	}
-//	return notebooks;
-//}
-
-/**
- *Es kann nach einer bestimmten Note anhand ihres Titels gesucht werden.
- * Dazu wird der NoteMapper aufgerufen, der eine Methode beinhaltet mit der
- * in der Datenbank nach einem bestimmten Titel gesucht wird. In der Methode wird
- * eine ArrayList erstellt, die mit den Suchergebnissen befuellt wird. 
- * 
- * @author Lorena Esposito
- * @param title
- * @return notes
- * @throws IllegalArgumentException
- */
-//  public ArrayList<Note> searchForNote(String title) throws IllegalArgumentException{
-//	Vector<Note> vector = new Vector<Note>();
-//	vector = this.nMapper.findByTitle(title);
-//	
-//	ArrayList<Note> notes = new ArrayList<Note>(vector);
-//	
-//	if (this.nMapper.findByTitle(title) != null){
-//		Note note = this.findByTitle(title);
-//		notes.add(note);
-//	}
-//	return notes;
-//  }
 
 /**
  * Es kann nach einem bestimmten Notebook anhand seines Titels gesucht werden.
@@ -449,9 +411,26 @@ public ArrayList<Notebook> searchForNotebook(String title) throws IllegalArgumen
     public ArrayList<Note> searchForNoteByDD(DueDate duedate) throws IllegalArgumentException{
   	Vector<Note> vector = new Vector<Note>();
 //  	vector = this.nMapper.findByDuedate(duedate);
-  	
   	ArrayList<Note> notes = new ArrayList<Note>(vector);
 
   	return notes;
+    }
+    
+    public ArrayList<Notebook> getNotebooksOfUser(AppUser u) throws IllegalArgumentException{
+    	Vector<Notebook> vector = new Vector<Notebook>();
+    	
+    	if(this.nbMapper.findByUser(u) == null){
+    		Notebook notebook = new Notebook();
+    		notebook.setNbTitle("Dein erstes eigenes Notizbuch");
+    		this.createNotebook(notebook);
+    		vector = this.nbMapper.findByUser(u);
+    	}
+    	
+    	if(this.nbMapper.findByUser(u) != null){
+    	vector = this.nbMapper.findByUser(u);
+    	}
+
+    	ArrayList<Notebook> notebooks = new ArrayList<Notebook>(vector);
+    	return notebooks;
     }
 }

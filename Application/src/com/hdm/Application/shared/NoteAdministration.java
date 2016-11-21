@@ -13,6 +13,10 @@ public interface NoteAdministration extends RemoteService {
 
 public void init() throws IllegalArgumentException;
 
+public AppUser getCurrentUser() throws IllegalArgumentException;
+
+public AppUser getUserByGoogleID(String name) throws IllegalArgumentException;
+
 public void createUser(AppUser u) throws IllegalArgumentException;
 
 public void editUser(AppUser u) throws IllegalArgumentException;
@@ -45,12 +49,12 @@ public void deleteDuedate(DueDate dd) throws IllegalArgumentException;
 
 public ArrayList<AppUser> searchForUser(String userName) throws IllegalArgumentException;
 
-
-
 public ArrayList<Notebook> searchForNotebook(String title) throws IllegalArgumentException;
 
 public ArrayList<Note> searchForNote(String title) throws IllegalArgumentException;
 
 public ArrayList<Note> searchForNoteByDD(DueDate duedate) throws IllegalArgumentException;
+
+public ArrayList<Notebook> getNotebooksOfUser(AppUser user) throws IllegalArgumentException;
 
 }
