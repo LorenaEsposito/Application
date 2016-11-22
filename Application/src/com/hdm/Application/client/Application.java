@@ -12,6 +12,7 @@ import com.hdm.Application.client.gui.Update;
 import com.hdm.Application.shared.LoginInfo;
 import com.hdm.Application.shared.NoteAdministrationAsync;
 import com.hdm.Application.shared.bo.AppUser;
+import com.hdm.Application.shared.bo.Note;
 import com.hdm.Application.shared.bo.Notebook;
 import com.hdm.Application.client.ClientsideSettings;
 
@@ -20,6 +21,8 @@ import java.util.ArrayList;
 import com.hdm.Application.client.gui.SearchView;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Cookies;
@@ -68,6 +71,11 @@ public class Application implements EntryPoint {
 		 */
 		private ArrayList<Notebook> notebooks = null;
 	  
+		/**
+		 * Eine ArrayList, in der Note-Objekte gespeichert werden
+		 */
+		private ArrayList<Note> notes = null;
+		
 	  /**
 	   * The message displayed to the user when the server cannot be reached or
 	   * returns an error.
@@ -143,13 +151,6 @@ public class Application implements EntryPoint {
  				getCurrentUserCallback());
  		adminService.getNotebooksOfUser(currentUser, getNotebooksOfUserCallback());
     	 
-// 	    /**
-// 	     * Befuellen der ListBox mit den Notebooks des aktuellen Users
-// 	     */
-// 	    adminService.getCurrentUser(getCurrentUserCallback());
-// 	    adminService.getNotebooksOfUser(currentUser, getNotebooksOfUserCallback());
-    	 
-	   	  //final Label userLabel = new Label(currentUser.getGoogleID());
  	    
 	    /**
 	     * Zuweisung eines Styles fuer die jeweiligen Widgets
@@ -224,7 +225,12 @@ public class Application implements EntryPoint {
 	          RootPanel.get("Details").add(update);
 	    }
 	    });
-	    
+	   
+	    listbox.addChangeHandler(new ChangeHandler() {
+	    	public void onChange(ChangeEvent event) {
+	    		adminService.getNotesOfNotebook(listbox.getSelectedItemText(), currentUser, getNotesOfNotebookCallback());
+	    	}
+	    });
 	}
  
  private void loadLogin() {
@@ -287,6 +293,28 @@ public class Application implements EntryPoint {
 				 listbox.setVisibleItemCount(1);
 			 }
 		 }
+	 };
+	 return asyncCallback;
+ }
+ 
+ private AsyncCallback<ArrayList<Note>> getNotesOfNotebookCallback() {
+	 AsyncCallback<ArrayList<Note>> asyncCallback = new AsyncCallback<ArrayList<Note>>(){
+	 
+	 @Override
+		public void onFailure(Throwable caught) {
+			ClientsideSettings.getLogger().severe("Error: " + caught.getMessage());
+		}
+	 
+	 @Override
+	 public void onSuccess(ArrayList<Note> result) {
+		 ClientsideSettings.getLogger().
+		 severe("Success GetNotesOfNotebookCallback: " + result.getClass().getSimpleName());
+		 for(int i = 0; i < result.size(); i++){
+			 final Button nButton = new Button(result.get(i).getnTitle());
+			 nButton.addStyleName("notework-menubutton");
+			 navPanel.add(nButton);
+		 }
+	 }
 	 };
 	 return asyncCallback;
  }

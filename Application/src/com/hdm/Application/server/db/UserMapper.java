@@ -81,9 +81,8 @@ public class UserMapper {
 			 * Da id Primaerschl�ssel ist, kann max. nur ein Tupel zur�ckgegeben
 			 * werden. Pr�fe, ob ein Ergebnis vorliegt.
 			 */
-
 			if (rs.next()) {
-				
+
 				AppUser u = new AppUser();
 				u.setUserID(rs.getInt("uid"));
 				u.setUserName(rs.getString("username"));
@@ -96,6 +95,7 @@ public class UserMapper {
 
 		return null;
 	}
+
 
 	public AppUser findByGoogleID(String gid) {
 		/**
@@ -148,6 +148,7 @@ public class UserMapper {
 	 */
 
 	public Vector<AppUser> findByName(String name) {
+
 		/**
 		 * DB-Verbindung holen & Erzeugen eines neuen SQL-Statements.
 		 */
@@ -161,7 +162,6 @@ public class UserMapper {
 			/**
 			 * Statement ausf�llen und als Query an die DB schicken
 			 */
-
 			ResultSet rs = stmt.executeQuery("SELECT uid, , gid, username FROM users " + "WHERE username='" + name
 					+ "' ORDER BY userName");
 
@@ -169,12 +169,11 @@ public class UserMapper {
 			 * F�r jeden Eintrag im Suchergebnis wird nun ein Profile-Objekt
 			 * erstellt.
 			 */
-
+			
 			while (rs.next()) {
 				AppUser u = new AppUser();
 				u.setUserID(rs.getInt("uid"));
 				u.setUserName(rs.getString("username"));
-
 
 				/**
 				 * Hinzuf�gen des neuen Objekts zum Ergebnisvektor
@@ -221,12 +220,12 @@ public class UserMapper {
 			/**
 			 * F�r jeden Eintrag im Suchergebnis wird nun ein Profile-Objekt
 			 * erstellt.
-			 **/
+			 */
 			while (rs.next()) {
 				AppUser u = new AppUser();
 				u.setUserID(rs.getInt("uid"));
 				u.setUserName(rs.getString("username"));
-				
+
 				/**
 				 * Hinzuf�gen des neuen Objekts zum Ergebnisvektor
 				 */

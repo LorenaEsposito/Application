@@ -1,7 +1,13 @@
 package com.hdm.Application.client.gui;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
@@ -23,6 +29,9 @@ public class CreateNoteView extends Update{
 	 * Applikationslogik.
 	 */
 	private NoteAdministrationAsync adminService = ClientsideSettings.getAdministration();
+	
+	private Note n = new Note();
+	
 	protected String getHeadlineText() {
 	    return "Create Note";
 }
@@ -86,6 +95,13 @@ protected void run() {
 		 */
 		createButton.setEnabled(false);
 		createButton.setStylePrimaryName("");
+		
+		Note note = new Note();
+		note.setnTitle(noteHeadline.getText());
+		note.setnContent(textArea.getText());
+		Date date = new Date();
+		note.setnCreDate(date);
+		adminService.createNote(note, createNoteCallback());
 
           /*
            * Showcase instantiieren.
@@ -97,6 +113,24 @@ protected void run() {
     }
     });
     
+    private AsyncCallback<Note> createNoteCallback() {
+    	AsyncCallback<Note> asyncCallback = new AsyncCallback<Note>() {
+    		
+    		@Override
+    		public void onFailure(Throwable caught) {
+    			ClientsideSettings.getLogger().severe("Error: " + caught.getMessage());
+    		}
+    	 
+    	 @Override
+    	 public void onSuccess(Note result) {
+    		 ClientsideSettings.getLogger().
+    		 severe("Success CreateNoteCallback: " + result.getClass().getSimpleName());
+    		 n = result;
+    	 }
+    	};
+    	return asyncCallback;
+    }
+
 final Button editButton = new Button("Edit");
     
     editButton.setStyleName("notework-menubutton");

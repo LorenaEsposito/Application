@@ -6,10 +6,9 @@ import java.util.Vector;
 
 import com.hdm.Application.server.db.*;
 import com.hdm.Application.shared.*;
-
 import com.hdm.Application.shared.bo.*;
-import com.google.appengine.api.users.User;
 
+import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
@@ -416,6 +415,11 @@ public ArrayList<Notebook> searchForNotebook(String title) throws IllegalArgumen
   	return notes;
     }
     
+    /**
+     * In dieser Methode kann anhand eines Users nach dessen Notizbuechern gesucht werden.
+     * Diese werden dann in einer ArrayList zurueck gegeben. Ist noch kein Notizbuch angelegt
+     * wird eins angelegt, zusammen mit einer Permission.
+     */
     public ArrayList<Notebook> getNotebooksOfUser(AppUser u) throws IllegalArgumentException{
     	Vector<Notebook> vector = new Vector<Notebook>();
     	
@@ -423,6 +427,10 @@ public ArrayList<Notebook> searchForNotebook(String title) throws IllegalArgumen
     		Notebook notebook = new Notebook();
     		notebook.setNbTitle("Dein erstes eigenes Notizbuch");
     		this.createNotebook(notebook);
+    		Permission permission = new Permission();
+    		permission.setNbID(notebook.getNbID());
+    		permission.setUserID(u.getUserID());
+    		this.createPermission(permission);
     		vector = this.nbMapper.findByUser(u);
     	}
     	
@@ -432,5 +440,47 @@ public ArrayList<Notebook> searchForNotebook(String title) throws IllegalArgumen
 
     	ArrayList<Notebook> notebooks = new ArrayList<Notebook>(vector);
     	return notebooks;
+    }
+    
+    /**
+     * Diese Methode gibt alle Notizen eines Notizbuchs in einer ArrayList zurueck.
+     * 
+     * @param nbTitle
+     * @return ArrayList<Note>
+     * @throws IllegalArgumentException
+     */
+    public ArrayList<Note> getNotesOfNotebooks(String nbTitle, AppUser u) throws IllegalArgumentException{
+    	Vector<Note> vector = new Vector<Note>();
+    	
+    	Notebook nb = new Notebook();
+    	
+    	Vector<Notebook> nbVector = new Vector<Notebook>();
+    	nbVector = this.nbMapper.findByTitle(nbTitle);
+    	
+    	Vector<Notebook> nbVector2 = new Vector<Notebook>();
+    	nbVector = this.nbMapper.findByUser(u);
+    	
+    	for(int i = 0; i < nbVector.size(); i++){
+    		for(int x = 0; x < nbVector2.size(); x++){	
+    			if(nbVector.get(i).getNbID() == nbVector.get(x).getNbID()){
+    				nb = nbVector.get(i);
+    			}
+    		}
+    	}	
+    	
+    	if(this.nMapper.findByNotebook(nb) == null){
+    		Note note = new Note();
+    		note.setnTitle("Erste Notiz");
+    		note.setNbID(nb.getNbID());
+    		this.createNote(note);
+    		vector = this.nMapper.findByNotebook(nb);
+    	}
+    	
+    	if(this.nbMapper.findByNotebook(nb) != null){
+    		vector = this.nbMapper.findByNotebook(nb);
+    	}
+    	
+    	ArrayList<Note> notes = new ArrayList<Note>(vector);
+    	return notes;
     }
 }
