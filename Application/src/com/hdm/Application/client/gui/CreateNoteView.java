@@ -30,51 +30,56 @@ public class CreateNoteView extends Update{
 //	private Note currentNote = null;
 
 protected void run() {
-
-    // Ankündigung, was nun geschehen wird.
-
-    this.append("Hier kann eine neue Notiz angelegt werden");
-
-    VerticalPanel createPanel = new VerticalPanel();
-    HorizontalPanel buttonBox = new HorizontalPanel();
+    this.append("");
     
-    
-    RootPanel.get("Details").add(createPanel);
     adminService = ClientsideSettings.getAdministration();
-    
-    Label headlineLabel = new Label("Headline");
-    createPanel.add(headlineLabel);
-    
-    TextBox noteHeadline = new TextBox();
-    createPanel.add(noteHeadline);
-    
-    Label noticeLabel = new Label("Notice");
-    createPanel.add(noticeLabel);
-    
-   // RichTextArea area = new RichTextArea();
-  //  area.ensureDebugId("cwRichText-area");
-  //  area.setSize("100%", "14em");
-    
-    //RichTextToolbar toolbar = new RichTextToolbar(area);
-   // toolbar.ensureDebugId("cwRichText-toolbar");
-   // toolbar.setWidth("100%");
+ 
+    /**
+	   * Erstellung aller Panels
+	   */
+  
+    VerticalPanel createPanel = new VerticalPanel();
+    HorizontalPanel buttonPanel = new HorizontalPanel();
 
-   // Grid grid = new Grid(2, 1);
-    // grid.setStyleName("cw-RichText");
-   // grid.setWidget(0, 0, toolbar);
-   // grid.setWidget(1, 0, area);
-   // return grid;
     
-    TextArea textArea = new TextArea();
-    textArea.setVisibleLines(20);
-    textArea.setPixelSize(420, 350);
-    createPanel.add(textArea);
+    /**
+     * Erstellung aller Widgets
+     */
+      
+     Label headlineLabel = new Label("Headline");
+     Label noticeLabel = new Label("Notice");
+     TextBox noteHeadline = new TextBox();
+     TextArea textArea = new TextArea();
+     textArea.setVisibleLines(20);
+     textArea.setPixelSize(420, 350);
+     final Button createButton = new Button("Create");
+     final Button editButton = new Button("Edit");
+     final Button deleteButton = new Button("Delete");
+     
+	/**
+     * Zuteilung der Widgets zum jeweiligen Panel
+     */
+     
     
-    final Button createButton = new Button("Create");
+    createPanel.add(textArea); 
+    createPanel.add(noticeLabel);
+    createPanel.add(noteHeadline);
+    createPanel.add(headlineLabel);
+    createPanel.add(buttonPanel);
+    buttonPanel.add(createButton);
+    RootPanel.get("Details").add(createPanel);
+        
+   
     
-    createButton.setStyleName("notework-menubutton");
+    /**
+     * Zuweisung eines Styles fuer die jeweiligen Widgets
+     **/
     
-    buttonBox.add(createButton);
+    createButton.setStyleName("notework-menubutton"); 
+  	
+    /**
+     * Erstellung der Clickhandler
+     **/
     
     createButton.addClickHandler(new ClickHandler() {
   	public void onClick(ClickEvent event) {
@@ -97,11 +102,9 @@ protected void run() {
     }
     });
     
-final Button editButton = new Button("Edit");
-    
     editButton.setStyleName("notework-menubutton");
     
-    buttonBox.add(editButton);
+    buttonPanel.add(editButton);
     
     editButton.addClickHandler(new ClickHandler() {
   	public void onClick(ClickEvent event) {
@@ -115,11 +118,11 @@ final Button editButton = new Button("Edit");
     }
     });
 
-final Button deleteButton = new Button("Delete");
+
     
     deleteButton.setStyleName("notework-menubutton");
     
-    buttonBox.add(deleteButton);
+    buttonPanel.add(deleteButton);
     
     deleteButton.addClickHandler(new ClickHandler() {
   	public void onClick(ClickEvent event) {
@@ -133,8 +136,10 @@ final Button deleteButton = new Button("Delete");
     }
     });
     
-    createPanel.add(buttonBox);
-
+    
+    
 	}
+
+	
 }
 
