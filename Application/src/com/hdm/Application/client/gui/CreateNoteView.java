@@ -18,7 +18,7 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
-
+import com.hdm.Application.client.Application;
 import com.hdm.Application.client.ClientsideSettings;
 import com.hdm.Application.shared.NoteAdministrationAsync;
 import com.hdm.Application.shared.bo.AppUser;
@@ -79,6 +79,7 @@ public class CreateNoteView extends Update{
 protected void run() {
     this.append("");
     
+    currentNB = Application.listbox.getSelectedItemText();
  
 	/**
      * Zuteilung der Widgets zum jeweiligen Panel

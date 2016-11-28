@@ -379,6 +379,44 @@ public class NoteMapper {
 		//Vektor wird zurueckgegeben
 		 return result;
 	 }
-	 
+
+	 public Vector<Note> findByNotebook (Notebook notebook){
+			
+			//DB-Verbindung holen
+			
+			Connection con = DBConnection.connection();
+			
+			Vector<Note> result = new Vector<Note>();
+			
+			try{
+				//Leeres SQL Statement anlegen
+				Statement stmt = con.createStatement();
+				
+				//Statement ausfuellen und als Query an DB schicken
+				ResultSet rs = stmt.executeQuery("SELECT nid, nbid, title, subtitle, content, source, creadate, moddate FROM notes"
+						+ "WHERE nbid=" + notebook.getNbID() );
+				
+				// Fuer jeden Eintrag wird ein Notebook-Objekt erstellt	
+				while (rs.next()){
+					
+					Note note = new Note();
+					note.setnID(rs.getInt("nid"));
+					note.setNbID(rs.getInt("nbid"));
+					note.setTitle(rs.getString("title"));
+					note.setnSubtitle(rs.getString("subtitle"));
+					note.setSource(rs.getString("source"));
+					note.setnCreDate(rs.getDate("creadate"));
+					note.setnModDate(rs.getDate("moddate"));
+					
+					// Neues Objekt wird dem Ergebnisvektor hinzugefuegt
+					result.addElement(note);
+				}
+			}
+			catch (SQLException e){
+				e.printStackTrace();
+				return null;
+			}
+			return result;
+		}
 	 
 }

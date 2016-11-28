@@ -96,6 +96,7 @@ public class UserMapper {
 		return null;
 	}
 
+
 	public AppUser findByGoogleID(String gid) {
 		/**
 		 * DB-Verbindung holen & Erzeugen eines neuen SQL-Statements.
@@ -130,6 +131,7 @@ public class UserMapper {
 
 		return null;
 	}
+
 	
 	/**
 	 * Read-Methode - Anhand eines Usernamen wird der dazu gehoerige User in
@@ -142,7 +144,12 @@ public class UserMapper {
 	 * @param id
 	 *            Der Username zum User, der aus der Datenbank gelesen werden
 	 *            soll
+<<<<<<< HEAD
 	 * @return Das durch die id referenzierte User-Objekt
+=======
+	 * @return Das durch die id referenzierte User-Objekt
+	 * 
+>>>>>>> refs/remotes/origin/master
 	 */
 
 	public Vector<AppUser> findByName(String name) {
@@ -160,6 +167,7 @@ public class UserMapper {
 			/**
 			 * Statement ausf�llen und als Query an die DB schicken
 			 */
+			
 			ResultSet rs = stmt.executeQuery("SELECT uid, , gid, username FROM users " + "WHERE username='" + name
 					+ "' ORDER BY userName");
 

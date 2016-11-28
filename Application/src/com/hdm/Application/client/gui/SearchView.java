@@ -70,7 +70,6 @@ protected void run() {
           RootPanel.get("Details").add(update);
           }
           });
-          
 
 }
 }

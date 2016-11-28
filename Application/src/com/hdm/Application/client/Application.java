@@ -99,7 +99,7 @@ public class Application implements EntryPoint {
 	  final Label headerLabel = new Label("Notework");
 	  final Label userLabel = new Label();
 	  private Anchor signInLink = new Anchor("Login");
-	  final ListBox listbox = new ListBox();
+	  public final static ListBox listbox = new ListBox();
 	  final Button createNoteButton = new Button("");
 	  final Button noteButton = new Button("My Recipes");
 	  final Button signOutButton = new Button("Sign out");
