@@ -9,6 +9,7 @@ import com.hdm.Application.client.gui.LoginService;
 import com.hdm.Application.client.gui.LoginServiceAsync;
 import com.hdm.Application.client.gui.NoteOverviewView;
 import com.hdm.Application.client.gui.Update;
+import com.hdm.Application.client.gui.WelcomeView;
 import com.hdm.Application.shared.LoginInfo;
 import com.hdm.Application.shared.NoteAdministrationAsync;
 import com.hdm.Application.shared.bo.AppUser;
@@ -70,12 +71,12 @@ public class Application implements EntryPoint {
 		 * Eine ArrayList, in der Notebook-Objekte gespeichert werden
 		 */
 		private ArrayList<Notebook> notebooks = null;
-	  
+
 		/**
 		 * Eine ArrayList, in der Note-Objekte gespeichert werden
 		 */
 		private ArrayList<Note> notes = null;
-		
+
 	  /**
 	   * The message displayed to the user when the server cannot be reached or
 	   * returns an error.
@@ -150,7 +151,8 @@ public class Application implements EntryPoint {
  		adminService.getUserByGoogleID(ClientsideSettings.getLoginInfo().getEmailAddress().substring(0, atIndex),
  				getCurrentUserCallback());
  		adminService.getNotebooksOfUser(currentUser, getNotebooksOfUserCallback());
-    	 
+    	
+ 		Update update = new WelcomeView();
  	    
 	    /**
 	     * Zuweisung eines Styles fuer die jeweiligen Widgets
@@ -173,6 +175,7 @@ public class Application implements EntryPoint {
 	    navPanel.add(searchButton);
 	    RootPanel.get("Header").add(headPanel);
 	    RootPanel.get("Navigator").add(navPanel);
+	    RootPanel.get("Details").add(update);
 	    
 	    /**
 	     * Implementierung der jeweiligen ClickHandler fuer die einzelnen Widgets

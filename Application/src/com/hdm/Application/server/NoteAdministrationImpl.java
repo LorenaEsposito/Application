@@ -11,6 +11,7 @@ import com.hdm.Application.shared.bo.*;
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 import com.hdm.Application.shared.NoteAdministration;
@@ -342,7 +343,7 @@ public void deleteDuedate(DueDate dd) throws IllegalArgumentException {
  * Dazu wird der UserMapper aufgerufen, der eine Methode beinhaltet mit der in
  * der Datenbank nach dem gesuchten Namen gesucht wird. In der Methode wird
  * eine ArrayList erstellt, die mit den Suchergebnissen befuellt wird.
- * 
+ *
  * @author Lorena Esposito
  * @param userName
  * @return users
@@ -449,7 +450,7 @@ public ArrayList<Notebook> searchForNotebook(String title) throws IllegalArgumen
      * @return ArrayList<Note>
      * @throws IllegalArgumentException
      */
-    public ArrayList<Note> getNotesOfNotebooks(String nbTitle, AppUser u) throws IllegalArgumentException{
+    public ArrayList<Note> getNotesOfNotebook(String nbTitle, AppUser u) throws IllegalArgumentException{
     	Vector<Note> vector = new Vector<Note>();
     	
     	Notebook nb = new Notebook();
@@ -482,5 +483,24 @@ public ArrayList<Notebook> searchForNotebook(String title) throws IllegalArgumen
     	
     	ArrayList<Note> notes = new ArrayList<Note>(vector);
     	return notes;
+    }
+    
+    /**
+     * Diese Methode sucht einen bestimmten Nutzer anhand seiner GoogleID
+     * 
+     * @param googleID
+     * @return AppUser user
+     */
+    public AppUser searchUserByGoogleID(String googleID){
+    	AppUser user = new AppUser();
+    	
+    	if(this.uMapper.findByGoogleID(googleID) == null){
+    		user = null;
+    	}
+    	
+    	if(this.uMapper.findByGoogleID(googleID) != null){
+    		user = this.uMapper.findByGoogleID(googleID);
+    	}
+    	return user;
     }
 }

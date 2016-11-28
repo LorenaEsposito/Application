@@ -21,26 +21,50 @@ public class CreateNotebookView extends Update{
 	}
 	
 	protected void run() {
+	    this.append("");
 		
-		// Ankündigung, was nun geschehen wird.
-
-	    this.append("Hier kann ein neues Notizbuch angelegt werden");
-	    
-	    VerticalPanel createPanel = new VerticalPanel();
-	    HorizontalPanel buttonBox = new HorizontalPanel();
-	    
-	    
-	    RootPanel.get("Details").add(createPanel);
-	    adminService = ClientsideSettings.getAdministration();
+		
+		/**
+		   * Erstellung aller Panels
+		   */
+		
+		VerticalPanel createPanel = new VerticalPanel();
+	    //HorizontalPanel buttonPanel = new HorizontalPanel();
+		
+	    /**
+		   * Erstellung aller Widgets
+		   */
 	    
 	    Label headlineLabel = new Label("Headline");
-	    createPanel.add(headlineLabel);
-	    
 	    TextBox notebookHeadline = new TextBox();
-	    createPanel.add(notebookHeadline);
-	    
 	    Label noticeLabel = new Label("Notice");
-	    createPanel.add(noticeLabel);
+		
+		/**
+	     * Zuteilung der Widgets zum jeweiligen Panel
+	     */
+		
+	    createPanel.add(headlineLabel);
+		createPanel.add(notebookHeadline);
+		createPanel.add(noticeLabel);
+		RootPanel.get("Details").add(createPanel);
+		
+		/**
+	     * Zuweisung eines Styles fuer die jeweiligen Widgets
+	     **/
+		
+		//In Entstehung
+		
+		
+	
+	    
+	    
+	    
+	    
+	    
+	    adminService = ClientsideSettings.getAdministration();
+	    
+	    
+	    
 
 		
 	}

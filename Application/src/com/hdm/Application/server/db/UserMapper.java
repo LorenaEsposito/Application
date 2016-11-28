@@ -96,7 +96,6 @@ public class UserMapper {
 		return null;
 	}
 
-
 	public AppUser findByGoogleID(String gid) {
 		/**
 		 * DB-Verbindung holen & Erzeugen eines neuen SQL-Statements.
@@ -144,7 +143,6 @@ public class UserMapper {
 	 *            Der Username zum User, der aus der Datenbank gelesen werden
 	 *            soll
 	 * @return Das durch die id referenzierte User-Objekt
-	 * 
 	 */
 
 	public Vector<AppUser> findByName(String name) {
