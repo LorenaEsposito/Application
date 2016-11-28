@@ -7,7 +7,6 @@ import com.hdm.Application.shared.FieldVerifier;
 import com.hdm.Application.client.gui.CreateNoteView;
 import com.hdm.Application.client.gui.LoginService;
 import com.hdm.Application.client.gui.LoginServiceAsync;
-import com.hdm.Application.client.gui.NoteOverviewView;
 import com.hdm.Application.client.gui.Update;
 import com.hdm.Application.client.gui.WelcomeView;
 import com.hdm.Application.shared.LoginInfo;
@@ -20,6 +19,7 @@ import com.hdm.Application.client.ClientsideSettings;
 import java.util.ArrayList;
 
 import com.hdm.Application.client.gui.SearchView;
+import com.hdm.Application.client.gui.ShowNoteView;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ChangeEvent;
@@ -196,7 +196,7 @@ public class Application implements EntryPoint {
 	          /*
 	           * Showcase instantiieren.
 	           */
-	          Update update = new NoteOverviewView();
+	          Update update = new ShowNoteView();
 	          
 	          RootPanel.get("Details").clear();
 	          RootPanel.get("Details").add(update);

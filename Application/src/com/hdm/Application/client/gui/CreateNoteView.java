@@ -51,7 +51,7 @@ public class CreateNoteView extends Update{
 	   * Erstellung aller Panels
 	   */
 
-  VerticalPanel createPanel = new VerticalPanel();
+  HorizontalPanel createPanel = new HorizontalPanel();
   HorizontalPanel buttonPanel = new HorizontalPanel();
 
   
@@ -78,8 +78,6 @@ public class CreateNoteView extends Update{
 
 protected void run() {
     this.append("");
-    
-    adminService = ClientsideSettings.getAdministration();
     
  
 	/**
@@ -210,7 +208,7 @@ protected void run() {
           /*
            * Showcase instantiieren.
            */
-          Update update = new NoteOverviewView();
+          Update update = new ShowNoteView();
           
           RootPanel.get("Details").clear();
           RootPanel.get("Details").add(update);

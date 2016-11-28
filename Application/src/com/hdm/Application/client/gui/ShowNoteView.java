@@ -9,12 +9,20 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.hdm.Application.client.ClientsideSettings;
+import com.hdm.Application.shared.NoteAdministrationAsync;
+import com.hdm.Application.shared.bo.Note;
 
-public class NoteShowView extends Update{
+public class ShowNoteView extends Update{
 
 	protected String getHeadlineText() {
 	    return "Edit Note";
 }
+	
+	//private NoteAdministrationAsync adminService = ClientsideSettings.getAdministration();
+	
+	private Note note = new Note();
+	
 
 	/**
 	   * Erstellung aller Panels
@@ -28,11 +36,13 @@ public class NoteShowView extends Update{
 	 * Erstellung aller Widgets
 	 */
   
-	Label headlineLabel = new Label("Headline");
+	Label titleLabel = new Label("Title");
+	Label subtitleLabel = new Label("Subtitle");
 	Label noticeLabel = new Label("Notice");
-	TextBox noteHeadline = new TextBox();
+	TextBox noteTitle = new TextBox();
+	TextBox noteSubtitle = new TextBox();
 	TextArea textArea = new TextArea();
-	final Button createButton = new Button("Create");
+	//final Button createButton = new Button("Create");
 	final Button editButton = new Button("Edit");
 	final Button deleteButton = new Button("Delete");
 	
@@ -46,52 +56,56 @@ protected void run() {
    * Zuteilung der Widgets zum jeweiligen Panel
    */
   
-  createPanel.add(textArea); 
+  createPanel.add(titleLabel);
+  createPanel.add(noteTitle);
+  createPanel.add(subtitleLabel);
+  createPanel.add(noteSubtitle);
   createPanel.add(noticeLabel);
-  createPanel.add(noteHeadline);
-  createPanel.add(headlineLabel);
+  createPanel.add(textArea); 
   createPanel.add(buttonPanel);
-  buttonPanel.add(createButton);
+  buttonPanel.add(editButton);
+  buttonPanel.add(deleteButton);
+  //buttonPanel.add(createButton);
   RootPanel.get("Details").add(createPanel);
       
- 
   
   /**
    * Zuweisung eines Styles fuer die jeweiligen Widgets
    **/
-  
-  createButton.setStyleName("notework-menubutton");
+  	deleteButton.setStyleName("notework-menubutton");
+    editButton.setStyleName("notework-menubutton");
+  //createButton.setStyleName("notework-menubutton");
 	textArea.setVisibleLines(20);
 	textArea.setPixelSize(420, 350);
+	
+	noteTitle.setText(note.getnTitle());
+	
+	textArea.setText(note.getnContent());
 	
   /**
    * Erstellung der Clickhandler
    **/
   
-  createButton.addClickHandler(new ClickHandler() {
-	public void onClick(ClickEvent event) {
-		
-		/*
-		 * Speichern der eingegebenen Werte blockieren, um
-		 * Mehrfach-Klicks und daraus entstehende, unnoetige Eintraege in
-		 * der Datenbank zu verhindern.
-		 */
-		createButton.setEnabled(false);
-		createButton.setStylePrimaryName("");
-
-        /*
-         * Showcase instantiieren.
-         */
-        Update update = new NoteOverviewView();
-        
-        RootPanel.get("Details").clear();
-        RootPanel.get("Details").add(update);
-  }
-  });
-  
-  editButton.setStyleName("notework-menubutton");
-  
-  buttonPanel.add(editButton);
+//  createButton.addClickHandler(new ClickHandler() {
+//	public void onClick(ClickEvent event) {
+//		
+//		/*
+//		 * Speichern der eingegebenen Werte blockieren, um
+//		 * Mehrfach-Klicks und daraus entstehende, unnoetige Eintraege in
+//		 * der Datenbank zu verhindern.
+//		 */
+//		createButton.setEnabled(false);
+//		createButton.setStylePrimaryName("");
+//
+//        /*
+//         * Showcase instantiieren.
+//         */
+//        Update update = new ShowNoteView();
+//        
+//        RootPanel.get("Details").clear();
+//        RootPanel.get("Details").add(update);
+//  }
+//  });
   
   editButton.addClickHandler(new ClickHandler() {
 	public void onClick(ClickEvent event) {
@@ -104,19 +118,13 @@ protected void run() {
         RootPanel.get("Details").add(update);
   }
   });
-
-
-  
-  deleteButton.setStyleName("notework-menubutton");
-  
-  buttonPanel.add(deleteButton);
   
   deleteButton.addClickHandler(new ClickHandler() {
 	public void onClick(ClickEvent event) {
         /*
          * Showcase instantiieren.
          */
-        Update update = new NoteOverviewView();
+        Update update = new WelcomeView();
         
         RootPanel.get("Details").clear();
         RootPanel.get("Details").add(update);
