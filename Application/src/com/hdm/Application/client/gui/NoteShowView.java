@@ -16,38 +16,35 @@ public class NoteShowView extends Update{
 	    return "Edit Note";
 }
 
+	/**
+	   * Erstellung aller Panels
+	   */
+
+	VerticalPanel createPanel = new VerticalPanel();
+	HorizontalPanel buttonPanel = new HorizontalPanel();
+
+
+	/**
+	 * Erstellung aller Widgets
+	 */
+  
+	Label headlineLabel = new Label("Headline");
+	Label noticeLabel = new Label("Notice");
+	TextBox noteHeadline = new TextBox();
+	TextArea textArea = new TextArea();
+	final Button createButton = new Button("Create");
+	final Button editButton = new Button("Edit");
+	final Button deleteButton = new Button("Delete");
+	
 protected void run() {
 
     // Ankündigung, was nun geschehen wird.
 
     this.append("");
-
-    /**
-	   * Erstellung aller Panels
-	   */
-
-  VerticalPanel createPanel = new VerticalPanel();
-  HorizontalPanel buttonPanel = new HorizontalPanel();
-
-  
-  /**
-   * Erstellung aller Widgets
-   */
-    
-   Label headlineLabel = new Label("Headline");
-   Label noticeLabel = new Label("Notice");
-   TextBox noteHeadline = new TextBox();
-   TextArea textArea = new TextArea();
-   textArea.setVisibleLines(20);
-   textArea.setPixelSize(420, 350);
-   final Button createButton = new Button("Create");
-   final Button editButton = new Button("Edit");
-   final Button deleteButton = new Button("Delete");
    
 	/**
    * Zuteilung der Widgets zum jeweiligen Panel
    */
-   
   
   createPanel.add(textArea); 
   createPanel.add(noticeLabel);
@@ -63,7 +60,9 @@ protected void run() {
    * Zuweisung eines Styles fuer die jeweiligen Widgets
    **/
   
-  createButton.setStyleName("notework-menubutton"); 
+  createButton.setStyleName("notework-menubutton");
+	textArea.setVisibleLines(20);
+	textArea.setPixelSize(420, 350);
 	
   /**
    * Erstellung der Clickhandler
@@ -130,6 +129,5 @@ protected void run() {
 
 
 }
-
 
 

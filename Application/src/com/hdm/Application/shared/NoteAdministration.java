@@ -57,4 +57,8 @@ public ArrayList<Note> searchForNoteByDD(DueDate duedate) throws IllegalArgument
 
 public ArrayList<Notebook> getNotebooksOfUser(AppUser user) throws IllegalArgumentException;
 
+public ArrayList<Note> getNotesOfNotebook(String nbTitle, AppUser u) throws IllegalArgumentException;
+
+public AppUser searchUserByGoogleID(String googleID) throws IllegalArgumentException;
+
 }

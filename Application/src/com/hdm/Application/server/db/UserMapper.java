@@ -143,7 +143,6 @@ public class UserMapper {
 	 *            Der Username zum User, der aus der Datenbank gelesen werden
 	 *            soll
 	 * @return Das durch die id referenzierte User-Objekt
-	 * 
 	 */
 
 	public Vector<AppUser> findByName(String name) {
@@ -152,7 +151,6 @@ public class UserMapper {
 		 * DB-Verbindung holen & Erzeugen eines neuen SQL-Statements.
 		 */
 		Connection con = DBConnection.connection();
-
 		Vector<AppUser> result = new Vector<AppUser>();
 		
 		try {
@@ -161,7 +159,6 @@ public class UserMapper {
 			/**
 			 * Statement ausf�llen und als Query an die DB schicken
 			 */
-			
 			ResultSet rs = stmt.executeQuery("SELECT uid, , gid, username FROM users " + "WHERE username='" + name
 					+ "' ORDER BY userName");
 
