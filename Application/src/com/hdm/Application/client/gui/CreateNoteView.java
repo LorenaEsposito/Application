@@ -2,6 +2,9 @@ package com.hdm.Application.client.gui;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.Cookies;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.Window.Location;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
@@ -26,6 +29,7 @@ public class CreateNoteView extends Update{
 	protected String getHeadlineText() {
 	    return "Create Note";
 }
+	
 	
 //	private Note currentNote = null;
 
@@ -69,6 +73,15 @@ protected void run() {
     textArea.setVisibleLines(20);
     textArea.setPixelSize(420, 350);
     createPanel.add(textArea);
+    if(Cookies.getCookie("url") != "null"){
+        textArea.setText(
+          "Hier finden Sie den Link den Sie speichern wollten: "
+          + ""
+          + ""+
+          Cookies.getCookie("url")
+          
+          );
+       }    
     
     final Button createButton = new Button("Create");
     

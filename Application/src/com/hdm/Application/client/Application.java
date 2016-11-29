@@ -1,9 +1,7 @@
-package com.hdm.Application.client;
+                        package com.hdm.Application.client;
 
 
 import com.hdm.Application.shared.FieldVerifier;
-
-
 import com.hdm.Application.client.gui.CreateNoteView;
 import com.hdm.Application.client.gui.LoginService;
 import com.hdm.Application.client.gui.LoginServiceAsync;
@@ -14,9 +12,7 @@ import com.hdm.Application.shared.NoteAdministrationAsync;
 import com.hdm.Application.shared.bo.AppUser;
 import com.hdm.Application.shared.bo.Notebook;
 import com.hdm.Application.client.ClientsideSettings;
-
 import java.util.ArrayList;
-
 import com.hdm.Application.client.gui.SearchView;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
@@ -24,6 +20,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.Window.Location;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
@@ -95,6 +92,8 @@ public class Application implements EntryPoint {
 	  final Button noteButton = new Button("My Recipes");
 	  final Button signOutButton = new Button("Sign out");
 	  final Button searchButton = new Button("Search");
+	  
+	  
  /**
   * Create a remote service proxy to talk to the server-side Greeting service.
   */
@@ -110,27 +109,35 @@ public class Application implements EntryPoint {
 	  */
 	  headerLabel.setStyleName("notework-headline");
 	  headPanel.add(headerLabel);
-    
+	  
+	  
+	// final String url = Location.getParameter("url");
+	 
+	 	  
       // Check login status using login service.
      LoginServiceAsync loginService = GWT.create(LoginService.class);
-     loginService.login("http://127.0.0.1:8888/Application.html", new AsyncCallback<LoginInfo>() {
+     loginService.login(GWT.getHostPageBaseURL(), new AsyncCallback<LoginInfo>() {
      public void onFailure(Throwable error) {
       }
 
       public void onSuccess(LoginInfo result) {
-    	  
-        loginInfo = result; 
-        ClientsideSettings.setLoginInfo(result);
-        
-      if (loginInfo.isLoggedIn()){ 
-       loadGUI();
-        }
-     
-        else{ 
-        	loadLogin();
-           }
+      Window.alert("URL Parameter"+ Location.getParameter("url"));
+      if (Location.getParameter("url") != null) Cookies.setCookie("url", Location.getParameter("url"));
+      loginInfo = result; 
+      ClientsideSettings.setLoginInfo(result);
+      if (loginInfo.isLoggedIn()){                 		
+		   		loadGUI();
+		   		if(Cookies.getCookie("url") != null) {
+		   			Update update = new CreateNoteView();
+		   			RootPanel.get("Details").clear();
+			   		RootPanel.get("Details").add(update);		   		
+	       		}
+	 }
+     else{
+	   	 	loadLogin();    			   	
          }
-       });
+       }
+    });
  }
 
      public void loadGUI() {
@@ -193,7 +200,6 @@ public class Application implements EntryPoint {
 	           * Showcase instantiieren.
 	           */
 	          Update update = new NoteOverviewView();
-	          
 	          RootPanel.get("Details").clear();
 	          RootPanel.get("Details").add(update);
 	    }
@@ -208,6 +214,7 @@ public class Application implements EntryPoint {
 				 * LoginPanel.
 				 */
 				RootPanel.get("Details").setWidth("65%");
+				Cookies.removeCookie("url");
 				Window.open(ClientsideSettings.getLoginInfo().getLogoutUrl(), "_self", "");
 
 			}
@@ -291,4 +298,3 @@ public class Application implements EntryPoint {
 	 return asyncCallback;
  }
  }
-
