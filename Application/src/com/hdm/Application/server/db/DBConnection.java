@@ -22,7 +22,7 @@ public class DBConnection {
      * Die URL fuer die Google Cloud-SQL Datenbank - angesprochen uebern die Projekt-, sowie Instanz-ID.
      * In deploytem Status soll die Datenbank von der Application nur ueber einen root-Zugang und den entsprechenden Google-Treibern angesprochen werden.
      */
-    private static String googleUrl = "jdbc:google:mysql://noteworkinstance:tngly/noteworkdatabase?user=root";
+    private static String googleUrl = "jdbc:google:mysql://notework-147007:noteworkinstance/noteworkdatabase?user=root";
     
     /**
      *   Die URL fuer die Google Cloud-SQL Datenbank zum Ansteuern der Datenbank von einer
@@ -57,11 +57,11 @@ public class DBConnection {
             String url = null;
             
             /**
-             * Zugangsdaten fuer einen root-Account zur Cloud SQL, der vollen Zugriff auf die DB hat.
+             * Zugangsdaten fuer einen Nicht-root-Account zur Cloud SQL, der vollen Zugriff auf die DB hat.
              */
     
-             String user = "root";
-             String password = "619464532511633203";    
+             String user = "user";
+             String password = "testit";   
             
             try {
                 if (SystemProperty.environment.value() == SystemProperty.Environment.Value.Production) {

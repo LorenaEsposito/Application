@@ -15,40 +15,50 @@ public class SearchView extends Update {
 	protected String getHeadlineText() {
 	    return "Search";
 }
+	
+	/**
+	   * Erstellung aller Panels
+	   */
+  
+  VerticalPanel searchPanel = new VerticalPanel();
+	
+  /**
+  ** Erstellung aller Widgets
+  */
+  
+  TextBox searchBox = new TextBox();
+
+  final Button searchButton = new Button("Search");
+  final RadioButton dueDateButton = new RadioButton("");
+  final RadioButton userNameButton = new RadioButton("Username");
 
 protected void run() {
 
-    // Ankündigung, was nun geschehen wird.
+    // Ankï¿½ndigung, was nun geschehen wird.
 
     this.append("");
-
-    VerticalPanel searchPanel = new VerticalPanel();
-    RootPanel.get("Details").add(searchPanel);
     
-    TextBox searchBox = new TextBox();
-    searchPanel.add(searchBox);
-    
-   // RichTextArea area = new RichTextArea();
-  //  area.ensureDebugId("cwRichText-area");
-  //  area.setSize("100%", "14em");
-    
-    //RichTextToolbar toolbar = new RichTextToolbar(area);
-   // toolbar.ensureDebugId("cwRichText-toolbar");
-   // toolbar.setWidth("100%");
-
-   // Grid grid = new Grid(2, 1);
-    // grid.setStyleName("cw-RichText");
-   // grid.setWidget(0, 0, toolbar);
-   // grid.setWidget(1, 0, area);
-   // return grid;
-    
-  
-    
-    final Button searchButton = new Button("Search");
-    
-    searchButton.setStyleName("notework-menubutton");
+	/**
+   * Zuteilung der Widgets zum jeweiligen Panel
+   */
     
     searchPanel.add(searchButton);
+    searchPanel.add(searchBox);
+    searchPanel.add(dueDateButton);
+    searchPanel.add(userNameButton);
+    RootPanel.get("Details").add(searchPanel);
+    
+	/**
+   * Zuweisung eines Styles fuer die jeweiligen Widgets
+   **/
+	
+    searchButton.setStyleName("notework-menubutton");
+    
+	/**
+     * Erstellung der ClickHandler
+     **/
+  	
+    
     
     searchButton.addClickHandler(new ClickHandler() {
   	public void onClick(ClickEvent event) {
@@ -60,19 +70,5 @@ protected void run() {
           RootPanel.get("Details").add(update);
           }
           });
-          
-          
-          RadioButton dueDateButton = new RadioButton("");
-          searchPanel.add(dueDateButton);
-          
-          RadioButton userNameButton = new RadioButton("Username");
-          searchPanel.add(userNameButton);
-          
-   
-    
-    
-    
-
-
 }
 }

@@ -11,6 +11,7 @@ import com.hdm.Application.shared.bo.*;
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 import com.hdm.Application.shared.NoteAdministration;
@@ -341,8 +342,13 @@ public void deleteDuedate(DueDate dd) throws IllegalArgumentException {
  * Es kann nach einem bestimmten User anhand seines Namens gesucht werden.
  * Dazu wird der UserMapper aufgerufen, der eine Methode beinhaltet mit der in
  * der Datenbank nach dem gesuchten Namen gesucht wird. In der Methode wird
+<<<<<<< HEAD
  * eine ArrayList erstellt, die mit den Suchergebnissen befuellt wird.
  * 
+=======
+ * eine ArrayList erstellt, die mit den Suchergebnissen befuellt wird.
+ *
+>>>>>>> refs/heads/Lola
  * @author Lorena Esposito
  * @param userName
  * @return users
@@ -354,7 +360,6 @@ public ArrayList<AppUser> searchForUser(String userName) throws IllegalArgumentE
 	ArrayList<AppUser> users = new ArrayList<AppUser>(vector);
 	return users;
 }
-
 
 /**
  * Es kann nach einem bestimmten Notebook anhand seines Titels gesucht werden.
@@ -405,8 +410,13 @@ public ArrayList<Notebook> searchForNotebook(String title) throws IllegalArgumen
    * 
    * @author Lorena Esposito
    * @param duedate
+<<<<<<< HEAD
    * @return notes
    * @throws IllegalArgumentException
+=======
+   * @return notes
+   * @throws IllegalArgumentException
+>>>>>>> refs/heads/Lola
    */
     public ArrayList<Note> searchForNoteByDD(DueDate duedate) throws IllegalArgumentException{
   	Vector<Note> vector = new Vector<Note>();
@@ -416,6 +426,11 @@ public ArrayList<Notebook> searchForNotebook(String title) throws IllegalArgumen
   	return notes;
     }
     
+    /**
+     * In dieser Methode kann anhand eines Users nach dessen Notizbuechern gesucht werden.
+     * Diese werden dann in einer ArrayList zurueck gegeben. Ist noch kein Notizbuch angelegt
+     * wird eins angelegt, zusammen mit einer Permission.
+     */
     public ArrayList<Notebook> getNotebooksOfUser(AppUser u) throws IllegalArgumentException{
     	Vector<Notebook> vector = new Vector<Notebook>();
     	
@@ -423,6 +438,10 @@ public ArrayList<Notebook> searchForNotebook(String title) throws IllegalArgumen
     		Notebook notebook = new Notebook();
     		notebook.setNbTitle("Dein erstes eigenes Notizbuch");
     		this.createNotebook(notebook);
+    		Permission permission = new Permission();
+    		permission.setNbID(notebook.getNbID());
+    		permission.setUserID(u.getUserID());
+    		this.createPermission(permission);
     		vector = this.nbMapper.findByUser(u);
     	}
     	
@@ -432,5 +451,68 @@ public ArrayList<Notebook> searchForNotebook(String title) throws IllegalArgumen
 
     	ArrayList<Notebook> notebooks = new ArrayList<Notebook>(vector);
     	return notebooks;
+    }
+    
+    /**
+     * Diese Methode gibt alle Notizen eines Notizbuchs in einer ArrayList zurueck.
+     * 
+     * @param nbTitle
+     * @return ArrayList<Note>
+     * @throws IllegalArgumentException
+     */
+    public ArrayList<Note> getNotesOfNotebook(String nbTitle, AppUser u) throws IllegalArgumentException{
+    	Vector<Note> vector = new Vector<Note>();
+    	
+    	Notebook nb = new Notebook();
+    	
+    	Vector<Notebook> nbVector = new Vector<Notebook>();
+    	nbVector = this.nbMapper.findByTitle(nbTitle);
+    	
+    	Vector<Notebook> nbVector2 = new Vector<Notebook>();
+    	
+  
+    	nbVector = this.nbMapper.findByUser(u);
+    	
+    	for(int i = 0; i < nbVector.size(); i++){
+    		for(int x = 0; x < nbVector2.size(); x++){	
+    			if(nbVector.get(i).getNbID() == nbVector.get(x).getNbID()){
+    				nb = nbVector.get(i);
+    			}
+    		}
+    	}	
+    	
+    	if(this.nMapper.findByNotebook(nb) == null){
+    		Note note = new Note();
+    		note.setnTitle("Erste Notiz");
+    		note.setNbID(nb.getNbID());
+    		this.createNote(note);
+    		vector = this.nMapper.findByNotebook(nb);
+    	}
+    	
+    	if(this.nbMapper.findById(nb.getId()) != null){
+    		vector = this.nMapper.findByNotebook(nb);
+    	}
+    	
+    	ArrayList<Note> notes = new ArrayList<Note>(vector);
+    	return notes;
+    }
+    
+    /**
+     * Diese Methode sucht einen bestimmten Nutzer anhand seiner GoogleID
+     * 
+     * @param googleID
+     * @return AppUser user
+     */
+    public AppUser searchUserByGoogleID(String googleID){
+    	AppUser user = new AppUser();
+    	
+    	if(this.uMapper.findByGoogleID(googleID) == null){
+    		user = null;
+    	}
+    	
+    	if(this.uMapper.findByGoogleID(googleID) != null){
+    		user = this.uMapper.findByGoogleID(googleID);
+    	}
+    	return user;
     }
 }

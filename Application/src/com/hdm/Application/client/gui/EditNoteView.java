@@ -3,6 +3,7 @@ package com.hdm.Application.client.gui;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RichTextArea;
 import com.google.gwt.user.client.ui.RootPanel;
@@ -22,44 +23,51 @@ protected void run() {
 
     this.append("");
 
+    /**
+	   * Erstellung aller Panels
+	   */
+	
     VerticalPanel createPanel = new VerticalPanel();
-    RootPanel.get("Details").add(createPanel);
-    //BankAdministrationAsync bankVerwaltung = ClientsideSettings.getBankVerwaltung();
+
+    /**
+    * Erstellung aller Widgets
+    */
+    
     
     Label headlineLabel = new Label("Headline");
-    createPanel.add(headlineLabel);
-    
     TextBox noteHeadline = new TextBox();
-    createPanel.add(noteHeadline);
-    
-   // RichTextArea area = new RichTextArea();
-  //  area.ensureDebugId("cwRichText-area");
-  //  area.setSize("100%", "14em");
-    
-    //RichTextToolbar toolbar = new RichTextToolbar(area);
-   // toolbar.ensureDebugId("cwRichText-toolbar");
-   // toolbar.setWidth("100%");
-
-   // Grid grid = new Grid(2, 1);
-    // grid.setStyleName("cw-RichText");
-   // grid.setWidget(0, 0, toolbar);
-   // grid.setWidget(1, 0, area);
-   // return grid;
-    
     TextArea textArea = new TextArea();
     textArea.setVisibleLines(20);
-    createPanel.add(textArea);
     
     final Button saveButton = new Button("Save");
+    final Button deleteButton = new Button("Delete");
     
-    saveButton.setStyleName("notework-menubutton");
+	/**
+   * Zuteilung der Widgets zum jeweiligen Panel
+   */
     
     createPanel.add(saveButton);
+    createPanel.add(noteHeadline);
+    createPanel.add(headlineLabel);
+    createPanel.add(textArea);
+    createPanel.add(deleteButton);
+    RootPanel.get("Details").add(createPanel);
+
+	/**
+   * Zuweisung eines Styles fuer die jeweiligen Widgets
+   **/
+    
+    saveButton.setStyleName("notework-menubutton");
+    deleteButton.setStyleName("notework-menubutton");
+  
+    /**
+     * Erstellung der ClickHandler
+     **/
     
     saveButton.addClickHandler(new ClickHandler() {
   	public void onClick(ClickEvent event) {
           /*
-           * Showcase instantiieren.
+           * View instantiieren.
            */
           Update update = new NoteOverviewView();
           
@@ -68,16 +76,10 @@ protected void run() {
     }
     });
     
-final Button deleteButton = new Button("Delete");
-    
-    deleteButton.setStyleName("notework-menubutton");
-    
-    createPanel.add(deleteButton);
-    
     deleteButton.addClickHandler(new ClickHandler() {
   	public void onClick(ClickEvent event) {
           /*
-           * Showcase instantiieren.
+           * View instantiieren.
            */
           Update update = new NoteOverviewView();
           
