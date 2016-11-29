@@ -97,7 +97,7 @@ public class Application implements EntryPoint {
 	   * Erstellung aller Widgets
 	   */
 	  
-	  private Label loginLabel = new Label("Bitte melde dich mit deinem Google Account an, um Notework nutzen zu können. Klicke auf Login und los geht's!");
+	  private Label loginLabel = new Label("You need an GMail-Account for using Notework");
 	  final Label userLabel = new Label();
 	  private Anchor signInLink = new Anchor("Login");
 	  final ListBox listbox = new ListBox();
