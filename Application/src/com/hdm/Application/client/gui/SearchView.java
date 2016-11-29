@@ -15,29 +15,28 @@ public class SearchView extends Update {
 	protected String getHeadlineText() {
 	    return "Search";
 }
+	
+	/**
+	   * Erstellung aller Panels
+	   */
+  
+  VerticalPanel searchPanel = new VerticalPanel();
+	
+  /**
+  ** Erstellung aller Widgets
+  */
+  
+  TextBox searchBox = new TextBox();
+
+  final Button searchButton = new Button("Search");
+  final RadioButton dueDateButton = new RadioButton("");
+  final RadioButton userNameButton = new RadioButton("Username");
 
 protected void run() {
 
-    // Ankündigung, was nun geschehen wird.
+    // Ankï¿½ndigung, was nun geschehen wird.
 
     this.append("");
-
-    
-    /**
-	   * Erstellung aller Panels
-	   */
-    
-    VerticalPanel searchPanel = new VerticalPanel();
-	
-    /**
-    ** Erstellung aller Widgets
-    */
-    
-    TextBox searchBox = new TextBox();
-
-    final Button searchButton = new Button("Search");
-    final RadioButton dueDateButton = new RadioButton("");
-    final RadioButton userNameButton = new RadioButton("Username");
     
 	/**
    * Zuteilung der Widgets zum jeweiligen Panel
@@ -71,7 +70,5 @@ protected void run() {
           RootPanel.get("Details").add(update);
           }
           });
-          
-
 }
 }
