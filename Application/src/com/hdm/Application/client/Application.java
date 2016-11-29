@@ -236,7 +236,8 @@ public class Application implements EntryPoint {
 	   
 	    listbox.addChangeHandler(new ChangeHandler() {
 	    	public void onChange(ChangeEvent event) {
-	    		adminService.getNotesOfNotebook(listbox.getSelectedItemText(), currentUser, getNotesOfNotebookCallback());
+	    		
+	    		adminService.getNotesOfNotebook(listbox.getItemText(listbox.getSelectedIndex()), currentUser, getNotesOfNotebookCallback());
 	    	}
 	    });
 	}

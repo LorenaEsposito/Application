@@ -469,6 +469,8 @@ public ArrayList<Notebook> searchForNotebook(String title) throws IllegalArgumen
     	nbVector = this.nbMapper.findByTitle(nbTitle);
     	
     	Vector<Notebook> nbVector2 = new Vector<Notebook>();
+    	
+  
     	nbVector = this.nbMapper.findByUser(u);
     	
     	for(int i = 0; i < nbVector.size(); i++){
@@ -487,8 +489,8 @@ public ArrayList<Notebook> searchForNotebook(String title) throws IllegalArgumen
     		vector = this.nMapper.findByNotebook(nb);
     	}
     	
-    	if(this.nbMapper.findByNotebook(nb) != null){
-    		vector = this.nbMapper.findByNotebook(nb);
+    	if(this.nbMapper.findById(nb.getId()) != null){
+    		vector = this.nMapper.findByNotebook(nb);
     	}
     	
     	ArrayList<Note> notes = new ArrayList<Note>(vector);
