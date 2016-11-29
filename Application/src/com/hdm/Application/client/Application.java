@@ -13,10 +13,7 @@ import com.hdm.Application.client.gui.WelcomeView;
 import com.hdm.Application.shared.LoginInfo;
 import com.hdm.Application.shared.NoteAdministrationAsync;
 import com.hdm.Application.shared.bo.AppUser;
-<<<<<<< HEAD
-=======
 import com.hdm.Application.shared.bo.Note;
->>>>>>> refs/heads/Lola
 import com.hdm.Application.shared.bo.Notebook;
 import com.hdm.Application.client.ClientsideSettings;
 

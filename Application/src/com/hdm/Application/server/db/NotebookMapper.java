@@ -97,7 +97,7 @@ private static NotebookMapper notebookMapper = null;
 	public Vector<Notebook> findByUser(AppUser user){
 		
 		//DB-Verbindung holen
-		
+		int userID = user.getUserID();
 		Connection con = DBConnection.connection();
 		
 		Vector<Notebook> result = new Vector<Notebook>();
@@ -107,17 +107,18 @@ private static NotebookMapper notebookMapper = null;
 			Statement stmt = con.createStatement();
 			
 			//Statement ausfuellen und als Query an DB schicken
-			ResultSet rs = stmt.executeQuery("SELECT nbid, userid FROM permissions"
-					+ "WHERE userid=" + user.getUserID() + "AND WHERE isowner = 1" );
+			ResultSet rs = stmt.executeQuery("SELECT userid, nbid FROM permissions"
+					+ "WHERE userid='" + userID + "'"
+					+ "AND isowner='1'");
 			
 			// Fuer jeden Eintrag wird ein Notebook-Objekt erstellt	
 			while (rs.next()){
 				
 				Notebook notebook = new Notebook();
 				notebook.setNbID(rs.getInt("nbid"));
-				notebook.setTitle(rs.getString("title"));
-				notebook.setNbCreDate(rs.getDate("creadate"));
-				notebook.setNbModDate(rs.getDate("moddate"));
+			//	notebook.setTitle(rs.getString("title"));
+			//	notebook.setNbCreDate(rs.getDate("creadate"));
+			//	notebook.setNbModDate(rs.getDate("moddate"));
 				
 				// Neues Objekt wird dem Ergebnisvektor hinzugefuegt
 				result.addElement(notebook);

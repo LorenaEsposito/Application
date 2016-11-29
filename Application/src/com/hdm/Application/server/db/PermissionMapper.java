@@ -176,7 +176,7 @@ package com.hdm.Application.server.db;
 				 * Zunaechst schauen wir nach, welches der momentan hoechste
 				 * Primaerschl�sselwert ist.
 				 */
-				ResultSet rs = stmt.executeQuery("SELECT MAX(id) AS maxid " + "FROM permissions ");
+				ResultSet rs = stmt.executeQuery("SELECT MAX(pid) AS maxid " + "FROM permissions ");
 
 				/**
 				 * Wenn wir etwas zur�ckerhalten, kann dies nur einzeilig sein
