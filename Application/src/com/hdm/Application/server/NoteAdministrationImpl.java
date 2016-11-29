@@ -487,8 +487,8 @@ public ArrayList<Notebook> searchForNotebook(String title) throws IllegalArgumen
     		vector = this.nMapper.findByNotebook(nb);
     	}
     	
-    	if(this.nbMapper.findByNotebook(nb) != null){
-    		vector = this.nbMapper.findByNotebook(nb);
+    	if(this.nMapper.findByNotebook(nb) != null){
+    		vector = this.nMapper.findByNotebook(nb);
     	}
     	
     	ArrayList<Note> notes = new ArrayList<Note>(vector);
