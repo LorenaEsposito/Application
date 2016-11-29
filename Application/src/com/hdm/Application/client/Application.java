@@ -96,15 +96,17 @@ public class Application implements EntryPoint {
 	  /**
 	   * Erstellung aller Widgets
 	   */
+	  
 	  private Label loginLabel = new Label("Bitte melde dich mit deinem Google Account an, um Notework nutzen zu können. Klicke auf Login und los geht's!");
-	  final Label headerLabel = new Label("Notework");
 	  final Label userLabel = new Label();
 	  private Anchor signInLink = new Anchor("Login");
 	  final ListBox listbox = new ListBox();
 	  final Button createNoteButton = new Button("");
 	  final Button noteButton = new Button("My Recipes");
-	  final Button signOutButton = new Button("Sign out");
+	  final Button signOutButton = new Button("");
 	  final Button searchButton = new Button("Search");
+	  
+	  
  /**
   * Create a remote service proxy to talk to the server-side Greeting service.
   */
@@ -115,11 +117,10 @@ public class Application implements EntryPoint {
  */
  public void onModuleLoad() {
 	  
+	 
 	 /**
 	  * Setzen des headerLabel 
 	  */
-	  headerLabel.setStyleName("notework-headline");
-	  headPanel.add(headerLabel);
     
       // Check login status using login service.
      LoginServiceAsync loginService = GWT.create(LoginService.class);
@@ -161,14 +162,16 @@ public class Application implements EntryPoint {
 	     **/
 	    createNoteButton.setStyleName("notework-addbutton");
 	    noteButton.setStyleName("notework-menubutton");
-	    signOutButton.setStyleName("notework-menubutton");
+	    signOutButton.setStyleName("signout-button");
 	    searchButton.setStyleName("notework-menubutton");
 	    listbox.setStyleName("");
+	    
 	    
 	    
 	    /**
 	     * Zuteilung der Widgets zum jeweiligen Panel
 	     */
+	    
 	    
 	    headPanel.add(userLabel);
 	    headPanel.add(signOutButton);

@@ -11,20 +11,34 @@ h1 {
 }
 
 .login{
-	background: url(https://picload.org/image/raripiwd/rectangle_11.png);
+	background: url(/LoginBox.png);
 	background-repeat: no-repeat;
-	margin-top: 135px;
-	margin-left: 142px;
-	height:200px;
+	margin-top: 80px;
+	margin-left: 170px;
+	height:300px;
 	width: 420px;
 	
 }
 
 .loginTextPanel  {
 	width: 300px;
-	margin-top: 20px;
-	margin-left: 20px;
+	margin-top: 110px;
+	margin-left: 42px;
 	
+}
+
+.notework-logo {
+	background: url(/Logo.png);
+	background-size:80%;
+	background-repeat:no-repeat;
+	font-size: 100%;
+	font-weight: bold;
+	width: 230px;
+	height:50px;
+	margin-top: 10px;
+	margin-left: 15px;
+	border: 0px;
+}	
 	
 }
 .notework-headline {
@@ -70,11 +84,26 @@ h1 {
 	font-weight: bold;
 }
 
+.signout-button {
+	background: url(/SignOut.png);
+	background-size:75%;
+	background-repeat:no-repeat;
+	font-size: 100%;
+	font-weight: bold;
+	width: 100px;
+	height:50px;
+	margin-top: 25px;
+	border: 0px;
+}	
+	
+
+
 div#TopLevelFrame {
-	background: url(http://tub.tubgit.com/reimg/resize-img.php?src=http://tub.tubgit.com/images248/33mjr21bvzf.jpg&h=1080&w=1920);
-	background-size: auto 100%
-	width: 1280px;
-	height: 800px;
+	background: url(/hintergrund.png);
+	background-size: auto;
+	background-repeat: no-repeat;
+	width-min: 1280px;
+	height-min: 800px;
 	margin: 0 auto;      /* standardkonforme horizontale Zentrierung */
  }
 
@@ -95,9 +124,11 @@ div#Navigator {
 }
 
 div#Header {
-	height: 40px;
-	margin: 0 auto;      /* standardkonforme horizontale Zentrierung */
-	/* border: 1px dashed silver; */
+	height: 70px;
+	width: 100px;
+	margin-left: 1300px ;      /* standardkonforme horizontale Zentrierung */
+	border: 1px line silver;
+	align: right;
 }
 
 div#Trailer {
