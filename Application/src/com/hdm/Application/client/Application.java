@@ -121,7 +121,6 @@ public class Application implements EntryPoint {
       }
 
       public void onSuccess(LoginInfo result) {
-      Window.alert("URL Parameter"+ Location.getParameter("url"));
       if (Location.getParameter("url") != null) Cookies.setCookie("url", Location.getParameter("url"));
       loginInfo = result; 
       ClientsideSettings.setLoginInfo(result);
