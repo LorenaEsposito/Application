@@ -9,6 +9,10 @@ h1 {
   margin: 10px 0px 0px;
   text-align: left;
 }
+.loginLink {
+	background: url(/LoginBox.png);
+}
+
 
 .login{
 	background: url(/LoginBox.png);
@@ -22,14 +26,14 @@ h1 {
 
 .loginTextPanel  {
 	width: 300px;
-	margin-top: 110px;
+	margin-top: 100px;
 	margin-left: 42px;
 	
 }
 
 .notework-logo {
 	background: url(/Logo.png);
-	background-size:80%;
+	background-size:90%;
 	background-repeat:no-repeat;
 	font-size: 100%;
 	font-weight: bold;
@@ -84,6 +88,34 @@ h1 {
 	font-weight: bold;
 }
 
+.notework-addbutton{
+	background-color: #f7f7f7;
+	font-size: 100%;
+	width: 150px;
+	height:30px;
+	margin-left: 40px;
+	
+	
+}
+
+.listbox {
+	background-color: #f7f7f7;
+	font-size: 100%;
+	width: 150px;
+	height:30px;
+	margin-left: 40px;
+}
+
+.notework-searchbutton{
+	background-color: #f7f7f7;
+	font-size: 100%;
+	width: 150px;
+	height:30px;
+	margin-left: 40px;
+	
+	
+}
+
 .signout-button {
 	background: url(/SignOut.png);
 	background-size:75%;
@@ -93,13 +125,14 @@ h1 {
 	width: 100px;
 	height:50px;
 	margin-top: 25px;
+	margin-left: 1050px;
 	border: 0px;
 }	
 	
 
 
 div#TopLevelFrame {
-	background: url(/hintergrund.png);
+	background: url(/Hintergrund.jpg);
 	background-size: auto;
 	background-repeat: no-repeat;
 	width-min: 1280px;
@@ -111,7 +144,7 @@ div#Details {
 	margin-left: 20em;
 	height: 700px;
 	padding: 1em 1em;
-	border-top: 1px dashed silver;
+	border-top: 1px solid silver;
 	border-left: 1px dashed silver;
 }
 
@@ -120,14 +153,13 @@ div#Navigator {
 	width: 18em;
 	height: 700px;
 	padding: 1em 1em;
-	border-top: 1px dashed silver;
+	border-top: 1px solid silver;
 }
 
 div#Header {
 	height: 70px;
 	width: 100px;
-	margin-left: 1300px ;      /* standardkonforme horizontale Zentrierung */
-	border: 1px line silver;
+	margin-left: 10px ;      /* standardkonforme horizontale Zentrierung */
 	align: right;
 }
 

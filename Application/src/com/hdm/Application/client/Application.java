@@ -36,6 +36,7 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 /**
@@ -99,12 +100,16 @@ public class Application implements EntryPoint {
 	  
 	  private Label loginLabel = new Label("You need an GMail-Account for using Notework");
 	  final Label userLabel = new Label();
+	  final Label usernameLabel = new Label("Username");
+	  final Label passwordLabel = new Label("Password");
 	  private Anchor signInLink = new Anchor("Login");
 	  final ListBox listbox = new ListBox();
-	  final Button createNoteButton = new Button("");
-	  final Button noteButton = new Button("My Recipes");
+	  final Button createNoteButton = new Button("New Note +");
 	  final Button signOutButton = new Button("");
 	  final Button searchButton = new Button("Search");
+	  final Button logoButton = new Button();
+	  final TextBox usernameBox = new TextBox();
+	  final TextBox passwordBox = new TextBox();
 	  
 	  
  /**
@@ -161,10 +166,10 @@ public class Application implements EntryPoint {
 	     * Zuweisung eines Styles fuer die jeweiligen Widgets
 	     **/
 	    createNoteButton.setStyleName("notework-addbutton");
-	    noteButton.setStyleName("notework-menubutton");
 	    signOutButton.setStyleName("signout-button");
-	    searchButton.setStyleName("notework-menubutton");
-	    listbox.setStyleName("");
+	    searchButton.setStyleName("notework-searchbutton");
+	    logoButton.setStyleName("notework-logo");
+	    listbox.setStyleName("listbox");
 	    
 	    
 	    
@@ -174,10 +179,10 @@ public class Application implements EntryPoint {
 	    
 	    
 	    headPanel.add(userLabel);
+	    headPanel.add(logoButton);
 	    headPanel.add(signOutButton);
 	    navPanel.add(listbox);
 	    navPanel.add(createNoteButton);
-	    navPanel.add(noteButton);
 	    navPanel.add(searchButton);
 	    RootPanel.get("Header").add(headPanel);
 	    RootPanel.get("Navigator").add(navPanel);
@@ -198,17 +203,6 @@ public class Application implements EntryPoint {
 	    }
 	    });	    
 
-	    noteButton.addClickHandler(new ClickHandler() {
-	  	public void onClick(ClickEvent event) {
-	          /*
-	           * Showcase instantiieren.
-	           */
-	          Update update = new NoteOverviewView();
-	          
-	          RootPanel.get("Details").clear();
-	          RootPanel.get("Details").add(update);
-	    }
-	    });
 	    
 	    signOutButton.addClickHandler(new ClickHandler() {
 			@Override
@@ -248,7 +242,6 @@ public class Application implements EntryPoint {
      
      Cookies.setCookie("usermail", null);
      signInLink.setHref(loginInfo.getLoginUrl());
-     
      signInLink.setStyleName("loginLink");
      loginLabel.setStyleName("loginLink2");
      loginPanel.setStyleName("login");
@@ -257,6 +250,10 @@ public class Application implements EntryPoint {
      loginTextPanel.add(loginLabel);
      loginTextPanel.add(signInLink);
      loginTextPanel.setStyleName("loginTextPanel");
+//     loginTextPanel.add(usernameLabel);
+//     loginTextPanel.add(usernameBox);
+//     loginTextPanel.add(passwordLabel);
+//     loginTextPanel.add(passwordBox);
      loginPanel.add(loginTextPanel);
      
      
