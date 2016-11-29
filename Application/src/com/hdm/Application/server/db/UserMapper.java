@@ -74,7 +74,7 @@ public class UserMapper {
 			 * Statement ausf�llen und als Query an die DB schicken
 			 */
 
-			ResultSet rs = stmt.executeQuery("SELECT uid, gid, username FROM users " + "WHERE uid='" + id
+			ResultSet rs = stmt.executeQuery("SELECT userid, gid, username FROM users " + "WHERE userid='" + id
 					+ "' ORDER BY id");
 
 			/**
@@ -84,7 +84,7 @@ public class UserMapper {
 			if (rs.next()) {
 
 				AppUser u = new AppUser();
-				u.setUserID(rs.getInt("uid"));
+				u.setUserID(rs.getInt("userid"));
 				u.setUserName(rs.getString("username"));
 				return u;
 			}
@@ -109,7 +109,7 @@ public class UserMapper {
 			/**
 			 * Statement ausf�llen und als Query an die DB schicken
 			 */
-			ResultSet rs = stmt.executeQuery("SELECT uid, gid, username FROM users " + "WHERE gid='" + gid
+			ResultSet rs = stmt.executeQuery("SELECT userid, gid, username FROM users " + "WHERE gid='" + gid
 					+ "' ORDER BY gid");
 
 			/**
@@ -119,7 +119,7 @@ public class UserMapper {
 			if (rs.next()) {
 
 				AppUser u = new AppUser();
-				u.setUserID(rs.getInt("uid"));
+				u.setUserID(rs.getInt("userid"));
 				u.setUserName(rs.getString("username"));
 				u.setGoogleID(rs.getString("gid"));
 				return u;
@@ -131,7 +131,6 @@ public class UserMapper {
 
 		return null;
 	}
-
 	
 	/**
 	 * Read-Methode - Anhand eines Usernamen wird der dazu gehoerige User in
@@ -142,7 +141,11 @@ public class UserMapper {
 	 * 
 	 * @author Marius Klepser
 	 * @param id
+<<<<<<< HEAD
 	 *            Der Username zum User, der aus der Datenbank gelesen werden
+=======
+	 *            Der Username zum User, der aus der Datenbank gelesen werden
+>>>>>>> refs/heads/master
 	 *            soll
 	 * @return Das durch die id referenzierte User-Objekt
 	 */
@@ -161,8 +164,7 @@ public class UserMapper {
 			/**
 			 * Statement ausf�llen und als Query an die DB schicken
 			 */
-			
-			ResultSet rs = stmt.executeQuery("SELECT uid, , gid, username FROM users " + "WHERE username='" + name
+			ResultSet rs = stmt.executeQuery("SELECT userid, , gid, username FROM users " + "WHERE username='" + name
 					+ "' ORDER BY userName");
 
 			/**
@@ -172,7 +174,7 @@ public class UserMapper {
 			
 			while (rs.next()) {
 				AppUser u = new AppUser();
-				u.setUserID(rs.getInt("uid"));
+				u.setUserID(rs.getInt("userid"));
 				u.setUserName(rs.getString("username"));
 
 				/**
@@ -215,7 +217,7 @@ public class UserMapper {
 			 * Statement ausf�llen und als Query an die DB schicken.
 			 */
 
-			ResultSet rs = stmt.executeQuery("SELECT uid, gid, username FROM users" + "ORDER BY uid");
+			ResultSet rs = stmt.executeQuery("SELECT userid, gid, username FROM users" + "ORDER BY userid");
 
 			/**
 			 * F�r jeden Eintrag im Suchergebnis wird nun ein Profile-Objekt
@@ -223,7 +225,7 @@ public class UserMapper {
 			 */
 			while (rs.next()) {
 				AppUser u = new AppUser();
-				u.setUserID(rs.getInt("uid"));
+				u.setUserID(rs.getInt("userid"));
 				u.setUserName(rs.getString("username"));
 
 				/**
@@ -285,11 +287,11 @@ public class UserMapper {
 				 * Jetzt erst erfolgt die tatsaechliche Einf�geoperation
 				 */
 				stmt.executeUpdate(
-						"INSERT INTO users (uid, username) "
+						"INSERT INTO users (userid, username) "
 								+ "VALUES (" + u.getUserID() + ",'" + u.getUserName() + "')");
 
 				System.out.println(
-						"INSERT INTO users (uid, username) "
+						"INSERT INTO users (userid, username) "
 								+ "VALUES (" + u.getUserID() + ",'" + u.getUserName() + "')");
 
 				return u;
@@ -332,7 +334,7 @@ public class UserMapper {
 			 * Statement ausf�llen und als Query an die DB schicken
 			 */
 
-			stmt.executeUpdate("DELETE FROM users " + "WHERE uid=" + u.getUserID());
+			stmt.executeUpdate("DELETE FROM users " + "WHERE userid=" + u.getUserID());
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

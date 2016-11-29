@@ -60,8 +60,8 @@ public class DBConnection {
              * Zugangsdaten fuer einen Nicht-root-Account zur Cloud SQL, der vollen Zugriff auf die DB hat.
              */
     
-             String user = "root";
-             String password = "619464532511633203";   
+             String user = "user";
+             String password = "testit";   
             
             try {
                 if (SystemProperty.environment.value() == SystemProperty.Environment.Value.Production) {

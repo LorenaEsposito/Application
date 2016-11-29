@@ -88,6 +88,7 @@ public class Application implements EntryPoint {
 	   * Erstellung aller Panels
 	   */
 	  private VerticalPanel loginPanel = new VerticalPanel();
+	  private VerticalPanel loginTextPanel = new VerticalPanel();
 	  public final FlowPanel detailPanel = new FlowPanel();
 	  private HorizontalPanel headPanel = new HorizontalPanel();
 	  private VerticalPanel navPanel = new VerticalPanel();
@@ -95,7 +96,7 @@ public class Application implements EntryPoint {
 	  /**
 	   * Erstellung aller Widgets
 	   */
-	  private Label loginLabel = new Label("Bitte melde dich mit deinem Google Account an, um Notework nutzen zu k�nnen. Klicke auf Login und los geht's!");
+	  private Label loginLabel = new Label("Bitte melde dich mit deinem Google Account an, um Notework nutzen zu können. Klicke auf Login und los geht's!");
 	  final Label headerLabel = new Label("Notework");
 	  final Label userLabel = new Label();
 	  private Anchor signInLink = new Anchor("Login");
@@ -168,6 +169,7 @@ public class Application implements EntryPoint {
 	    /**
 	     * Zuteilung der Widgets zum jeweiligen Panel
 	     */
+	    
 	    headPanel.add(userLabel);
 	    headPanel.add(signOutButton);
 	    navPanel.add(listbox);
@@ -181,6 +183,7 @@ public class Application implements EntryPoint {
 	    /**
 	     * Implementierung der jeweiligen ClickHandler fuer die einzelnen Widgets
 	     */
+	    
 	    createNoteButton.addClickHandler(new ClickHandler() {
 	  	public void onClick(ClickEvent event) {
 	          /*
@@ -241,15 +244,18 @@ public class Application implements EntryPoint {
  private void loadLogin() {
      
      Cookies.setCookie("usermail", null);
-     loginPanel.setStyleName("login");
      signInLink.setHref(loginInfo.getLoginUrl());
      
      signInLink.setStyleName("loginLink");
      loginLabel.setStyleName("loginLink2");
+     loginPanel.setStyleName("login");
      
      
-     loginPanel.add(loginLabel);
-     loginPanel.add(signInLink);
+     loginTextPanel.add(loginLabel);
+     loginTextPanel.add(signInLink);
+     loginTextPanel.setStyleName("loginTextPanel");
+     loginPanel.add(loginTextPanel);
+     
      
      Cookies.setCookie("userMail", null);
      Cookies.setCookie("userID", null);
