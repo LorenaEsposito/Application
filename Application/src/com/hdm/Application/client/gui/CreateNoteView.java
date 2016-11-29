@@ -79,7 +79,7 @@ public class CreateNoteView extends Update{
 protected void run() {
     this.append("");
     
-    currentNB = Application.listbox.getSelectedItemText();
+    //currentNB = Application.listbox.getSelectedItemText();
  
 	/**
      * Zuteilung der Widgets zum jeweiligen Panel
