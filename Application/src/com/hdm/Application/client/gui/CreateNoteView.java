@@ -103,7 +103,6 @@ protected void run() {
         
     textArea.setVisibleLines(20);
     textArea.setPixelSize(420, 350);
-    
     noteTitle.setText("Title");
     readButton.setText("Leseberechtigung");
     editButton.setText("Bearbeitungsberechtigung");
@@ -111,7 +110,6 @@ protected void run() {
     /**
      * Zuweisung eines Styles fuer die jeweiligen Widgets
      **/
-    
     createButton.setStyleName("notework-menubutton");
     cancelButton.setStyleName("notework-menubutton");
     //editButton.setStyleName("notework-menubutton");
@@ -216,7 +214,6 @@ protected void run() {
     }
     });
     
-    
     cancelButton.addClickHandler(new ClickHandler() {
     	public void onClick(ClickEvent event){
     		cancelButton.setEnabled(false);
@@ -228,6 +225,7 @@ protected void run() {
     		RootPanel.get("Details").add(update);
     	}
     });
+
 //    editButton.addClickHandler(new ClickHandler() {
 //  	public void onClick(ClickEvent event) {
 //          /*
@@ -253,6 +251,7 @@ protected void run() {
 //    });
 }
     
+
     private AsyncCallback<Void> createNoteCallback() {
     	AsyncCallback<Void> asyncCallback = new AsyncCallback<Void>(){
     		
@@ -268,6 +267,7 @@ protected void run() {
     	 }
     	};
     	return asyncCallback;
+
     }
     
     private AsyncCallback<Void> createPermissionCallback() {
@@ -305,6 +305,4 @@ protected void run() {
     	return asyncCallback;
     }
 }
-
-
 

@@ -76,7 +76,7 @@ public class Application implements EntryPoint {
 		 * Eine ArrayList, in der Note-Objekte gespeichert werden
 		 */
 		private ArrayList<Note> notes = null;
-
+		
 	  /**
 	   * The message displayed to the user when the server cannot be reached or
 	   * returns an error.
@@ -153,6 +153,7 @@ public class Application implements EntryPoint {
  		adminService.getNotebooksOfUser(currentUser, getNotebooksOfUserCallback());
     	
  		Update update = new WelcomeView();
+
  	    
 	    /**
 	     * Zuweisung eines Styles fuer die jeweiligen Widgets
@@ -228,6 +229,7 @@ public class Application implements EntryPoint {
 	          RootPanel.get("Details").add(update);
 	    }
 	    });
+
 	   
 	    listbox.addChangeHandler(new ChangeHandler() {
 	    	public void onChange(ChangeEvent event) {

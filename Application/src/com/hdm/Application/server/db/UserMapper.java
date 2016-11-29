@@ -144,12 +144,7 @@ public class UserMapper {
 	 * @param id
 	 *            Der Username zum User, der aus der Datenbank gelesen werden
 	 *            soll
-<<<<<<< HEAD
 	 * @return Das durch die id referenzierte User-Objekt
-=======
-	 * @return Das durch die id referenzierte User-Objekt
-	 * 
->>>>>>> refs/remotes/origin/master
 	 */
 
 	public Vector<AppUser> findByName(String name) {
@@ -158,7 +153,6 @@ public class UserMapper {
 		 * DB-Verbindung holen & Erzeugen eines neuen SQL-Statements.
 		 */
 		Connection con = DBConnection.connection();
-
 		Vector<AppUser> result = new Vector<AppUser>();
 		
 		try {
