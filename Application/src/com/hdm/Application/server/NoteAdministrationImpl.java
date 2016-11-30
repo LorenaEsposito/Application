@@ -342,13 +342,8 @@ public void deleteDuedate(DueDate dd) throws IllegalArgumentException {
  * Es kann nach einem bestimmten User anhand seines Namens gesucht werden.
  * Dazu wird der UserMapper aufgerufen, der eine Methode beinhaltet mit der in
  * der Datenbank nach dem gesuchten Namen gesucht wird. In der Methode wird
-<<<<<<< HEAD
  * eine ArrayList erstellt, die mit den Suchergebnissen befuellt wird.
  * 
-=======
- * eine ArrayList erstellt, die mit den Suchergebnissen befuellt wird.
- *
->>>>>>> refs/heads/Lola
  * @author Lorena Esposito
  * @param userName
  * @return users
@@ -410,13 +405,8 @@ public ArrayList<Notebook> searchForNotebook(String title) throws IllegalArgumen
    * 
    * @author Lorena Esposito
    * @param duedate
-<<<<<<< HEAD
    * @return notes
    * @throws IllegalArgumentException
-=======
-   * @return notes
-   * @throws IllegalArgumentException
->>>>>>> refs/heads/Lola
    */
     public ArrayList<Note> searchForNoteByDD(DueDate duedate) throws IllegalArgumentException{
   	Vector<Note> vector = new Vector<Note>();
@@ -487,9 +477,9 @@ public ArrayList<Notebook> searchForNotebook(String title) throws IllegalArgumen
     		vector = this.nMapper.findByNotebook(nb);
     	}
     	
-//    	if(this.nbMapper.findByNotebook(nb) != null){
-//    		vector = this.nbMapper.findByNotebook(nb);
-//    	}
+    	if(this.nMapper.findByNotebook(nb) != null){
+    		vector = this.nMapper.findByNotebook(nb);
+    	}
     	
     	ArrayList<Note> notes = new ArrayList<Note>(vector);
     	return notes;
