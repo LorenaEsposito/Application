@@ -7,7 +7,6 @@ import com.hdm.Application.shared.FieldVerifier;
 import com.hdm.Application.client.gui.CreateNoteView;
 import com.hdm.Application.client.gui.LoginService;
 import com.hdm.Application.client.gui.LoginServiceAsync;
-import com.hdm.Application.client.gui.NoteOverviewView;
 import com.hdm.Application.client.gui.Update;
 import com.hdm.Application.client.gui.WelcomeView;
 import com.hdm.Application.shared.LoginInfo;
@@ -20,6 +19,10 @@ import com.hdm.Application.client.ClientsideSettings;
 import java.util.ArrayList;
 
 import com.hdm.Application.client.gui.SearchView;
+import com.hdm.Application.client.gui.ShowNoteView;
+import com.google.appengine.api.users.User;
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ChangeEvent;
@@ -97,12 +100,19 @@ public class Application implements EntryPoint {
 	  /**
 	   * Erstellung aller Widgets
 	   */
-	  
+
+//	  private Label loginLabel = new Label("Bitte melde dich mit deinem Google Account an, um Notework nutzen zu können. Klicke auf Login und los geht's!");
+//	  final Label headerLabel = new Label("Notework");
+  
 	  private Label loginLabel = new Label("You need an GMail-Account for using Notework");
 	  final Label userLabel = new Label();
 	  final Label usernameLabel = new Label("Username");
 	  final Label passwordLabel = new Label("Password");
 	  private Anchor signInLink = new Anchor("Login");
+//	  public final static ListBox listbox = new ListBox();
+//	  final Button createNoteButton = new Button("");
+//	  final Button noteButton = new Button("My Recipes");
+//	  final Button signOutButton = new Button("Sign out");
 	  final ListBox listbox = new ListBox();
 	  final Button createNoteButton = new Button("New Note +");
 	  final Button signOutButton = new Button("");
@@ -158,7 +168,7 @@ public class Application implements EntryPoint {
  		adminService.getUserByGoogleID(ClientsideSettings.getLoginInfo().getEmailAddress().substring(0, atIndex),
  				getCurrentUserCallback());
  		adminService.getNotebooksOfUser(currentUser, getNotebooksOfUserCallback());
-    	
+ 		
  		Update update = new WelcomeView();
 
  	    
@@ -176,7 +186,6 @@ public class Application implements EntryPoint {
 	    /**
 	     * Zuteilung der Widgets zum jeweiligen Panel
 	     */
-	    
 	    
 	    headPanel.add(userLabel);
 	    headPanel.add(logoButton);
@@ -202,6 +211,19 @@ public class Application implements EntryPoint {
 	          RootPanel.get("Details").add(update);
 	    }
 	    });	    
+
+
+//	    noteButton.addClickHandler(new ClickHandler() {
+//	  	public void onClick(ClickEvent event) {
+//	          /*
+//	           * Showcase instantiieren.
+//	           */
+//	          Update update = new ShowNoteView();
+//	          
+//	          RootPanel.get("Details").clear();
+//	          RootPanel.get("Details").add(update);
+//	    }
+//	    });
 
 	    
 	    signOutButton.addClickHandler(new ClickHandler() {

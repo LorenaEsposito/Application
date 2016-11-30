@@ -96,6 +96,7 @@ public class UserMapper {
 		return null;
 	}
 
+
 	public AppUser findByGoogleID(String gid) {
 		/**
 		 * DB-Verbindung holen & Erzeugen eines neuen SQL-Statements.
@@ -140,7 +141,20 @@ public class UserMapper {
 	 * 
 	 * @author Marius Klepser
 	 * @param id
+<<<<<<< HEAD
 	 *            Der Username zum User, der aus der Datenbank gelesen werden
+=======
+	 *            Der Username zum User, der aus der Datenbank gelesen werden
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> refs/heads/master
+=======
+>>>>>>> refs/remotes/origin/master
+=======
+>>>>>>> refs/heads/master
+>>>>>>> refs/heads/Lola
 	 *            soll
 	 * @return Das durch die id referenzierte User-Objekt
 	 */

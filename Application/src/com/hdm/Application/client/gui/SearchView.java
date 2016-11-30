@@ -29,8 +29,10 @@ public class SearchView extends Update {
   TextBox searchBox = new TextBox();
 
   final Button searchButton = new Button("Search");
-  final RadioButton dueDateButton = new RadioButton("");
+  final RadioButton dueDateButton = new RadioButton("Duedate");
   final RadioButton userNameButton = new RadioButton("Username");
+  final RadioButton noteButton = new RadioButton("Note");
+  final RadioButton notebookButton = new RadioButton("Notebook");
 
 protected void run() {
 
@@ -46,6 +48,8 @@ protected void run() {
     searchPanel.add(searchBox);
     searchPanel.add(dueDateButton);
     searchPanel.add(userNameButton);
+    searchPanel.add(noteButton);
+    searchPanel.add(notebookButton);
     RootPanel.get("Details").add(searchPanel);
     
 	/**
@@ -54,17 +58,21 @@ protected void run() {
 	
     searchButton.setStyleName("notework-menubutton");
     
+    dueDateButton.setText("Duedate");
+    userNameButton.setText("Username");
+    noteButton.setText("Note");
+    notebookButton.setText("Notebook");
+    
 	/**
      * Erstellung der ClickHandler
      **/
-  	
-    
     
     searchButton.addClickHandler(new ClickHandler() {
   	public void onClick(ClickEvent event) {
           /*
            * Showcase instantiieren.
            */
+
   		  Update update = new ResultView();
           RootPanel.get("Details").clear();
           RootPanel.get("Details").add(update);

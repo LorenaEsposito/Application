@@ -69,7 +69,7 @@ protected void run() {
           /*
            * View instantiieren.
            */
-          Update update = new NoteOverviewView();
+          Update update = new ShowNoteView();
           
           RootPanel.get("Details").clear();
           RootPanel.get("Details").add(update);
@@ -81,7 +81,7 @@ protected void run() {
           /*
            * View instantiieren.
            */
-          Update update = new NoteOverviewView();
+          Update update = new WelcomeView();
           
           RootPanel.get("Details").clear();
           RootPanel.get("Details").add(update);

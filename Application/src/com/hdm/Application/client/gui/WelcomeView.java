@@ -35,11 +35,6 @@ public class WelcomeView extends Update {
 		
 		adminService = ClientsideSettings.getAdministration();
 		
-		/**
-		 * Zuteilung der Widgets zum jeweiligen Panel
-		 */
-		welcomePanel.add(welcomeLabel);
-		
    	 	/**
 		 * Auslesen des Profils vom aktuellen Benutzer aus der Datenbank.
 		 */
@@ -50,7 +45,11 @@ public class WelcomeView extends Update {
 		 welcomeLabel.setText("Willkommen " + currentUser.getUserName() + " " + currentUser.getUserLastName()
 		 + "bei Notework. Hier koennen Sie Notizbuecher anlegen und Ihre Informationen in Notizen speichern.");
 		
-		
+			/**
+			 * Zuteilung der Widgets zum jeweiligen Panel
+			 */
+			welcomePanel.add(welcomeLabel);
+			
 	}
 	
 	private AsyncCallback<AppUser> getCurrentUserCallback() {

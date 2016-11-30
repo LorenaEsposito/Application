@@ -18,7 +18,7 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
-
+import com.hdm.Application.client.Application;
 import com.hdm.Application.client.ClientsideSettings;
 import com.hdm.Application.shared.NoteAdministrationAsync;
 import com.hdm.Application.shared.bo.AppUser;
@@ -51,7 +51,7 @@ public class CreateNoteView extends Update{
 	   * Erstellung aller Panels
 	   */
 
-  VerticalPanel createPanel = new VerticalPanel();
+  HorizontalPanel createPanel = new HorizontalPanel();
   HorizontalPanel buttonPanel = new HorizontalPanel();
 
   
@@ -79,8 +79,8 @@ public class CreateNoteView extends Update{
 protected void run() {
     this.append("");
     
-    adminService = ClientsideSettings.getAdministration();
- 
+    //currentNB = Application.listbox.getSelectedItemText();
+
 	/**
      * Zuteilung der Widgets zum jeweiligen Panel
      */
@@ -207,7 +207,7 @@ protected void run() {
           /*
            * Showcase instantiieren.
            */
-          Update update = new NoteOverviewView();
+          Update update = new ShowNoteView();
           
           RootPanel.get("Details").clear();
           RootPanel.get("Details").add(update);

@@ -403,10 +403,36 @@ public ArrayList<Notebook> searchForNotebook(String title) throws IllegalArgumen
    * in der Datenbank nach einem bestimmten Faelligkeitsdatum gesucht wird. In der Methode wird
    * eine ArrayList erstellt, die mit den Suchergebnissen befuellt wird. 
    * 
+<<<<<<< HEAD
    * @author Lorena Esposito
    * @param duedate
    * @return notes
+=======
+   * @author Lorena Esposito
+<<<<<<< HEAD
+   * @param duedate
+   * @return notes
+=======
+<<<<<<< HEAD
+<<<<<<< HEAD
+   * @param duedate
+<<<<<<< HEAD
+   * @return notes
    * @throws IllegalArgumentException
+=======
+   * @return notes
+>>>>>>> refs/heads/master
+=======
+   * @param duedate
+   * @return notes
+>>>>>>> refs/remotes/origin/master
+=======
+   * @param duedate
+   * @return notes
+>>>>>>> refs/heads/master
+>>>>>>> refs/heads/Lola
+   * @throws IllegalArgumentException
+>>>>>>> refs/heads/Lola
    */
     public ArrayList<Note> searchForNoteByDD(DueDate duedate) throws IllegalArgumentException{
   	Vector<Note> vector = new Vector<Note>();
