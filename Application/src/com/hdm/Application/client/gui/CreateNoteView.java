@@ -2,11 +2,17 @@ package com.hdm.Application.client.gui;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.logical.shared.ShowRangeEvent;
+import com.google.gwt.event.logical.shared.ShowRangeHandler;
+import com.google.gwt.user.cellview.client.CellTable;
+import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
@@ -19,7 +25,9 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.datepicker.client.CalendarUtil;
 import com.google.gwt.user.datepicker.client.DatePicker;
+import com.google.gwt.view.client.ListDataProvider;
 import com.hdm.Application.client.Application;
 import com.hdm.Application.client.ClientsideSettings;
 import com.hdm.Application.shared.NoteAdministrationAsync;
@@ -44,6 +52,10 @@ public class CreateNoteView extends Update{
 	private ArrayList<Permission> permissions = new ArrayList<Permission>();
 	
 	private AppUser user = new AppUser();
+	
+	//private String currentDateTime =  new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());;
+	
+	Date date = new Date();
 	
 	protected String getHeadlineText() {
 	    return "Create Note";
@@ -79,6 +91,8 @@ public class CreateNoteView extends Update{
    final RadioButton readButton = new RadioButton("Leseberechtigung");
    final RadioButton editButton = new RadioButton("Bearbeitungsberechtigung");
    DatePicker duedate = new DatePicker();
+   CellTable<AppUser> table = new CellTable<AppUser>(); 
+   Label testLabel = new Label();
 	
 //	private Note currentNote = null;
 
@@ -86,6 +100,24 @@ protected void run() {
     this.append("");
     
     currentNBTitle = Application.listbox.getSelectedItemText();
+    
+    testLabel.setText(currentNBTitle);
+    
+    TextColumn<AppUser> nameColumn = new TextColumn<AppUser>(){
+    	@Override
+    	public String getValue(AppUser user){
+    		return user.getGoogleID();
+    	}
+    };
+    
+    table.addColumn(nameColumn, "");
+    
+ // Create a data provider.
+    ListDataProvider<AppUser> dataProvider = new ListDataProvider<AppUser>();
+    
+ // Connect the table to the data provider.
+    dataProvider.addDataDisplay(table);
+
 
 	/**
      * Zuteilung der Widgets zum jeweiligen Panel
@@ -100,8 +132,11 @@ protected void run() {
     secondPanel.add(readButton);
     secondPanel.add(editButton);
     firstPanel.add(savePermissionButton);
+    thirdPanel.add(duedate);
+    thirdPanel.add(table);
     buttonPanel.add(createButton);
     buttonPanel.add(cancelButton);
+    buttonPanel.add(testLabel);
     //buttonPanel.add(editButton);
     //buttonPanel.add(deleteButton);
     createPanel.add(firstPanel);
@@ -124,6 +159,27 @@ protected void run() {
     cancelButton.setStyleName("notework-menubutton");
     //editButton.setStyleName("notework-menubutton");
     //deleteButton.setStyleName("notework-menubutton");
+    
+    /*
+	 * Sperren der Eingabemoeglichkeit im DatePicker bei zukuenftigen Daten
+	 */
+	duedate.addShowRangeHandlerAndFire(new ShowRangeHandler<java.util.Date>() {
+		@Override
+		public void onShowRange(ShowRangeEvent<Date> event) {
+			Date start = event.getStart();
+			Date temp = CalendarUtil.copyDate(start);
+			Date end = event.getEnd();
+
+			Date today = new Date();
+
+			while (temp.before(end)) {
+				if (temp.before(today) && duedate.isDateVisible(temp)) {
+					duedate.setTransientEnabledOnDates(false, temp);
+				}
+				CalendarUtil.addDaysToDate(temp, 1);
+			}
+		}
+	});
   	
     /**
      * Erstellung der Clickhandler
@@ -211,6 +267,7 @@ protected void run() {
 		note.setnTitle(noteTitle.getText());
 		note.setnSubtitle(noteSubtitle.getText());
 		note.setnContent(textArea.getText());
+		note.setnCreDate(date);
 		//Date date = new Date();
 		//note.setnCreDate(date);
 		adminService.createNote(note, createNoteCallback());

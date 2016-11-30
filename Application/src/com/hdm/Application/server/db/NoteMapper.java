@@ -394,7 +394,7 @@ public class NoteMapper {
 				
 				//Statement ausfuellen und als Query an DB schicken
 				ResultSet rs = stmt.executeQuery("SELECT nid, nbid, title, subtitle, content, source, creadate, moddate FROM notes"
-						+ "WHERE nbid=" + notebook.getNbID() );
+						+ " WHERE nbid=" + notebook.getNbID() );
 				
 				// Fuer jeden Eintrag wird ein Notebook-Objekt erstellt	
 				while (rs.next()){
