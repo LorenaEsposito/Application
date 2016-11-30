@@ -10,6 +10,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RadioButton;
@@ -18,6 +19,7 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.datepicker.client.DatePicker;
 import com.hdm.Application.client.Application;
 import com.hdm.Application.client.ClientsideSettings;
 import com.hdm.Application.shared.NoteAdministrationAsync;
@@ -37,7 +39,7 @@ public class CreateNoteView extends Update{
 	
 	private Note n = new Note();
 	
-	private Notebook currentNB = new Notebook();
+	private String currentNBTitle = new String();
 	
 	private ArrayList<Permission> permissions = new ArrayList<Permission>();
 	
@@ -51,7 +53,11 @@ public class CreateNoteView extends Update{
 	   * Erstellung aller Panels
 	   */
 
-  HorizontalPanel createPanel = new HorizontalPanel();
+  VerticalPanel createPanel = new VerticalPanel();
+  HorizontalPanel firstPanel = new HorizontalPanel();
+  HorizontalPanel secondPanel = new HorizontalPanel();
+  HorizontalPanel thirdPanel = new HorizontalPanel();
+  HorizontalPanel fourthPanel = new HorizontalPanel();
   HorizontalPanel buttonPanel = new HorizontalPanel();
 
   
@@ -59,8 +65,8 @@ public class CreateNoteView extends Update{
    * Erstellung aller Widgets
    */
     
-   Label headlineLabel = new Label("Headline");
-   Label noticeLabel = new Label("Notice");
+   //Label headlineLabel = new Label("Headline");
+   //Label noticeLabel = new Label("Notice");
    TextBox noteTitle = new TextBox();
    TextBox noteSubtitle = new TextBox();
    TextBox permissionText = new TextBox();
@@ -72,32 +78,36 @@ public class CreateNoteView extends Update{
    //final Button deleteButton = new Button("Delete");
    final RadioButton readButton = new RadioButton("Leseberechtigung");
    final RadioButton editButton = new RadioButton("Bearbeitungsberechtigung");
-   
+   DatePicker duedate = new DatePicker();
 	
 //	private Note currentNote = null;
 
 protected void run() {
     this.append("");
     
-    //currentNB = Application.listbox.getSelectedItemText();
+    currentNBTitle = Application.listbox.getSelectedItemText();
 
 	/**
      * Zuteilung der Widgets zum jeweiligen Panel
      */
     
-    createPanel.add(headlineLabel);
-    createPanel.add(noteTitle);
-    createPanel.add(noteSubtitle);
-    createPanel.add(noticeLabel);
-    createPanel.add(textArea); 
-    createPanel.add(permissionText);
-    createPanel.add(readButton);
-    createPanel.add(editButton);
-    createPanel.add(savePermissionButton);
+    //createPanel.add(headlineLabel);
+    firstPanel.add(noteTitle);
+    secondPanel.add(noteSubtitle);
+    //createPanel.add(noticeLabel);
+    fourthPanel.add(textArea); 
+    firstPanel.add(permissionText);
+    secondPanel.add(readButton);
+    secondPanel.add(editButton);
+    firstPanel.add(savePermissionButton);
     buttonPanel.add(createButton);
     buttonPanel.add(cancelButton);
     //buttonPanel.add(editButton);
     //buttonPanel.add(deleteButton);
+    createPanel.add(firstPanel);
+    createPanel.add(secondPanel);
+    createPanel.add(thirdPanel);
+    createPanel.add(fourthPanel);
     createPanel.add(buttonPanel);
     RootPanel.get("Details").add(createPanel);
         
@@ -199,6 +209,7 @@ protected void run() {
 		
 		Note note = new Note();
 		note.setnTitle(noteTitle.getText());
+		note.setnSubtitle(noteSubtitle.getText());
 		note.setnContent(textArea.getText());
 		//Date date = new Date();
 		//note.setnCreDate(date);

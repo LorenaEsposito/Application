@@ -76,7 +76,7 @@ public class NoteMapper {
 		    	//Leeres SQL Statement anlegen
 		      Statement stmt = con.createStatement();
 		    //Statement ausfuellen und als Query an DB schicken
-		      ResultSet rs = stmt.executeQuery("SELECT MAX(nID) AS maxnID" + "FROM notes");
+		      ResultSet rs = stmt.executeQuery("SELECT MAX(nID) AS maxnID" + " FROM notes");
 
 		      	/**
 				 * Es kann max. ein Ergebnis zurueck gegeben werden, da die id der Primaerschluessel ist.

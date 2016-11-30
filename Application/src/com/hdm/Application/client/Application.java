@@ -114,7 +114,7 @@ public class Application implements EntryPoint {
 //	  final Button createNoteButton = new Button("");
 //	  final Button noteButton = new Button("My Recipes");
 //	  final Button signOutButton = new Button("Sign out");
-	  final ListBox listbox = new ListBox();
+	  public final static ListBox listbox = new ListBox();
 	  final Button createNoteButton = new Button("New Note +");
 	  final Button signOutButton = new Button("");
 	  final Button searchButton = new Button("Search");
@@ -168,7 +168,6 @@ public class Application implements EntryPoint {
  		int atIndex = ClientsideSettings.getLoginInfo().getEmailAddress().indexOf("@");
  		adminService.getUserByGoogleID(ClientsideSettings.getLoginInfo().getEmailAddress().substring(0, atIndex),
  				getCurrentUserCallback());
- 		adminService.getNotebooksOfUser(currentUser, getNotebooksOfUserCallback());
  		
  		Update update = new WelcomeView();
 
@@ -301,6 +300,8 @@ public class Application implements EntryPoint {
 		 currentUser = result;
 		 
 		 userLabel.setText(currentUser.getGoogleID());
+		 
+		 adminService.getNotebooksOfUser(currentUser, getNotebooksOfUserCallback());
 	 }
 	 };
 	 return asyncCallback;
@@ -320,7 +321,6 @@ public class Application implements EntryPoint {
 				.severe("Success GetNotebooksOfUserCallback: " + result.getClass().getSimpleName());
 			 notebooks = result;
 			 
-			 ListBox listbox = new ListBox();
 			 for (int x = 0; x < notebooks.size(); x++ ){
 				 listbox.addItem(notebooks.get(x).getNbTitle());
 				 
