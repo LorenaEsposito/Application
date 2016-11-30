@@ -20,6 +20,9 @@ import java.util.ArrayList;
 
 import com.hdm.Application.client.gui.SearchView;
 import com.hdm.Application.client.gui.ShowNoteView;
+import com.google.appengine.api.users.User;
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ChangeEvent;
@@ -165,8 +168,8 @@ public class Application implements EntryPoint {
  		int atIndex = ClientsideSettings.getLoginInfo().getEmailAddress().indexOf("@");
  		adminService.getUserByGoogleID(ClientsideSettings.getLoginInfo().getEmailAddress().substring(0, atIndex),
  				getCurrentUserCallback());
- 		//
-    	
+ 		adminService.getNotebooksOfUser(currentUser, getNotebooksOfUserCallback());
+ 		
  		Update update = new WelcomeView();
 
  	    
@@ -298,8 +301,6 @@ public class Application implements EntryPoint {
 		 currentUser = result;
 		 
 		 userLabel.setText(currentUser.getGoogleID());
-		 
-		 adminService.getNotebooksOfUser(currentUser, getNotebooksOfUserCallback());
 	 }
 	 };
 	 return asyncCallback;
