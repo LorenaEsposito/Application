@@ -66,7 +66,7 @@ private static NotebookMapper notebookMapper = null;
 			Statement stmt = con.createStatement();
 			
 			//Statement ausfuellen und als Query an DB schicken
-			ResultSet rs = stmt.executeQuery("SELECT nbID, userID, nbTitle, nbCreDate, nbModDate FROM Notebook"
+			ResultSet rs = stmt.executeQuery("SELECT nbID, userID, nbTitle, nbCreDate, nbModDate FROM notebooks"
 					+ "WHERE nbID=" + nbID );
 			
 			/**
@@ -107,21 +107,31 @@ private static NotebookMapper notebookMapper = null;
 			Statement stmt = con.createStatement();
 			
 			//Statement ausfuellen und als Query an DB schicken
-			ResultSet rs = stmt.executeQuery("SELECT userid, nbid FROM permissions "
-					+ "WHERE userid='" + userID + "'"
-					+ " AND isowner='1'");
+			ResultSet rs = stmt.executeQuery("SELECT nbid AS nbID FROM permissions "
+					+ "WHERE userid=" + userID + ""
+					+ " AND isowner=1");
+			
+			int nbID = rs.getInt("nbID");
 			
 			// Fuer jeden Eintrag wird ein Notebook-Objekt erstellt	
 			while (rs.next()){
 				
-				Notebook notebook = new Notebook();
-				notebook.setNbID(rs.getInt("nbid"));
-			//	notebook.setTitle(rs.getString("title"));
-			//	notebook.setNbCreDate(rs.getDate("creadate"));
-			//	notebook.setNbModDate(rs.getDate("moddate"));
+				//Leeres SQL Statement anlegen
+				Statement stmt2 = con.createStatement();
 				
-				// Neues Objekt wird dem Ergebnisvektor hinzugefuegt
-				result.addElement(notebook);
+				//Statement ausfuellen und als Query an DB schicken
+				ResultSet rs2 = stmt2.executeQuery("SELECT nbid, userid, title, creadate, moddate FROM notebooks "
+						+ "WHERE nbid=" + nbID);
+				
+					Notebook notebook = new Notebook();
+					notebook.setNbID(rs2.getInt("nbid"));
+					notebook.setTitle(rs2.getString("title"));
+					notebook.setNbCreDate(rs2.getDate("creadate"));
+					notebook.setNbModDate(rs2.getDate("moddate"));
+					
+					// Neues Objekt wird dem Ergebnisvektor hinzugefuegt
+					result.addElement(notebook);
+				
 			}
 		}
 		catch (SQLException e){
@@ -238,8 +248,8 @@ private static NotebookMapper notebookMapper = null;
 				
 				//Neues Objekt wird eingefuegt
 				stmt.executeUpdate("INSERT INTO Notebook (nbID, userID, nbTitle, nbCreDate, nbModDate)"
-						+ "VALUES (" + notebook.getNbID() + ",'" + notebook.getUserID() + "','" + notebook.getNbTitle() + "','" + notebook.getNbCreDate()
-						+ "','" + notebook.getNbModDate() + "')" );
+						+ "VALUES (" + notebook.getNbID() + "," + notebook.getUserID() + ",'" + notebook.getNbTitle() + "'," + notebook.getNbCreDate()
+						+ "," + notebook.getNbModDate() + ")" );
 
 			}
 		}
