@@ -340,6 +340,7 @@ public void deleteDuedate(DueDate dd) throws IllegalArgumentException {
 
 /**
  * Es kann nach einem bestimmten User anhand seines Namens gesucht werden.
+<<<<<<< HEAD
  * Dazu wird der UserMapper aufgerufen, der eine Methode beinhaltet mit der in
  * der Datenbank nach dem gesuchten Namen gesucht wird. In der Methode wird
 <<<<<<< HEAD
@@ -353,6 +354,12 @@ public void deleteDuedate(DueDate dd) throws IllegalArgumentException {
  *
 >>>>>>> refs/heads/Lola
 >>>>>>> refs/heads/master
+=======
+ * Dazu wird der UserMapper aufgerufen, der eine Methode beinhaltet mit der in
+ * der Datenbank nach dem gesuchten Namen gesucht wird. In der Methode wird
+ * eine ArrayList erstellt, die mit den Suchergebnissen befuellt wird.
+ * 
+>>>>>>> refs/remotes/origin/master
  * @author Lorena Esposito
  * @param userName
  * @return users
@@ -418,6 +425,7 @@ public ArrayList<Notebook> searchForNotebook(String title) throws IllegalArgumen
    * @return notes
 =======
    * @author Lorena Esposito
+<<<<<<< HEAD
    * @param duedate
 <<<<<<< HEAD
    * @return notes
@@ -425,6 +433,10 @@ public ArrayList<Notebook> searchForNotebook(String title) throws IllegalArgumen
 =======
    * @return notes
 >>>>>>> refs/heads/master
+=======
+   * @param duedate
+   * @return notes
+>>>>>>> refs/remotes/origin/master
    * @throws IllegalArgumentException
 >>>>>>> refs/heads/Lola
    */

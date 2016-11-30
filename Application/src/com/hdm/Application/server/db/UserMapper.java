@@ -145,7 +145,10 @@ public class UserMapper {
 	 *            Der Username zum User, der aus der Datenbank gelesen werden
 =======
 	 *            Der Username zum User, der aus der Datenbank gelesen werden
+<<<<<<< HEAD
 >>>>>>> refs/heads/master
+=======
+>>>>>>> refs/remotes/origin/master
 	 *            soll
 	 * @return Das durch die id referenzierte User-Objekt
 	 */

@@ -2,10 +2,13 @@
 =======
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 <<<<<<< HEAD
 =======
 >>>>>>> refs/heads/master
+=======
+>>>>>>> refs/remotes/origin/master
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -528,6 +531,10 @@ h1 {
   color: #777777;
   margin: 10px 0px 0px;
   text-align: left;
+}
+
+.introPicture {
+	background: 
 }
 
 .notework-headline {
@@ -1011,7 +1018,10 @@ div#Trailer {
 <<<<<<< HEAD
 =======
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> refs/remotes/origin/master
 >>>>>>> refs/heads/Lola
 
 body {
@@ -1479,6 +1489,7 @@ h1 {
 
 div#TopLevelFrame {
 	width: 1280px;
+<<<<<<< HEAD
 	min-width: 300px;
 	margin: 0 auto;      /* standardkonforme horizontale Zentrierung */
  }
@@ -1632,6 +1643,8 @@ h1 {
 
 div#TopLevelFrame {
 	width: 800px;
+=======
+>>>>>>> refs/remotes/origin/master
 	min-width: 300px;
 	margin: 0 auto;      /* standardkonforme horizontale Zentrierung */
  }
@@ -1644,6 +1657,7 @@ div#Details {
 	border-left: 1px dotted silver;
 }
 
+
 div#Navigator {
 	float: left;
 	width: 18em;
@@ -1652,7 +1666,6 @@ div#Navigator {
 }
 
 div#Header {
-	background: url(http://img5.fotos-hochladen.net/uploads/captureuqw9avorl8.png);
 	background-size: 100%;
 	height: 65px;
 	margin: 0 auto;      /* standardkonforme horizontale Zentrierung */
@@ -1694,6 +1707,11 @@ div#Trailer {
   margin: 15px 6px 6px;
 }
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+
+=======
+>>>>>>> refs/remotes/origin/master
 >>>>>>> refs/remotes/origin/Dominik
 =======
 =======
@@ -2358,6 +2376,9 @@ div#Trailer {
 >>>>>>> refs/remotes/origin/master
 >>>>>>> refs/heads/Lola
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> refs/remotes/origin/master
 =======
 >>>>>>> refs/heads/master
+=======
+>>>>>>> refs/remotes/origin/master
