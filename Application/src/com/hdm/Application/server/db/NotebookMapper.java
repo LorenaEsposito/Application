@@ -107,9 +107,9 @@ private static NotebookMapper notebookMapper = null;
 			Statement stmt = con.createStatement();
 			
 			//Statement ausfuellen und als Query an DB schicken
-			ResultSet rs = stmt.executeQuery("SELECT userid, nbid FROM permissions"
-					+ "WHERE userid='" + userID + "'"
-					+ "AND isowner='1'");
+			ResultSet rs = stmt.executeQuery("SELECT userid, nbid FROM permissions "
+					+ "WHERE userid=" + userID 
+					+ " AND isowner=1");
 			
 			// Fuer jeden Eintrag wird ein Notebook-Objekt erstellt	
 			while (rs.next()){
@@ -228,7 +228,7 @@ private static NotebookMapper notebookMapper = null;
 			Statement stmt = con.createStatement();
 			
 			//Ueberpruefen welches der aktuell hoechste Primaerschluessel ist.
-			ResultSet rs = stmt.executeQuery("SELECT MAX(nbID) AS maxnbID FROM Notebook");
+			ResultSet rs = stmt.executeQuery("SELECT MAX(nbID) AS maxnbID FROM notebooks");
 			
 			if(rs.next()){
 				//notebook erhaelt den aktuell hoechsten und um 1 inkrementierten Primaerschluessel

@@ -97,8 +97,10 @@ public class Application implements EntryPoint {
 	  /**
 	   * Erstellung aller Widgets
 	   */
+
 //	  private Label loginLabel = new Label("Bitte melde dich mit deinem Google Account an, um Notework nutzen zu können. Klicke auf Login und los geht's!");
 //	  final Label headerLabel = new Label("Notework");
+
 	  
 	  private Label loginLabel = new Label("You need an GMail-Account for using Notework");
 	  final Label userLabel = new Label();
@@ -163,7 +165,7 @@ public class Application implements EntryPoint {
  		int atIndex = ClientsideSettings.getLoginInfo().getEmailAddress().indexOf("@");
  		adminService.getUserByGoogleID(ClientsideSettings.getLoginInfo().getEmailAddress().substring(0, atIndex),
  				getCurrentUserCallback());
- 		adminService.getNotebooksOfUser(currentUser, getNotebooksOfUserCallback());
+ 		//
     	
  		Update update = new WelcomeView();
 
@@ -208,6 +210,7 @@ public class Application implements EntryPoint {
 	    }
 	    });	    
 
+
 //	    noteButton.addClickHandler(new ClickHandler() {
 //	  	public void onClick(ClickEvent event) {
 //	          /*
@@ -219,6 +222,7 @@ public class Application implements EntryPoint {
 //	          RootPanel.get("Details").add(update);
 //	    }
 //	    });
+
 	    
 	    signOutButton.addClickHandler(new ClickHandler() {
 			@Override
@@ -266,7 +270,6 @@ public class Application implements EntryPoint {
      loginTextPanel.add(loginLabel);
      loginTextPanel.add(signInLink);
      loginTextPanel.setStyleName("loginTextPanel");
-
 //     loginTextPanel.add(usernameLabel);
 //     loginTextPanel.add(usernameBox);
 //     loginTextPanel.add(passwordLabel);
@@ -295,6 +298,8 @@ public class Application implements EntryPoint {
 		 currentUser = result;
 		 
 		 userLabel.setText(currentUser.getGoogleID());
+		 
+		 adminService.getNotebooksOfUser(currentUser, getNotebooksOfUserCallback());
 	 }
 	 };
 	 return asyncCallback;
