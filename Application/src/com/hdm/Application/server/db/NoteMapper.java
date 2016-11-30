@@ -76,7 +76,7 @@ public class NoteMapper {
 		    	//Leeres SQL Statement anlegen
 		      Statement stmt = con.createStatement();
 		    //Statement ausfuellen und als Query an DB schicken
-		      ResultSet rs = stmt.executeQuery("SELECT MAX(nID) AS maxnID" + "FROM notes");
+		      ResultSet rs = stmt.executeQuery("SELECT MAX(nid) AS 'maxnid' " + "FROM notes");
 
 		      	/**
 				 * Es kann max. ein Ergebnis zurueck gegeben werden, da die id der Primaerschluessel ist.
@@ -85,13 +85,13 @@ public class NoteMapper {
 		      
 		      if (rs.next()) {
 		    	//Ergebnis-Tupel in Objekt umwandeln
-		    	  note.setId(rs.getInt("maxnID") + 1);
+		    	  note.setnID(rs.getInt("maxnid") + 1);
 		    	  stmt = con.createStatement();
 		    	  
-		    	  stmt.executeUpdate("INSERT INTO notes (nID, nbID, nTitle, nSubtitle, nContent, source, nCreDate, nModDate, userID) "
-		    	            + "VALUES (" + note.getnID() + "," + note.getNbID() + ","
-		    	            + note.getnTitle() + "," + note.getnSubtitle() + "," + note.getnContent() + "," + note.getSource() + "," 
-		    	            + note.getnCreDate() + "," + note.getnModDate() +  "," + note.getUserID() + "')");
+		    	  stmt.executeUpdate("INSERT INTO notes (nid, nbid, title, subtitle, content, source, creadate, moddate) "
+		    	            + "VALUES (" + note.getnID() + "," + note.getNbID() + ",'"
+		    	            + note.getnTitle() + "','" + note.getnSubtitle() + "','" + note.getnContent() + "','" + note.getSource() + "'," 
+		    	            + note.getnCreDate() + "," + note.getnModDate() + ")");
 
 		      }
 		    }
