@@ -15,12 +15,12 @@ h1 {
 
 
 .login{
-	background: url(/LoginBox.png);
+	background: url(/LoginBoxFinal.png);
 	background-repeat: no-repeat;
 	margin-top: 80px;
 	margin-left: 170px;
-	height:300px;
-	width: 420px;
+	height:500px;
+	width: 700px;
 	
 }
 
@@ -136,7 +136,7 @@ h1 {
 
 
 div#TopLevelFrame {
-	background: url(/Hintergrund.jpg);
+	background: url(/hintergrund5.jpg);
 	background-size: auto;
 	background-repeat: no-repeat;
 	width-min: 1280px;
