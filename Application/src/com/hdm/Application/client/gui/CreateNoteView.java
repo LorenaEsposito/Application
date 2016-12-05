@@ -51,7 +51,7 @@ public class CreateNoteView extends Update{
 	   * Erstellung aller Panels
 	   */
 
-  HorizontalPanel createPanel = new HorizontalPanel();
+  VerticalPanel createPanel = new VerticalPanel();
   HorizontalPanel buttonPanel = new HorizontalPanel();
 
   
