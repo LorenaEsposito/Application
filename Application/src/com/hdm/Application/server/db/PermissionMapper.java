@@ -198,12 +198,12 @@ package com.hdm.Application.server.db;
 					 * Jetzt erst erfolgt die tatsaechliche Einf�geoperation
 					 */
 					stmt.executeUpdate(
-							"INSERT INTO permissions (id, permissionType, userID, nID, nbID) "
+							"INSERT INTO permissions (pid, permtype, appuserid, nid, nbid) "
 									+ "VALUES (" + p.getPermissionID() + "," + p.getPermissionType() + "," + p.getUserID()
 									+ "," + p.getNbID() + "," + p.getNID() + ")");
 
 					System.out.println(
-							"INSERT INTO permissions (id, permissionType, userID, nID, nbID) "
+							"INSERT INTO permissions (pid, permtype, appuserid, nid, nbid) "
 									+ "VALUES (" + p.getPermissionID() + "," + p.getPermissionType() + "," + p.getUserID()
 									+ "," + p.getNbID() + "," + p.getNID() + ")");
 
