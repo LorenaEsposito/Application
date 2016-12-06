@@ -162,7 +162,7 @@ private static NotebookMapper notebookMapper = null;
 		
 		try{
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT nbid, appuserid, title, creadate, moddate FROM notebooks" 
+			ResultSet rs = stmt.executeQuery("SELECT nbid, title, creadate, moddate FROM notebooks" 
 					+ "ORDER BY appuserid");
 			
 			// Fuer jeden Eintrag wird ein Notebook-Objekt erstellt	
