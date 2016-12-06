@@ -77,7 +77,7 @@ public class NoteMapper {
 		    	//Leeres SQL Statement anlegen
 		      Statement stmt = con.createStatement();
 		    //Statement ausfuellen und als Query an DB schicken
-		      ResultSet rs = stmt.executeQuery("SELECT MAX(nid) AS 'maxnid' " + "FROM notes");
+		      ResultSet rs = stmt.executeQuery("SELECT MAX(nID) AS maxnID" + " FROM notes");
 
 				String modDate = null;
 				if (note.getnModDate() != null) {
@@ -407,7 +407,7 @@ public class NoteMapper {
 				
 				//Statement ausfuellen und als Query an DB schicken
 				ResultSet rs = stmt.executeQuery("SELECT nid, nbid, title, subtitle, content, source, creadate, moddate FROM notes"
-						+ "WHERE nbid=" + notebook.getNbID() );
+						+ " WHERE nbid=" + notebook.getNbID() );
 				
 				// Fuer jeden Eintrag wird ein Notebook-Objekt erstellt	
 				while (rs.next()){

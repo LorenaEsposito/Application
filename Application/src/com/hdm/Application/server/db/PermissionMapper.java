@@ -199,13 +199,13 @@ package com.hdm.Application.server.db;
 					 */
 					stmt.executeUpdate(
 							"INSERT INTO permissions (id, permissionType, userID, nID, nbID) "
-									+ "VALUES (" + p.getPermissionID() + ",'" + p.getPermissionType() + ",'" + p.getUserID()
-									+ ",'" + p.getNbID() + ",'" + p.getNID() + "')");
+									+ "VALUES (" + p.getPermissionID() + "," + p.getPermissionType() + "," + p.getUserID()
+									+ "," + p.getNbID() + "," + p.getNID() + ")");
 
 					System.out.println(
 							"INSERT INTO permissions (id, permissionType, userID, nID, nbID) "
-									+ "VALUES (" + p.getPermissionID() + ",'" + p.getPermissionType() + ",'" + p.getUserID()
-									+ ",'" + p.getNbID() + ",'" + p.getNID() + "')");
+									+ "VALUES (" + p.getPermissionID() + "," + p.getPermissionType() + "," + p.getUserID()
+									+ "," + p.getNbID() + "," + p.getNID() + ")");
 
 					return p;
 				}
