@@ -159,9 +159,7 @@ public class NoteMapper {
 	 public void deleteNote(Note note){
 		 Connection con = DBConnection.connection();
 		 
-		 DueDateMapper.deleteAllNoteDueDates(note);
-		 PermissionMapper.deleteAllNotePermissions(note);
-		 
+		
 		 try{
 			 Statement stmt = con.createStatement();
 			 stmt.executeUpdate("DELETE FROM notes" + "WHERE nID=" +note.getnID());	 

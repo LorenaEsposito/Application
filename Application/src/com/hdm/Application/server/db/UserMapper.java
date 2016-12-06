@@ -318,10 +318,7 @@ public class UserMapper {
 
 		Connection con = DBConnection.connection();
 		
-		DueDateMapper.deleteAllUserDueDates(u);
-		NoteMapper.deleteAllUserNotes(u);
-		NotebookMapper.deleteAllUserNotebooks(u);
-		PermissionMapper.deleteAllUserPermissions(u);
+	
 		
 		try {
 			Statement stmt = con.createStatement();

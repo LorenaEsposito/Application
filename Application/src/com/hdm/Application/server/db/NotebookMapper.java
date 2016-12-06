@@ -304,10 +304,6 @@ private static NotebookMapper notebookMapper = null;
 	public void deleteNotebook(Notebook notebook){
 		Connection con = DBConnection.connection();
 		
-		DueDateMapper.deleteAllNotebookDueDates(notebook);
-		NoteMapper.deleteAllNotebookNotes(notebook);
-		PermissionMapper.deleteAllNotebookPermissions(notebook);
-
 		
 		
 		try{
