@@ -104,6 +104,7 @@ public class Application implements EntryPoint {
 
 //	  private Label loginLabel = new Label("Bitte melde dich mit deinem Google Account an, um Notework nutzen zu können. Klicke auf Login und los geht's!");
 //	  final Label headerLabel = new Label("Notework");
+
 	  private Label loginLabel = new Label("You need an GMail-Account for using Notework");
 	  final Label userLabel = new Label();
 	  final Label usernameLabel = new Label("Username");
@@ -175,6 +176,7 @@ public class Application implements EntryPoint {
 	    /**
 	     * Zuweisung eines Styles fuer die jeweiligen Widgets
 	     **/
+
 	    createNotebookButton.setStyleName("notework-addbutton");
  		createNoteButton.setStyleName("notework-addbutton");
 	    signOutButton.setStyleName("signout-button");
