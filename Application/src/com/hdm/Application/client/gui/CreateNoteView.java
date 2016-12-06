@@ -118,7 +118,6 @@ protected void run() {
  // Connect the table to the data provider.
     dataProvider.addDataDisplay(table);
 
-
 	/**
      * Zuteilung der Widgets zum jeweiligen Panel
      */

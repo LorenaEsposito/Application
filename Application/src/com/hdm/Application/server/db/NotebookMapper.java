@@ -108,8 +108,9 @@ private static NotebookMapper notebookMapper = null;
 			
 			//Statement ausfuellen und als Query an DB schicken
 			ResultSet rs = stmt.executeQuery("SELECT userid, nbid FROM permissions "
-					+ "WHERE userid=" + userID 
-					+ " AND isowner=1");
+					+ "WHERE userid='" + userID + "'"
+					+ " AND isowner='1'");
+
 			
 			// Fuer jeden Eintrag wird ein Notebook-Objekt erstellt	
 			while (rs.next()){
