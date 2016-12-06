@@ -66,7 +66,7 @@ private static NotebookMapper notebookMapper = null;
 			Statement stmt = con.createStatement();
 			
 			//Statement ausfuellen und als Query an DB schicken
-			ResultSet rs = stmt.executeQuery("SELECT nbID, userID, nbTitle, nbCreDate, nbModDate FROM Notebook"
+			ResultSet rs = stmt.executeQuery("SELECT nbID, userID, nbTitle, nbCreDate, nbModDate FROM notebooks"
 					+ "WHERE nbID=" + nbID );
 			
 			/**
@@ -96,9 +96,10 @@ private static NotebookMapper notebookMapper = null;
 	
 	public Vector<Notebook> findByUser(AppUser user){
 		
-		//DB-Verbindung holen
-		int userID = user.getUserID();
+		//DB-Verbindung holen und Variablen zurücksetzen
+		int appUserID = user.getUserID();
 		Connection con = DBConnection.connection();
+		int nbID = 0;
 		
 		Vector<Notebook> result = new Vector<Notebook>();
 		
@@ -107,23 +108,37 @@ private static NotebookMapper notebookMapper = null;
 			Statement stmt = con.createStatement();
 			
 			//Statement ausfuellen und als Query an DB schicken
-			ResultSet rs = stmt.executeQuery("SELECT userid, nbid FROM permissions "
-					+ "WHERE userid='" + userID + "'"
-					+ " AND isowner='1'");
-
+			ResultSet rs = stmt.executeQuery("SELECT nbid FROM permissions "
+					+ "WHERE appuserid=" + appUserID
+					+ " AND isowner=1");
 			
-			// Fuer jeden Eintrag wird ein Notebook-Objekt erstellt	
-			while (rs.next()){
+			nbID = rs.getInt("nbid");
+			
+		
+	}
+	catch (SQLException e){
+		e.printStackTrace();
+		return null;
+	}
+	
+	try{
+				//Leeres SQL Statement anlegen
+				Statement stmt2 = con.createStatement();
 				
-				Notebook notebook = new Notebook();
-				notebook.setNbID(rs.getInt("nbid"));
-			//	notebook.setTitle(rs.getString("title"));
-			//	notebook.setNbCreDate(rs.getDate("creadate"));
-			//	notebook.setNbModDate(rs.getDate("moddate"));
+				//Statement ausfuellen und als Query an DB schicken
+				ResultSet rs2 = stmt2.executeQuery("SELECT nbid, title, creadate, moddate FROM notebooks "
+						+ "WHERE nbid=" + nbID);
 				
-				// Neues Objekt wird dem Ergebnisvektor hinzugefuegt
-				result.addElement(notebook);
-			}
+					Notebook notebook = new Notebook();
+					notebook.setNbID(rs2.getInt("nbid"));
+					notebook.setTitle(rs2.getString("title"));
+					notebook.setNbCreDate(rs2.getDate("creadate"));
+					notebook.setNbModDate(rs2.getDate("moddate"));
+					
+					// Neues Objekt wird dem Ergebnisvektor hinzugefuegt
+					result.addElement(notebook);
+				
+			
 		}
 		catch (SQLException e){
 			e.printStackTrace();
@@ -147,18 +162,18 @@ private static NotebookMapper notebookMapper = null;
 		
 		try{
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT nbID, userID, nbTitle, nbCreDate, nbModDate, unbID FROM Notebook" 
-					+ "ORDER BY userID");
+			ResultSet rs = stmt.executeQuery("SELECT nbid, appuserid, title, creadate, moddate FROM notebooks" 
+					+ "ORDER BY appuserid");
 			
 			// Fuer jeden Eintrag wird ein Notebook-Objekt erstellt	
 			while (rs.next()){
 				
 				Notebook notebook = new Notebook();
-				notebook.setNbID(rs.getInt("nbID"));
-				notebook.setUserID(rs.getInt("userID"));
-				notebook.setNbTitle(rs.getString("nbTitle"));
-				notebook.setNbCreDate(rs.getDate("nbCreDate"));
-				notebook.setNbModDate(rs.getDate("nbModDate"));
+				notebook.setNbID(rs.getInt("nbid"));
+				notebook.setUserID(rs.getInt("appuserid"));
+				notebook.setNbTitle(rs.getString("title"));
+				notebook.setNbCreDate(rs.getDate("creadate"));
+				notebook.setNbModDate(rs.getDate("moddate"));
 				
 				// Neues Objekt wird dem Ergebnisvektor hinzugefuegt
 				result.addElement(notebook);
@@ -238,9 +253,9 @@ private static NotebookMapper notebookMapper = null;
 				stmt = con.createStatement();
 				
 				//Neues Objekt wird eingefuegt
-				stmt.executeUpdate("INSERT INTO Notebook (nbID, userID, nbTitle, nbCreDate, nbModDate)"
-						+ "VALUES (" + notebook.getNbID() + ",'" + notebook.getUserID() + "','" + notebook.getNbTitle() + "','" + notebook.getNbCreDate()
-						+ "','" + notebook.getNbModDate() + "')" );
+				stmt.executeUpdate("INSERT INTO notebooks (nbid, userid, title, creadate, moddate)"
+						+ "VALUES (" + notebook.getNbID() + "," + notebook.getUserID() + ",'" + notebook.getNbTitle() + "'," + notebook.getNbCreDate()
+						+ "," + notebook.getNbModDate() + ")" );
 
 			}
 		}

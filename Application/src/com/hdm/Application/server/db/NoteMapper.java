@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Vector;
 
@@ -78,6 +79,18 @@ public class NoteMapper {
 		    //Statement ausfuellen und als Query an DB schicken
 		      ResultSet rs = stmt.executeQuery("SELECT MAX(nID) AS maxnID" + " FROM notes");
 
+				String modDate = null;
+				if (note.getnModDate() != null) {
+					SimpleDateFormat mySQLformat = new SimpleDateFormat("yyyy-MM-dd");
+					modDate = mySQLformat.format(note.getnModDate());
+				}
+				
+				String creDate = null;
+				if (note.getnCreDate() != null) {
+					SimpleDateFormat mySQLformat = new SimpleDateFormat("yyyy-MM-dd");
+					creDate = mySQLformat.format(note.getnCreDate());
+				}
+				
 		      	/**
 				 * Es kann max. ein Ergebnis zurueck gegeben werden, da die id der Primaerschluessel ist.
 				 * Daher wird geprueft ob ein Ergebnis vorliegt
@@ -85,13 +98,13 @@ public class NoteMapper {
 		      
 		      if (rs.next()) {
 		    	//Ergebnis-Tupel in Objekt umwandeln
-		    	  note.setId(rs.getInt("maxnID") + 1);
+		    	  note.setnID(rs.getInt("maxnid") + 1);
 		    	  stmt = con.createStatement();
 		    	  
-		    	  stmt.executeUpdate("INSERT INTO notes (nID, nbID, nTitle, nSubtitle, nContent, source, nCreDate, nModDate, userID) "
-		    	            + "VALUES (" + note.getnID() + "," + note.getNbID() + ","
-		    	            + note.getnTitle() + "," + note.getnSubtitle() + "," + note.getnContent() + "," + note.getSource() + "," 
-		    	            + note.getnCreDate() + "," + note.getnModDate() +  "," + note.getUserID() + "')");
+		    	  stmt.executeUpdate("INSERT INTO notes (nid, nbid, title, subtitle, content, source, creadate, moddate) "
+		    	            + "VALUES (" + note.getnID() + "," + note.getNbID() + ",'"
+		    	            + note.getnTitle() + "','" + note.getnSubtitle() + "','" + note.getnContent() + "','" + note.getSource() + "'," 
+		    	            + creDate + "," + modDate + ")");
 
 		      }
 		    }

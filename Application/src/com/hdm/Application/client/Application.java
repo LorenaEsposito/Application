@@ -104,7 +104,6 @@ public class Application implements EntryPoint {
 
 //	  private Label loginLabel = new Label("Bitte melde dich mit deinem Google Account an, um Notework nutzen zu können. Klicke auf Login und los geht's!");
 //	  final Label headerLabel = new Label("Notework");
-
 	  private Label loginLabel = new Label("You need an GMail-Account for using Notework");
 	  final Label userLabel = new Label();
 	  final Label usernameLabel = new Label("Username");
@@ -169,7 +168,6 @@ public class Application implements EntryPoint {
  		int atIndex = ClientsideSettings.getLoginInfo().getEmailAddress().indexOf("@");
  		adminService.getUserByGoogleID(ClientsideSettings.getLoginInfo().getEmailAddress().substring(0, atIndex),
  				getCurrentUserCallback());
-
  		
  		Update update = new WelcomeView();
 
@@ -194,7 +192,6 @@ public class Application implements EntryPoint {
 	    headPanel.add(logoButton);
 	    headPanel.add(signOutButton);
 	    navPanel.add(listbox);
-	    navPanel.add(createNotebookButton);
 	    navPanel.add(createNoteButton);
 	    navPanel.add(searchButton);
 	    RootPanel.get("Header").add(headPanel);
@@ -315,10 +312,6 @@ public class Application implements EntryPoint {
 		 currentUser = result;
 		 
 		 userLabel.setText(currentUser.getGoogleID());
-		 
-		 adminService.getNotebooksOfUser(currentUser, getNotebooksOfUserCallback());
-		 
-		 //adminService.getNotesOfNotebook(listbox.getSelectedItemText(), currentUser, getNotesOfNotebookCallback());
 	 }
 	 };
 	 return asyncCallback;
@@ -338,6 +331,7 @@ public class Application implements EntryPoint {
 				.severe("Success GetNotebooksOfUserCallback: " + result.getClass().getSimpleName());
 			 notebooks = result;
 			 
+			 ListBox listbox = new ListBox();
 			 for (int x = 0; x < notebooks.size(); x++ ){
 				 listbox.addItem(notebooks.get(x).getNbTitle());
 				 
