@@ -200,7 +200,7 @@ private static NotebookMapper notebookMapper = null;
 		try{
 			Statement stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery("SELECT nbID, userID, nbTitle, nbCreDate, nbModDate, unbID FROM Notebook"
-					+ "WHERE nbTitle LIKE" + nbTitle + "ORDER BY nCreDate");
+					+ " WHERE nbTitle LIKE " + nbTitle + " ORDER BY nCreDate");
 			
 			//Fuer jeden Eintrag im Suchergebnis wird ein Notebook-Objekt erstellt.
 			while(rs.next()){

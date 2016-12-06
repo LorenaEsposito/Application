@@ -72,7 +72,6 @@ protected void run() {
           /*
            * Showcase instantiieren.
            */
-
   		  Update update = new ResultView();
           RootPanel.get("Details").clear();
           RootPanel.get("Details").add(update);

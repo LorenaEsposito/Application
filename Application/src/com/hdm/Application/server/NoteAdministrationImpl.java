@@ -410,10 +410,13 @@ public ArrayList<Notebook> searchForNotebook(String title) throws IllegalArgumen
 =======
    * @author Lorena Esposito
 <<<<<<< HEAD
+<<<<<<< HEAD
    * @param duedate
    * @return notes
 =======
 <<<<<<< HEAD
+=======
+>>>>>>> refs/remotes/origin/Lola
 <<<<<<< HEAD
    * @param duedate
 <<<<<<< HEAD
@@ -430,7 +433,10 @@ public ArrayList<Notebook> searchForNotebook(String title) throws IllegalArgumen
    * @param duedate
    * @return notes
 >>>>>>> refs/heads/master
+<<<<<<< HEAD
 >>>>>>> refs/heads/Lola
+=======
+>>>>>>> refs/remotes/origin/Lola
    * @throws IllegalArgumentException
 >>>>>>> refs/heads/Lola
    */
