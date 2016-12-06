@@ -41,14 +41,6 @@ public class WelcomeView extends Update {
 		int atIndex = ClientsideSettings.getLoginInfo().getEmailAddress().indexOf("@");
 		adminService.getUserByGoogleID(ClientsideSettings.getLoginInfo().getEmailAddress().substring(0, atIndex),
 				getCurrentUserCallback());
-		
-		 welcomeLabel.setText("Willkommen " + currentUser.getUserName() + " " + currentUser.getUserLastName()
-		 + "bei Notework. Hier koennen Sie Notizbuecher anlegen und Ihre Informationen in Notizen speichern.");
-		
-			/**
-			 * Zuteilung der Widgets zum jeweiligen Panel
-			 */
-			welcomePanel.add(welcomeLabel);
 			
 	}
 	

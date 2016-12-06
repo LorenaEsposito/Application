@@ -5,6 +5,7 @@ import com.hdm.Application.shared.FieldVerifier;
 
 
 import com.hdm.Application.client.gui.CreateNoteView;
+import com.hdm.Application.client.gui.CreateNotebookView;
 import com.hdm.Application.client.gui.LoginService;
 import com.hdm.Application.client.gui.LoginServiceAsync;
 import com.hdm.Application.client.gui.Update;
@@ -103,7 +104,7 @@ public class Application implements EntryPoint {
 
 //	  private Label loginLabel = new Label("Bitte melde dich mit deinem Google Account an, um Notework nutzen zu können. Klicke auf Login und los geht's!");
 //	  final Label headerLabel = new Label("Notework");
-  
+
 	  private Label loginLabel = new Label("You need an GMail-Account for using Notework");
 	  final Label userLabel = new Label();
 	  final Label usernameLabel = new Label("Username");
@@ -115,6 +116,7 @@ public class Application implements EntryPoint {
 //	  final Button signOutButton = new Button("Sign out");
 	  public final static ListBox listbox = new ListBox();
 	  final Button createNoteButton = new Button("New Note +");
+	  final Button createNotebookButton = new Button("New Notebook");
 	  final Button signOutButton = new Button("");
 	  final Button searchButton = new Button("Search");
 	  final Button logoButton = new Button();
@@ -167,7 +169,6 @@ public class Application implements EntryPoint {
  		int atIndex = ClientsideSettings.getLoginInfo().getEmailAddress().indexOf("@");
  		adminService.getUserByGoogleID(ClientsideSettings.getLoginInfo().getEmailAddress().substring(0, atIndex),
  				getCurrentUserCallback());
- 		adminService.getNotebooksOfUser(currentUser, getNotebooksOfUserCallback());
  		
  		Update update = new WelcomeView();
 
@@ -175,7 +176,9 @@ public class Application implements EntryPoint {
 	    /**
 	     * Zuweisung eines Styles fuer die jeweiligen Widgets
 	     **/
-	    createNoteButton.setStyleName("notework-addbutton");
+
+	    createNotebookButton.setStyleName("notework-addbutton");
+ 		createNoteButton.setStyleName("notework-addbutton");
 	    signOutButton.setStyleName("signout-button");
 	    searchButton.setStyleName("notework-searchbutton");
 	    logoButton.setStyleName("notework-logo");
@@ -200,6 +203,17 @@ public class Application implements EntryPoint {
 	    /**
 	     * Implementierung der jeweiligen ClickHandler fuer die einzelnen Widgets
 	     */
+	    
+	    createNotebookButton.addClickHandler(new ClickHandler() {
+	  	public void onClick(ClickEvent event) {
+	          /*
+	           * Showcase instantiieren.
+	           */
+	          Update update = new CreateNotebookView();
+	          RootPanel.get("Details").clear();
+	          RootPanel.get("Details").add(update);
+	    }
+	    });
 	    
 	    createNoteButton.addClickHandler(new ClickHandler() {
 	  	public void onClick(ClickEvent event) {

@@ -2,9 +2,12 @@ package com.hdm.Application.client.gui;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.MouseOverEvent;
+import com.google.gwt.event.dom.client.MouseOverHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
@@ -28,20 +31,22 @@ public class ShowNoteView extends Update{
 	   * Erstellung aller Panels
 	   */
 
-	VerticalPanel createPanel = new VerticalPanel();
+	VerticalPanel showPanel = new VerticalPanel();
+	HorizontalPanel titlePanel = new HorizontalPanel();
 	HorizontalPanel buttonPanel = new HorizontalPanel();
-
+	PopupPanel infoPanel = new PopupPanel();
 
 	/**
 	 * Erstellung aller Widgets
 	 */
-  
+	Label testLabel = new Label();
 	Label titleLabel = new Label("Title");
+	Label infoLabel = new Label("Info");
 	Label subtitleLabel = new Label("Subtitle");
 	Label noticeLabel = new Label("Notice");
-	TextBox noteTitle = new TextBox();
-	TextBox noteSubtitle = new TextBox();
-	TextArea textArea = new TextArea();
+//	TextBox noteTitle = new TextBox();
+//	TextBox noteSubtitle = new TextBox();
+//	TextArea textArea = new TextArea();
 	//final Button createButton = new Button("Create");
 	final Button editButton = new Button("Edit");
 	final Button deleteButton = new Button("Delete");
@@ -56,17 +61,19 @@ protected void run() {
    * Zuteilung der Widgets zum jeweiligen Panel
    */
   
-  createPanel.add(titleLabel);
-  createPanel.add(noteTitle);
-  createPanel.add(subtitleLabel);
-  createPanel.add(noteSubtitle);
-  createPanel.add(noticeLabel);
-  createPanel.add(textArea); 
-  createPanel.add(buttonPanel);
+  titlePanel.add(titleLabel);
+  titlePanel.add(infoLabel);
+  showPanel.add(titlePanel);
+  //createPanel.add(noteTitle);
+  showPanel.add(subtitleLabel);
+  //showPanel.add(noteSubtitle);
+  showPanel.add(noticeLabel);
+  //showPanel.add(textArea); 
+  showPanel.add(buttonPanel);
   buttonPanel.add(editButton);
   buttonPanel.add(deleteButton);
   //buttonPanel.add(createButton);
-  RootPanel.get("Details").add(createPanel);
+  RootPanel.get("Details").add(showPanel);
       
   
   /**
@@ -75,12 +82,13 @@ protected void run() {
   	deleteButton.setStyleName("notework-menubutton");
     editButton.setStyleName("notework-menubutton");
   //createButton.setStyleName("notework-menubutton");
-	textArea.setVisibleLines(20);
-	textArea.setPixelSize(420, 350);
+	//textArea.setVisibleLines(20);
+	//textArea.setPixelSize(420, 350);
 	
-	noteTitle.setText(note.getnTitle());
+	titleLabel.setText(note.getnTitle());
+	subtitleLabel.setText(note.getnSubtitle());
 	
-	textArea.setText(note.getnContent());
+	noticeLabel.setText(note.getnContent());
 	
   /**
    * Erstellung der Clickhandler
@@ -129,6 +137,13 @@ protected void run() {
         RootPanel.get("Details").clear();
         RootPanel.get("Details").add(update);
   }
+  });
+  
+  infoLabel.addMouseOverHandler(new MouseOverHandler() {
+	  public void onMouseOver(MouseOverEvent event) {
+		  testLabel.setText("Das ist ein Test");
+		  infoPanel.add(testLabel);
+	  }
   });
   
   
