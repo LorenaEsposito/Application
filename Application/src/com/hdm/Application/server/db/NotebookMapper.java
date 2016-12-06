@@ -109,11 +109,11 @@ private static NotebookMapper notebookMapper = null;
 			Statement stmt = con.createStatement();
 			
 			//Statement ausfuellen und als Query an DB schicken
-			ResultSet rs = stmt.executeQuery("SELECT nbid FROM permissions "
+			ResultSet rs = stmt.executeQuery("SELECT nbid AS 'nbID' FROM permissions "
 					+ "WHERE appuserid=" + appUserID
 					+ " AND isowner=1");
 			
-			nbID = rs.getInt("nbid");
+			nbID = rs.getInt("nbID");
 			
 		
 	}
@@ -252,8 +252,8 @@ private static NotebookMapper notebookMapper = null;
 				stmt = con.createStatement();
 				
 				//Neues Objekt wird eingefuegt
-				stmt.executeUpdate("INSERT INTO notebooks (nbid, title, creadate, moddate)"
-						+ "VALUES (" + notebook.getNbID() + "," + notebook.getNbTitle() + "'," + notebook.getNbCreDate()
+				stmt.executeUpdate("INSERT INTO notebooks (nbid, title, creadate, moddate) "
+						+ "VALUES (" + notebook.getNbID() + ",'" + notebook.getNbTitle() + "'," + notebook.getNbCreDate()
 						+ "," + notebook.getNbModDate() + ")" );
 
 			}
