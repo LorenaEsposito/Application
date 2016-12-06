@@ -101,7 +101,7 @@ protected void run() {
     
     currentNBTitle = Application.listbox.getSelectedItemText();
     
-    testLabel.setText(currentNBTitle);
+    testLabel.setText(date.toString());
     
     TextColumn<AppUser> nameColumn = new TextColumn<AppUser>(){
     	@Override

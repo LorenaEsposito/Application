@@ -42,13 +42,6 @@ public class WelcomeView extends Update {
 		adminService.getUserByGoogleID(ClientsideSettings.getLoginInfo().getEmailAddress().substring(0, atIndex),
 				getCurrentUserCallback());
 		
-		 welcomeLabel.setText("Willkommen " + currentUser.getUserName() + " " + currentUser.getUserLastName()
-		 + "bei Notework. Hier koennen Sie Notizbuecher anlegen und Ihre Informationen in Notizen speichern.");
-		
-			/**
-			 * Zuteilung der Widgets zum jeweiligen Panel
-			 */
-			welcomePanel.add(welcomeLabel);
 			
 	}
 	
@@ -65,6 +58,12 @@ public class WelcomeView extends Update {
 			 ClientsideSettings.getLogger()
 				.severe("Success GetCurrentUserCallback: " + result.getClass().getSimpleName());
 			 currentUser = result;
+			 
+			 welcomeLabel.setText("Willkommen " + currentUser.getUserName() + " " + currentUser.getUserLastName()
+			 + "bei Notework. Hier koennen Sie Notizbuecher anlegen und Ihre Informationen in Notizen speichern.");
+			 
+				welcomePanel.add(welcomeLabel);
+				
 		 }
 		 };
 		 return asyncCallback;

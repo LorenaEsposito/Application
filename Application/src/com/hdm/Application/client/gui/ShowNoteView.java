@@ -2,9 +2,12 @@ package com.hdm.Application.client.gui;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.MouseOverEvent;
+import com.google.gwt.event.dom.client.MouseOverHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
@@ -29,14 +32,16 @@ public class ShowNoteView extends Update{
 	   */
 
 	VerticalPanel showPanel = new VerticalPanel();
+	HorizontalPanel titlePanel = new HorizontalPanel();
 	HorizontalPanel buttonPanel = new HorizontalPanel();
-
+	PopupPanel infoPanel = new PopupPanel();
 
 	/**
 	 * Erstellung aller Widgets
 	 */
-  
+	Label testLabel = new Label();
 	Label titleLabel = new Label("Title");
+	Label infoLabel = new Label("Info");
 	Label subtitleLabel = new Label("Subtitle");
 	Label noticeLabel = new Label("Notice");
 //	TextBox noteTitle = new TextBox();
@@ -56,7 +61,9 @@ protected void run() {
    * Zuteilung der Widgets zum jeweiligen Panel
    */
   
-  showPanel.add(titleLabel);
+  titlePanel.add(titleLabel);
+  titlePanel.add(infoLabel);
+  showPanel.add(titlePanel);
   //createPanel.add(noteTitle);
   showPanel.add(subtitleLabel);
   //showPanel.add(noteSubtitle);
@@ -130,6 +137,13 @@ protected void run() {
         RootPanel.get("Details").clear();
         RootPanel.get("Details").add(update);
   }
+  });
+  
+  infoLabel.addMouseOverHandler(new MouseOverHandler() {
+	  public void onMouseOver(MouseOverEvent event) {
+		  testLabel.setText("Das ist ein Test");
+		  infoPanel.add(testLabel);
+	  }
   });
   
   
