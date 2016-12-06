@@ -154,8 +154,14 @@ protected void run() {
     /**
      * Zuweisung eines Styles fuer die jeweiligen Widgets
      **/
-    createButton.setStyleName("notework-menubutton");
-    cancelButton.setStyleName("notework-menubutton");
+    createButton.setStyleName("savePermission-button");
+    cancelButton.setStyleName("savePermission-button");
+    noteTitle.setStyleName("style-Textbox");
+    noteSubtitle.setStyleName("style-Textbox");
+    permissionText.setStyleName("style-Textbox");
+    duedate.setStyleName("datepicker");
+    textArea.setStyleName("TextArea");
+    savePermissionButton.setStyleName("savePermission-button");
     //editButton.setStyleName("notework-menubutton");
     //deleteButton.setStyleName("notework-menubutton");
     
@@ -215,7 +221,7 @@ protected void run() {
     		savePermissionButton.setEnabled(false);
     		readButton.setEnabled(false);
     		editButton.setEnabled(false);
-    		savePermissionButton.setStylePrimaryName("");
+    		savePermissionButton.setStylePrimaryName("savePermission-button");
     		
     		
     		AppUser user = new AppUser();
