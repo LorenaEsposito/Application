@@ -66,7 +66,7 @@ private static NotebookMapper notebookMapper = null;
 			Statement stmt = con.createStatement();
 			
 			//Statement ausfuellen und als Query an DB schicken
-			ResultSet rs = stmt.executeQuery("SELECT nbID, userID, nbTitle, nbCreDate, nbModDate FROM notebooks"
+			ResultSet rs = stmt.executeQuery("SELECT nbid, title, creadate, moddate FROM notebooks"
 					+ "WHERE nbID=" + nbID );
 			
 			/**
@@ -170,7 +170,6 @@ private static NotebookMapper notebookMapper = null;
 				
 				Notebook notebook = new Notebook();
 				notebook.setNbID(rs.getInt("nbid"));
-				notebook.setUserID(rs.getInt("appuserid"));
 				notebook.setNbTitle(rs.getString("title"));
 				notebook.setNbCreDate(rs.getDate("creadate"));
 				notebook.setNbModDate(rs.getDate("moddate"));
@@ -205,17 +204,16 @@ private static NotebookMapper notebookMapper = null;
 		
 		try{
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT nbID, userID, nbTitle, nbCreDate, nbModDate, unbID FROM Notebook"
-					+ " WHERE nbTitle LIKE " + nbTitle + " ORDER BY nCreDate");
+			ResultSet rs = stmt.executeQuery("SELECT nbid, title, creadate, moddate FROM notebooks"
+					+ " WHERE title LIKE " + nbTitle + " ORDER BY creadate");
 			
 			//Fuer jeden Eintrag im Suchergebnis wird ein Notebook-Objekt erstellt.
 			while(rs.next()){
 				Notebook notebook = new Notebook();
-				notebook.setNbID(rs.getInt("nbID"));
-				notebook.setUserID(rs.getInt("userID"));
-				notebook.setNbTitle(rs.getString("nbTitle"));
-				notebook.setNbCreDate(rs.getDate("nbCreDate"));
-				notebook.setNbModDate(rs.getDate("nbModDate"));
+				notebook.setNbID(rs.getInt("nbid"));
+				notebook.setNbTitle(rs.getString("title"));
+				notebook.setNbCreDate(rs.getDate("creadate"));
+				notebook.setNbModDate(rs.getDate("moddate"));
 				
 				//Neues Objekt wird dem Ergebnisvektor hinzugefuegt
 				result.addElement(notebook);
@@ -244,7 +242,7 @@ private static NotebookMapper notebookMapper = null;
 			Statement stmt = con.createStatement();
 			
 			//Ueberpruefen welches der aktuell hoechste Primaerschluessel ist.
-			ResultSet rs = stmt.executeQuery("SELECT MAX(nbID) AS maxnbID FROM notebooks");
+			ResultSet rs = stmt.executeQuery("SELECT MAX(nbid) AS 'maxnbID' FROM notebooks");
 			
 			if(rs.next()){
 				//notebook erhaelt den aktuell hoechsten und um 1 inkrementierten Primaerschluessel
@@ -253,8 +251,8 @@ private static NotebookMapper notebookMapper = null;
 				stmt = con.createStatement();
 				
 				//Neues Objekt wird eingefuegt
-				stmt.executeUpdate("INSERT INTO notebooks (nbid, userid, title, creadate, moddate)"
-						+ "VALUES (" + notebook.getNbID() + "," + notebook.getUserID() + ",'" + notebook.getNbTitle() + "'," + notebook.getNbCreDate()
+				stmt.executeUpdate("INSERT INTO notebooks (nbid, title, creadate, moddate)"
+						+ "VALUES (" + notebook.getNbID() + "," + notebook.getNbTitle() + "'," + notebook.getNbCreDate()
 						+ "," + notebook.getNbModDate() + ")" );
 
 			}
@@ -285,8 +283,8 @@ private static NotebookMapper notebookMapper = null;
 		try{
 			Statement stmt = con.createStatement();
 			
-			stmt.executeUpdate("UPDATE Notebook" + "SET nbTitle=\"" + notebook.getNbTitle()
-			+ "\"," + "WHERE nbID=" + notebook.getNbID());
+			stmt.executeUpdate("UPDATE notebooks" + "SET title=\"" + notebook.getNbTitle()
+			+ "\"," + "WHERE nbid=" + notebook.getNbID());
 		}
 		catch(SQLException e){
 			e.printStackTrace();
@@ -314,7 +312,7 @@ private static NotebookMapper notebookMapper = null;
 		
 		try{
 			Statement stmt = con.createStatement();
-			stmt.executeUpdate("DELETE FROM Notebook" + "WHERE nbID=" + notebook.getNbID());
+			stmt.executeUpdate("DELETE FROM notebooks" + "WHERE nbid=" + notebook.getNbID());
 		}
 		catch (SQLException e){
 			e.printStackTrace();
@@ -329,8 +327,8 @@ private static NotebookMapper notebookMapper = null;
 		
 		try{
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT userid, nbid, FROM permissions" 
-					+ "WHERE userid =" + u.getUserID() + "AND WHERE isowner = 1");
+			ResultSet rs = stmt.executeQuery("SELECT nbid FROM permissions" 
+					+ "WHERE appuserid =" + u.getUserID() + "AND WHERE isowner = 1");
 			
 			// Fuer jeden Eintrag wird ein Notebook-Objekt erstellt	
 			while (rs.next()){
@@ -338,7 +336,7 @@ private static NotebookMapper notebookMapper = null;
 				Integer idInt = new Integer(rs.getInt("nid"));
 				Statement stmt2 = con.createStatement();
 				stmt2.executeUpdate("DELETE FROM notebooks"
-						+ "WHERE nbID=" + idInt.intValue()); 
+						+ "WHERE nbid=" + idInt.intValue()); 
 			}
 		}
 	
