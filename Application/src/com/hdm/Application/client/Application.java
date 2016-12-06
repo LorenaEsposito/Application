@@ -314,6 +314,7 @@ public class Application implements EntryPoint {
 		 userLabel.setText(currentUser.getGoogleID());
 		 
 		 adminService.getNotebooksOfUser(currentUser, getNotebooksOfUserCallback());
+		 
 	 }
 	 };
 	 return asyncCallback;
