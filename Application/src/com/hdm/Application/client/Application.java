@@ -286,6 +286,7 @@ public class Application implements EntryPoint {
      loginTextPanel.add(loginLabel);
      loginTextPanel.add(signInLink);
      loginTextPanel.setStyleName("loginTextPanel");
+     
 //     loginTextPanel.add(usernameLabel);
 //     loginTextPanel.add(usernameBox);
 //     loginTextPanel.add(passwordLabel);
