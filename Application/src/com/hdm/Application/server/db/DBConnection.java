@@ -11,8 +11,8 @@ import com.google.appengine.api.utils.SystemProperty;
  */
 
 public class DBConnection {
-
-    /**
+	
+	/**
      * Instantiieren der Connection und Festlegung der Einzigartigkeit durch <code>static</code>
      */
 	
