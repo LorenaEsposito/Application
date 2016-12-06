@@ -97,7 +97,7 @@ private static NotebookMapper notebookMapper = null;
 	public Vector<Notebook> findByUser(AppUser user){
 		
 		//DB-Verbindung holen
-		int userID = user.getUserID();
+		int appUserID = user.getUserID();
 		Connection con = DBConnection.connection();
 		
 		Vector<Notebook> result = new Vector<Notebook>();
@@ -108,7 +108,7 @@ private static NotebookMapper notebookMapper = null;
 			
 			//Statement ausfuellen und als Query an DB schicken
 			ResultSet rs = stmt.executeQuery("SELECT nbid AS nbID FROM permissions "
-					+ "WHERE userid=" + userID + ""
+					+ "WHERE appuserid=" + appUserID
 					+ " AND isowner=1");
 			
 			int nbID = rs.getInt("nbID");
@@ -120,7 +120,7 @@ private static NotebookMapper notebookMapper = null;
 				Statement stmt2 = con.createStatement();
 				
 				//Statement ausfuellen und als Query an DB schicken
-				ResultSet rs2 = stmt2.executeQuery("SELECT nbid, userid, title, creadate, moddate FROM notebooks "
+				ResultSet rs2 = stmt2.executeQuery("SELECT nbid, title, creadate, moddate FROM notebooks "
 						+ "WHERE nbid=" + nbID);
 				
 					Notebook notebook = new Notebook();
