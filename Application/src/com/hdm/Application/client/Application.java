@@ -183,6 +183,7 @@ public class Application implements EntryPoint {
 	    searchButton.setStyleName("navObject");
 	    logoButton.setStyleName("notework-logo");
 	    listbox.setStyleName("listbox");
+	    headPanel.setStyleName("headPanel");
 	    
 	    
 	    
@@ -193,9 +194,10 @@ public class Application implements EntryPoint {
 	    headPanel.add(userLabel);
 	    headPanel.add(logoButton);
 	    headPanel.add(signOutButton);
+	    headPanel.add(searchButton);
 	    navPanel.add(listbox);
 	    navPanel.add(createNoteButton);
-	    navPanel.add(searchButton);
+	    
 	    RootPanel.get("Header").add(headPanel);
 	    RootPanel.get("Navigator").add(navPanel);
 	    RootPanel.get("Details").add(update);

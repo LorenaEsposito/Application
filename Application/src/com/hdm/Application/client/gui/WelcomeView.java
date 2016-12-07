@@ -2,10 +2,12 @@ package com.hdm.Application.client.gui;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.hdm.Application.client.ClientsideSettings;
 import com.hdm.Application.shared.NoteAdministrationAsync;
 import com.hdm.Application.shared.bo.AppUser;
+
 
 public class WelcomeView extends Update {
 	
@@ -24,6 +26,7 @@ public class WelcomeView extends Update {
 	 * Erstellung aller Panels
 	 */
 	VerticalPanel welcomePanel = new VerticalPanel();
+	
 	
 	/**
 	 * Erstellung aller Widgets
