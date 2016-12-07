@@ -192,10 +192,9 @@ div#Navigator {
 
 div#Header {
 	height: 70px;
-	width: 100px;
-	margin-left: 10px ;      /* standardkonforme horizontale Zentrierung */
+	width-min: 800px;      /* standardkonforme horizontale Zentrierung */
 	align: right;
-	color: #0080ff;
+	background-color: #006cd9;
 }
 
 div#Trailer {
