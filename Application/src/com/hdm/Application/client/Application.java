@@ -177,10 +177,10 @@ public class Application implements EntryPoint {
 	     * Zuweisung eines Styles fuer die jeweiligen Widgets
 	     **/
 
-	    createNotebookButton.setStyleName("notework-addbutton");
- 		createNoteButton.setStyleName("notework-addbutton");
+	    createNotebookButton.setStyleName("navObject");
+ 		createNoteButton.setStyleName("navObject");
 	    signOutButton.setStyleName("signout-button");
-	    searchButton.setStyleName("notework-searchbutton");
+	    searchButton.setStyleName("navObject");
 	    logoButton.setStyleName("notework-logo");
 	    listbox.setStyleName("listbox");
 	    
@@ -281,8 +281,11 @@ public class Application implements EntryPoint {
      signInLink.setStyleName("loginLink");
      loginLabel.setStyleName("loginLink2");
      loginPanel.setStyleName("login");
+     logoButton.setStyleName("notework-logo");
      
      
+     
+     headPanel.add(logoButton);
      loginTextPanel.add(loginLabel);
      loginTextPanel.add(signInLink);
      loginTextPanel.setStyleName("loginTextPanel");

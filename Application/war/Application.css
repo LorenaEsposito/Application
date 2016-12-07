@@ -9,6 +9,8 @@ h1 {
   margin: 10px 0px 0px;
   text-align: left;
 }
+
+
 .loginLink {
 	background: url(/LoginBox.png);
 }
@@ -39,8 +41,7 @@ h1 {
 	font-weight: bold;
 	width: 230px;
 	height:50px;
-	margin-top: 10px;
-	margin-left: 15px;
+	margin: 0 auto;
 	border: 0px;
 }	
 	
@@ -62,37 +63,15 @@ h1 {
 	text-align: center;
 }
 
-.notework-simpletext {
-	font-size: 100%;
-	font-weight: normal;
-	padding: 3px;
-}
 
-.notework-label {
-	font-size: 120%;
-	font-weight: bold;
-	font-style: italic;
-	color: gray;
-	padding-bottom: 0.5em;
-}
-
-.notework-textfield {
-	font-size: 100%;
-	font-weight: normal;
-	padding: 3px;
-	width: 15em;
-}
-
-.notework-menubutton {
+.navObject {
 	font-size: 100%;
 	font-weight: bold;
 	width: 12em;
-	margin-bottom: 1em;
-}
-
-.notework-button {
-	font-size: 100%;
-	font-weight: bold;
+	margin-left: 40px;
+	margin-top: 10px;
+	border: 0px;
+	background-color:#f8f8f8;
 }
 
 .savePermission-button{
@@ -153,8 +132,6 @@ h1 {
 	background: url(/SignOut.png);
 	background-size:75%;
 	background-repeat:no-repeat;
-	font-size: 100%;
-	font-weight: bold;
 	width: 100px;
 	height:50px;
 	margin-top: 25px;
@@ -176,9 +153,10 @@ div#TopLevelFrame {
 div#Details {
 	margin-left: 20em;
 	height: 750px;
+	width-min: 600px;
 	padding: 1em 1em;
 	border-top: 1px solid silver;
-	border-left: 1px dashed silver;
+	border-left: 1px solid silver;
 }
 
 div#Navigator {
@@ -193,7 +171,7 @@ div#Navigator {
 div#Header {
 	height: 70px;
 	width-min: 800px;      /* standardkonforme horizontale Zentrierung */
-	align: right;
+	align: center;
 	background-color: #006cd9;
 }
 
