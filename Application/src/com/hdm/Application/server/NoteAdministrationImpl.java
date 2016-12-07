@@ -448,9 +448,10 @@ public ArrayList<Notebook> searchForNotebook(String title) throws IllegalArgumen
      * wird eins angelegt, zusammen mit einer Permission.
      */
     public ArrayList<Notebook> getNotebooksOfUser(AppUser u) throws IllegalArgumentException{
-    	Vector<Notebook> vector = new Vector<Notebook>();
     	
-    	if(this.nbMapper.findByUser(u) == null){
+    	Vector<Notebook> vector = this.nbMapper.findByUser(u);
+   	
+    	if(vector == null){
     		Notebook notebook = new Notebook();
     		notebook.setNbTitle("Dein erstes eigenes Notizbuch");
     		this.createNotebook(notebook);
@@ -461,7 +462,7 @@ public ArrayList<Notebook> searchForNotebook(String title) throws IllegalArgumen
     		vector = this.nbMapper.findByUser(u);
     	}
     	
-    	if(this.nbMapper.findByUser(u) != null){
+    	if(vector != null){
     	vector = this.nbMapper.findByUser(u);
     	}
 
