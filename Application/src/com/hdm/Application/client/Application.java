@@ -321,6 +321,7 @@ public class Application implements EntryPoint {
 		 
 		 adminService.getNotebooksOfUser(currentUser, getNotebooksOfUserCallback());
 		 
+		 
 	 }
 	 };
 	 return asyncCallback;
@@ -340,7 +341,6 @@ public class Application implements EntryPoint {
 				.severe("Success GetNotebooksOfUserCallback: " + result.getClass().getSimpleName());
 			 notebooks = result;
 			 
-			 ListBox listbox = new ListBox();
 			 for (int x = 0; x < notebooks.size(); x++ ){
 				 listbox.addItem(notebooks.get(x).getNbTitle());
 				 

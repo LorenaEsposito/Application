@@ -104,19 +104,23 @@ private static NotebookMapper notebookMapper = null;
 		
 		Vector<Notebook> result = new Vector<Notebook>();
 		
+		Vector<Integer> nbIDs = new Vector<Integer>();
+		
 		try{
 			//Leeres SQL Statement anlegen
 			Statement stmt = con.createStatement();
 			
 			//Statement ausfuellen und als Query an DB schicken
-			ResultSet rs = stmt.executeQuery("SELECT nbid AS nbID FROM permissions "
+			ResultSet rs = stmt.executeQuery("SELECT nbid FROM permissions "
 					+ "WHERE appuserid=" + appUserID
 					+ " AND isowner=1");
 			
 			while (rs.next()){
 				
 			
-			nbID = rs.getInt("nbID");
+			nbID = rs.getInt("nbid");
+			
+			nbIDs.add(nbID);
 			
 			}
 	}
@@ -126,6 +130,11 @@ private static NotebookMapper notebookMapper = null;
 	}
 	
 	try{
+		
+		for(int i = 0; i < nbIDs.size(); i++){
+			
+			nbID = nbIDs.get(i);
+			
 				//Leeres SQL Statement anlegen
 				Statement stmt2 = con.createStatement();
 				
@@ -138,7 +147,7 @@ private static NotebookMapper notebookMapper = null;
 				
 					Notebook notebook = new Notebook();
 					notebook.setNbID(rs2.getInt("nbid"));
-					notebook.setTitle(rs2.getString("title"));
+					notebook.setNbTitle(rs2.getString("title"));
 					notebook.setNbCreDate(rs2.getDate("creadate"));
 					notebook.setNbModDate(rs2.getDate("moddate"));
 					
@@ -147,10 +156,12 @@ private static NotebookMapper notebookMapper = null;
 				
 				}
 		}
+	}
 		catch (SQLException e){
 			e.printStackTrace();
 			return null;
 		}
+	
 		
 		return result;
 		
