@@ -17,8 +17,8 @@ h1 {
 	background: url(/LoginBoxFinal.png);
 	background-repeat: no-repeat;
 	background-size: 70%;
+	margin: 0 auto;
 	margin-top: 80px;
-	margin-left: 170px;
 	height:500px;
 	width: 700px;
 	
@@ -51,7 +51,6 @@ h1 {
 	margin-right:10px;
 	height:20px;
 	width: 150px;
-}
 }
 .notework-headline {
 	font-size: 12pt;
@@ -188,6 +187,7 @@ div#Navigator {
 	height: 750px;
 	padding: 1em 1em;
 	border-left: 1px solid silver;
+	border-top: 1px solid silver;
 }
 
 div#Header {
