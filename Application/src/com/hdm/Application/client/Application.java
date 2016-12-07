@@ -117,13 +117,11 @@ public class Application implements EntryPoint {
 	  public final static ListBox listbox = new ListBox();
 	  final Button createNoteButton = new Button("New Note +");
 	  final Button createNotebookButton = new Button("New Notebook");
-	  final Button signOutButton = new Button("");
+	  final Button signOutButton = new Button("Sign Out");
 	  final Button searchButton = new Button("Search");
 	  final Button logoButton = new Button();
-	  final TextBox usernameBox = new TextBox();
-	  final TextBox passwordBox = new TextBox();
-	  
-	  
+	  final Button impressumButton = new Button("Impressum");
+	  final Button hilfeButton = new Button("Hilfe");
  /**
   * Create a remote service proxy to talk to the server-side Greeting service.
   */
@@ -179,8 +177,10 @@ public class Application implements EntryPoint {
 
 	    createNotebookButton.setStyleName("navObject");
  		createNoteButton.setStyleName("navObject");
-	    signOutButton.setStyleName("signout-button");
-	    searchButton.setStyleName("navObject");
+ 		searchButton.setStyleName("headObject");
+ 		impressumButton.setStyleName("headObject");
+ 		hilfeButton.setStyleName("headObject");
+	    signOutButton.setStyleName("headObject");
 	    logoButton.setStyleName("notework-logo");
 	    listbox.setStyleName("listbox");
 	    headPanel.setStyleName("headPanel");
@@ -193,8 +193,10 @@ public class Application implements EntryPoint {
 	    
 	    headPanel.add(userLabel);
 	    headPanel.add(logoButton);
-	    headPanel.add(signOutButton);
 	    headPanel.add(searchButton);
+	    headPanel.add(impressumButton);
+	    headPanel.add(hilfeButton);
+	    headPanel.add(signOutButton);
 	    navPanel.add(listbox);
 	    navPanel.add(createNoteButton);
 	    
