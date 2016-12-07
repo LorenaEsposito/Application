@@ -33,8 +33,6 @@ public class WelcomeView extends Update {
 	protected void run() {
 		this.append("");
 		
-		adminService = ClientsideSettings.getAdministration();
-		
    	 	/**
 		 * Auslesen des Profils vom aktuellen Benutzer aus der Datenbank.
 		 */
@@ -57,6 +55,9 @@ public class WelcomeView extends Update {
 			 ClientsideSettings.getLogger()
 				.severe("Success GetCurrentUserCallback: " + result.getClass().getSimpleName());
 			 currentUser = result;
+			 
+			 welcomeLabel.setText("Willkommen " + currentUser.getUserName() + " " + currentUser.getUserLastName() + 
+					 " zu deinem ganz persoenlichen Notizbuch-System.");
 		 }
 		 };
 		 return asyncCallback;
