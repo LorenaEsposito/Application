@@ -105,7 +105,7 @@ public class Application implements EntryPoint {
 //	  private Label loginLabel = new Label("Bitte melde dich mit deinem Google Account an, um Notework nutzen zu können. Klicke auf Login und los geht's!");
 //	  final Label headerLabel = new Label("Notework");
 
-	  private Label loginLabel = new Label("You need an GMail-Account for using Notework");
+	  private Label loginLabel = new Label("");
 	  final Label userLabel = new Label();
 	  final Label usernameLabel = new Label("Username");
 	  final Label passwordLabel = new Label("Password");
@@ -286,6 +286,7 @@ public class Application implements EntryPoint {
      
      
      headPanel.add(logoButton);
+     RootPanel.get("Header").add(headPanel);
      loginTextPanel.add(loginLabel);
      loginTextPanel.add(signInLink);
      loginTextPanel.setStyleName("loginTextPanel");

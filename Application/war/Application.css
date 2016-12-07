@@ -37,11 +37,11 @@ h1 {
 	background: url(/Logo.png);
 	background-size:90%;
 	background-repeat:no-repeat;
-	font-size: 100%;
 	font-weight: bold;
 	width: 230px;
 	height:50px;
-	margin: 0 auto;
+	margin-left: 20px;
+	margin-top: 10px;
 	border: 0px;
 }	
 	
@@ -142,8 +142,9 @@ h1 {
 
 
 div#TopLevelFrame {
-	background: url(/hintergrund5.jpg);
+	background: url(/Hintergrund-Notework5.jpg);
 	background-size: auto;
+	background-size: 100%;
 	background-repeat: no-repeat;
 	width-min: 1280px;
 	height-min: 800px;
@@ -152,11 +153,9 @@ div#TopLevelFrame {
 
 div#Details {
 	margin-left: 20em;
-	height: 750px;
+	height-min: 750px;
 	width-min: 600px;
 	padding: 1em 1em;
-	border-top: 1px solid silver;
-	border-left: 1px solid silver;
 }
 
 div#Navigator {
@@ -164,8 +163,6 @@ div#Navigator {
 	width: 18em;
 	height: 750px;
 	padding: 1em 1em;
-	border-left: 1px solid silver;
-	border-top: 1px solid silver;
 }
 
 div#Header {
