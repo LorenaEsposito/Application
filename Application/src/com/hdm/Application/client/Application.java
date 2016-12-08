@@ -97,7 +97,7 @@ public class Application implements EntryPoint {
 	  public final FlowPanel detailPanel = new FlowPanel();
 	  private HorizontalPanel headPanel = new HorizontalPanel();
 	  private VerticalPanel navPanel = new VerticalPanel();
-	  
+	  private VerticalPanel navPanel2 = new VerticalPanel();
 	  /**
 	   * Erstellung aller Widgets
 	   */
@@ -199,10 +199,11 @@ public class Application implements EntryPoint {
 	    headPanel.add(hilfeButton);
 	    headPanel.add(signOutButton);
 	    navPanel.add(listbox);
-	    navPanel.add(createNoteButton);
+	    navPanel2.add(createNoteButton);
 	    
 	    RootPanel.get("Header").add(headPanel);
 	    RootPanel.get("Navigator").add(navPanel);
+	    RootPanel.get("Navigator").add(navPanel2);
 	    RootPanel.get("Details").add(update);
 	    
 	    /**
