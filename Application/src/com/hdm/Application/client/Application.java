@@ -3,7 +3,7 @@ package com.hdm.Application.client;
 
 import com.hdm.Application.shared.FieldVerifier;
 
-
+import com.hdm.Application.client.gui.ImpressumView;
 import com.hdm.Application.client.gui.CreateNoteView;
 import com.hdm.Application.client.gui.CreateNotebookView;
 import com.hdm.Application.client.gui.LoginService;
@@ -115,15 +115,13 @@ public class Application implements EntryPoint {
 //	  final Button noteButton = new Button("My Recipes");
 //	  final Button signOutButton = new Button("Sign out");
 	  public final static ListBox listbox = new ListBox();
-	  final Button createNoteButton = new Button("New Note +");
+	  final Button createNoteButton = new Button("Neue Notiz +");
 	  final Button createNotebookButton = new Button("New Notebook");
-	  final Button signOutButton = new Button("");
+	  final Button signOutButton = new Button("Sign Out");
 	  final Button searchButton = new Button("Search");
 	  final Button logoButton = new Button();
-	  final TextBox usernameBox = new TextBox();
-	  final TextBox passwordBox = new TextBox();
-	  
-	  
+	  final Button impressumButton = new Button("Impressum");
+	  final Button hilfeButton = new Button("Hilfe");
  /**
   * Create a remote service proxy to talk to the server-side Greeting service.
   */
@@ -179,10 +177,14 @@ public class Application implements EntryPoint {
 
 	    createNotebookButton.setStyleName("navObject");
  		createNoteButton.setStyleName("navObject");
-	    signOutButton.setStyleName("signout-button");
-	    searchButton.setStyleName("navObject");
+ 		searchButton.setStyleName("headObject");
+ 		impressumButton.setStyleName("headObject");
+ 		hilfeButton.setStyleName("headObject");
+	    signOutButton.setStyleName("headObject");
 	    logoButton.setStyleName("notework-logo");
-	    listbox.setStyleName("listbox");
+	    listbox.setStyleName("navListbox");
+	    headPanel.setStyleName("headPanel");
+	    navPanel.setStyleName("navPanel");
 	    
 	    
 	    
@@ -192,10 +194,13 @@ public class Application implements EntryPoint {
 	    
 	    headPanel.add(userLabel);
 	    headPanel.add(logoButton);
+	    headPanel.add(searchButton);
+	    headPanel.add(impressumButton);
+	    headPanel.add(hilfeButton);
 	    headPanel.add(signOutButton);
 	    navPanel.add(listbox);
 	    navPanel.add(createNoteButton);
-	    navPanel.add(searchButton);
+	    
 	    RootPanel.get("Header").add(headPanel);
 	    RootPanel.get("Navigator").add(navPanel);
 	    RootPanel.get("Details").add(update);
@@ -225,6 +230,17 @@ public class Application implements EntryPoint {
 	          RootPanel.get("Details").add(update);
 	    }
 	    });	    
+
+	    impressumButton.addClickHandler(new ClickHandler() {
+		  	public void onClick(ClickEvent event) {
+		          /*
+		           * Showcase instantiieren.
+		           */
+		          Update update = new ImpressumView();
+		          RootPanel.get("Details").clear();
+		          RootPanel.get("Details").add(update);
+		    }
+		    });	    
 
 
 //	    noteButton.addClickHandler(new ClickHandler() {

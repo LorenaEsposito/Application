@@ -2,10 +2,13 @@ package com.hdm.Application.client.gui;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.hdm.Application.client.ClientsideSettings;
 import com.hdm.Application.shared.NoteAdministrationAsync;
 import com.hdm.Application.shared.bo.AppUser;
+import com.google.gwt.user.client.ui.RootPanel; 
+
 
 public class WelcomeView extends Update {
 	
@@ -18,20 +21,24 @@ public class WelcomeView extends Update {
 	AppUser currentUser = new AppUser();
 
 	protected String getHeadlineText(){
-		return "Welcome";
+		return "";
 	}
 	/**
 	 * Erstellung aller Panels
 	 */
-	VerticalPanel welcomePanel = new VerticalPanel();
+	
+	
 	
 	/**
 	 * Erstellung aller Widgets
 	 */
-	Label welcomeLabel = new Label();
 	
 	protected void run() {
 		this.append("");
+		
+		VerticalPanel welcomePanel = new VerticalPanel();
+		welcomePanel.setStyleName("detailsPanel");
+		RootPanel.get("Details").add(welcomePanel);
 		
    	 	/**
 		 * Auslesen des Profils vom aktuellen Benutzer aus der Datenbank.
@@ -56,8 +63,8 @@ public class WelcomeView extends Update {
 				.severe("Success GetCurrentUserCallback: " + result.getClass().getSimpleName());
 			 currentUser = result;
 			 
-			 welcomeLabel.setText("Willkommen " + currentUser.getUserName() + " " + currentUser.getUserLastName() + 
-					 " zu deinem ganz persoenlichen Notizbuch-System.");
+		//	 welcomeLabel.setText("Willkommen " + currentUser.getUserName() + " " + currentUser.getUserLastName() + 
+		//			 " zu deinem ganz persoenlichen Notizbuch-System.");
 		 }
 		 };
 		 return asyncCallback;
