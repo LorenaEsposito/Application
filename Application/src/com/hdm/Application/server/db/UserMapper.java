@@ -261,7 +261,7 @@ public class UserMapper {
 			 * Zunaechst schauen wir nach, welches der momentan hoechste
 			 * Primaerschl�sselwert ist.
 			 */
-			ResultSet rs = stmt.executeQuery("SELECT MAX(id) AS maxid " + "FROM users ");
+			ResultSet rs = stmt.executeQuery("SELECT MAX(appuserid) AS maxid " + "FROM users ");
 
 			/**
 			 * Wenn wir etwas zur�ckerhalten, kann dies nur einzeilig sein
@@ -283,12 +283,12 @@ public class UserMapper {
 				 * Jetzt erst erfolgt die tatsaechliche Einf�geoperation
 				 */
 				stmt.executeUpdate(
-						"INSERT INTO users (appuserid, username) "
-								+ "VALUES (" + u.getUserID() + ",'" + u.getUserName() + "')");
+						"INSERT INTO users (appuserid, gid, username) "
+								+ "VALUES (" + u.getUserID() + ",'" + u.getGoogleID() + "','" + u.getUserName() +"')");
 
 				System.out.println(
-						"INSERT INTO users (appuserid, username) "
-								+ "VALUES (" + u.getUserID() + ",'" + u.getUserName() + "')");
+						"INSERT INTO users (appuserid, gid, username) "
+								+ "VALUES (" + u.getUserID() + ",'" + u.getGoogleID() + "','" + u.getUserName() +"')");
 
 				return u;
 			}
