@@ -171,6 +171,8 @@ protected void run() {
      * Zuweisung eines Styles fuer die jeweiligen Widgets
      **/
     headlinePanel.setStyleName("headlinePanel");
+    leftPanel.setStyleName("CreateLeftPanel");
+    rightPanel.setStyleName("CreateRightPanel");
     noteTitle.setStyleName("noteTitle");
     noteSubtitle.setStyleName("noteTitle");
     createButton.setStyleName("savePermission-button");
