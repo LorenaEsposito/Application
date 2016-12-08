@@ -33,7 +33,11 @@ public class ImpressumView extends Update{
 		this.append("");
 		
 		VerticalPanel impressumPanel = new VerticalPanel();
-		impressumPanel.setStyleName("impressumPanel");
+		VerticalPanel picturePanel = new VerticalPanel();
+		impressumPanel.setStyleName("detailsPanel");
+		picturePanel.setStyleName("impressumPanel");
+		
+		impressumPanel.add(picturePanel);
 		RootPanel.get("Details").add(impressumPanel);
     }
 }

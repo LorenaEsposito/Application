@@ -65,6 +65,7 @@ public class CreateNoteView extends Update{
 	   * Erstellung aller Panels
 	   */
 
+  HorizontalPanel headlinePanel = new HorizontalPanel();
   HorizontalPanel mainPanel = new HorizontalPanel();
   HorizontalPanel buttonPanel = new HorizontalPanel();
   VerticalPanel permissionPanel = new VerticalPanel();
@@ -93,7 +94,10 @@ public class CreateNoteView extends Update{
    DatePicker duedate = new DatePicker();
    CellTable<AppUser> table = new CellTable<AppUser>(); 
    Label testLabel = new Label();
-	
+   Label rightsLabel = new Label("Berechtigung vergeben:");
+   Label duedateLabel = new Label("Enddatum vergeben:");
+   Label mainheadline = new Label("Neue Notiz");
+   
 //	private Note currentNote = null;
 
 protected void run() {
@@ -124,14 +128,18 @@ protected void run() {
      * Zuteilung der Widgets zum jeweiligen Panel
      */
     
+    
+    headlinePanel.add(mainheadline);
     buttonPanel.add(createButton);
     buttonPanel.add(cancelButton);
     buttonPanel.add(testLabel);
+    rightPanel.add(rightsLabel);
     rightPanel.add(permissionPanel);
     permissionPanel.add(permissionText);
     permissionPanel.add(readButton);
     permissionPanel.add(editButton);
     permissionPanel.add(savePermissionButton);
+    rightPanel.add(duedateLabel);
     leftPanel.add(noteTitle);
     leftPanel.add(noteSubtitle);
     leftPanel.add(textArea); 
@@ -148,6 +156,7 @@ protected void run() {
     mainPanel.add(leftPanel);
     mainPanel.add(rightPanel);
     
+    RootPanel.get("Details").add(headlinePanel);
     RootPanel.get("Details").add(mainPanel);
         
     textArea.setVisibleLines(20);
@@ -157,10 +166,12 @@ protected void run() {
     noteSubtitle.setText("Subtitel");
     readButton.setText("Leseberechtigung");
     editButton.setText("Bearbeitungsberechtigung");
+    permissionText.setText("Name des Berechtigten");
     
     /**
      * Zuweisung eines Styles fuer die jeweiligen Widgets
      **/
+    headlinePanel.setStyleName("headlinePanel");
     createButton.setStyleName("savePermission-button");
     cancelButton.setStyleName("savePermission-button");
     readButton.setStyleName("savePermission-button");
@@ -173,6 +184,9 @@ protected void run() {
     savePermissionButton.setStyleName("savePermission-button");
     buttonPanel.setStyleName("buttonPanel");
     permissionPanel.setStyleName("permissionPanel");
+    rightsLabel.setStyleName("headline");
+    duedateLabel.setStyleName("headline");
+    
     
     //editButton.setStyleName("notework-menubutton");
     //deleteButton.setStyleName("notework-menubutton");
