@@ -172,12 +172,12 @@ protected void run() {
      * Zuweisung eines Styles fuer die jeweiligen Widgets
      **/
     headlinePanel.setStyleName("headlinePanel");
+    noteTitle.setStyleName("noteTitle");
+    noteSubtitle.setStyleName("noteTitle");
     createButton.setStyleName("savePermission-button");
     cancelButton.setStyleName("savePermission-button");
     readButton.setStyleName("savePermission-button");
     editButton.setStyleName("savePermission-button");
-    noteTitle.setStyleName("style-Textbox");
-    noteSubtitle.setStyleName("style-Textbox");
     permissionText.setStyleName("style-Textbox");
     duedate.setStyleName("datepicker");
     textArea.setStyleName("TextArea");
