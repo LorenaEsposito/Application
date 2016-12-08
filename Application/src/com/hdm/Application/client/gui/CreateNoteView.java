@@ -65,13 +65,13 @@ public class CreateNoteView extends Update{
 	   * Erstellung aller Panels
 	   */
 
-  VerticalPanel createPanel = new VerticalPanel();
-  HorizontalPanel firstPanel = new HorizontalPanel();
-  HorizontalPanel secondPanel = new HorizontalPanel();
-  HorizontalPanel thirdPanel = new HorizontalPanel();
-  HorizontalPanel fourthPanel = new HorizontalPanel();
+  HorizontalPanel mainPanel = new HorizontalPanel();
   HorizontalPanel buttonPanel = new HorizontalPanel();
-
+  VerticalPanel permissionPanel = new VerticalPanel();
+  VerticalPanel leftPanel = new VerticalPanel();
+  VerticalPanel rightPanel = new VerticalPanel();
+ 
+  
   
   /**
    * Erstellung aller Widgets
@@ -99,7 +99,7 @@ public class CreateNoteView extends Update{
 protected void run() {
     this.append("");
     
-    createPanel.setStyleName("detailsPanel");
+    mainPanel.setStyleName("detailsPanel");
     
     currentNBTitle = Application.listbox.getSelectedItemText();
     
@@ -124,28 +124,31 @@ protected void run() {
      * Zuteilung der Widgets zum jeweiligen Panel
      */
     
-    //createPanel.add(headlineLabel);
-    firstPanel.add(noteTitle);
-    secondPanel.add(noteSubtitle);
-    //createPanel.add(noticeLabel);
-    fourthPanel.add(textArea); 
-    firstPanel.add(permissionText);
-    secondPanel.add(readButton);
-    secondPanel.add(editButton);
-    firstPanel.add(savePermissionButton);
-    thirdPanel.add(duedate);
-    thirdPanel.add(table);
     buttonPanel.add(createButton);
     buttonPanel.add(cancelButton);
     buttonPanel.add(testLabel);
+    rightPanel.add(permissionPanel);
+    permissionPanel.add(permissionText);
+    permissionPanel.add(readButton);
+    permissionPanel.add(editButton);
+    permissionPanel.add(savePermissionButton);
+    leftPanel.add(noteTitle);
+    leftPanel.add(noteSubtitle);
+    leftPanel.add(textArea); 
+    
+    leftPanel.add(buttonPanel);
+    
+    
+    rightPanel.add(duedate);
+    rightPanel.add(table);
+  
+  
     //buttonPanel.add(editButton);
     //buttonPanel.add(deleteButton);
-    createPanel.add(firstPanel);
-    createPanel.add(secondPanel);
-    createPanel.add(thirdPanel);
-    createPanel.add(fourthPanel);
-    createPanel.add(buttonPanel);
-    RootPanel.get("Details").add(createPanel);
+    mainPanel.add(leftPanel);
+    mainPanel.add(rightPanel);
+    
+    RootPanel.get("Details").add(mainPanel);
         
     textArea.setVisibleLines(20);
     textArea.setPixelSize(420, 350);
@@ -158,12 +161,17 @@ protected void run() {
      **/
     createButton.setStyleName("savePermission-button");
     cancelButton.setStyleName("savePermission-button");
+    readButton.setStyleName("savePermission-button");
+    editButton.setStyleName("savePermission-button");
     noteTitle.setStyleName("style-Textbox");
     noteSubtitle.setStyleName("style-Textbox");
     permissionText.setStyleName("style-Textbox");
     duedate.setStyleName("datepicker");
     textArea.setStyleName("TextArea");
     savePermissionButton.setStyleName("savePermission-button");
+    buttonPanel.setStyleName("buttonPanel");
+    permissionPanel.setStyleName("permissionPanel");
+    
     //editButton.setStyleName("notework-menubutton");
     //deleteButton.setStyleName("notework-menubutton");
     
