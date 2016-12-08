@@ -221,7 +221,7 @@ h1 {
 
 .detailsPanel {
 	background-color: #ffffff;
-	height:700px;
+	height:500px;
 	width: 800px;
 	margin-top: 0px;
 	padding-left: 10px;
@@ -232,6 +232,7 @@ h1 {
 .buttonPanel {
 	border: 1px solid #c0c0c0;
 	background-color: #dfdfdf;
+	width: 800px;
 }
 
 .permissionPanel{
@@ -250,7 +251,7 @@ div#TopLevelFrame {
  }
 
 div#Details {
-	height-min: 750px;
+	height-min: 500px;
 	width-min: 600px;
 	padding: 1em 1em;
 

@@ -144,7 +144,7 @@ protected void run() {
     leftPanel.add(noteTitle);
     leftPanel.add(noteSubtitle);
     leftPanel.add(textArea); 
-    leftPanel.add(buttonPanel);
+    
     rightPanel.add(duedate);
     
   
@@ -154,9 +154,11 @@ protected void run() {
     mainPanel.add(leftPanel);
     mainPanel.add(rightPanel);
     
+   
     RootPanel.get("Details").add(headlinePanel);
     RootPanel.get("Details").add(mainPanel);
-        
+    RootPanel.get("Details").add(buttonPanel);
+    
     textArea.setVisibleLines(20);
     textArea.setPixelSize(420, 350);
     
