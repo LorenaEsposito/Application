@@ -3,6 +3,7 @@ package com.hdm.Application.client.gui;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RadioButton;
 import com.google.gwt.user.client.ui.RootPanel;
@@ -20,7 +21,9 @@ public class SearchView extends Update {
 	   * Erstellung aller Panels
 	   */
   
+  VerticalPanel detailsPanel = new VerticalPanel();
   VerticalPanel searchPanel = new VerticalPanel();
+  HorizontalPanel buttonPanel = new HorizontalPanel();
   
 	
   /**
@@ -48,19 +51,24 @@ protected void run() {
     
     
     searchPanel.add(searchBox);
+    searchPanel.add(buttonPanel);
+    buttonPanel.add(dueDateButton);
+    buttonPanel.add(userNameButton);
+    buttonPanel.add(noteButton);
+    buttonPanel.add(notebookButton);
     searchPanel.add(searchButton);
-    searchPanel.add(dueDateButton);
-    searchPanel.add(userNameButton);
-    searchPanel.add(noteButton);
-    searchPanel.add(notebookButton);
-    RootPanel.get("Details").add(searchPanel);
+   
+    detailsPanel.add(searchPanel);
+    RootPanel.get("Details").add(detailsPanel);
     
 	/**
    * Zuweisung eines Styles fuer die jeweiligen Widgets
    **/
 	
-    searchPanel.setStyleName("detailsPanel");
-    searchButton.setStyleName("savePermission-button");
+    detailsPanel.setStyleName("detailsPanel");
+    searchPanel.setStyleName("searchPanel");
+    buttonPanel.setStyleName("SearchButtonPanel");
+    searchButton.setStyleName("searchButton");
     dueDateButton.setStyleName("savePermission-button");
     userNameButton.setStyleName("savePermission-button");
     noteButton.setStyleName("savePermission-button");
