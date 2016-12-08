@@ -1,6 +1,7 @@
 package com.hdm.Application.client.gui;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -26,18 +27,25 @@ public class WelcomeView extends Update {
 	/**
 	 * Erstellung aller Panels
 	 */
-	
+	HorizontalPanel headlinePanel = new HorizontalPanel();
 	
 	
 	/**
 	 * Erstellung aller Widgets
 	 */
+	Label mainheadline = new Label("Willkommen");
+	
 	
 	protected void run() {
 		this.append("");
 		
+		headlinePanel.add(mainheadline);
 		VerticalPanel welcomePanel = new VerticalPanel();
 		welcomePanel.setStyleName("detailsPanel");
+		
+		headlinePanel.setStyleName("headlinePanel");
+		
+		RootPanel.get("Details").add(headlinePanel);
 		RootPanel.get("Details").add(welcomePanel);
 		
    	 	/**
