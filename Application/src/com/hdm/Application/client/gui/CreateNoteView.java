@@ -152,7 +152,9 @@ protected void run() {
         
     textArea.setVisibleLines(20);
     textArea.setPixelSize(420, 350);
-    noteTitle.setText("Title");
+    
+    noteTitle.setText("Überschrift");
+    noteSubtitle.setText("Subtitel");
     readButton.setText("Leseberechtigung");
     editButton.setText("Bearbeitungsberechtigung");
     
