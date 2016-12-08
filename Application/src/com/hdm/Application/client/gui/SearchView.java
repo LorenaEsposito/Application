@@ -13,7 +13,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 public class SearchView extends Update {
 	
 	protected String getHeadlineText() {
-	    return "Search";
+	    return "";
 }
 	
 	/**
@@ -21,6 +21,7 @@ public class SearchView extends Update {
 	   */
   
   VerticalPanel searchPanel = new VerticalPanel();
+  
 	
   /**
   ** Erstellung aller Widgets
@@ -33,6 +34,7 @@ public class SearchView extends Update {
   final RadioButton userNameButton = new RadioButton("Username");
   final RadioButton noteButton = new RadioButton("Note");
   final RadioButton notebookButton = new RadioButton("Notebook");
+ 
 
 protected void run() {
 
@@ -44,8 +46,9 @@ protected void run() {
    * Zuteilung der Widgets zum jeweiligen Panel
    */
     
-    searchPanel.add(searchButton);
+    
     searchPanel.add(searchBox);
+    searchPanel.add(searchButton);
     searchPanel.add(dueDateButton);
     searchPanel.add(userNameButton);
     searchPanel.add(noteButton);
@@ -56,8 +59,15 @@ protected void run() {
    * Zuweisung eines Styles fuer die jeweiligen Widgets
    **/
 	
-    searchButton.setStyleName("notework-menubutton");
+    searchPanel.setStyleName("detailsPanel");
+    searchButton.setStyleName("savePermission-button");
+    dueDateButton.setStyleName("savePermission-button");
+    userNameButton.setStyleName("savePermission-button");
+    noteButton.setStyleName("savePermission-button");
+    notebookButton.setStyleName("savePermission-button");
+    searchBox.setStyleName("searchbox");
     
+    searchBox.setText("Suche");
     dueDateButton.setText("Duedate");
     userNameButton.setText("Username");
     noteButton.setText("Note");

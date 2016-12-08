@@ -36,6 +36,17 @@ h1 {
 	border-bottom: 1px solid #808080;
 	
 }
+
+.searchbox {
+	width: 400px;
+	font-size: 20px;
+	color: #666666;
+	margin-left: 10px;
+	margin-bottom: 15px;
+	box-shadow: 0px 2px 5px #000;	
+	
+}
+
 .headPanel {
  width-min: 1000px;
  margin-left: auto;
