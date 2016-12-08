@@ -115,8 +115,8 @@ public class Application implements EntryPoint {
 //	  final Button noteButton = new Button("My Recipes");
 //	  final Button signOutButton = new Button("Sign out");
 	  public final static ListBox listbox = new ListBox();
-	  final Button createNoteButton = new Button("Neue Notiz +");
-	  final Button createNotebookButton = new Button("New Notebook");
+	  final Button createNoteButton = new Button("");
+	  final Button createNotebookButton = new Button("");
 	  final Button signOutButton = new Button("Ausloggen");
 	  final Button searchButton = new Button("Suche");
 	  final Button logoButton = new Button();
@@ -175,7 +175,7 @@ public class Application implements EntryPoint {
 	     * Zuweisung eines Styles fuer die jeweiligen Widgets
 	     **/
 
-	    createNotebookButton.setStyleName("navObject");
+	    createNotebookButton.setStyleName("navObject2");
  		createNoteButton.setStyleName("navObject");
  		searchButton.setStyleName("headObject");
  		impressumButton.setStyleName("headObject");
@@ -200,7 +200,7 @@ public class Application implements EntryPoint {
 	    headPanel.add(signOutButton);
 	    navPanel.add(listbox);
 	    navPanel2.add(createNoteButton);
-	    
+	    navPanel2.add(createNotebookButton);
 	    RootPanel.get("Header").add(headPanel);
 	    RootPanel.get("Navigator").add(navPanel);
 	    RootPanel.get("Navigator").add(navPanel2);
@@ -209,6 +209,17 @@ public class Application implements EntryPoint {
 	    /**
 	     * Implementierung der jeweiligen ClickHandler fuer die einzelnen Widgets
 	     */
+	    
+	    logoButton.addClickHandler(new ClickHandler() {
+		  	public void onClick(ClickEvent event) {
+		          /*
+		           * Showcase instantiieren.
+		           */
+		          Update update = new WelcomeView();
+		          RootPanel.get("Details").clear();
+		          RootPanel.get("Details").add(update);
+		    }
+		    });
 	    
 	    createNotebookButton.addClickHandler(new ClickHandler() {
 	  	public void onClick(ClickEvent event) {
