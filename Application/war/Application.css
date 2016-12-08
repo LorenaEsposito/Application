@@ -20,7 +20,7 @@ h1 {
 	padding-top: 10px;
 	padding-left: 20px;
 	margin-top:-23px;
-	width: 1000px;
+	width: 800px;
 	height:60px;
 	background-color: #006fdd;
 	font-weight: bold;
@@ -39,12 +39,13 @@ h1 {
 }
 
 .searchPanel{
-	margin-left: 50px;
+	margin-top: 50px;
+	margin-left: 150px;
 	}
 	
 .searchbox {
 	width: 400px;
-	font-size: 20px;
+	font-size: 15px;
 	color: #666666;
 	margin-left: 10px;
 	margin-bottom: 15px;
@@ -166,23 +167,6 @@ h1 {
 	margin-left:10px;
 }
 
-.searchButton{
-	height:25px;
-	width: 100px;
-	margin-top: 10px;
-	margin-bottom: 10px;
-	margin-right:10px;
-	margin-left:250px;
-}
-
-.SearchButtonPanel{
-	height:25px;
-	width: 100px;
-	margin-top: 10px;
-	margin-bottom: 10px;
-	margin-right:10px;
-	margin-left:100px;
-}
 
 
 .TextArea {
@@ -191,7 +175,6 @@ h1 {
 	margin-bottom: 10px;
 	margin-right:10px;
 	margin-left:10px;
-	border-color: #c0c0c0;
 }
 
 .datepicker {
@@ -235,8 +218,8 @@ h1 {
 
 .detailsPanel {
 	background-color: #ffffff;
-	height:500px;
-	width: 600px;
+	height:700px;
+	width: 800px;
 	margin-top: -23px;
 	padding-left: 10px;
 	padding-top: 10px;

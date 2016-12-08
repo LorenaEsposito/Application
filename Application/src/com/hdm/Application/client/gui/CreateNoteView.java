@@ -139,16 +139,14 @@ protected void run() {
     permissionPanel.add(readButton);
     permissionPanel.add(editButton);
     permissionPanel.add(savePermissionButton);
+    rightPanel.add(table);
     rightPanel.add(duedateLabel);
     leftPanel.add(noteTitle);
     leftPanel.add(noteSubtitle);
     leftPanel.add(textArea); 
-    
     leftPanel.add(buttonPanel);
-    
-    
     rightPanel.add(duedate);
-    rightPanel.add(table);
+    
   
   
     //buttonPanel.add(editButton);

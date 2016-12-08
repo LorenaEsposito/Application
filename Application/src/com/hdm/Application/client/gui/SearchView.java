@@ -24,7 +24,7 @@ public class SearchView extends Update {
   VerticalPanel detailsPanel = new VerticalPanel();
   VerticalPanel searchPanel = new VerticalPanel();
   HorizontalPanel buttonPanel = new HorizontalPanel();
-  
+  HorizontalPanel headlinePanel = new HorizontalPanel();
 	
   /**
   ** Erstellung aller Widgets
@@ -37,7 +37,7 @@ public class SearchView extends Update {
   final RadioButton userNameButton = new RadioButton("Username");
   final RadioButton noteButton = new RadioButton("Note");
   final RadioButton notebookButton = new RadioButton("Notebook");
- 
+  final Label mainheadline = new Label("Suche");
 
 protected void run() {
 
@@ -49,7 +49,7 @@ protected void run() {
    * Zuteilung der Widgets zum jeweiligen Panel
    */
     
-    
+    headlinePanel.add(mainheadline);
     searchPanel.add(searchBox);
     searchPanel.add(buttonPanel);
     buttonPanel.add(dueDateButton);
@@ -59,16 +59,18 @@ protected void run() {
     searchPanel.add(searchButton);
    
     detailsPanel.add(searchPanel);
+    RootPanel.get("Details").add(headlinePanel);
     RootPanel.get("Details").add(detailsPanel);
     
 	/**
    * Zuweisung eines Styles fuer die jeweiligen Widgets
    **/
 	
+    headlinePanel.setStyleName("headlinePanel");
     detailsPanel.setStyleName("detailsPanel");
     searchPanel.setStyleName("searchPanel");
     buttonPanel.setStyleName("SearchButtonPanel");
-    searchButton.setStyleName("searchButton");
+    searchButton.setStyleName("savePermission-button");
     dueDateButton.setStyleName("savePermission-button");
     userNameButton.setStyleName("savePermission-button");
     noteButton.setStyleName("savePermission-button");
