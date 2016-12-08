@@ -58,7 +58,7 @@ public class CreateNoteView extends Update{
 	Date date = new Date();
 	
 	protected String getHeadlineText() {
-	    return "Create Note";
+	    return "";
 }
 	
 	/**
@@ -98,6 +98,8 @@ public class CreateNoteView extends Update{
 
 protected void run() {
     this.append("");
+    
+    createPanel.setStyleName("detailsPanel");
     
     currentNBTitle = Application.listbox.getSelectedItemText();
     

@@ -37,7 +37,7 @@ public class WelcomeView extends Update {
 		this.append("");
 		
 		VerticalPanel welcomePanel = new VerticalPanel();
-		welcomePanel.setStyleName("welcomePanel");
+		welcomePanel.setStyleName("detailsPanel");
 		RootPanel.get("Details").add(welcomePanel);
 		
    	 	/**

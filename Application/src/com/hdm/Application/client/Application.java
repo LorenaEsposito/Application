@@ -3,7 +3,7 @@ package com.hdm.Application.client;
 
 import com.hdm.Application.shared.FieldVerifier;
 
-
+import com.hdm.Application.client.gui.ImpressumView;
 import com.hdm.Application.client.gui.CreateNoteView;
 import com.hdm.Application.client.gui.CreateNotebookView;
 import com.hdm.Application.client.gui.LoginService;
@@ -182,8 +182,9 @@ public class Application implements EntryPoint {
  		hilfeButton.setStyleName("headObject");
 	    signOutButton.setStyleName("headObject");
 	    logoButton.setStyleName("notework-logo");
-	    listbox.setStyleName("listbox");
+	    listbox.setStyleName("navListbox");
 	    headPanel.setStyleName("headPanel");
+	    navPanel.setStyleName("navPanel");
 	    
 	    
 	    
@@ -229,6 +230,17 @@ public class Application implements EntryPoint {
 	          RootPanel.get("Details").add(update);
 	    }
 	    });	    
+
+	    impressumButton.addClickHandler(new ClickHandler() {
+		  	public void onClick(ClickEvent event) {
+		          /*
+		           * Showcase instantiieren.
+		           */
+		          Update update = new ImpressumView();
+		          RootPanel.get("Details").clear();
+		          RootPanel.get("Details").add(update);
+		    }
+		    });	    
 
 
 //	    noteButton.addClickHandler(new ClickHandler() {
