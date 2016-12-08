@@ -32,7 +32,7 @@ public class SearchView extends Update {
   
   TextBox searchBox = new TextBox();
 
-  final Button searchButton = new Button("Search");
+  final Button searchButton = new Button("Suchen");
   final RadioButton dueDateButton = new RadioButton("Duedate");
   final RadioButton userNameButton = new RadioButton("Username");
   final RadioButton noteButton = new RadioButton("Note");
@@ -78,10 +78,10 @@ protected void run() {
     searchBox.setStyleName("searchbox");
     
     searchBox.setText("Suche");
-    dueDateButton.setText("Duedate");
-    userNameButton.setText("Username");
-    noteButton.setText("Note");
-    notebookButton.setText("Notebook");
+    dueDateButton.setText("Enddatum");
+    userNameButton.setText("Benutzer");
+    noteButton.setText("Notiz");
+    notebookButton.setText("Notizbuch");
     
 	/**
      * Erstellung der ClickHandler

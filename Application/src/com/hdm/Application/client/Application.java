@@ -117,8 +117,8 @@ public class Application implements EntryPoint {
 	  public final static ListBox listbox = new ListBox();
 	  final Button createNoteButton = new Button("Neue Notiz +");
 	  final Button createNotebookButton = new Button("New Notebook");
-	  final Button signOutButton = new Button("Sign Out");
-	  final Button searchButton = new Button("Search");
+	  final Button signOutButton = new Button("Ausloggen");
+	  final Button searchButton = new Button("Suche");
 	  final Button logoButton = new Button();
 	  final Button impressumButton = new Button("Impressum");
 	  final Button hilfeButton = new Button("Hilfe");

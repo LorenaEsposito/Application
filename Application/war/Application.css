@@ -40,9 +40,12 @@ h1 {
 
 .searchPanel{
 	margin-top: 50px;
-	margin-left: 150px;
+	margin-left: 170px;
 	}
 	
+.logoImpressum {
+	font-size: 25px;
+}
 .searchbox {
 	width: 400px;
 	font-size: 15px;
@@ -74,7 +77,7 @@ h1 {
 	background: url(/LoginBoxFinal.png);
 	background-repeat: no-repeat;
 	background-size: 70%;
-	margin: 0 auto;
+	margin-left: 250px;
 	margin-top: 80px;
 	height:500px;
 	width: 700px;
