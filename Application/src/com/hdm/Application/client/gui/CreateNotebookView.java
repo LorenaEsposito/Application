@@ -32,6 +32,7 @@ import com.hdm.Application.shared.bo.Permission;
 
 public class CreateNotebookView extends Update{
 
+	
 	/**
 	 * Die AdministrationService ermoeglicht die asynchrone Kommunikation mit der
 	 * Applikationslogik.
@@ -135,7 +136,6 @@ protected void run() {
     rightPanel.add(duedateLabel);
     leftPanel.add(noteTitle);
     leftPanel.add(noteSubtitle);
-
     
     rightPanel.add(duedate);
     
@@ -149,7 +149,7 @@ protected void run() {
     RootPanel.get("Details").add(headlinePanel);
     RootPanel.get("Details").add(mainPanel);
     RootPanel.get("Details").add(buttonPanel);
-
+    
     
     noteTitle.setText("Überschrift");
     noteSubtitle.setText("Subtitel");
@@ -161,6 +161,8 @@ protected void run() {
      * Zuweisung eines Styles fuer die jeweiligen Widgets
      **/
     headlinePanel.setStyleName("headlinePanel");
+    leftPanel.setStyleName("CreateLeftPanel");
+    rightPanel.setStyleName("CreateRightPanel");
     noteTitle.setStyleName("noteTitle");
     noteSubtitle.setStyleName("noteTitle");
     createButton.setStyleName("savePermission-button");
@@ -391,3 +393,4 @@ protected void run() {
     	return asyncCallback;
     }
 }
+

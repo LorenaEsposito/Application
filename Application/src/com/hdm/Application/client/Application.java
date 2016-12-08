@@ -175,8 +175,8 @@ public class Application implements EntryPoint {
 	     * Zuweisung eines Styles fuer die jeweiligen Widgets
 	     **/
 
-	    createNotebookButton.setStyleName("navObject2");
- 		createNoteButton.setStyleName("navObject");
+	    createNotebookButton.setStyleName("navObject");
+ 		createNoteButton.setStyleName("navObject2");
  		searchButton.setStyleName("headObject");
  		impressumButton.setStyleName("headObject");
  		hilfeButton.setStyleName("headObject");
@@ -199,8 +199,8 @@ public class Application implements EntryPoint {
 	    headPanel.add(hilfeButton);
 	    headPanel.add(signOutButton);
 	    navPanel.add(listbox);
-	    navPanel2.add(createNoteButton);
 	    navPanel2.add(createNotebookButton);
+	    navPanel2.add(createNoteButton);
 	    RootPanel.get("Header").add(headPanel);
 	    RootPanel.get("Navigator").add(navPanel);
 	    RootPanel.get("Navigator").add(navPanel2);
