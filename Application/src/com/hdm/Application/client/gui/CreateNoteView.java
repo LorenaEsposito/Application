@@ -154,7 +154,6 @@ protected void run() {
     mainPanel.add(leftPanel);
     mainPanel.add(rightPanel);
     
-   
     RootPanel.get("Details").add(headlinePanel);
     RootPanel.get("Details").add(mainPanel);
     RootPanel.get("Details").add(buttonPanel);
