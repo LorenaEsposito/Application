@@ -28,26 +28,27 @@ public class WelcomeView extends Update {
 	 * Erstellung aller Panels
 	 */
 	HorizontalPanel headlinePanel = new HorizontalPanel();
+	VerticalPanel welcomePanel = new VerticalPanel();
 	
 	
 	/**
 	 * Erstellung aller Widgets
 	 */
 	Label mainheadline = new Label("Willkommen");
+	Label welcomeLabel = new Label();
 	
 	
 	protected void run() {
 		this.append("");
-		
-		headlinePanel.add(mainheadline);
-		VerticalPanel welcomePanel = new VerticalPanel();
+
 		welcomePanel.setStyleName("detailsPanel");
-		
 		headlinePanel.setStyleName("headlinePanel");
 		
+		headlinePanel.add(mainheadline);
+		welcomePanel.add(welcomeLabel);
 		RootPanel.get("Details").add(headlinePanel);
 		RootPanel.get("Details").add(welcomePanel);
-		
+
    	 	/**
 		 * Auslesen des Profils vom aktuellen Benutzer aus der Datenbank.
 		 */
@@ -70,9 +71,9 @@ public class WelcomeView extends Update {
 			 ClientsideSettings.getLogger()
 				.severe("Success GetCurrentUserCallback: " + result.getClass().getSimpleName());
 			 currentUser = result;
-			 
-		//	 welcomeLabel.setText("Willkommen " + currentUser.getUserName() + " " + currentUser.getUserLastName() + 
-		//			 " zu deinem ganz persoenlichen Notizbuch-System.");
+
+			 welcomeLabel.setText("Willkommen " + currentUser.getUserName() + 
+					 " zu deinem ganz persoenlichen Notizbuch-System.");
 		 }
 		 };
 		 return asyncCallback;

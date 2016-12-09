@@ -187,8 +187,7 @@ protected void run() {
     permissionPanel.setStyleName("permissionPanel");
     rightsLabel.setStyleName("headline");
     duedateLabel.setStyleName("headline");
-    
-    
+
     //editButton.setStyleName("notework-menubutton");
     //deleteButton.setStyleName("notework-menubutton");
     
