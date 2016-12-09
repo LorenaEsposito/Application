@@ -172,7 +172,7 @@ public void deleteUser(AppUser u) throws IllegalArgumentException {
     this.uMapper.delete(u);
     
     Vector<Permission> vector = new Vector<Permission>();
-    vector = this.pMapper.findOwnerByUserID(u.getUserID());
+    vector = this.pMapper.findOwnerByUserId(u.getUserID());
     ArrayList<Permission> permissions = new ArrayList<Permission>(vector);
     for(int i = 0; i < permissions.size(); i++){
     	this.pMapper.delete(permissions.get(i));
