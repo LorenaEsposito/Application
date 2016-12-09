@@ -59,6 +59,8 @@ public ArrayList<Notebook> getNotebooksOfUser(AppUser user) throws IllegalArgume
 
 public ArrayList<Note> getNotesOfNotebook(String nbTitle, AppUser u) throws IllegalArgumentException;
 
+public ArrayList<Permission> getOwnedNotebooks(AppUser user) throws IllegalArgumentException;
+
 public AppUser searchUserByGoogleID(String googleID) throws IllegalArgumentException;
 
 }

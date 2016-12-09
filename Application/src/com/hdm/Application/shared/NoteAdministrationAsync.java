@@ -68,6 +68,8 @@ public interface NoteAdministrationAsync {
 
 	public void getNotesOfNotebook(String nbTitle, AppUser u, AsyncCallback<ArrayList<Note>> callback) throws IllegalArgumentException;
 
+	public void getOwnedNotebooks(AppUser user, AsyncCallback<ArrayList<Permission>> callback) throws IllegalArgumentException;
+	
 	public void searchUserByGoogleID(String googleID, AsyncCallback<AppUser> callback) throws IllegalArgumentException;
 	
 }
