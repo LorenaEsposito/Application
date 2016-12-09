@@ -75,7 +75,6 @@ public class CreateNotebookView extends Update{
    //Label headlineLabel = new Label("Headline");
    //Label noticeLabel = new Label("Notice");
    TextBox noteTitle = new TextBox();
-   TextBox noteSubtitle = new TextBox();
    TextBox permissionText = new TextBox();
    final Button createButton = new Button("Create");
    final Button cancelButton = new Button("Cancel");
@@ -135,7 +134,6 @@ protected void run() {
     rightPanel.add(table);
     rightPanel.add(duedateLabel);
     leftPanel.add(noteTitle);
-    leftPanel.add(noteSubtitle);
     
     rightPanel.add(duedate);
     
@@ -152,7 +150,6 @@ protected void run() {
     
     
     noteTitle.setText("Überschrift");
-    noteSubtitle.setText("Subtitel");
     readButton.setText("Leseberechtigung");
     editButton.setText("Bearbeitungsberechtigung");
     permissionText.setText("Name des Berechtigten");
@@ -164,7 +161,6 @@ protected void run() {
     leftPanel.setStyleName("CreateLeftPanel");
     rightPanel.setStyleName("CreateRightPanel");
     noteTitle.setStyleName("noteTitle");
-    noteSubtitle.setStyleName("noteTitle");
     createButton.setStyleName("savePermission-button");
     cancelButton.setStyleName("savePermission-button");
     readButton.setStyleName("savePermission-button");
@@ -286,7 +282,6 @@ protected void run() {
 		
 		Note note = new Note();
 		note.setnTitle(noteTitle.getText());
-		note.setnSubtitle(noteSubtitle.getText());
 		note.setnCreDate(date);
 		//Date date = new Date();
 		//note.setnCreDate(date);
