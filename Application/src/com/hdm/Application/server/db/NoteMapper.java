@@ -79,11 +79,11 @@ public class NoteMapper {
 		    //Statement ausfuellen und als Query an DB schicken
 		      ResultSet rs = stmt.executeQuery("SELECT MAX(nID) AS maxnID" + " FROM notes");
 
-				String modDate = null;
-				if (note.getnModDate() != null) {
-					SimpleDateFormat mySQLformat = new SimpleDateFormat("yyyy-MM-dd");
-					modDate = mySQLformat.format(note.getnModDate());
-				}
+			//	String modDate = null;
+			//	if (note.getnModDate() != null) {
+			//		SimpleDateFormat mySQLformat = new SimpleDateFormat("yyyy-MM-dd");
+			//		modDate = mySQLformat.format(note.getnModDate());
+			//	}
 				
 				String creDate = null;
 				if (note.getnCreDate() != null) {
@@ -103,9 +103,9 @@ public class NoteMapper {
 		    	  
 		    	  stmt.executeUpdate("INSERT INTO notes (nid, nbid, title, subtitle, content, source, creadate, moddate) "
 		    	            + "VALUES (" + note.getnID() + "," + note.getNbID() + ",'"
-		    	            + note.getnTitle() + "','" + note.getnSubtitle() + "','" + note.getnContent() + "','" + note.getSource() + "'," 
-		    	            + creDate + "," + modDate + ")");
-
+		    	            + note.getnTitle() + "','" + note.getnSubtitle() + "','" + note.getnContent() + "','" + note.getSource() + "','" 
+		    	            + creDate + "','" + creDate + "')");
+		    	  			// Zweimal Creation-Date, da bei der Creation Mod-Date = Creation-Date
 		      }
 		    }
 		    catch (SQLException e) {

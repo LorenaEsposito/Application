@@ -368,7 +368,77 @@ package com.hdm.Application.server.db;
 			 */
 			return p;
 		}
+		
+		public Vector<Permission> findOwnerByUserId(int appUserID){
+			
+			//DB-Verbindung holen und Variablen zurücksetzen
+			Connection con = DBConnection.connection();
+			
+			Vector<Permission> result = new Vector<Permission>();
+			
+			try{
+				//Leeres SQL Statement anlegen
+				Statement stmt = con.createStatement();
+				
+				//Statement ausfuellen und als Query an DB schicken
+				ResultSet rs = stmt.executeQuery("SELECT pid, appuserid, isowner, nbid, nid, permtype FROM permissions "
+						+ "WHERE appuserid=" + appUserID
+						+ " AND isowner=1");
+				
+				while (rs.next()) {
+					
+					Permission p = new Permission();
+					p.setPermissionID(rs.getInt("pid"));
+					p.setUserID(rs.getInt("appuserid"));
+					p.setIsOwner(rs.getBoolean("isowner"));
+					p.setNbID(rs.getInt("nbid"));
+					p.setNID(rs.getInt("nid"));
+					p.setPermissionType(rs.getBoolean("permtype"));
+
+					/**
+					 * Hinzuf�gen des neuen Objekts zum Ergebnisvektor
+					 */
+					result.addElement(p);
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			
+			return result;
 	}
+		
+		public Vector<Permission> findByNotebook(Notebook notebook){
+			Connection con = DBConnection.connection();
+			Vector<Permission> result = new Vector<Permission>();
+			
+			try{
+				Statement stmt = con.createStatement();
+				ResultSet rs = stmt.executeQuery("SELECT pid, appuserid, isowner, nbid, nid, permtype FROM notebooks"
+						+ " WHERE nbid LIKE " + notebook.getNbID() + " ORDER BY pid");
+				
+				//Fuer jeden Eintrag im Suchergebnis wird ein Permission-Objekt erstellt.
+				while(rs.next()){
+					Permission permission = new Permission();
+					permission.setPermissionID(rs.getInt("pid"));
+					permission.setUserID(rs.getInt("appuserid"));
+					permission.setIsOwner(rs.getBoolean("isowner"));
+					permission.setNbID(rs.getInt("nbid"));
+					permission.setNID(rs.getInt("nid"));
+					permission.setPermissionType(rs.getBoolean("permtype"));
+					//Neues Objekt wird dem Ergebnisvektor hinzugefuegt
+					result.addElement(permission);
+				}
+			}
+			
+			catch (SQLException e){
+				e.printStackTrace();
+			}
+			
+			//Vektor wird zurueckgegeben
+			return result;
+		}
+		
+}
 
 	
 

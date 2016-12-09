@@ -3,7 +3,7 @@ package com.hdm.Application.client;
 
 import com.hdm.Application.shared.FieldVerifier;
 
-
+import com.hdm.Application.client.gui.ImpressumView;
 import com.hdm.Application.client.gui.CreateNoteView;
 import com.hdm.Application.client.gui.CreateNotebookView;
 import com.hdm.Application.client.gui.LoginService;
@@ -96,8 +96,9 @@ public class Application implements EntryPoint {
 	  private VerticalPanel loginTextPanel = new VerticalPanel();
 	  public final FlowPanel detailPanel = new FlowPanel();
 	  private HorizontalPanel headPanel = new HorizontalPanel();
+	  private HorizontalPanel headButtonPanel = new HorizontalPanel();
 	  private VerticalPanel navPanel = new VerticalPanel();
-	  
+	  private VerticalPanel navPanel2 = new VerticalPanel();
 	  /**
 	   * Erstellung aller Widgets
 	   */
@@ -115,15 +116,13 @@ public class Application implements EntryPoint {
 //	  final Button noteButton = new Button("My Recipes");
 //	  final Button signOutButton = new Button("Sign out");
 	  public final static ListBox listbox = new ListBox();
-	  final Button createNoteButton = new Button("New Note +");
-	  final Button createNotebookButton = new Button("New Notebook");
-	  final Button signOutButton = new Button("");
-	  final Button searchButton = new Button("Search");
+	  final Button createNoteButton = new Button("");
+	  final Button createNotebookButton = new Button("");
+	  final Button signOutButton = new Button("Ausloggen");
+	  final Button searchButton = new Button("Suche");
 	  final Button logoButton = new Button();
-	  final TextBox usernameBox = new TextBox();
-	  final TextBox passwordBox = new TextBox();
-	  
-	  
+	  final Button impressumButton = new Button("Impressum");
+	  final Button hilfeButton = new Button("Hilfe");
  /**
   * Create a remote service proxy to talk to the server-side Greeting service.
   */
@@ -178,11 +177,16 @@ public class Application implements EntryPoint {
 	     **/
 
 	    createNotebookButton.setStyleName("navObject");
- 		createNoteButton.setStyleName("navObject");
-	    signOutButton.setStyleName("signout-button");
-	    searchButton.setStyleName("navObject");
+ 		createNoteButton.setStyleName("navObject2");
+ 		searchButton.setStyleName("headObject");
+ 		impressumButton.setStyleName("headObject");
+ 		hilfeButton.setStyleName("headObject");
+	    signOutButton.setStyleName("headObject");
 	    logoButton.setStyleName("notework-logo");
-	    listbox.setStyleName("listbox");
+	    listbox.setStyleName("navListbox");
+	    headPanel.setStyleName("headPanel");
+	    navPanel.setStyleName("navPanel");
+	    headButtonPanel.setStyleName("headButtonPanel");
 	    
 	    
 	    
@@ -190,19 +194,35 @@ public class Application implements EntryPoint {
 	     * Zuteilung der Widgets zum jeweiligen Panel
 	     */
 	    
-	    headPanel.add(userLabel);
-	    headPanel.add(logoButton);
-	    headPanel.add(signOutButton);
+	    headButtonPanel.add(userLabel);
+	    headButtonPanel.add(logoButton);
+	    headButtonPanel.add(searchButton);
+	    headButtonPanel.add(impressumButton);
+	    headButtonPanel.add(hilfeButton);
+	    headButtonPanel.add(signOutButton);
+	    headPanel.add(headButtonPanel);
 	    navPanel.add(listbox);
-	    navPanel.add(createNoteButton);
-	    navPanel.add(searchButton);
+	    navPanel2.add(createNotebookButton);
+	    navPanel2.add(createNoteButton);
 	    RootPanel.get("Header").add(headPanel);
 	    RootPanel.get("Navigator").add(navPanel);
+	    RootPanel.get("Navigator").add(navPanel2);
 	    RootPanel.get("Details").add(update);
 	    
 	    /**
 	     * Implementierung der jeweiligen ClickHandler fuer die einzelnen Widgets
 	     */
+	    
+	    logoButton.addClickHandler(new ClickHandler() {
+		  	public void onClick(ClickEvent event) {
+		          /*
+		           * Showcase instantiieren.
+		           */
+		          Update update = new WelcomeView();
+		          RootPanel.get("Details").clear();
+		          RootPanel.get("Details").add(update);
+		    }
+		    });
 	    
 	    createNotebookButton.addClickHandler(new ClickHandler() {
 	  	public void onClick(ClickEvent event) {
@@ -225,6 +245,17 @@ public class Application implements EntryPoint {
 	          RootPanel.get("Details").add(update);
 	    }
 	    });	    
+
+	    impressumButton.addClickHandler(new ClickHandler() {
+		  	public void onClick(ClickEvent event) {
+		          /*
+		           * Showcase instantiieren.
+		           */
+		          Update update = new ImpressumView();
+		          RootPanel.get("Details").clear();
+		          RootPanel.get("Details").add(update);
+		    }
+		    });	    
 
 
 //	    noteButton.addClickHandler(new ClickHandler() {

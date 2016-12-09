@@ -56,6 +56,7 @@ protected void run() {
     // Ankündigung, was nun geschehen wird.
 
     this.append("");
+    
    
 	/**
    * Zuteilung der Widgets zum jeweiligen Panel
@@ -79,8 +80,8 @@ protected void run() {
   /**
    * Zuweisung eines Styles fuer die jeweiligen Widgets
    **/
-  	deleteButton.setStyleName("notework-menubutton");
-    editButton.setStyleName("notework-menubutton");
+  	deleteButton.setStyleName("savePermission-button");
+    editButton.setStyleName("savePermission-button");
   //createButton.setStyleName("notework-menubutton");
 	//textArea.setVisibleLines(20);
 	//textArea.setPixelSize(420, 350);

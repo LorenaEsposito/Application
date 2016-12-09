@@ -34,6 +34,8 @@ public class NoteAdministrationImpl extends RemoteServiceServlet
    */
   private Note note = null;
   
+  private Date date = new Date();
+  
   /**
 	 * Referenz auf den DatenbankMapper, der Userobjekte mit der Datenbank
 	 * abgleicht.
@@ -108,11 +110,16 @@ public AppUser getUserByGoogleID(String name){
 		
 		Notebook notebook = new Notebook();
 		notebook.setNbTitle("Dein erstes eigenes Notizbuch");
+		notebook.setNbCreDate(date);
+		notebook.setNbModDate(date);
 		this.createNotebook(notebook);
 		
 		Permission permission = new Permission();
 		permission.setNbID(notebook.getNbID());
 		permission.setUserID(cUser.getUserID());
+		permission.setNID(0);
+		permission.setIsOwner(true);
+		permission.setPermissionType(true);
 		this.createPermission(permission);
 		
 		AppUser user2 = new AppUser();
@@ -163,9 +170,15 @@ public void editUser(AppUser u) throws IllegalArgumentException{
 @Override
 public void deleteUser(AppUser u) throws IllegalArgumentException {
     this.uMapper.delete(u);
-//    this.nbMapper.delete(u);
-//    this.nMapper.delete(u);
-//    this.pMapper.delete(u);
+    
+    Vector<Permission> vector = new Vector<Permission>();
+    vector = this.pMapper.findOwnerByUserId(u.getUserID());
+    ArrayList<Permission> permissions = new ArrayList<Permission>(vector);
+    for(int i = 0; i < permissions.size(); i++){
+    	this.pMapper.delete(permissions.get(i));
+    	this.nMapper.deleteNote(this.nMapper.findByID(permissions.get(i).getNID()));
+    	this.nbMapper.deleteNotebook(this.nbMapper.findById(permissions.get(i).getNbID()));
+    }
   }
 
 /**
@@ -209,6 +222,22 @@ this.nbMapper.updateNotebook(nb);
 @Override
 public void deleteNotebook(Notebook nb) throws IllegalArgumentException {
 this.nbMapper.deleteNotebook(nb);
+
+Vector<Note> vector = new Vector<Note>();
+vector = this.nMapper.findByNotebook(nb);
+ArrayList<Note> notes = new ArrayList<Note>(vector);
+
+for(int i = 0; i < notes.size(); i++){
+	this.nMapper.deleteNote(notes.get(i));
+}
+
+Vector<Permission> vector2 = new Vector<Permission>();
+vector2 = this.pMapper.findByNotebook(nb);
+ArrayList<Permission> permissions = new ArrayList<Permission>(vector2);
+
+for(int i = 0; i < permissions.size(); i++){
+	this.pMapper.delete(permissions.get(i));
+}
 //this.nMapper.delete(nb);
 //this.pMapper.delete(nb);
 	}
@@ -307,7 +336,7 @@ public void deletePermission(Permission p) throws IllegalArgumentException {
  */
 @Override
 public void createDuedate(DueDate dd) throws IllegalArgumentException{
-//	this.ddMapper.createDueDate(dd);
+	this.ddMapper.createDueDate(dd);
 }
 
 /**
@@ -321,7 +350,7 @@ public void createDuedate(DueDate dd) throws IllegalArgumentException{
  */
 @Override
 public void editDuedate(DueDate dd) throws IllegalArgumentException{
-//	this.ddMapper.updateDueDate(dd);
+	this.ddMapper.updateDueDate(dd);
 }
 /**
  * Loescht das uebergebene Duedate endgueltig aus der Datenbank.
@@ -332,7 +361,7 @@ public void editDuedate(DueDate dd) throws IllegalArgumentException{
  */
 @Override
 public void deleteDuedate(DueDate dd) throws IllegalArgumentException {
-//    this.ddMapper.deleteDueDate(dd);
+    this.ddMapper.deleteDueDate(dd);
   }
 
 
@@ -403,36 +432,10 @@ public ArrayList<Notebook> searchForNotebook(String title) throws IllegalArgumen
    * in der Datenbank nach einem bestimmten Faelligkeitsdatum gesucht wird. In der Methode wird
    * eine ArrayList erstellt, die mit den Suchergebnissen befuellt wird. 
    * 
-<<<<<<< HEAD
    * @author Lorena Esposito
    * @param duedate
    * @return notes
-=======
-   * @author Lorena Esposito
-<<<<<<< HEAD
-   * @param duedate
-   * @return notes
-=======
-<<<<<<< HEAD
-<<<<<<< HEAD
-   * @param duedate
-<<<<<<< HEAD
-   * @return notes
    * @throws IllegalArgumentException
-=======
-   * @return notes
->>>>>>> refs/heads/master
-=======
-   * @param duedate
-   * @return notes
->>>>>>> refs/remotes/origin/master
-=======
-   * @param duedate
-   * @return notes
->>>>>>> refs/heads/master
->>>>>>> refs/heads/Lola
-   * @throws IllegalArgumentException
->>>>>>> refs/heads/Lola
    */
     public ArrayList<Note> searchForNoteByDD(DueDate duedate) throws IllegalArgumentException{
   	Vector<Note> vector = new Vector<Note>();
@@ -454,10 +457,15 @@ public ArrayList<Notebook> searchForNotebook(String title) throws IllegalArgumen
     	if(vector == null){
     		Notebook notebook = new Notebook();
     		notebook.setNbTitle("Dein erstes eigenes Notizbuch");
+    		notebook.setNbCreDate(date);
+    		notebook.setNbModDate(date);
     		this.createNotebook(notebook);
     		Permission permission = new Permission();
     		permission.setNbID(notebook.getNbID());
     		permission.setUserID(u.getUserID());
+    		permission.setNID(0);
+    		permission.setIsOwner(true);
+    		permission.setPermissionType(true);
     		this.createPermission(permission);
     		vector = this.nbMapper.findByUser(u);
     	}
