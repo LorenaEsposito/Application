@@ -34,11 +34,6 @@ public class AppUser implements Serializable {
 	private String userName;
 	
 	/**
-	 * Der Nachname des Users
-	 */
-	private String userLastName;
-	
-	/**
 	 * Die Information, ob der User in der aktuellen Session durch einen Login
 	 * mit einer bisher nicht bekannten Googlemail erstellt wurde.
 	 */
@@ -95,19 +90,4 @@ public class AppUser implements Serializable {
 		this.userName = userName;
 	}
 	
-	/**
-	 * Rueckgabe des Nachnamens des Users
-	 * @return userLastName
-	 */
-	public String getUserLastName(){
-		return this.userLastName;
-	}
-	
-	/**
-	 * Setzen des Nachnamens des Users
-	 * @param userLastName
-	 */
-	public void setUserLastName(String userLastName){
-		this.userLastName = userLastName;
-	}
 }

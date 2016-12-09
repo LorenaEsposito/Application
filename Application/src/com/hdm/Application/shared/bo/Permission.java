@@ -37,6 +37,11 @@ public class Permission implements Serializable{
 	 */
 	private int nbID;
 	
+	/**
+	 * Legt fest, ob der Nutzer der Eigentuemer der Notiz oder des Notizbuchs ist.
+	 */
+	private boolean isOwner;
+	
 	/*
 	 * Get-/Set-Operations
 	 */
@@ -120,5 +125,22 @@ public class Permission implements Serializable{
 	 */
 	public void setNbID(int nbID){
 		this.nbID = nbID;
+	}
+	
+	/**
+	 * Rueckgabe des Eigentuemerwertes
+	 * @return isOwner
+	 */
+	public boolean getIsOwner(){
+		return isOwner;
+	}
+
+	/**
+	 * Setzen des Eigentuemerwertes
+	 * @param b
+	 */
+	public void setIsOwner(boolean b) {
+		this.isOwner = b;
+		
 	}
 }
