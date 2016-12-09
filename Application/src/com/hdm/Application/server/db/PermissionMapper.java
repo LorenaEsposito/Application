@@ -200,12 +200,12 @@ package com.hdm.Application.server.db;
 					stmt.executeUpdate(
 							"INSERT INTO permissions (pid, permtype, appuserid, nid, nbid) "
 									+ "VALUES (" + p.getPermissionID() + "," + p.getPermissionType() + "," + p.getUserID()
-									+ "," + p.getNbID() + "," + p.getNID() + ")");
+									+ "," + p.getNID() + "," + p.getNbID() + ")");
 
 					System.out.println(
 							"INSERT INTO permissions (pid, permtype, appuserid, nid, nbid) "
 									+ "VALUES (" + p.getPermissionID() + "," + p.getPermissionType() + "," + p.getUserID()
-									+ "," + p.getNbID() + "," + p.getNID() + ")");
+									+ "," + p.getNID() + "," + p.getNbID() + ")");
 
 					return p;
 				}

@@ -223,7 +223,7 @@ private static NotebookMapper notebookMapper = null;
 		try{
 			Statement stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery("SELECT nbid, title, creadate, moddate FROM notebooks"
-					+ " WHERE title LIKE " + nbTitle + " ORDER BY creadate");
+					+ " WHERE title LIKE '" + nbTitle + "' ORDER BY creadate");
 			
 			//Fuer jeden Eintrag im Suchergebnis wird ein Notebook-Objekt erstellt.
 			while(rs.next()){

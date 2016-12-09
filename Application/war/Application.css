@@ -9,6 +9,8 @@ h1 {
   margin: 10px 0px 0px;
   text-align: left;
 }
+
+
 .loginLink {
 	background: url(/LoginBox.png);
 }
@@ -16,8 +18,9 @@ h1 {
 .login{
 	background: url(/LoginBoxFinal.png);
 	background-repeat: no-repeat;
+	background-size: 70%;
+	margin: 0 auto;
 	margin-top: 80px;
-	margin-left: 170px;
 	height:500px;
 	width: 700px;
 	
@@ -34,15 +37,21 @@ h1 {
 	background: url(/Logo.png);
 	background-size:90%;
 	background-repeat:no-repeat;
-	font-size: 100%;
 	font-weight: bold;
 	width: 230px;
 	height:50px;
+	margin-left: 20px;
 	margin-top: 10px;
-	margin-left: 15px;
 	border: 0px;
 }	
 	
+	
+.style-Textbox {
+	margin-top: 10px;
+	margin-bottom: 10px;
+	margin-right:10px;
+	height:20px;
+	width: 150px;
 }
 .notework-headline {
 	font-size: 12pt;
@@ -54,37 +63,37 @@ h1 {
 	text-align: center;
 }
 
-.notework-simpletext {
-	font-size: 100%;
-	font-weight: normal;
-	padding: 3px;
-}
 
-.notework-label {
-	font-size: 120%;
-	font-weight: bold;
-	font-style: italic;
-	color: gray;
-	padding-bottom: 0.5em;
-}
-
-.notework-textfield {
-	font-size: 100%;
-	font-weight: normal;
-	padding: 3px;
-	width: 15em;
-}
-
-.notework-menubutton {
+.navObject {
 	font-size: 100%;
 	font-weight: bold;
 	width: 12em;
-	margin-bottom: 1em;
+	margin-left: 40px;
+	margin-top: 10px;
+	border: 0px;
+	background-color:#f8f8f8;
 }
 
-.notework-button {
-	font-size: 100%;
-	font-weight: bold;
+.savePermission-button{
+	height:25px;
+	width: 100px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	margin-right:10px;
+	
+}
+
+.TextArea {
+	
+	margin-top: 10px;
+	margin-bottom: 10px;
+	margin-right:10px;
+}
+
+.datepicker {
+	margin-top: 10px;
+	margin-bottom: 10px;
+	margin-right:10px;
 }
 
 .notework-addbutton{
@@ -123,8 +132,6 @@ h1 {
 	background: url(/SignOut.png);
 	background-size:75%;
 	background-repeat:no-repeat;
-	font-size: 100%;
-	font-weight: bold;
 	width: 100px;
 	height:50px;
 	margin-top: 25px;
@@ -135,8 +142,9 @@ h1 {
 
 
 div#TopLevelFrame {
-	background: url(/hintergrund5.jpg);
+	background: url(/Hintergrund-Notework5.jpg);
 	background-size: auto;
+	background-size: 100%;
 	background-repeat: no-repeat;
 	width-min: 1280px;
 	height-min: 800px;
@@ -145,24 +153,23 @@ div#TopLevelFrame {
 
 div#Details {
 	margin-left: 20em;
-	height: 700px;
+	height-min: 750px;
+	width-min: 600px;
 	padding: 1em 1em;
-	border-top: 1px solid silver;
-	border-left: 1px dashed silver;
 }
 
 div#Navigator {
 	float: left;
 	width: 18em;
-	height: 700px;
+	height: 750px;
 	padding: 1em 1em;
 }
 
 div#Header {
 	height: 70px;
-	width: 100px;
-	margin-left: 10px ;      /* standardkonforme horizontale Zentrierung */
-	align: right;
+	width-min: 800px;      /* standardkonforme horizontale Zentrierung */
+	align: center;
+	background-color: #006cd9;
 }
 
 div#Trailer {
