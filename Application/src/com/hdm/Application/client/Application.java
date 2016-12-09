@@ -96,6 +96,7 @@ public class Application implements EntryPoint {
 	  private VerticalPanel loginTextPanel = new VerticalPanel();
 	  public final FlowPanel detailPanel = new FlowPanel();
 	  private HorizontalPanel headPanel = new HorizontalPanel();
+	  private HorizontalPanel headButtonPanel = new HorizontalPanel();
 	  private VerticalPanel navPanel = new VerticalPanel();
 	  private VerticalPanel navPanel2 = new VerticalPanel();
 	  /**
@@ -185,6 +186,7 @@ public class Application implements EntryPoint {
 	    listbox.setStyleName("navListbox");
 	    headPanel.setStyleName("headPanel");
 	    navPanel.setStyleName("navPanel");
+	    headButtonPanel.setStyleName("headButtonPanel");
 	    
 	    
 	    
@@ -192,12 +194,13 @@ public class Application implements EntryPoint {
 	     * Zuteilung der Widgets zum jeweiligen Panel
 	     */
 	    
-	    headPanel.add(userLabel);
-	    headPanel.add(logoButton);
-	    headPanel.add(searchButton);
-	    headPanel.add(impressumButton);
-	    headPanel.add(hilfeButton);
-	    headPanel.add(signOutButton);
+	    headButtonPanel.add(userLabel);
+	    headButtonPanel.add(logoButton);
+	    headButtonPanel.add(searchButton);
+	    headButtonPanel.add(impressumButton);
+	    headButtonPanel.add(hilfeButton);
+	    headButtonPanel.add(signOutButton);
+	    headPanel.add(headButtonPanel);
 	    navPanel.add(listbox);
 	    navPanel2.add(createNotebookButton);
 	    navPanel2.add(createNoteButton);
