@@ -1,377 +1,388 @@
 package com.hdm.Application.server.db;
 
-	import java.sql.Connection;
-	import java.sql.ResultSet;
-	import java.sql.SQLException;
-	import java.sql.Statement;
-	import java.text.SimpleDateFormat;
-	import java.util.ArrayList;
-	import java.util.Vector;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Vector;
 
-	import com.hdm.Application.shared.bo.Permission;
-	import com.hdm.Application.shared.bo.AppUser;
-	import com.hdm.Application.shared.bo.Notebook;
-	import com.hdm.Application.shared.bo.Note;
+import com.hdm.Application.shared.bo.Permission;
+import com.hdm.Application.shared.bo.AppUser;
+import com.hdm.Application.shared.bo.Notebook;
+import com.hdm.Application.shared.bo.Note;
+
+/**
+ * Die Mapper-Klasse PermissionMapper stellt eine Schnittstelle zwischen
+ * Applikation und Datenbank dar. Die zu persistierenden Permissions werden hier
+ * auf eine relationale Ebene projiziert.
+ * 
+ * @author Marius Klepser
+ */
+
+public class PermissionMapper {
 
 	/**
-	 * Die Mapper-Klasse PermissionMapper stellt eine Schnittstelle zwischen Applikation
-	 * und Datenbank dar. Die zu persistierenden Permissions werden hier auf eine
-	 * relationale Ebene projiziert.
+	 * Instanziieren des Mappers
+	 */
+	private static PermissionMapper permissionMapper = null;
+
+	/**
+	 * Mithilfe des <code>protected</code>-Attributs im Konstruktor wird
+	 * verhindert, dass von anderen Klassen eine neue Instanz der Klasse
+	 * geschaffen werden kann.
+	 */
+	protected PermissionMapper() {
+	}
+
+	/**
+	 * Aufruf eines Permission-Mappers f�r Klassen, die keinen Zugriff auf den
+	 * Konstruktor haben.
+	 * 
+	 * @return Einzigartige Mapper-Instanz zur Benutzung in der
+	 *         Applikationsschicht
+	 */
+	public static PermissionMapper permissionMapper() {
+		if (permissionMapper == null) {
+			permissionMapper = new PermissionMapper();
+		}
+
+		return permissionMapper;
+	}
+
+	/**
+	 * Read-Methode - Anhand einer vorgegebenen id wird die dazu gehoerige
+	 * Permission in der Datenbank gesucht.
 	 * 
 	 * @author Marius Klepser
+	 * @param id
+	 *            Die id der Permission, die aus der Datenbank gelesen werden
+	 *            soll
+	 * @return Das durch die id referenzierte Permission-Objekt
+	 * 
 	 */
 
-	public class PermissionMapper {
-
+	public Permission findByKey(int id) {
 		/**
-		 * Instanziieren des Mappers
+		 * DB-Verbindung holen & Erzeugen eines neuen SQL-Statements.
 		 */
-		private static PermissionMapper permissionMapper = null;
+		Connection con = DBConnection.connection();
 
-		/**
-		 * Mithilfe des <code>protected</code>-Attributs im Konstruktor wird
-		 * verhindert, dass von anderen Klassen eine neue Instanz der Klasse
-		 * geschaffen werden kann.
-		 */
-		protected PermissionMapper() {
-		}
+		try {
+			Statement stmt = con.createStatement();
 
-		/**
-		 * Aufruf eines Permission-Mappers f�r Klassen, die keinen Zugriff auf den
-		 * Konstruktor haben.
-		 * 
-		 * @return Einzigartige Mapper-Instanz zur Benutzung in der
-		 *         Applikationsschicht
-		 */
-		public static PermissionMapper permissionMapper() {
-			if (permissionMapper == null) {
-				permissionMapper = new PermissionMapper();
-			}
-
-			return permissionMapper;
-		}
-
-		/**
-		 * Read-Methode - Anhand einer vorgegebenen id wird die dazu gehoerige Permission
-		 * in der Datenbank gesucht.
-		 * 
-		 * @author Marius Klepser
-		 * @param id
-		 *            Die id der Permission, die aus der Datenbank gelesen werden soll
-		 * @return Das durch die id referenzierte Permission-Objekt
-		 * 
-		 */
-
-		public Permission findByKey(int id) {
 			/**
-			 * DB-Verbindung holen & Erzeugen eines neuen SQL-Statements.
+			 * Statement ausf�llen und als Query an die DB schicken
 			 */
-			Connection con = DBConnection.connection();
+			ResultSet rs = stmt
+					.executeQuery("SELECT id, permissionType, userID, nID, nbID FROM permissions "
+							+ "WHERE id='" + id + "' ORDER BY id");
 
-			try {
-				Statement stmt = con.createStatement();
+			/**
+			 * Da id Primaerschl�ssel ist, kann max. nur ein Tupel
+			 * zur�ckgegeben werden. Pr�fe, ob ein Ergebnis vorliegt.
+			 */
+			if (rs.next()) {
 
-				/**
-				 * Statement ausf�llen und als Query an die DB schicken
-				 */
-				ResultSet rs = stmt.executeQuery("SELECT id, permissionType, userID, nID, nbID FROM permissions " + "WHERE id='" + id
-						+ "' ORDER BY id");
-
-				/**
-				 * Da id Primaerschl�ssel ist, kann max. nur ein Tupel zur�ckgegeben
-				 * werden. Pr�fe, ob ein Ergebnis vorliegt.
-				 */
-				if (rs.next()) {
-
-					Permission p = new Permission();
-					p.setPermissionID(rs.getInt("id"));
-					p.setPermissionType(rs.getBoolean("permissionType"));
-					p.setUserID(rs.getInt("userID"));
-					p.setNID(rs.getInt("nID"));
-					p.setNbID(rs.getInt("nbID"));
-					return p;
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-				return null;
+				Permission p = new Permission();
+				p.setPermissionID(rs.getInt("id"));
+				p.setPermissionType(rs.getBoolean("permissionType"));
+				p.setUserID(rs.getInt("userID"));
+				p.setNID(rs.getInt("nID"));
+				p.setNbID(rs.getInt("nbID"));
+				return p;
 			}
-
+		} catch (SQLException e) {
+			e.printStackTrace();
 			return null;
 		}
 
+		return null;
+	}
+
+	/**
+	 * Read-Methode - Auslesen aller Permissions in einen Vektor.
+	 * 
+	 * @author Marius Klepser
+	 * @return Liste aller derzeit in der Datenbank eingetragenen Permissions.
+	 */
+
+	public Vector<Permission> findAll() {
+		Connection con = DBConnection.connection();
 		/**
-		 * Read-Methode - Auslesen aller Permissions in einen Vektor.
-		 * 
-		 * @author Marius Klepser
-		 * @return Liste aller derzeit in der Datenbank eingetragenen Permissions.
+		 * Ergebnisvektor vorbereiten
+		 */
+		Vector<Permission> result = new Vector<Permission>();
+
+		/**
+		 * Erzeugen eines neuen SQL-Statements.
 		 */
 
-		public Vector<Permission> findAll() {
-			Connection con = DBConnection.connection();
-			/**
-			 * Ergebnisvektor vorbereiten
-			 */
-			Vector<Permission> result = new Vector<Permission>();
+		try {
+			Statement stmt = con.createStatement();
 
 			/**
-			 * Erzeugen eines neuen SQL-Statements.
+			 * Statement ausf�llen und als Query an die DB schicken.
 			 */
 
-			try {
-				Statement stmt = con.createStatement();
+			ResultSet rs = stmt
+					.executeQuery("SELECT id, uID, nID, nbID, permissionType FROM permissions"
+							+ "ORDER BY id");
+
+			/**
+			 * F�r jeden Eintrag im Suchergebnis wird nun ein Profile-Objekt
+			 * erstellt.
+			 */
+			while (rs.next()) {
+
+				Permission p = new Permission();
+				p.setPermissionID(rs.getInt("id"));
+				p.setPermissionType(rs.getBoolean("permissionType"));
+				p.setUserID(rs.getInt("userID"));
+				p.setNID(rs.getInt("nID"));
+				p.setNbID(rs.getInt("nbID"));
 
 				/**
-				 * Statement ausf�llen und als Query an die DB schicken.
+				 * Hinzuf�gen des neuen Objekts zum Ergebnisvektor
 				 */
-
-				ResultSet rs = stmt.executeQuery("SELECT id, uID, nID, nbID, permissionType FROM permissions" + "ORDER BY id");
-
-				/**
-				 * F�r jeden Eintrag im Suchergebnis wird nun ein Profile-Objekt
-				 * erstellt.
-				 */
-				while (rs.next()) {
-					
-					Permission p = new Permission();
-					p.setPermissionID(rs.getInt("id"));
-					p.setPermissionType(rs.getBoolean("permissionType"));
-					p.setUserID(rs.getInt("userID"));
-					p.setNID(rs.getInt("nID"));
-					p.setNbID(rs.getInt("nbID"));
-
-					/**
-					 * Hinzuf�gen des neuen Objekts zum Ergebnisvektor
-					 */
-					result.addElement(p);
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
+				result.addElement(p);
 			}
-
-			/**
-			 * Ergebnisvektor zur�ckgeben
-			 */
-			return result;
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 
 		/**
-		 * Insert-Methode - Ein Permission-Objekt wird �bergeben und die zugehoerigen
-		 * Werte in ein SQL-Statement geschrieben, welches ausgef�hrt wird, um das
-		 * Objekt in die Datenbank einzutragen.
-		 * 
-		 * @author Marius Klepser
-		 * @param p
-		 *            Permission, die in die Datenbank geschrieben werden soll
-		 * @return Permission-Objekt, das in die Datenbank geschrieben wurde
+		 * Ergebnisvektor zur�ckgeben
 		 */
+		return result;
+	}
 
-		public Permission insert(Permission p) {
+	/**
+	 * Insert-Methode - Ein Permission-Objekt wird �bergeben und die
+	 * zugehoerigen Werte in ein SQL-Statement geschrieben, welches ausgef�hrt
+	 * wird, um das Objekt in die Datenbank einzutragen.
+	 * 
+	 * @author Marius Klepser
+	 * @param p
+	 *            Permission, die in die Datenbank geschrieben werden soll
+	 * @return Permission-Objekt, das in die Datenbank geschrieben wurde
+	 */
 
-			Connection con = DBConnection.connection();
+	public Permission insert(Permission p) {
 
-			try {
-				Statement stmt = con.createStatement();
+		Connection con = DBConnection.connection();
+
+		try {
+			Statement stmt = con.createStatement();
+
+			/**
+			 * Zunaechst schauen wir nach, welches der momentan hoechste
+			 * Primaerschl�sselwert ist.
+			 */
+			ResultSet rs = stmt.executeQuery("SELECT MAX(pid) AS maxid "
+					+ "FROM permissions ");
+
+			/**
+			 * Wenn wir etwas zur�ckerhalten, kann dies nur einzeilig sein
+			 */
+			if (rs.next()) {
+				/**
+				 * p erhaelt den bisher maximalen, nun um 1 inkrementierten
+				 * Primaerschl�ssel.
+				 */
+				p.setPermissionID(rs.getInt("maxid") + 1);
 
 				/**
-				 * Zunaechst schauen wir nach, welches der momentan hoechste
-				 * Primaerschl�sselwert ist.
+				 * Erzeugen eines neuen SQL-Statements.
 				 */
-				ResultSet rs = stmt.executeQuery("SELECT MAX(pid) AS maxid " + "FROM permissions ");
+
+				stmt = con.createStatement();
 
 				/**
-				 * Wenn wir etwas zur�ckerhalten, kann dies nur einzeilig sein
+				 * Jetzt erst erfolgt die tatsaechliche Einf�geoperation
 				 */
-				if (rs.next()) {
-					/**
-					 * p erhaelt den bisher maximalen, nun um 1 inkrementierten
-					 * Primaerschl�ssel.
-					 */
-					p.setPermissionID(rs.getInt("maxid") + 1);
+				stmt.executeUpdate("INSERT INTO permissions (pid, permtype, appuserid, nid, nbid) "
+						+ "VALUES ("
+						+ p.getPermissionID()
+						+ ","
+						+ p.getPermissionType()
+						+ ","
+						+ p.getUserID()
+						+ ","
+						+ p.getNID() + "," + p.getNbID() + ")");
 
-					/**
-					 * Erzeugen eines neuen SQL-Statements.
-					 */
+				System.out
+						.println("INSERT INTO permissions (pid, permtype, appuserid, nid, nbid) "
+								+ "VALUES ("
+								+ p.getPermissionID()
+								+ ","
+								+ p.getPermissionType()
+								+ ","
+								+ p.getUserID()
+								+ "," + p.getNID() + "," + p.getNbID() + ")");
 
-					stmt = con.createStatement();
-
-					/**
-					 * Jetzt erst erfolgt die tatsaechliche Einf�geoperation
-					 */
-					stmt.executeUpdate(
-							"INSERT INTO permissions (pid, permtype, appuserid, nid, nbid) "
-									+ "VALUES (" + p.getPermissionID() + "," + p.getPermissionType() + "," + p.getUserID()
-									+ "," + p.getNID() + "," + p.getNbID() + ")");
-
-					System.out.println(
-							"INSERT INTO permissions (pid, permtype, appuserid, nid, nbid) "
-									+ "VALUES (" + p.getPermissionID() + "," + p.getPermissionType() + "," + p.getUserID()
-									+ "," + p.getNID() + "," + p.getNbID() + ")");
-
-					return p;
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-				return null;
+				return p;
 			}
-
+		} catch (SQLException e) {
+			e.printStackTrace();
 			return null;
-
 		}
+
+		return null;
+
+	}
+
+	/**
+	 * Delete-Methode - Ein Permission-Objekt wird �bergeben, anhand dessen
+	 * der zugehoerige Eintrag in der Datenbank geloescht wird
+	 * 
+	 * @author Marius Klepser
+	 * @param p
+	 *            Permission, die geloescht werden soll
+	 */
+
+	public void delete(Permission p) {
 
 		/**
-		 * Delete-Methode - Ein Permission-Objekt wird �bergeben, anhand dessen der
-		 * zugehoerige Eintrag in der Datenbank geloescht wird
-		 * 
-		 * @author Marius Klepser
-		 * @param p
-		 *            Permission, die geloescht werden soll
+		 * DB-Verbindung holen & Erzeugen eines neuen SQL-Statements.
 		 */
 
-		public void delete(Permission p) {
+		Connection con = DBConnection.connection();
+
+		try {
+			Statement stmt = con.createStatement();
 
 			/**
-			 * DB-Verbindung holen & Erzeugen eines neuen SQL-Statements.
+			 * Statement ausf�llen und als Query an die DB schicken
 			 */
 
-			Connection con = DBConnection.connection();
-
-			try {
-				Statement stmt = con.createStatement();
-
-				/**
-				 * Statement ausf�llen und als Query an die DB schicken
-				 */
-
-				stmt.executeUpdate("DELETE FROM permissions " + "WHERE id=" + p.getPermissionID());
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-		
-		/**
-		 * Delete-Methode - Anhand eines übergebenen User-Objekts werden alle Permissions gelöscht,
-		 * die diesen User betreffen.
-		 * 
-		 * @author Marius Klepser
-		 * @param u
-		 *            User, dessen Permissions gelöscht werden sollen
-		 */
-
-		
-		public static void deleteAllUserPermissions(AppUser u) {
-
-			/**
-			 * DB-Verbindung holen & Erzeugen eines neuen SQL-Statements.
-			 */
-
-			Connection con = DBConnection.connection();
-
-			try {
-				Statement stmt = con.createStatement();
-
-				/**
-				 * Statement ausf�llen und als Query an die DB schicken
-				 */
-
-				stmt.executeUpdate("DELETE FROM permissions " + "WHERE userid=" + u.getUserID());
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-		
-		/**
-		 * Delete-Methode - Anhand eines übergebenen Notebook-Objekts werden alle Permissions gelöscht,
-		 * die dieses Notebook betreffen.
-		 * 
-		 * @author Marius Klepser
-		 * @param nb
-		 *            Notebook, dessen Permissions gelöscht werden sollen
-		 */
-
-		
-		public static void deleteAllNotebookPermissions(Notebook nb) {
-
-			/**
-			 * DB-Verbindung holen & Erzeugen eines neuen SQL-Statements.
-			 */
-
-			Connection con = DBConnection.connection();
-
-			try {
-				Statement stmt = con.createStatement();
-
-				/**
-				 * Statement ausf�llen und als Query an die DB schicken
-				 */
-
-				stmt.executeUpdate("DELETE FROM permissions " + "WHERE nbid=" + nb.getNbID());
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-		
-		/**
-		 * Delete-Methode - Anhand eines übergebenen Note-Objekts werden alle Permissions gelöscht,
-		 * die diese Note betreffen.
-		 * 
-		 * @author Marius Klepser
-		 * @param n
-		 *            Note, deren Permissions gelöscht werden sollen
-		 */
-
-		
-		public static void deleteAllNotePermissions(Note n) {
-
-			/**
-			 * DB-Verbindung holen & Erzeugen eines neuen SQL-Statements.
-			 */
-
-			Connection con = DBConnection.connection();
-
-			try {
-				Statement stmt = con.createStatement();
-
-				/**
-				 * Statement ausf�llen und als Query an die DB schicken
-				 */
-
-				stmt.executeUpdate("DELETE FROM permissions " + "WHERE nid=" + n.getnID());
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-		
-		public Permission edit(Permission p) {
-
-			/**
-			 * DB-Verbindung holen & Erzeugen eines neuen SQL-Statements.
-			 */
-
-			Connection con = DBConnection.connection();
-
-			try {
-				Statement stmt = con.createStatement();
-				
-				/**
-				 * Statement ausf�llen und als Query an die DB schicken
-				 */
-
-				stmt.executeUpdate("UPDATE permissions " + "SET permtype=\"" + p.getPermissionType() + "\", "
-				+ " WHERE id=" + p.getPermissionID());
-
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-
-			/**
-			 * Um Analogie zu insert (Permission p) zu wahren, geben wir p zur�ck
-			 */
-			return p;
+			stmt.executeUpdate("DELETE FROM permissions " + "WHERE id="
+					+ p.getPermissionID());
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 	}
 
-	
+	/**
+	 * Delete-Methode - Anhand eines übergebenen User-Objekts werden alle
+	 * Permissions gelöscht, die diesen User betreffen.
+	 * 
+	 * @author Marius Klepser
+	 * @param u
+	 *            User, dessen Permissions gelöscht werden sollen
+	 */
 
-		
+	public static void deleteAllUserPermissions(AppUser u) {
 
+		/**
+		 * DB-Verbindung holen & Erzeugen eines neuen SQL-Statements.
+		 */
 
+		Connection con = DBConnection.connection();
+
+		try {
+			Statement stmt = con.createStatement();
+
+			/**
+			 * Statement ausf�llen und als Query an die DB schicken
+			 */
+
+			stmt.executeUpdate("DELETE FROM permissions " + "WHERE userid="
+					+ u.getUserID());
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Delete-Methode - Anhand eines übergebenen Notebook-Objekts werden alle
+	 * Permissions gelöscht, die dieses Notebook betreffen.
+	 * 
+	 * @author Marius Klepser
+	 * @param nb
+	 *            Notebook, dessen Permissions gelöscht werden sollen
+	 */
+
+	public static void deleteAllNotebookPermissions(Notebook nb) {
+
+		/**
+		 * DB-Verbindung holen & Erzeugen eines neuen SQL-Statements.
+		 */
+
+		Connection con = DBConnection.connection();
+
+		try {
+			Statement stmt = con.createStatement();
+
+			/**
+			 * Statement ausf�llen und als Query an die DB schicken
+			 */
+
+			stmt.executeUpdate("DELETE FROM permissions " + "WHERE nbid="
+					+ nb.getNbID());
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Delete-Methode - Anhand eines übergebenen Note-Objekts werden alle
+	 * Permissions gelöscht, die diese Note betreffen.
+	 * 
+	 * @author Marius Klepser
+	 * @param n
+	 *            Note, deren Permissions gelöscht werden sollen
+	 */
+
+	public static void deleteAllNotePermissions(Note n) {
+
+		/**
+		 * DB-Verbindung holen & Erzeugen eines neuen SQL-Statements.
+		 */
+
+		Connection con = DBConnection.connection();
+
+		try {
+			Statement stmt = con.createStatement();
+
+			/**
+			 * Statement ausf�llen und als Query an die DB schicken
+			 */
+
+			stmt.executeUpdate("DELETE FROM permissions " + "WHERE nid="
+					+ n.getnID());
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public Permission edit(Permission p) {
+
+		/**
+		 * DB-Verbindung holen & Erzeugen eines neuen SQL-Statements.
+		 */
+
+		Connection con = DBConnection.connection();
+
+		try {
+			Statement stmt = con.createStatement();
+
+			/**
+			 * Statement ausf�llen und als Query an die DB schicken
+			 */
+
+			stmt.executeUpdate("UPDATE permissions " + "SET permtype=\""
+					+ p.getPermissionType() + "\", " + " WHERE id="
+					+ p.getPermissionID());
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		/**
+		 * Um Analogie zu insert (Permission p) zu wahren, geben wir p zur�ck
+		 */
+		return p;
+	}
+}
