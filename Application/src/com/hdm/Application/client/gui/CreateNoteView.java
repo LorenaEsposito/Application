@@ -156,7 +156,7 @@ protected void run() {
     textArea.setPixelSize(420, 350);
     noteTitle.setText("Überschrift");
     noteSubtitle.setText("Subtitel");
-    if(Cookies.getCookie("url") != "null"){
+    if(Cookies.getCookie("url") != null){
         textArea.setText(
           "Hier finden Sie den Link den Sie speichern wollten: "
           + ""
