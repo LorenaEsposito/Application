@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<p>Klicke den Button um zu Notework weitergeleitet zu werden</p>
+
+<button onclick="myFunction()">Versuche es!</button>
+
+<script>
+function myFunction() {
+ var currentPageUrlIs = "";
+ if (typeof this.href != "undefined") {
+        currentPageUrlIs = this.href.toString().toLowerCase(); 
+ }else{ 
+        currentPageUrlIs = document.location.toString().toLowerCase();
+ }
+ 
+
+ var url = 'http://127.0.0.1:8888/Application.html?url='+currentPageUrlIs;
+ window.location.href = url;
+ 
+ 
+
+
+}
+</script>
+
+</body>
+</html>

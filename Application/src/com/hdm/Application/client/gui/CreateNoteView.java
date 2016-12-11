@@ -2,13 +2,13 @@ package com.hdm.Application.client.gui;
 
 import java.util.ArrayList;
 import java.util.Date;
-
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.ShowRangeEvent;
 import com.google.gwt.event.logical.shared.ShowRangeHandler;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.TextColumn;
+import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
@@ -53,6 +53,7 @@ public class CreateNoteView extends Update{
 	protected String getHeadlineText() {
 	    return "";
 }
+	
 	
 	/**
 	   * Erstellung aller Panels
@@ -153,9 +154,18 @@ protected void run() {
     
     textArea.setVisibleLines(20);
     textArea.setPixelSize(420, 350);
-    
-    noteTitle.setText("Ãœberschrift");
+    noteTitle.setText("Überschrift");
     noteSubtitle.setText("Subtitel");
+    if(Cookies.getCookie("url") != "null"){
+        textArea.setText(
+          "Hier finden Sie den Link den Sie speichern wollten: "
+          + ""
+          + ""+
+          Cookies.getCookie("url")
+          
+          );
+       }    
+    noteTitle.setText("Title");
     readButton.setText("Leseberechtigung");
     editButton.setText("Bearbeitungsberechtigung");
     permissionText.setText("Name des Berechtigten");

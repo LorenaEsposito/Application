@@ -2,7 +2,6 @@ package com.hdm.Application.client;
 
 
 import com.hdm.Application.shared.FieldVerifier;
-
 import com.hdm.Application.client.gui.ImpressumView;
 import com.hdm.Application.client.gui.CreateNoteView;
 import com.hdm.Application.client.gui.CreateNotebookView;
@@ -32,6 +31,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.Window.Location;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
@@ -140,25 +140,29 @@ public class Application implements EntryPoint {
     
       // Check login status using login service.
      LoginServiceAsync loginService = GWT.create(LoginService.class);
-     loginService.login("http://127.0.0.1:8888/Application.html", new AsyncCallback<LoginInfo>() {
+     loginService.login(GWT.getHostPageBaseURL(), new AsyncCallback<LoginInfo>() {
      public void onFailure(Throwable error) {
       }
 
       public void onSuccess(LoginInfo result) {
-    	  
-        loginInfo = result; 
-        ClientsideSettings.setLoginInfo(result);
-        
-      if (loginInfo.isLoggedIn()){ 
-       loadGUI();
-        }
-     
-        else{ 
-        	loadLogin();
-           }
+      if (Location.getParameter("url") != null) Cookies.setCookie("url", Location.getParameter("url"));
+      loginInfo = result; 
+      ClientsideSettings.setLoginInfo(result);
+      if (loginInfo.isLoggedIn()){                 		
+		   		loadGUI();
+		   		if(Cookies.getCookie("url") != null) {
+		   			Update update = new CreateNoteView();
+		   			RootPanel.get("Details").clear();
+			   		RootPanel.get("Details").add(update);		   		
+	       		}
+	 }
+     else{
+	   	 	loadLogin();    			   	
          }
-       });
+       }
+    });
  }
+
 
      public void loadGUI() {
     	 
