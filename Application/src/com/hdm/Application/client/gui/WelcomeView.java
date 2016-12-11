@@ -42,11 +42,11 @@ public class WelcomeView extends Update {
 		/**
 		 * Auslesen des Profils vom aktuellen Benutzer aus der Datenbank.
 		 */
-		int atIndex = ClientsideSettings.getLoginInfo().getEmailAddress()
-				.indexOf("@");
-		adminService.getUserByGoogleID(ClientsideSettings.getLoginInfo()
-				.getEmailAddress().substring(0, atIndex),
-				getCurrentUserCallback());
+//		int atIndex = ClientsideSettings.getLoginInfo().getEmailAddress()
+//				.indexOf("@");
+//		adminService.getUserByGoogleID(ClientsideSettings.getLoginInfo()
+//				.getEmailAddress().substring(0, atIndex),
+//				getCurrentUserCallback());
 
 	}
 

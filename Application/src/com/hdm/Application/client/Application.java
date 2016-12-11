@@ -168,11 +168,11 @@ public class Application implements EntryPoint {
 		/**
 		 * Auslesen des Profils vom aktuellen Benutzer aus der Datenbank.
 		 */
-		int atIndex = ClientsideSettings.getLoginInfo().getEmailAddress()
-				.indexOf("@");
-		adminService.getUserByGoogleID(ClientsideSettings.getLoginInfo()
-				.getEmailAddress().substring(0, atIndex),
-				getCurrentUserCallback());
+	//	int atIndex = ClientsideSettings.getLoginInfo().getEmailAddress()
+	//			.indexOf("@");
+	//	adminService.getUserByGoogleID(ClientsideSettings.getLoginInfo()
+	//			.getEmailAddress().substring(0, atIndex),
+	//			getCurrentUserCallback());
 
 		Update update = new WelcomeView();
 

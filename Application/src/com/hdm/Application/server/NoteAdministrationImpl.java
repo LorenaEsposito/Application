@@ -92,6 +92,7 @@ public class NoteAdministrationImpl extends RemoteServiceServlet implements
 	}
 
 	public AppUser getUserByGoogleID(String name) {
+		
 		ArrayList<AppUser> users = new ArrayList<AppUser>();
 
 		if (this.uMapper.findByGoogleID(name) != null) {
@@ -424,10 +425,10 @@ public class NoteAdministrationImpl extends RemoteServiceServlet implements
 	 * @throws IllegalArgumentException
 	 *             >>>>>>> refs/heads/Lola
 	 */
-	public ArrayList<Note> searchForNoteByDD(DueDate duedate)
+	public ArrayList<Note> searchForNoteByDD(Date duedate)
 			throws IllegalArgumentException {
 		Vector<Note> vector = new Vector<Note>();
-		// vector = this.nMapper.findByDuedate(duedate);
+		vector = this.nMapper.findByDueDate(duedate);
 		ArrayList<Note> notes = new ArrayList<Note>(vector);
 
 		return notes;

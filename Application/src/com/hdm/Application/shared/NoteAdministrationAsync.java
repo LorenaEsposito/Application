@@ -1,11 +1,10 @@
 package com.hdm.Application.shared;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
-
 import com.hdm.Application.shared.bo.*;
-
 import com.hdm.Application.shared.NoteAdministration;
 
 /**
@@ -86,7 +85,7 @@ public interface NoteAdministrationAsync {
 			AsyncCallback<ArrayList<Note>> callback)
 			throws IllegalArgumentException;
 
-	public void searchForNoteByDD(DueDate duedate,
+	public void searchForNoteByDD(Date duedate,
 			AsyncCallback<ArrayList<Note>> callback)
 			throws IllegalArgumentException;
 
