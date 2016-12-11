@@ -34,6 +34,7 @@ public class UserMapper {
 	protected UserMapper() {
 	}
 
+
 	/**
 	 * Aufruf eines USER-Mappers f�r Klassen, die keinen Zugriff auf den
 	 * Konstruktor haben.
@@ -73,13 +74,12 @@ public class UserMapper {
 			 * Statement ausf�llen und als Query an die DB schicken
 			 */
 
-			ResultSet rs = stmt
-					.executeQuery("SELECT appuserid, gid, username FROM users "
-							+ "WHERE appuserid='" + id + "' ORDER BY appuserid");
+			ResultSet rs = stmt.executeQuery("SELECT appuserid, gid, username FROM users " + "WHERE appuserid='" + id
+					+ "' ORDER BY appuserid");
 
 			/**
-			 * Da id Primaerschl�ssel ist, kann max. nur ein Tupel
-			 * zur�ckgegeben werden. Pr�fe, ob ein Ergebnis vorliegt.
+			 * Da id Primaerschl�ssel ist, kann max. nur ein Tupel zur�ckgegeben
+			 * werden. Pr�fe, ob ein Ergebnis vorliegt.
 			 */
 			if (rs.next()) {
 
@@ -96,6 +96,7 @@ public class UserMapper {
 		return null;
 	}
 
+
 	public AppUser findByGoogleID(String gid) {
 		/**
 		 * DB-Verbindung holen & Erzeugen eines neuen SQL-Statements.
@@ -108,13 +109,12 @@ public class UserMapper {
 			/**
 			 * Statement ausf�llen und als Query an die DB schicken
 			 */
-			ResultSet rs = stmt
-					.executeQuery("SELECT appuserid, gid, username FROM users "
-							+ "WHERE gid='" + gid + "' ORDER BY gid");
+			ResultSet rs = stmt.executeQuery("SELECT appuserid, gid, username FROM users " + "WHERE gid='" + gid
+					+ "' ORDER BY gid");
 
 			/**
-			 * Da id Primaerschl�ssel ist, kann max. nur ein Tupel
-			 * zur�ckgegeben werden. Pr�fe, ob ein Ergebnis vorliegt.
+			 * Da id Primaerschl�ssel ist, kann max. nur ein Tupel zur�ckgegeben
+			 * werden. Pr�fe, ob ein Ergebnis vorliegt.
 			 */
 			if (rs.next()) {
 
@@ -131,12 +131,13 @@ public class UserMapper {
 
 		return null;
 	}
-
+	
 	/**
-	 * Read-Methode - Anhand eines Usernamen wird der dazu gehoerige User in der
-	 * Datenbank gesucht. Diese Methode ist vor Allem f�r den Login relevant,
-	 * der �ber die Google-Email-Adresse realisiert wird. Die Google-Adresse
-	 * fungiert also als Username, der von Haus aus eindeutig ist.
+	 * Read-Methode - Anhand eines Usernamen wird der dazu gehoerige User in
+	 * der Datenbank gesucht. Diese Methode ist vor Allem f�r den Login
+	 * relevant, der �ber die Google-Email-Adresse realisiert wird. Die
+	 * Google-Adresse fungiert also als Username, der von Haus aus eindeutig
+	 * ist.
 	 * 
 	 * @author Marius Klepser
 	 * @param id
@@ -152,22 +153,21 @@ public class UserMapper {
 		 */
 		Connection con = DBConnection.connection();
 		Vector<AppUser> result = new Vector<AppUser>();
-
+		
 		try {
 			Statement stmt = con.createStatement();
 
 			/**
 			 * Statement ausf�llen und als Query an die DB schicken
 			 */
-			ResultSet rs = stmt
-					.executeQuery("SELECT appuserid, , gid, username FROM users "
-							+ "WHERE username='" + name + "' ORDER BY userName");
+			ResultSet rs = stmt.executeQuery("SELECT appuserid, , gid, username FROM users " + "WHERE username='" + name
+					+ "' ORDER BY userName");
 
 			/**
 			 * F�r jeden Eintrag im Suchergebnis wird nun ein Profile-Objekt
 			 * erstellt.
 			 */
-
+			
 			while (rs.next()) {
 				AppUser u = new AppUser();
 				u.setUserID(rs.getInt("appuserid"));
@@ -181,7 +181,7 @@ public class UserMapper {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-
+		
 		/**
 		 * Ergebnisvektor zur�ckgeben
 		 */
@@ -213,9 +213,7 @@ public class UserMapper {
 			 * Statement ausf�llen und als Query an die DB schicken.
 			 */
 
-			ResultSet rs = stmt
-					.executeQuery("SELECT appuserid, gid, username FROM users"
-							+ "ORDER BY appuserid");
+			ResultSet rs = stmt.executeQuery("SELECT appuserid, gid, username FROM users" + "ORDER BY appuserid");
 
 			/**
 			 * F�r jeden Eintrag im Suchergebnis wird nun ein Profile-Objekt
@@ -263,8 +261,7 @@ public class UserMapper {
 			 * Zunaechst schauen wir nach, welches der momentan hoechste
 			 * Primaerschl�sselwert ist.
 			 */
-			ResultSet rs = stmt.executeQuery("SELECT MAX(id) AS maxid "
-					+ "FROM users ");
+			ResultSet rs = stmt.executeQuery("SELECT MAX(appuserid) AS maxid " + "FROM users ");
 
 			/**
 			 * Wenn wir etwas zur�ckerhalten, kann dies nur einzeilig sein
@@ -285,13 +282,13 @@ public class UserMapper {
 				/**
 				 * Jetzt erst erfolgt die tatsaechliche Einf�geoperation
 				 */
-				stmt.executeUpdate("INSERT INTO users (appuserid, username) "
-						+ "VALUES (" + u.getUserID() + ",'" + u.getUserName()
-						+ "')");
+				stmt.executeUpdate(
+						"INSERT INTO users (appuserid, gid, username) "
+								+ "VALUES (" + u.getUserID() + ",'" + u.getGoogleID() + "','" + u.getUserName() +"')");
 
-				System.out.println("INSERT INTO users (appuserid, username) "
-						+ "VALUES (" + u.getUserID() + ",'" + u.getUserName()
-						+ "')");
+				System.out.println(
+						"INSERT INTO users (appuserid, gid, username) "
+								+ "VALUES (" + u.getUserID() + ",'" + u.getGoogleID() + "','" + u.getUserName() +"')");
 
 				return u;
 			}
@@ -320,12 +317,12 @@ public class UserMapper {
 		 */
 
 		Connection con = DBConnection.connection();
-
+		
 		DueDateMapper.deleteAllUserDueDates(u);
 		NoteMapper.deleteAllUserNotes(u);
 		NotebookMapper.deleteAllUserNotebooks(u);
 		PermissionMapper.deleteAllUserPermissions(u);
-
+		
 		try {
 			Statement stmt = con.createStatement();
 
@@ -333,17 +330,19 @@ public class UserMapper {
 			 * Statement ausf�llen und als Query an die DB schicken
 			 */
 
-			stmt.executeUpdate("DELETE FROM users " + "WHERE appuserid="
-					+ u.getUserID());
+			stmt.executeUpdate("DELETE FROM users " + "WHERE appuserid=" + u.getUserID());
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		
 
+		
 	}
 
+
 	/**
-	 * Edit-Methode - Ein Profil wird �bergeben und die zugehoerigen Werte in
-	 * ein SQL-Statement geschrieben, welches ausgef�hrt wird, um die
+	 * Edit-Methode - Ein Profil wird �bergeben und die zugehoerigen Werte in ein
+	 * SQL-Statement geschrieben, welches ausgef�hrt wird, um die
 	 * Informationswerte des Profils in der Datenbank zu aktualisieren.
 	 * 
 	 * @author Marius Klepser
@@ -361,13 +360,13 @@ public class UserMapper {
 
 		try {
 			Statement stmt = con.createStatement();
-
+			
 			/**
 			 * Statement ausf�llen und als Query an die DB schicken
 			 */
 
-			stmt.executeUpdate("UPDATE users " + "SET userName=\""
-					+ u.getUserName() + "\", " + " WHERE id=" + u.getUserID());
+			stmt.executeUpdate("UPDATE users " + "SET userName=\"" + u.getUserName() + "\", "
+			+ " WHERE id=" + u.getUserID());
 
 		} catch (SQLException e) {
 			e.printStackTrace();
