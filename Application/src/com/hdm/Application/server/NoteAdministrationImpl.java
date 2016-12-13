@@ -167,6 +167,7 @@ public void editUser(AppUser u) throws IllegalArgumentException{
  * @param u
  *            Der User, der aus der Datenbank entfernt werden soll
  */
+
 @Override
 public void deleteUser(AppUser u) throws IllegalArgumentException {
     this.uMapper.delete(u);
@@ -519,6 +520,19 @@ public ArrayList<Notebook> searchForNotebook(String title) throws IllegalArgumen
     	
     	ArrayList<Note> notes = new ArrayList<Note>(vector);
     	return notes;
+    }
+    
+    /**
+     * Diese Methode ruft alle Notizbuecher eines Users, die von ihm erstellt wurden.
+     * @author Lorena Esposito
+     * @param user
+     * @return ArrayList<Permission> permissions
+     */
+    public ArrayList<Permission> getOwnedNotebooks(AppUser user){
+    	Vector<Permission> vector = new Vector<Permission>();
+    	vector = this.pMapper.findOwnedNotebooks(user.getUserID());
+    	ArrayList<Permission> permissions = new ArrayList<Permission>(vector);
+    	return permissions;
     }
     
     /**

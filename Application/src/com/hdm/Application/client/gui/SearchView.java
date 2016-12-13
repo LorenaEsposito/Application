@@ -10,6 +10,7 @@ import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RadioButton;
 import com.google.gwt.user.client.ui.RootPanel;
@@ -27,6 +28,7 @@ import com.hdm.Application.shared.bo.Notebook;
 public class SearchView extends Update {
 
 	protected String getHeadlineText() {
+
 		return "Search";
 	}
 
@@ -36,11 +38,12 @@ public class SearchView extends Update {
 	
 	private NoteAdministrationAsync adminService = ClientsideSettings
 			.getAdministration();
+
 	
 	VerticalPanel searchPanel = new VerticalPanel();
 
 	/**
-	 ** Erstellung aller Widgets
+	 * Erstellung aller Widgets
 	 */
 
 	TextBox searchBox = new TextBox();
@@ -91,7 +94,7 @@ public class SearchView extends Update {
 				searchBox.setVisible(false);
 				searchDateBox.setVisible(true);
 				
-			Window.alert("Changehandler ausgeführt");	
+			Window.alert("Changehandler ausgefï¿½hrt");	
 			}
 			});
 		
@@ -103,7 +106,7 @@ public class SearchView extends Update {
 				searchBox.setVisible(true);
 				searchDateBox.setVisible(false);
 					
-				Window.alert("Changehandler ausgeführt");
+				Window.alert("Changehandler ausgefï¿½hrt");
 				
 				}
 			});
@@ -116,7 +119,7 @@ public class SearchView extends Update {
 						searchBox.setVisible(true);
 						searchDateBox.setVisible(false);
 						
-					Window.alert("Changehandler ausgeführt");
+					Window.alert("Changehandler ausgefï¿½hrt");
 					
 					}
 				});
@@ -128,7 +131,7 @@ public class SearchView extends Update {
 							searchBox.setVisible(true);
 							searchDateBox.setVisible(false);
 							
-						Window.alert("Changehandler ausgeführt");
+						Window.alert("Changehandler ausgefï¿½hrt");
 			
 				
 			}

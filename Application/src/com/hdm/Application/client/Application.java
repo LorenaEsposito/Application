@@ -399,11 +399,7 @@ public class Application implements EntryPoint {
 	 public void onSuccess(ArrayList<Note> result) {
 		 ClientsideSettings.getLogger().
 		 severe("Success GetNotesOfNotebookCallback: " + result.getClass().getSimpleName());
-		 for(int i = 0; i < result.size(); i++){
-			 final Button nButton = new Button(result.get(i).getnTitle());
-			 nButton.addStyleName("notework-menubutton");
-			 navPanel.add(nButton);
-		 }
+
 	 }
 	 };
 	 return asyncCallback;

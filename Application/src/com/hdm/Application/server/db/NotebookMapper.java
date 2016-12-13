@@ -8,10 +8,7 @@ import java.util.Vector;
 
 import com.hdm.Application.shared.bo.Notebook;
 import com.hdm.Application.shared.bo.AppUser;
-
-import com.hdm.Application.server.db.UserMapper;
 import com.hdm.Application.server.db.NoteMapper;
-import com.hdm.Application.server.db.PermissionMapper;
 import com.hdm.Application.server.db.DueDateMapper;
 
 /**
@@ -111,61 +108,67 @@ public class NotebookMapper {
 		int nbID = 0;
 
 		Vector<Notebook> result = new Vector<Notebook>();
-
+		
 		Vector<Integer> nbIDs = new Vector<Integer>();
-
-		try {
-			// Leeres SQL Statement anlegen
+		
+		try{
+			//Leeres SQL Statement anlegen
 			Statement stmt = con.createStatement();
-
-			// Statement ausfuellen und als Query an DB schicken
+			
+			//Statement ausfuellen und als Query an DB schicken
 			ResultSet rs = stmt.executeQuery("SELECT nbid FROM permissions "
-					+ "WHERE appuserid=" + appUserID + " AND isowner=1");
-
-			while (rs.next()) {
-
-				nbID = rs.getInt("nbid");
-
-				nbIDs.add(nbID);
-
+					+ "WHERE appuserid=" + appUserID
+					+ " AND isowner=1");
+			
+			while (rs.next()){
+				
+			
+			nbID = rs.getInt("nbid");
+			
+			nbIDs.add(nbID);
+			
 			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return null;
-		}
 
-		try {
-
-			for (int i = 0; i < nbIDs.size(); i++) {
-
-				nbID = nbIDs.get(i);
-
-				// Leeres SQL Statement anlegen
+	}
+	catch (SQLException e){
+		e.printStackTrace();
+		return null;
+	}
+	
+	try{
+		
+		for(int i = 0; i < nbIDs.size(); i++){
+			
+			nbID = nbIDs.get(i);
+			
+				//Leeres SQL Statement anlegen
 				Statement stmt2 = con.createStatement();
-
-				// Statement ausfuellen und als Query an DB schicken
-				ResultSet rs2 = stmt2
-						.executeQuery("SELECT nbid, title, creadate, moddate FROM notebooks "
-								+ "WHERE nbid=" + nbID);
-
-				while (rs2.next()) {
-
+				
+				//Statement ausfuellen und als Query an DB schicken
+				ResultSet rs2 = stmt2.executeQuery("SELECT nbid, title, creadate, moddate FROM notebooks "
+						+ "WHERE nbid=" + nbID);
+				
+				while (rs2.next()){
+					
+				
 					Notebook notebook = new Notebook();
 					notebook.setNbID(rs2.getInt("nbid"));
 					notebook.setNbTitle(rs2.getString("title"));
 					notebook.setNbCreDate(rs2.getDate("creadate"));
 					notebook.setNbModDate(rs2.getDate("moddate"));
-
+					
 					// Neues Objekt wird dem Ergebnisvektor hinzugefuegt
 					result.addElement(notebook);
-
+				
 				}
-			}
-		} catch (SQLException e) {
+		}
+	}
+		catch (SQLException e){
+
 			e.printStackTrace();
 			return null;
 		}
-
+	
 		return result;
 
 	}
@@ -227,15 +230,12 @@ public class NotebookMapper {
 
 		try {
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt
-					.executeQuery("SELECT nbid, title, creadate, moddate FROM notebooks"
-							+ " WHERE title LIKE '"
-							+ nbTitle
-							+ "' ORDER BY creadate");
 
-			// Fuer jeden Eintrag im Suchergebnis wird ein Notebook-Objekt
-			// erstellt.
-			while (rs.next()) {
+			ResultSet rs = stmt.executeQuery("SELECT nbid, title, creadate, moddate FROM notebooks"
+					+ " WHERE title LIKE '" + nbTitle + "' ORDER BY creadate");
+			
+			//Fuer jeden Eintrag im Suchergebnis wird ein Notebook-Objekt erstellt.
+			while(rs.next()){
 				Notebook notebook = new Notebook();
 				notebook.setNbID(rs.getInt("nbid"));
 				notebook.setNbTitle(rs.getString("title"));
@@ -342,7 +342,6 @@ public class NotebookMapper {
 
 		DueDateMapper.deleteAllNotebookDueDates(notebook);
 		NoteMapper.deleteAllNotebookNotes(notebook);
-		PermissionMapper.deleteAllNotebookPermissions(notebook);
 
 		try {
 			Statement stmt = con.createStatement();

@@ -14,8 +14,7 @@ public interface NoteAdministration extends RemoteService {
 
 	public AppUser getCurrentUser() throws IllegalArgumentException;
 
-	public AppUser getUserByGoogleID(String name)
-			throws IllegalArgumentException;
+	public AppUser getUserByGoogleID(String name) throws IllegalArgumentException;
 
 	public void createUser(AppUser u) throws IllegalArgumentException;
 
@@ -47,25 +46,20 @@ public interface NoteAdministration extends RemoteService {
 
 	public void deleteDuedate(DueDate dd) throws IllegalArgumentException;
 
-	public ArrayList<AppUser> searchForUser(String userName)
-			throws IllegalArgumentException;
+	public ArrayList<AppUser> searchForUser(String userName) throws IllegalArgumentException;
 
-	public ArrayList<Notebook> searchForNotebook(String title)
-			throws IllegalArgumentException;
+	public ArrayList<Notebook> searchForNotebook(String title) throws IllegalArgumentException;
 
-	public ArrayList<Note> searchForNote(String title)
-			throws IllegalArgumentException;
+	public ArrayList<Note> searchForNote(String title) throws IllegalArgumentException;
 
-	public ArrayList<Note> searchForNoteByDD(Date duedate)
-			throws IllegalArgumentException;	
+	public ArrayList<Note> searchForNoteByDD(Date duedate) throws IllegalArgumentException;	
 
-	public ArrayList<Notebook> getNotebooksOfUser(AppUser user)
-			throws IllegalArgumentException;
+	public ArrayList<Notebook> getNotebooksOfUser(AppUser user) throws IllegalArgumentException;
 
-	public ArrayList<Note> getNotesOfNotebook(String nbTitle, AppUser u)
-			throws IllegalArgumentException;
+	public ArrayList<Note> getNotesOfNotebook(String nbTitle, AppUser u) throws IllegalArgumentException;
 
-	public AppUser searchUserByGoogleID(String googleID)
-			throws IllegalArgumentException;
+	public ArrayList<Permission> getOwnedNotebooks(AppUser user) throws IllegalArgumentException;
+
+	public AppUser searchUserByGoogleID(String googleID) throws IllegalArgumentException;
 
 }

@@ -4,14 +4,10 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Vector;
 
 import com.hdm.Application.shared.bo.Permission;
-import com.hdm.Application.shared.bo.AppUser;
 import com.hdm.Application.shared.bo.Notebook;
-import com.hdm.Application.shared.bo.Note;
 
 /**
  * Die Mapper-Klasse PermissionMapper stellt eine Schnittstelle zwischen
@@ -301,6 +297,45 @@ public class PermissionMapper {
 			return result;
 	}
 		
+
+public Vector<Permission> findOwnedNotebooks(int appUserID){
+			
+			//DB-Verbindung holen und Variablen zurücksetzen
+			Connection con = DBConnection.connection();
+			
+			Vector<Permission> result = new Vector<Permission>();
+			
+			try{
+				//Leeres SQL Statement anlegen
+				Statement stmt = con.createStatement();
+				
+				//Statement ausfuellen und als Query an DB schicken
+				ResultSet rs = stmt.executeQuery("SELECT pid, appuserid, isowner, nbid, nid, permtype FROM permissions "
+						+ "WHERE appuserid=" + appUserID + " AND nid=0"
+						+ " AND isowner=1");
+				
+				while (rs.next()) {
+					
+					Permission p = new Permission();
+					p.setPermissionID(rs.getInt("pid"));
+					p.setUserID(rs.getInt("appuserid"));
+					p.setIsOwner(rs.getBoolean("isowner"));
+					p.setNbID(rs.getInt("nbid"));
+					p.setNID(rs.getInt("nid"));
+					p.setPermissionType(rs.getBoolean("permtype"));
+
+					/**
+					 * Hinzuf�gen des neuen Objekts zum Ergebnisvektor
+					 */
+					result.addElement(p);
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			
+			return result;
+	}
+		
 		public Vector<Permission> findByNotebook(Notebook notebook){
 			Connection con = DBConnection.connection();
 			Vector<Permission> result = new Vector<Permission>();
@@ -332,100 +367,6 @@ public class PermissionMapper {
 			return result;
 		}
 		
-
-
-	/**
-	 * Delete-Methode - Anhand eines übergebenen User-Objekts werden alle
-	 * Permissions gelöscht, die diesen User betreffen.
-	 * 
-	 * @author Marius Klepser
-	 * @param u
-	 *            User, dessen Permissions gelöscht werden sollen
-	 */
-
-	public static void deleteAllUserPermissions(AppUser u) {
-
-		/**
-		 * DB-Verbindung holen & Erzeugen eines neuen SQL-Statements.
-		 */
-
-		Connection con = DBConnection.connection();
-
-		try {
-			Statement stmt = con.createStatement();
-
-			/**
-			 * Statement ausf�llen und als Query an die DB schicken
-			 */
-
-			stmt.executeUpdate("DELETE FROM permissions " + "WHERE userid="
-					+ u.getUserID());
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
-
-	/**
-	 * Delete-Methode - Anhand eines übergebenen Notebook-Objekts werden alle
-	 * Permissions gelöscht, die dieses Notebook betreffen.
-	 * 
-	 * @author Marius Klepser
-	 * @param nb
-	 *            Notebook, dessen Permissions gelöscht werden sollen
-	 */
-
-	public static void deleteAllNotebookPermissions(Notebook nb) {
-
-		/**
-		 * DB-Verbindung holen & Erzeugen eines neuen SQL-Statements.
-		 */
-
-		Connection con = DBConnection.connection();
-
-		try {
-			Statement stmt = con.createStatement();
-
-			/**
-			 * Statement ausf�llen und als Query an die DB schicken
-			 */
-
-			stmt.executeUpdate("DELETE FROM permissions " + "WHERE nbid="
-					+ nb.getNbID());
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
-
-	/**
-	 * Delete-Methode - Anhand eines übergebenen Note-Objekts werden alle
-	 * Permissions gelöscht, die diese Note betreffen.
-	 * 
-	 * @author Marius Klepser
-	 * @param n
-	 *            Note, deren Permissions gelöscht werden sollen
-	 */
-
-	public static void deleteAllNotePermissions(Note n) {
-
-		/**
-		 * DB-Verbindung holen & Erzeugen eines neuen SQL-Statements.
-		 */
-
-		Connection con = DBConnection.connection();
-
-		try {
-			Statement stmt = con.createStatement();
-
-			/**
-			 * Statement ausf�llen und als Query an die DB schicken
-			 */
-
-			stmt.executeUpdate("DELETE FROM permissions " + "WHERE nid="
-					+ n.getnID());
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
 
 	public Permission edit(Permission p) {
 

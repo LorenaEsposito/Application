@@ -9,11 +9,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Vector;
 
-import com.hdm.Application.shared.bo.DueDate;
 import com.hdm.Application.shared.bo.Note;
 import com.hdm.Application.shared.bo.Notebook;
 import com.hdm.Application.shared.bo.AppUser;
-import com.hdm.Application.server.db.NotebookMapper;
 
 /**Notebook Mapper Klasse bildet Note-Objekte auf eine relationale Datenbank ab.
  * Diese Klasse stellt Methoden zur Verfuegung, die das erstellen, editieren, auslesen/suchen und loeschen 
@@ -160,7 +158,6 @@ public class NoteMapper {
 		 Connection con = DBConnection.connection();
 		 
 		 DueDateMapper.deleteAllNoteDueDates(note);
-		 PermissionMapper.deleteAllNotePermissions(note);
 		 
 		 try{
 			 Statement stmt = con.createStatement();

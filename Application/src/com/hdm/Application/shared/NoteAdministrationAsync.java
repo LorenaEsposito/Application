@@ -97,7 +97,12 @@ public interface NoteAdministrationAsync {
 			AsyncCallback<ArrayList<Note>> callback)
 			throws IllegalArgumentException;
 
+	public void getOwnedNotebooks(AppUser user,
+			AsyncCallback<ArrayList<Permission>> callback)
+			throws IllegalArgumentException;
+	
 	public void searchUserByGoogleID(String googleID,
-			AsyncCallback<AppUser> callback) throws IllegalArgumentException;
-
+			AsyncCallback<AppUser> callback)
+			throws IllegalArgumentException;
+	
 }
