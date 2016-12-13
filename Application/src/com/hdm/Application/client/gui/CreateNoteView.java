@@ -4,12 +4,13 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.ShowRangeEvent;
 import com.google.gwt.event.logical.shared.ShowRangeHandler;
-import com.google.gwt.user.cellview.client.CellTable;
-import com.google.gwt.user.cellview.client.TextColumn;
+import com.google.gwt.user.cellview.client.CellList;
+import com.google.gwt.user.cellview.client.HasKeyboardSelectionPolicy.KeyboardSelectionPolicy;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
@@ -23,7 +24,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.datepicker.client.CalendarUtil;
 import com.google.gwt.user.datepicker.client.DatePicker;
 import com.google.gwt.view.client.ListDataProvider;
-
+import com.google.gwt.view.client.MultiSelectionModel;
 import com.hdm.Application.client.Application;
 import com.hdm.Application.client.ClientsideSettings;
 import com.hdm.Application.shared.NoteAdministrationAsync;
@@ -57,6 +58,15 @@ public class CreateNoteView extends Update{
 	
 	Date date = new Date();
 	
+	TextCell cell = new TextCell();
+    
+    CellList<String> cellList = new CellList<String>(cell); 
+    
+    final MultiSelectionModel<String> selectionModel = new MultiSelectionModel<String>();
+    
+ // Create a data provider.
+    ListDataProvider<String> dataProvider = new ListDataProvider<String>();
+	
 	protected String getHeadlineText() {
 	    return "";
 }
@@ -88,8 +98,6 @@ public class CreateNoteView extends Update{
    final RadioButton readButton = new RadioButton("Leseberechtigung");
    final RadioButton editButton = new RadioButton("Bearbeitungsberechtigung");
    DatePicker duedate = new DatePicker();
-   CellTable<AppUser> table = new CellTable<AppUser>(); 
-   Label testLabel = new Label();
    Label rightsLabel = new Label("Berechtigung vergeben:");
    Label duedateLabel = new Label("Enddatum vergeben:");
    Label mainheadline = new Label("Neue Notiz");
@@ -102,22 +110,15 @@ protected void run() {
     
     currentNBTitle = Application.listbox.getSelectedItemText();
     
-    testLabel.setText(date.toString());
     
-    TextColumn<AppUser> nameColumn = new TextColumn<AppUser>(){
-    	@Override
-    	public String getValue(AppUser user){
-    		return user.getGoogleID();
-    	}
-    };
+    cellList.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.ENABLED);
+
+    // Add a selection model to handle user selection.
     
-    table.addColumn(nameColumn, "");
-    
- // Create a data provider.
-    ListDataProvider<AppUser> dataProvider = new ListDataProvider<AppUser>();
+    cellList.setSelectionModel(selectionModel);
     
  // Connect the table to the data provider.
-    dataProvider.addDataDisplay(table);
+    dataProvider.addDataDisplay(cellList);
 
 	/**
      * Zuteilung der Widgets zum jeweiligen Panel
@@ -127,14 +128,13 @@ protected void run() {
     headlinePanel.add(mainheadline);
     buttonPanel.add(createButton);
     buttonPanel.add(cancelButton);
-    buttonPanel.add(testLabel);
     rightPanel.add(rightsLabel);
     rightPanel.add(permissionPanel);
     permissionPanel.add(permissionText);
     permissionPanel.add(readButton);
     permissionPanel.add(editButton);
     permissionPanel.add(savePermissionButton);
-    rightPanel.add(table);
+    rightPanel.add(cellList);
     rightPanel.add(duedateLabel);
     leftPanel.add(noteTitle);
     leftPanel.add(noteSubtitle);
@@ -465,6 +465,10 @@ protected void run() {
         			
         			savePermissionButton.setEnabled(true);
         			permissionText.setText("Name des Berechtigten");
+        			readButton.setEnabled(true);
+        			editButton.setEnabled(true);
+        			
+        			dataProvider.getList().add(user.getUserName());
         		}
     		}
     	};
