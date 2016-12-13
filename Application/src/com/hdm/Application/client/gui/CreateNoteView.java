@@ -257,7 +257,15 @@ protected void run() {
     		readButton.setEnabled(false);
     		editButton.setEnabled(false);
     		savePermissionButton.setStylePrimaryName("savePermission-button");
-    		
+    	
+    		if(permissionText.getText() == ""){
+    			Window.alert("Bitte eine E-Mail-Adresse eingeben");
+    			savePermissionButton.setEnabled(true);
+    			readButton.setEnabled(true);
+    			readButton.setValue(false);
+    			editButton.setEnabled(true);
+    			editButton.setValue(false);
+    		}
     		String googleID = new String();
     		
     		int atIndex = permissionText.getText().indexOf("@");
@@ -303,7 +311,7 @@ protected void run() {
     cancelButton.addClickHandler(new ClickHandler() {
     	public void onClick(ClickEvent event){
     		cancelButton.setEnabled(false);
-    		cancelButton.setStylePrimaryName("");
+    		createButton.setEnabled(false);
     		
     		Update update = new WelcomeView();
     		
@@ -467,6 +475,8 @@ protected void run() {
         			permissionText.setText("Name des Berechtigten");
         			readButton.setEnabled(true);
         			editButton.setEnabled(true);
+        			readButton.setValue(false);
+        			editButton.setValue(false);
         			
         			dataProvider.getList().add(user.getUserName());
         		}

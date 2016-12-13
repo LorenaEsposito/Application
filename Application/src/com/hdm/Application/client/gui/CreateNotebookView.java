@@ -1,12 +1,11 @@
 package com.hdm.Application.client.gui;
 
+//import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.logical.shared.ShowRangeEvent;
-import com.google.gwt.event.logical.shared.ShowRangeHandler;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.Window;
@@ -16,17 +15,12 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RadioButton;
 import com.google.gwt.user.client.ui.RootPanel;
-import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
-import com.google.gwt.user.datepicker.client.CalendarUtil;
-import com.google.gwt.user.datepicker.client.DatePicker;
 import com.google.gwt.view.client.ListDataProvider;
-import com.hdm.Application.client.Application;
 import com.hdm.Application.client.ClientsideSettings;
 import com.hdm.Application.shared.NoteAdministrationAsync;
 import com.hdm.Application.shared.bo.AppUser;
-import com.hdm.Application.shared.bo.Note;
 import com.hdm.Application.shared.bo.Notebook;
 import com.hdm.Application.shared.bo.Permission;
 
@@ -39,17 +33,13 @@ public class CreateNotebookView extends Update{
 	 */
 	private NoteAdministrationAsync adminService = ClientsideSettings.getAdministration();
 	
-	private Note n = new Note();
-	
-	private String currentNBTitle = new String();
-	
 	private ArrayList<Permission> permissions = new ArrayList<Permission>();
 	
 	private AppUser user = new AppUser();
 	
-	//private String currentDateTime =  new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());;
-	
 	Date date = new Date();
+	
+	//private String currentDateTime =  new SimpleDateFormat("yyyyMMdd_HHmmss").format(date);
 	
 	protected String getHeadlineText() {
 	    return "";
@@ -71,35 +61,25 @@ public class CreateNotebookView extends Update{
   /**
    * Erstellung aller Widgets
    */
-    
-   //Label headlineLabel = new Label("Headline");
-   //Label noticeLabel = new Label("Notice");
-   TextBox noteTitle = new TextBox();
+   
+   TextBox notebookTitle = new TextBox();
    TextBox permissionText = new TextBox();
    final Button createButton = new Button("Create");
    final Button cancelButton = new Button("Cancel");
    final Button savePermissionButton = new Button("Save");
-   //final Button editButton = new Button("Edit");
-   //final Button deleteButton = new Button("Delete");
    final RadioButton readButton = new RadioButton("Leseberechtigung");
    final RadioButton editButton = new RadioButton("Bearbeitungsberechtigung");
-   DatePicker duedate = new DatePicker();
    CellTable<AppUser> table = new CellTable<AppUser>(); 
-   Label testLabel = new Label();
    Label rightsLabel = new Label("Berechtigung vergeben:");
-   Label duedateLabel = new Label("Enddatum vergeben:");
    Label mainheadline = new Label("Neue Notiz");
-   
-//	private Note currentNote = null;
+
 
 protected void run() {
     this.append("");
     
     mainPanel.setStyleName("detailsPanel");
     
-    currentNBTitle = Application.listbox.getSelectedItemText();
-    
-    testLabel.setText(date.toString());
+    //currentNBTitle = Application.listbox.getSelectedItemText();
     
     TextColumn<AppUser> nameColumn = new TextColumn<AppUser>(){
     	@Override
@@ -124,7 +104,6 @@ protected void run() {
     headlinePanel.add(mainheadline);
     buttonPanel.add(createButton);
     buttonPanel.add(cancelButton);
-    buttonPanel.add(testLabel);
     rightPanel.add(rightsLabel);
     rightPanel.add(permissionPanel);
     permissionPanel.add(permissionText);
@@ -132,15 +111,8 @@ protected void run() {
     permissionPanel.add(editButton);
     permissionPanel.add(savePermissionButton);
     rightPanel.add(table);
-    rightPanel.add(duedateLabel);
-    leftPanel.add(noteTitle);
+    leftPanel.add(notebookTitle);
     
-    rightPanel.add(duedate);
-    
-  
-  
-    //buttonPanel.add(editButton);
-    //buttonPanel.add(deleteButton);
     mainPanel.add(leftPanel);
     mainPanel.add(rightPanel);
     
@@ -149,7 +121,7 @@ protected void run() {
     RootPanel.get("Details").add(buttonPanel);
     
     
-    noteTitle.setText("Überschrift");
+    notebookTitle.setText("Überschrift");
     readButton.setText("Leseberechtigung");
     editButton.setText("Bearbeitungsberechtigung");
     permissionText.setText("Name des Berechtigten");
@@ -160,43 +132,16 @@ protected void run() {
     headlinePanel.setStyleName("headlinePanel");
     leftPanel.setStyleName("CreateLeftPanel");
     rightPanel.setStyleName("CreateRightPanel");
-    noteTitle.setStyleName("noteTitle");
+    notebookTitle.setStyleName("noteTitle");
     createButton.setStyleName("savePermission-button");
     cancelButton.setStyleName("savePermission-button");
     readButton.setStyleName("savePermission-button");
     editButton.setStyleName("savePermission-button");
     permissionText.setStyleName("style-Textbox");
-    duedate.setStyleName("datepicker");
     savePermissionButton.setStyleName("savePermission-button");
     buttonPanel.setStyleName("buttonPanel");
     permissionPanel.setStyleName("permissionPanel");
     rightsLabel.setStyleName("headline");
-    duedateLabel.setStyleName("headline");
-    
-    
-    //editButton.setStyleName("notework-menubutton");
-    //deleteButton.setStyleName("notework-menubutton");
-    
-    /*
-	 * Sperren der Eingabemoeglichkeit im DatePicker bei zukuenftigen Daten
-	 */
-	duedate.addShowRangeHandlerAndFire(new ShowRangeHandler<java.util.Date>() {
-		@Override
-		public void onShowRange(ShowRangeEvent<Date> event) {
-			Date start = event.getStart();
-			Date temp = CalendarUtil.copyDate(start);
-			Date end = event.getEnd();
-
-			Date today = new Date();
-
-			while (temp.before(end)) {
-				if (temp.before(today) && duedate.isDateVisible(temp)) {
-					duedate.setTransientEnabledOnDates(false, temp);
-				}
-				CalendarUtil.addDaysToDate(temp, 1);
-			}
-		}
-	});
   	
     /**
      * Erstellung der Clickhandler
@@ -245,10 +190,6 @@ protected void run() {
     		
     		adminService.searchUserByGoogleID(googleID, searchUserByGoogleIDCallback());
     		
-    		if(user == null){
-    			Window.alert("Der eingegebene Nutzer existiert nicht. Ueberpruefen Sie bitte Ihre Angaben.");
-    		}
-    		
     		if(user != null){
     			permission.setUserID(user.getUserID());
     			
@@ -278,14 +219,13 @@ protected void run() {
 		 * der Datenbank zu verhindern.
 		 */
 		createButton.setEnabled(false);
-		//createButton.setStylePrimaryName("");
 		
-		Note note = new Note();
-		note.setnTitle(noteTitle.getText());
-		note.setnCreDate(date);
+		Notebook notebook = new Notebook();
+		notebook.setNbTitle(notebookTitle.getText());
+		notebook.setNbCreDate(date);
 		//Date date = new Date();
 		//note.setnCreDate(date);
-		adminService.createNote(note, createNoteCallback());
+		adminService.createNotebook(notebook, createNotebookCallback());
 
           /*
            * Showcase instantiieren.
@@ -300,7 +240,6 @@ protected void run() {
     cancelButton.addClickHandler(new ClickHandler() {
     	public void onClick(ClickEvent event){
     		cancelButton.setEnabled(false);
-    		cancelButton.setStylePrimaryName("");
     		
     		Update update = new WelcomeView();
     		
@@ -309,33 +248,10 @@ protected void run() {
     	}
     });
 
-//    editButton.addClickHandler(new ClickHandler() {
-//  	public void onClick(ClickEvent event) {
-//          /*
-//           * Showcase instantiieren.
-//           */
-//          Update update = new EditNoteView();
-//          
-//          RootPanel.get("Details").clear();
-//          RootPanel.get("Details").add(update);
-//    }
-//    });
-//    
-//    deleteButton.addClickHandler(new ClickHandler() {
-//  	public void onClick(ClickEvent event) {
-//          /*
-//           * Showcase instantiieren.
-//           */
-//          Update update = new NoteOverviewView();
-//          
-//          RootPanel.get("Details").clear();
-//          RootPanel.get("Details").add(update);
-//    }
-//    });
 }
     
 
-    private AsyncCallback<Void> createNoteCallback() {
+    private AsyncCallback<Void> createNotebookCallback() {
     	AsyncCallback<Void> asyncCallback = new AsyncCallback<Void>(){
     		
     		@Override
