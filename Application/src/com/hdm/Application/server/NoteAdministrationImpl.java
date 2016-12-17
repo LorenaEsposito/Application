@@ -167,6 +167,7 @@ public void editUser(AppUser u) throws IllegalArgumentException{
  * @param u
  *            Der User, der aus der Datenbank entfernt werden soll
  */
+
 @Override
 public void deleteUser(AppUser u) throws IllegalArgumentException {
     this.uMapper.delete(u);
@@ -297,6 +298,9 @@ public void deleteNote(Note n) throws IllegalArgumentException {
  */
 @Override
 public void createPermission(Permission p) throws IllegalArgumentException{
+	System.out.println(p.getIsOwner());
+	System.out.println(p.getUserID());
+	System.out.println(p.getNID());
 	this.pMapper.insert(p);
 }
 
@@ -437,7 +441,7 @@ public ArrayList<Notebook> searchForNotebook(String title) throws IllegalArgumen
    * @return notes
    * @throws IllegalArgumentException
    */
-    public ArrayList<Note> searchForNoteByDD(DueDate duedate) throws IllegalArgumentException{
+    public ArrayList<Note> searchForNoteByDD(Date duedate) throws IllegalArgumentException{
   	Vector<Note> vector = new Vector<Note>();
 //  	vector = this.nMapper.findByDuedate(duedate);
   	ArrayList<Note> notes = new ArrayList<Note>(vector);
@@ -487,18 +491,20 @@ public ArrayList<Notebook> searchForNotebook(String title) throws IllegalArgumen
      */
     public ArrayList<Note> getNotesOfNotebook(String nbTitle, AppUser u) throws IllegalArgumentException{
     	Vector<Note> vector = new Vector<Note>();
-    	
+
     	Notebook nb = new Notebook();
     	
     	Vector<Notebook> nbVector = new Vector<Notebook>();
     	nbVector = this.nbMapper.findByTitle(nbTitle);
-    	
+
     	Vector<Notebook> nbVector2 = new Vector<Notebook>();
-    	nbVector = this.nbMapper.findByUser(u);
     	
+  
+    	nbVector2 = this.nbMapper.findByUser(u);
+
     	for(int i = 0; i < nbVector.size(); i++){
     		for(int x = 0; x < nbVector2.size(); x++){	
-    			if(nbVector.get(i).getNbID() == nbVector.get(x).getNbID()){
+    			if(nbVector.get(i).getNbID() == nbVector2.get(x).getNbID()){
     				nb = nbVector.get(i);
     			}
     		}
@@ -510,13 +516,13 @@ public ArrayList<Notebook> searchForNotebook(String title) throws IllegalArgumen
     		note.setNbID(nb.getNbID());
     		this.createNote(note);
     		vector = this.nMapper.findByNotebook(nb);
-    	}
-    	
-    	if(this.nMapper.findByNotebook(nb) != null){
+    	}    	
+    	if(this.nbMapper.findById(nb.getNbID()) != null){
     		vector = this.nMapper.findByNotebook(nb);
     	}
     	
     	ArrayList<Note> notes = new ArrayList<Note>(vector);
+
     	return notes;
     }
     
@@ -526,11 +532,23 @@ public ArrayList<Notebook> searchForNotebook(String title) throws IllegalArgumen
      * @param user
      * @return ArrayList<Permission> permissions
      */
-    public ArrayList<Permission> getOwnedNotebooks(AppUser user){
+    public ArrayList<Permission> getOwnedNotebookPermissions(AppUser user){
     	Vector<Permission> vector = new Vector<Permission>();
     	vector = this.pMapper.findOwnedNotebooks(user.getUserID());
     	ArrayList<Permission> permissions = new ArrayList<Permission>(vector);
     	return permissions;
+    }
+    
+    public ArrayList<Notebook> getOwnedNotebooks(AppUser user){
+    	Vector<Permission> vector = new Vector<Permission>();
+    	vector = this.pMapper.findOwnedNotebooks(user.getUserID());
+    	ArrayList<Permission> permissions = new ArrayList<Permission>(vector);
+    	ArrayList<Notebook> notebooks = new ArrayList<Notebook>();
+    	for(int i = 0; i < permissions.size(); i++){
+    		Notebook notebook = this.nbMapper.findById(permissions.get(i).getNbID());
+    		notebooks.add(notebook);
+    	}
+    	return notebooks;
     }
     
     /**

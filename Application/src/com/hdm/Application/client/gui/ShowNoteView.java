@@ -2,6 +2,8 @@ package com.hdm.Application.client.gui;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.MouseOutEvent;
+import com.google.gwt.event.dom.client.MouseOutHandler;
 import com.google.gwt.event.dom.client.MouseOverEvent;
 import com.google.gwt.event.dom.client.MouseOverHandler;
 import com.google.gwt.user.client.ui.Button;
@@ -12,6 +14,7 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.hdm.Application.client.Application;
 import com.hdm.Application.client.ClientsideSettings;
 import com.hdm.Application.shared.NoteAdministrationAsync;
 import com.hdm.Application.shared.bo.Note;
@@ -19,12 +22,16 @@ import com.hdm.Application.shared.bo.Note;
 public class ShowNoteView extends Update{
 
 	protected String getHeadlineText() {
-	    return "Edit Note";
+	    return "";
 }
 	
 	//private NoteAdministrationAsync adminService = ClientsideSettings.getAdministration();
 	
 	private Note note = new Note();
+	
+	private String noteTitle = new String();
+	
+	private String notebookTitle = new String();
 	
 
 	/**
@@ -57,23 +64,22 @@ protected void run() {
 
     this.append("");
     
+    noteTitle = Application.selectionModel.getSelectedObject();
+    
+    notebookTitle = Application.listbox.getSelectedValue();
    
 	/**
    * Zuteilung der Widgets zum jeweiligen Panel
    */
-  
+  infoPanel.add(testLabel);
   titlePanel.add(titleLabel);
   titlePanel.add(infoLabel);
   showPanel.add(titlePanel);
-  //createPanel.add(noteTitle);
   showPanel.add(subtitleLabel);
-  //showPanel.add(noteSubtitle);
   showPanel.add(noticeLabel);
-  //showPanel.add(textArea); 
   showPanel.add(buttonPanel);
   buttonPanel.add(editButton);
   buttonPanel.add(deleteButton);
-  //buttonPanel.add(createButton);
   RootPanel.get("Details").add(showPanel);
       
   
@@ -143,8 +149,14 @@ protected void run() {
   infoLabel.addMouseOverHandler(new MouseOverHandler() {
 	  public void onMouseOver(MouseOverEvent event) {
 		  testLabel.setText("Das ist ein Test");
-		  infoPanel.add(testLabel);
+		  infoPanel.showRelativeTo(infoLabel);
 	  }
+  });
+  
+  infoLabel.addMouseOutHandler(new MouseOutHandler() {
+	public void onMouseOut(MouseOutEvent event) {
+		infoPanel.hide();
+	}
   });
   
   

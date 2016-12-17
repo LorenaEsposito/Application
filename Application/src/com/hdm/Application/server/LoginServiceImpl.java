@@ -12,15 +12,16 @@ import com.hdm.Application.shared.LoginInfo;
  * 
  * @author Lorena Esposito
  */
-public class LoginServiceImpl extends RemoteServiceServlet implements LoginService {
+public class LoginServiceImpl extends RemoteServiceServlet implements
+		LoginService {
 
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * Fuehrt den Login aus und ruft die Informationen des angemeldeten Benutzers
-	 * von der Google Accounts API ab. Im Falle einer inkorrekten Anmeldung wird
-	 * eine Login-URL zur Anzeige eines Anmeldebildschirms fuer den Benutzer
-	 * erstellt.
+	 * Fuehrt den Login aus und ruft die Informationen des angemeldeten
+	 * Benutzers von der Google Accounts API ab. Im Falle einer inkorrekten
+	 * Anmeldung wird eine Login-URL zur Anzeige eines Anmeldebildschirms fuer
+	 * den Benutzer erstellt.
 	 * 
 	 * @author Lorena Esposito
 	 * @param requestUri

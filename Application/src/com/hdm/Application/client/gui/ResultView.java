@@ -2,14 +2,13 @@ package com.hdm.Application.client.gui;
 
 public class ResultView extends Update {
 
-	
 	protected String getHeadlineText() {
-	    return "Results";
-}
+		return "Results";
+	}
 
-protected void run() {
+	protected void run() {
 
-	//Datagrid
-	
-}
+		// Datagrid
+
+	}
 }

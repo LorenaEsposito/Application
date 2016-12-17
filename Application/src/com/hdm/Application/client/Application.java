@@ -2,7 +2,6 @@ package com.hdm.Application.client;
 
 
 import com.hdm.Application.shared.FieldVerifier;
-
 import com.hdm.Application.client.gui.ImpressumView;
 import com.hdm.Application.client.gui.CreateNoteView;
 import com.hdm.Application.client.gui.CreateNotebookView;
@@ -21,17 +20,18 @@ import java.util.ArrayList;
 
 import com.hdm.Application.client.gui.SearchView;
 import com.hdm.Application.client.gui.ShowNoteView;
-import com.google.appengine.api.users.User;
-import com.google.appengine.api.users.UserService;
-import com.google.appengine.api.users.UserServiceFactory;
+import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.cellview.client.CellList;
+import com.google.gwt.user.cellview.client.HasKeyboardSelectionPolicy.KeyboardSelectionPolicy;
 import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.Window.Location;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
@@ -40,8 +40,10 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.RootPanel;
-import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.view.client.ListDataProvider;
+import com.google.gwt.view.client.SelectionChangeEvent;
+import com.google.gwt.view.client.SingleSelectionModel;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
@@ -76,11 +78,20 @@ public class Application implements EntryPoint {
 		 * Eine ArrayList, in der Notebook-Objekte gespeichert werden
 		 */
 		private ArrayList<Notebook> notebooks = null;
+		
+		private ArrayList<Note> notes = null;
+		
+		TextCell cell = new TextCell();
+		
+		public final static SingleSelectionModel<String> selectionModel = new SingleSelectionModel<String>();
+	    
+		 // Create a data provider.
+		public static ListDataProvider<String> dataProvider = new ListDataProvider<String>();
 
 		/**
 		 * Eine ArrayList, in der Note-Objekte gespeichert werden
 		 */
-		private ArrayList<Note> notes = null;
+		//private ArrayList<Note> notes = null;
 		
 	  /**
 	   * The message displayed to the user when the server cannot be reached or
@@ -111,10 +122,6 @@ public class Application implements EntryPoint {
 	  final Label usernameLabel = new Label("Username");
 	  final Label passwordLabel = new Label("Password");
 	  private Anchor signInLink = new Anchor("Login");
-//	  public final static ListBox listbox = new ListBox();
-//	  final Button createNoteButton = new Button("");
-//	  final Button noteButton = new Button("My Recipes");
-//	  final Button signOutButton = new Button("Sign out");
 	  public final static ListBox listbox = new ListBox();
 	  final Button createNoteButton = new Button("");
 	  final Button createNotebookButton = new Button("");
@@ -123,6 +130,8 @@ public class Application implements EntryPoint {
 	  final Button logoButton = new Button();
 	  final Button impressumButton = new Button("Impressum");
 	  final Button hilfeButton = new Button("Hilfe");
+	  final CellList<String> cellList = new CellList<String>(cell);
+	  
  /**
   * Create a remote service proxy to talk to the server-side Greeting service.
   */
@@ -140,25 +149,29 @@ public class Application implements EntryPoint {
     
       // Check login status using login service.
      LoginServiceAsync loginService = GWT.create(LoginService.class);
-     loginService.login("http://127.0.0.1:8888/Application.html", new AsyncCallback<LoginInfo>() {
+     loginService.login(GWT.getHostPageBaseURL(), new AsyncCallback<LoginInfo>() {
      public void onFailure(Throwable error) {
       }
 
       public void onSuccess(LoginInfo result) {
-    	  
-        loginInfo = result; 
-        ClientsideSettings.setLoginInfo(result);
-        
-      if (loginInfo.isLoggedIn()){ 
-       loadGUI();
-        }
-     
-        else{ 
-        	loadLogin();
-           }
+      if (Location.getParameter("url") != null) Cookies.setCookie("url", Location.getParameter("url"));
+      loginInfo = result; 
+      ClientsideSettings.setLoginInfo(result);
+      if (loginInfo.isLoggedIn()){                 		
+		   		loadGUI();
+		   		if(Cookies.getCookie("url") != null) {
+		   			Update update = new CreateNoteView();
+		   			RootPanel.get("Details").clear();
+			   		RootPanel.get("Details").add(update);		   		
+	       		}
+	 }
+     else{
+	   	 	loadLogin();    			   	
          }
-       });
+       }
+    });
  }
+
 
      public void loadGUI() {
     	 
@@ -170,6 +183,15 @@ public class Application implements EntryPoint {
  				getCurrentUserCallback());
  		
  		Update update = new WelcomeView();
+ 		
+ 		cellList.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.ENABLED);
+
+ 	    // Add a selection model to handle user selection.
+ 	    
+ 	    cellList.setSelectionModel(selectionModel);
+ 	    
+	 	 // Connect the list to the data provider.
+ 	    dataProvider.addDataDisplay(cellList);
 
  	    
 	    /**
@@ -202,6 +224,7 @@ public class Application implements EntryPoint {
 	    headButtonPanel.add(signOutButton);
 	    headPanel.add(headButtonPanel);
 	    navPanel.add(listbox);
+	    navPanel2.add(cellList);
 	    navPanel2.add(createNotebookButton);
 	    navPanel2.add(createNoteButton);
 	    RootPanel.get("Header").add(headPanel);
@@ -212,6 +235,15 @@ public class Application implements EntryPoint {
 	    /**
 	     * Implementierung der jeweiligen ClickHandler fuer die einzelnen Widgets
 	     */
+	    
+	    selectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
+			public void onSelectionChange(SelectionChangeEvent event) {
+				
+				Update update = new ShowNoteView();
+				RootPanel.get("Details").clear();
+				RootPanel.get("Details").add(update);
+			}
+	    });
 	    
 	    logoButton.addClickHandler(new ClickHandler() {
 		  	public void onClick(ClickEvent event) {
@@ -378,6 +410,7 @@ public class Application implements EntryPoint {
 				 
 				 listbox.setVisibleItemCount(1);
 			 }
+			 adminService.getNotesOfNotebook(listbox.getSelectedValue(), currentUser, getNotesOfNotebookCallback());
 		 }
 	 };
 	 return asyncCallback;
@@ -395,7 +428,12 @@ public class Application implements EntryPoint {
 	 public void onSuccess(ArrayList<Note> result) {
 		 ClientsideSettings.getLogger().
 		 severe("Success GetNotesOfNotebookCallback: " + result.getClass().getSimpleName());
-
+		 
+		 notes = result;
+		 dataProvider.getList().clear();
+		 for(int i = 0; i < notes.size(); i++) {
+			 dataProvider.getList().add(notes.get(i).getnTitle());
+		 }
 	 }
 	 };
 	 return asyncCallback;

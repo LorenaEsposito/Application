@@ -1,6 +1,5 @@
 package com.hdm.Application.client.gui;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -11,6 +10,7 @@ import com.google.gwt.event.logical.shared.ShowRangeEvent;
 import com.google.gwt.event.logical.shared.ShowRangeHandler;
 import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.cellview.client.HasKeyboardSelectionPolicy.KeyboardSelectionPolicy;
+import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
@@ -48,6 +48,8 @@ public class CreateNoteView extends Update{
 	
 	private Note currentN = new Note();
 	
+	private	Note note = new Note();
+	
 	private ArrayList<Permission> permissions = new ArrayList<Permission>();
 	
 	private ArrayList<Permission> notePermissions = new ArrayList<Permission>();
@@ -70,6 +72,7 @@ public class CreateNoteView extends Update{
 	protected String getHeadlineText() {
 	    return "";
 }
+	
 	
 	/**
 	   * Erstellung aller Panels
@@ -101,13 +104,12 @@ public class CreateNoteView extends Update{
    Label rightsLabel = new Label("Berechtigung vergeben:");
    Label duedateLabel = new Label("Enddatum vergeben:");
    Label mainheadline = new Label("Neue Notiz");
-   
 
 protected void run() {
     this.append("");
     
     mainPanel.setStyleName("detailsPanel");
-    
+
     currentNBTitle = Application.listbox.getSelectedItemText();
     
     
@@ -117,7 +119,7 @@ protected void run() {
     
     cellList.setSelectionModel(selectionModel);
     
- // Connect the table to the data provider.
+ // Connect the list to the data provider.
     dataProvider.addDataDisplay(cellList);
 
 	/**
@@ -139,13 +141,7 @@ protected void run() {
     leftPanel.add(noteTitle);
     leftPanel.add(noteSubtitle);
     leftPanel.add(textArea); 
-    
     rightPanel.add(duedate);
-    
-  
-  
-    //buttonPanel.add(editButton);
-    //buttonPanel.add(deleteButton);
     mainPanel.add(leftPanel);
     mainPanel.add(rightPanel);
     
@@ -155,9 +151,19 @@ protected void run() {
     
     textArea.setVisibleLines(20);
     textArea.setPixelSize(420, 350);
-    
-    noteTitle.setText("Überschrift");
+
+    noteTitle.setText("Titel");
     noteSubtitle.setText("Subtitel");
+    if(Cookies.getCookie("url") != null){
+        textArea.setText(
+          "Hier finden Sie den Link den Sie speichern wollten: "
+          + ""
+          + ""+
+          Cookies.getCookie("url")
+          
+          );
+       }   
+    
     readButton.setText("Leseberechtigung");
     editButton.setText("Bearbeitungsberechtigung");
     permissionText.setText("Name des Berechtigten");
@@ -266,6 +272,7 @@ protected void run() {
     			editButton.setEnabled(true);
     			editButton.setValue(false);
     		}
+
     		String googleID = new String();
     		
     		int atIndex = permissionText.getText().indexOf("@");
@@ -287,7 +294,6 @@ protected void run() {
 		createButton.setEnabled(false);
 		//createButton.setStylePrimaryName("");
 		
-		Note note = new Note();
 		note.setnTitle(noteTitle.getText());
 		note.setnSubtitle(noteSubtitle.getText());
 		note.setnContent(textArea.getText());
@@ -295,16 +301,7 @@ protected void run() {
 		note.setnModDate(date);
 		note.setNbID(currentNB.getNbID());
 
-		adminService.createNote(note, createNoteCallback());
-		
-
-          /*
-           * Showcase instantiieren.
-           */
-          Update update = new ShowNoteView();
-          
-          RootPanel.get("Details").clear();
-          RootPanel.get("Details").add(update);
+		adminService.getNotesOfNotebook(currentNBTitle, user, getNotesOfNotebookCallback());
     }
     });
     
@@ -360,14 +357,14 @@ protected void run() {
     		 
     		 user = result;
     		 
-    		 adminService.getOwnedNotebooks(user, getOwnedNotebooksCallback());
+    		 adminService.getOwnedNotebookPermissions(user, getOwnedNotebookPermissionsCallback());
     		 
     	 }
 		};
 		return asyncCallback;
 	}
 	
-	private AsyncCallback<ArrayList<Permission>> getOwnedNotebooksCallback(){
+	private AsyncCallback<ArrayList<Permission>> getOwnedNotebookPermissionsCallback(){
 		AsyncCallback<ArrayList<Permission>> asyncCallback = new AsyncCallback<ArrayList<Permission>>() {
 			
 			@Override
@@ -378,7 +375,7 @@ protected void run() {
     	 @Override
     	 public void onSuccess(ArrayList<Permission> result) {
     		 ClientsideSettings.getLogger().
-    		 severe("Success GetOwnedNotebooksCallback: " + result.getClass().getSimpleName());
+    		 severe("Success GetOwnedNotebookPermissionsCallback: " + result.getClass().getSimpleName());
     		 
     		 permissions = result;
     		 
@@ -408,8 +405,9 @@ protected void run() {
     		 ClientsideSettings.getLogger().
     		 severe("Success CreateNoteCallback: " + result.getClass().getSimpleName());
     		 
-    		 adminService.getNotesOfNotebook(currentNBTitle, user, getNotesOfNotebookCallback());
+    		 Application.dataProvider.getList().add(Application.dataProvider.getList().size() + 1, note.getnTitle());
 
+    		 adminService.getNotesOfNotebook(currentNBTitle, user, getCurrentNoteCallback());
     	 }
     	};
     	return asyncCallback;
@@ -454,6 +452,14 @@ protected void run() {
         		}
         		
         		if(user != null){
+        			boolean isExisting = new Boolean(false);
+        			for(int i = 0; i < dataProvider.getList().size(); i++) {
+        				if(user.getGoogleID() == dataProvider.getList().get(i)) {
+        					isExisting = true;
+        					break;
+        				}
+        			}
+        			if(isExisting == false){
         			permission.setUserID(user.getUserID());
         			permission.setIsOwner(false);
         			permission.setNbID(currentNB.getNbID());
@@ -470,6 +476,11 @@ protected void run() {
         			}
         			
         			permissions.add(permission);
+        			}
+        			
+        			if(isExisting == true){
+        				Window.alert("Es wurde bereits eine Berechtigung an diesen User vergeben");
+        			}
         			
         			savePermissionButton.setEnabled(true);
         			permissionText.setText("Name des Berechtigten");
@@ -479,6 +490,7 @@ protected void run() {
         			editButton.setValue(false);
         			
         			dataProvider.getList().add(user.getUserName());
+        		
         		}
     		}
     	};
@@ -498,29 +510,65 @@ protected void run() {
    		 ClientsideSettings.getLogger().
    		 severe("Success GetNotesOfNotebookCallback: " + result.getClass().getSimpleName());
    		 
-   		 for(int x = 0; x < result.size(); x++){
-   			 if(noteTitle.getText() == result.get(x).getnTitle()){
-   				 currentN = result.get(x);
-   			 }
+   		 boolean isExisting = new Boolean(false);
+   		 for(int y = 0; y < result.size(); y++) {
+   			 if(noteTitle.getText() == result.get(y).getnTitle()) {
+   				 noteTitle.setText("");
+   				 isExisting = true;
+   				 break;
+   			 }   			 
    		 }
-   		 
-		 Permission permission = new Permission();
-			permission.setIsOwner(true);
-			permission.setNbID(currentNB.getNbID());
-			permission.setPermissionType(true);
-			permission.setUserID(user.getUserID());
-			
-			notePermissions.add(permission);
-			
-			for(int i = 0; i < notePermissions.size(); i++){
-				permission = notePermissions.get(i);
-				permission.setNID(currentN.getnID());
-				adminService.createPermission(permission, createPermissionCallback());
-			}	
+   		 if(isExisting == false){
+			 adminService.createNote(note, createNoteCallback());
+			 Update update = new ShowNoteView();
+	          
+	          RootPanel.get("Details").clear();
+	          RootPanel.get("Details").add(update);
+   		 }
+   		 if(isExisting == true){
+   			Window.alert("Diese Notiz existiert bereits im ausgewaehlten Notizbuch");
+   		 }
    	 }
    	 };
    	 return asyncCallback;
     }
+    
+    private AsyncCallback<ArrayList<Note>> getCurrentNoteCallback() {
+      	 AsyncCallback<ArrayList<Note>> asyncCallback = new AsyncCallback<ArrayList<Note>>(){
+      	 
+      	 @Override
+      		public void onFailure(Throwable caught) {
+      			ClientsideSettings.getLogger().severe("Error: " + caught.getMessage());
+      		}
+      	 
+      	 @Override
+      	 public void onSuccess(ArrayList<Note> result) {
+      		 ClientsideSettings.getLogger().
+      		 severe("Success GetCurrentNoteCallback: " + result.getClass().getSimpleName());
+      		 
+      		 for(int x = 0; x < result.size(); x++){
+      			 if(noteTitle.getText() == result.get(x).getnTitle()){
+      				 currentN = result.get(x);
+      			 }
+      		 }
+      		 
+   		 Permission permission = new Permission();
+   			permission.setIsOwner(true);
+   			permission.setNbID(currentNB.getNbID());
+   			permission.setPermissionType(true);
+   			permission.setUserID(user.getUserID());
+   			
+   			notePermissions.add(permission);
+   			
+   			for(int i = 0; i < notePermissions.size(); i++){
+   				permission = notePermissions.get(i);
+   				permission.setNID(currentN.getnID());
+   				adminService.createPermission(permission, createPermissionCallback());
+   			}	
+      	 }
+      	 };
+      	 return asyncCallback;
+       }
     
 }
 

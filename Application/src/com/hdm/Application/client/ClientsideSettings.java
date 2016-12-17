@@ -11,8 +11,8 @@ import com.hdm.Application.shared.CommonSettings;
 import com.hdm.Application.shared.LoginInfo;
 
 /**
- * Klasse, die alle Eigenschaften und Methoden/Dienste zur Verfuegung stellt, die
- * fuer alle Client-seitigen Klassen relevant sind.
+ * Klasse, die alle Eigenschaften und Methoden/Dienste zur Verfuegung stellt,
+ * die fuer alle Client-seitigen Klassen relevant sind.
  * 
  * @author Lorena Esposito
  */
@@ -87,11 +87,14 @@ public class ClientsideSettings extends CommonSettings {
 
 			final AsyncCallback<Void> initAdministrationCallback = new AsyncCallback<Void>() {
 				public void onFailure(Throwable caught) {
-					ClientsideSettings.getLogger()
-							.severe("Der Administration konnte nicht initialisiert werden!" + caught);
+					ClientsideSettings.getLogger().severe(
+							"Der Administration konnte nicht initialisiert werden!"
+									+ caught);
 				}
+
 				public void onSuccess(Void result) {
-					ClientsideSettings.getLogger().info("Der Administration wurde initialisiert.");
+					ClientsideSettings.getLogger().info(
+							"Der Administration wurde initialisiert.");
 				}
 			};
 			administration.init(initAdministrationCallback);

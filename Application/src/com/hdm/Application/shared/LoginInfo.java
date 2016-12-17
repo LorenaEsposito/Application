@@ -27,7 +27,7 @@ public class LoginInfo implements Serializable {
 	public boolean isLoggedIn() {
 		return loggedIn;
 	}
-	
+
 	/**
 	 * Gibt die Google Login-URL zurueck.
 	 * 
@@ -36,7 +36,7 @@ public class LoginInfo implements Serializable {
 	public String getLoginUrl() {
 		return loginUrl;
 	}
-	
+
 	/**
 	 * Gibt die Google Logout-URL zurueck.
 	 * 
@@ -45,7 +45,7 @@ public class LoginInfo implements Serializable {
 	public String getLogoutUrl() {
 		return logoutUrl;
 	}
-	
+
 	/**
 	 * Gibt die E-Mailadresse des angemeldeten Benutzers zurueck.
 	 * 
@@ -54,7 +54,7 @@ public class LoginInfo implements Serializable {
 	public String getEmailAddress() {
 		return emailAddress;
 	}
-	
+
 	/**
 	 * Gibt den Spitznamen (Nickname) des angemeldeten Benutzers zurueck.
 	 * 
@@ -74,38 +74,42 @@ public class LoginInfo implements Serializable {
 	public void setLoggedIn(boolean loggedIn) {
 		this.loggedIn = loggedIn;
 	}
-	
+
 	/**
 	 * Legt die Google Login-URL fest.
 	 * 
-	 * @param loginUrl von Google Accounts API fuer Benutzer erstellte URL
+	 * @param loginUrl
+	 *            von Google Accounts API fuer Benutzer erstellte URL
 	 */
 	public void setLoginUrl(String loginUrl) {
 		this.loginUrl = loginUrl;
 	}
-	
+
 	/**
 	 * Legt die Google Logout-URL fest.
 	 * 
-	 * @param logoutUrl von Google Accounts API fuer Benutzer erstellte URL
+	 * @param logoutUrl
+	 *            von Google Accounts API fuer Benutzer erstellte URL
 	 */
 	public void setLogoutUrl(String logoutUrl) {
 		this.logoutUrl = logoutUrl;
 	}
-	
+
 	/**
 	 * Legt die E-Mailadresse des Benutzers fest.
 	 * 
-	 * @param emailAddress neu zu setzende E-Mailadresse
+	 * @param emailAddress
+	 *            neu zu setzende E-Mailadresse
 	 */
 	public void setEmailAddress(String emailAddress) {
 		this.emailAddress = emailAddress;
 	}
-	
+
 	/**
 	 * Legt den Spitznamen (Nickname) des Benutzers fest.
 	 * 
-	 * @param nickname neu zu setzender Nickname
+	 * @param nickname
+	 *            neu zu setzender Nickname
 	 */
 	public void setNickname(String nickname) {
 		this.nickname = nickname;
