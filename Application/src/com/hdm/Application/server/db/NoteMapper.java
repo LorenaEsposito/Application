@@ -85,7 +85,7 @@ public class NoteMapper {
 				
 				String creDate = null;
 				if (note.getnCreDate() != null) {
-					SimpleDateFormat mySQLformat = new SimpleDateFormat("yyyy-MM-dd");
+					SimpleDateFormat mySQLformat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 					creDate = mySQLformat.format(note.getnCreDate());
 				}
 				

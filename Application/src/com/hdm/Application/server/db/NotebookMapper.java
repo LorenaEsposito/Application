@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.Vector;
 
 import com.hdm.Application.shared.bo.Notebook;
@@ -272,6 +273,12 @@ public class NotebookMapper {
 			// Ueberpruefen welches der aktuell hoechste Primaerschluessel ist.
 			ResultSet rs = stmt
 					.executeQuery("SELECT MAX(nbid) AS 'maxnbID' FROM notebooks");
+			
+			String creDate = null;
+			if (notebook.getNbCreDate() != null) {
+				SimpleDateFormat mySQLformat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+				creDate = mySQLformat.format(notebook.getNbCreDate());
+			}
 
 			if (rs.next()) {
 				// notebook erhaelt den aktuell hoechsten und um 1
@@ -286,10 +293,10 @@ public class NotebookMapper {
 						+ notebook.getNbID()
 						+ ",'"
 						+ notebook.getNbTitle()
-						+ "',"
-						+ notebook.getNbCreDate()
-						+ ","
-						+ notebook.getNbModDate() + ")");
+						+ "','"
+						+ creDate
+						+ "','"
+						+ creDate + "')");
 
 			}
 		} catch (SQLException e) {
