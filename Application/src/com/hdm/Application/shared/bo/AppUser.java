@@ -34,6 +34,11 @@ public class AppUser implements Serializable {
 	private String userName;
 	
 	/**
+	 * Die Email-Adresse des Users
+	 */
+	private String mail;
+	
+	/**
 	 * Die Information, ob der User in der aktuellen Session durch einen Login
 	 * mit einer bisher nicht bekannten Googlemail erstellt wurde.
 	 */
@@ -88,6 +93,22 @@ public class AppUser implements Serializable {
 	 */
 	public void setUserName(String userName){
 		this.userName = userName;
+	}
+
+	/**
+	 * Rueckgabe der Mailadresse
+	 * @return mail
+	 */
+	public String getMail() {
+		return mail;
+	}
+
+	/**
+	 * Setzen der Mailadresse
+	 * @param mail
+	 */
+	public void setMail(String mail) {
+		this.mail = mail;
 	}
 	
 }

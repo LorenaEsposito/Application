@@ -130,6 +130,42 @@ public class UserMapper {
 		return null;
 	}
 	
+	public AppUser findByMail(String mail) {
+		/**
+		 * DB-Verbindung holen & Erzeugen eines neuen SQL-Statements.
+		 */
+		Connection con = DBConnection.connection();
+
+		try {
+			Statement stmt = con.createStatement();
+
+			/**
+			 * Statement ausf�llen und als Query an die DB schicken
+			 */
+			ResultSet rs = stmt.executeQuery("SELECT appuserid, gid, username, mail FROM users " + "WHERE mail='" + mail
+					+ "' ORDER BY gid");
+
+			/**
+			 * Da id Primaerschl�ssel ist, kann max. nur ein Tupel zur�ckgegeben
+			 * werden. Pr�fe, ob ein Ergebnis vorliegt.
+			 */
+			if (rs.next()) {
+
+				AppUser u = new AppUser();
+				u.setUserID(rs.getInt("appuserid"));
+				u.setUserName(rs.getString("username"));
+				u.setGoogleID(rs.getString("gid"));
+				u.setMail(rs.getString("mail"));
+				return u;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+
+		return null;
+	}
+	
 	/**
 	 * Read-Methode - Anhand eines Usernamen wird der dazu gehoerige User in
 	 * der Datenbank gesucht. Diese Methode ist vor Allem f�r den Login
