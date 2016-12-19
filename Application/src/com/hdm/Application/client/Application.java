@@ -103,7 +103,7 @@ public class Application implements EntryPoint {
 	   * Erstellung aller Widgets
 	   */
 
-//	  private Label loginLabel = new Label("Bitte melde dich mit deinem Google Account an, um Notework nutzen zu kÃ¶nnen. Klicke auf Login und los geht's!");
+//	  private Label loginLabel = new Label("Bitte melde dich mit deinem Google Account an, um Notework nutzen zu können. Klicke auf Login und los geht's!");
 //	  final Label headerLabel = new Label("Notework");
 
 	  private Label loginLabel = new Label("");
@@ -149,12 +149,37 @@ public class Application implements EntryPoint {
       loginInfo = result; 
       ClientsideSettings.setLoginInfo(result);
       if (loginInfo.isLoggedIn()){                 		
-		   		loadGUI();
-		   		if(Cookies.getCookie("url") != null) {
-		   			Update update = new CreateNoteView();
-		   			RootPanel.get("Details").clear();
-			   		RootPanel.get("Details").add(update);		   		
-	       		}
+		   		
+		   		adminService.getUserByEmail(loginInfo.getEmailAddress(), new AsyncCallback<AppUser>() {
+
+					@Override
+					public void onFailure(Throwable caught) {
+						Window.alert("Fehler: Nutzer konnte in der Datenbank nicht gefunden werden. Details: "+caught);
+						
+					}
+
+					@Override
+					public void onSuccess(AppUser currentUser) {
+						if (currentUser != null) {
+							Cookies.setCookie("userid", String.valueOf(currentUser.getUserID()));
+							loadGUI();
+							if(Cookies.getCookie("url") != null) {
+					   			Update update = new CreateNoteView();
+					   			RootPanel.get("Details").clear();
+						   		RootPanel.get("Details").add(update);		   		
+				       		}							
+						}else{
+							Cookies.removeCookie("userid");
+							loginInfo.setLoggedIn(false);
+							
+						}
+						
+					}
+		   			
+		   			
+		   		
+		   		});
+		   		
 	 }
      else{
 	   	 	loadLogin();    			   	

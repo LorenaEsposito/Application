@@ -553,4 +553,19 @@ public ArrayList<Notebook> searchForNotebook(String title) throws IllegalArgumen
     	}
     	return user;
     }
+
+	
+	public AppUser getUserByEmail(String email) throws IllegalArgumentException {
+		AppUser user = new AppUser();
+		
+		if (this.uMapper.findByMail(email) == null){
+			user = null;
+		}
+		
+		if (this.uMapper.findByMail(email) != null){
+			user = this.uMapper.findByMail (email);
+			
+		}
+		return user;
+	}
 }

@@ -3,7 +3,6 @@ package com.hdm.Application.client.gui;
 import java.sql.Date;
 import java.util.ArrayList;
 
-import com.google.appengine.repackaged.com.google.protobuf.proto1api.StringValue;
 import com.google.gwt.cell.client.CheckboxCell;
 import com.google.gwt.cell.client.ClickableTextCell;
 import com.google.gwt.cell.client.FieldUpdater;
