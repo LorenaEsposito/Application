@@ -198,7 +198,7 @@ public class PermissionMapper {
 				/**
 				 * Jetzt erst erfolgt die tatsaechliche Einf�geoperation
 				 */
-				stmt.executeUpdate("INSERT INTO permissions (pid, permtype, appuserid, nid, nbid) "
+				stmt.executeUpdate("INSERT INTO permissions (pid, permtype, appuserid, nid, nbid, isowner) "
 						+ "VALUES ("
 						+ p.getPermissionID()
 						+ ","
@@ -206,17 +206,28 @@ public class PermissionMapper {
 						+ ","
 						+ p.getUserID()
 						+ ","
-						+ p.getNID() + "," + p.getNbID() + ")");
+						+ p.getNID()
+						+ ","
+						+ p.getNbID()
+						+ ","
+						+ p.getIsOwner()
+						+ ")");
 
 				System.out
-						.println("INSERT INTO permissions (pid, permtype, appuserid, nid, nbid) "
+						.println("INSERT INTO permissions (pid, permtype, appuserid, nid, nbid, isowner) "
 								+ "VALUES ("
 								+ p.getPermissionID()
 								+ ","
 								+ p.getPermissionType()
 								+ ","
 								+ p.getUserID()
-								+ "," + p.getNID() + "," + p.getNbID() + ")");
+								+ ","
+								+ p.getNID()
+								+ ","
+								+ p.getNbID()
+								+ ","
+								+ p.getIsOwner()
+								+ ")");
 
 				return p;
 			}

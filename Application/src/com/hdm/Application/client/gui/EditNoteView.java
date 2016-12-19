@@ -346,8 +346,8 @@ protected void run() {
 }
     
 
-    private AsyncCallback<Void> createNoteCallback() {
-    	AsyncCallback<Void> asyncCallback = new AsyncCallback<Void>(){
+    private AsyncCallback<Note> createNoteCallback() {
+    	AsyncCallback<Note> asyncCallback = new AsyncCallback<Note>(){
     		
     		@Override
     		public void onFailure(Throwable caught) {
@@ -355,7 +355,7 @@ protected void run() {
     		}
     	 
     	 @Override
-    	 public void onSuccess(Void result) {
+    	 public void onSuccess(Note result) {
     		 ClientsideSettings.getLogger().
     		 severe("Success CreateNoteCallback: " + result.getClass().getSimpleName());
     	 }

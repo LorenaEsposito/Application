@@ -22,13 +22,13 @@ public interface NoteAdministration extends RemoteService {
 
 	public void deleteUser(AppUser u) throws IllegalArgumentException;
 
-	public void createNotebook(Notebook nb) throws IllegalArgumentException;
+	public Notebook createNotebook(Notebook nb) throws IllegalArgumentException;
 
 	public void editNotebook(Notebook nb) throws IllegalArgumentException;
 
 	public void deleteNotebook(Notebook nb) throws IllegalArgumentException;
 
-	public void createNote(Note n) throws IllegalArgumentException;
+	public Note createNote(Note n) throws IllegalArgumentException;
 
 	public void editNote(Note n) throws IllegalArgumentException;
 

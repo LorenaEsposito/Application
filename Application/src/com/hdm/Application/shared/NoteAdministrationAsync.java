@@ -37,7 +37,7 @@ public interface NoteAdministrationAsync {
 	public void deleteUser(AppUser u, AsyncCallback<Void> callback)
 			throws IllegalArgumentException;
 
-	public void createNotebook(Notebook nb, AsyncCallback<Void> callback)
+	public void createNotebook(Notebook nb, AsyncCallback<Notebook> callback)
 			throws IllegalArgumentException;
 
 	public void editNotebook(Notebook nb, AsyncCallback<Void> callback)
@@ -46,7 +46,7 @@ public interface NoteAdministrationAsync {
 	public void deleteNotebook(Notebook nb, AsyncCallback<Void> callback)
 			throws IllegalArgumentException;
 
-	public void createNote(Note n, AsyncCallback<Void> callback)
+	public void createNote(Note n, AsyncCallback<Note> callback)
 			throws IllegalArgumentException;
 
 	public void editNote(Note n, AsyncCallback<Void> callback)

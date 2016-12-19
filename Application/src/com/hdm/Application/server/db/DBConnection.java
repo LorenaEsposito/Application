@@ -35,7 +35,7 @@ public class DBConnection {
 	 * einen eingerichteten Zugang angesprochen werden.
 	 */
 
-	private static String localUrl = "jdbc:mysql://104.199.71.36:3306/noteworkdatabase";
+	private static String localUrl = "jdbc:mysql://104.199.24.165:3306/noteworkdatabase";
 
 	/**
 	 * Statische Methode zum Aufruf der <code>DBConnection.connection()</code>.

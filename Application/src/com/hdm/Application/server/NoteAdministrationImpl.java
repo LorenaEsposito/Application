@@ -192,8 +192,10 @@ public void deleteUser(AppUser u) throws IllegalArgumentException {
  *            Das Notebook, das in die Datenbank eingefuegt werden soll
  */
 @Override
-public void createNotebook(Notebook nb) throws IllegalArgumentException {
-this.nbMapper.createNotebook(nb);
+public Notebook createNotebook(Notebook nb) throws IllegalArgumentException {
+	Notebook notebook = new Notebook();
+	notebook = this.nbMapper.createNotebook(nb);
+	return notebook;
 }
 
 /**
@@ -253,8 +255,10 @@ for(int i = 0; i < permissions.size(); i++){
  *            Die Note, die in die Datenbank eingefuegt werden soll
  */
 @Override
-public void createNote(Note n) throws IllegalArgumentException {
-this.nMapper.createNote(n);
+public Note createNote(Note n) throws IllegalArgumentException {
+	Note note = new Note();
+	note = this.nMapper.createNote(n);
+	return note;
 }
 
 /**
@@ -298,9 +302,6 @@ public void deleteNote(Note n) throws IllegalArgumentException {
  */
 @Override
 public void createPermission(Permission p) throws IllegalArgumentException{
-	System.out.println(p.getIsOwner());
-	System.out.println(p.getUserID());
-	System.out.println(p.getNID());
 	this.pMapper.insert(p);
 }
 

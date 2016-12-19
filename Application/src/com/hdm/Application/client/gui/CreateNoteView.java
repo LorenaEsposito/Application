@@ -192,8 +192,6 @@ protected void run() {
     //editButton.setStyleName("notework-menubutton");
     //deleteButton.setStyleName("notework-menubutton");
     
-    adminService.searchForNotebook(currentNBTitle, searchForNotebookCallback());
-    
     /*
 	 * Sperren der Eingabemoeglichkeit im DatePicker bei zukuenftigen Daten
 	 */
@@ -301,7 +299,7 @@ protected void run() {
 		note.setnModDate(date);
 		note.setNbID(currentNB.getNbID());
 
-		adminService.getNotesOfNotebook(currentNBTitle, user, getNotesOfNotebookCallback());
+		adminService.searchForNotebook(currentNBTitle, searchForNotebookCallback());
     }
     });
     
@@ -386,14 +384,14 @@ protected void run() {
     				 }
     			 }
     		 }
-    		 
+    		 adminService.getNotesOfNotebook(currentNBTitle, user, getNotesOfNotebookCallback());
     	 }
 		};
 		return asyncCallback;
 	}
 
-    private AsyncCallback<Void> createNoteCallback() {
-    	AsyncCallback<Void> asyncCallback = new AsyncCallback<Void>(){
+    private AsyncCallback<Note> createNoteCallback() {
+    	AsyncCallback<Note> asyncCallback = new AsyncCallback<Note>(){
     		
     		@Override
     		public void onFailure(Throwable caught) {
@@ -401,13 +399,32 @@ protected void run() {
     		}
     	 
     	 @Override
-    	 public void onSuccess(Void result) {
+    	 public void onSuccess(Note result) {
     		 ClientsideSettings.getLogger().
     		 severe("Success CreateNoteCallback: " + result.getClass().getSimpleName());
     		 
-    		 Application.dataProvider.getList().add(Application.dataProvider.getList().size() + 1, note.getnTitle());
+    		 //Application.dataProvider.getList().add(Application.dataProvider.getList().size() + 1, note.getnTitle());
+    		 currentN = result;
 
-    		 adminService.getNotesOfNotebook(currentNBTitle, user, getCurrentNoteCallback());
+    		 Permission permission = new Permission();
+    			permission.setIsOwner(true);
+    			permission.setNbID(currentNB.getNbID());
+    			permission.setPermissionType(true);
+    			permission.setUserID(user.getUserID());
+    			
+    			notePermissions.add(permission);
+    			
+    			for(int i = 0; i < notePermissions.size(); i++){
+    				permission = notePermissions.get(i);
+    				permission.setNID(currentN.getnID());
+    				permission.setNbID(currentNB.getNbID());
+    				adminService.createPermission(permission, createPermissionCallback());
+    				
+    	   			 Update update = new ShowNoteView();
+    		          
+    		          RootPanel.get("Details").clear();
+    		          RootPanel.get("Details").add(update);
+    			}	
     	 }
     	};
     	return asyncCallback;
@@ -426,6 +443,7 @@ protected void run() {
     		public void onSuccess(Void result) {
     			ClientsideSettings.getLogger().
     			severe("Success CreatePermissionCallback: " + result.getClass().getSimpleName());
+
     		}
     	};
     	return asyncCallback;
@@ -454,7 +472,7 @@ protected void run() {
         		if(user != null){
         			boolean isExisting = new Boolean(false);
         			for(int i = 0; i < dataProvider.getList().size(); i++) {
-        				if(user.getGoogleID() == dataProvider.getList().get(i)) {
+        				if(user.getUserName() == dataProvider.getList().get(i)) {
         					isExisting = true;
         					break;
         				}
@@ -462,7 +480,7 @@ protected void run() {
         			if(isExisting == false){
         			permission.setUserID(user.getUserID());
         			permission.setIsOwner(false);
-        			permission.setNbID(currentNB.getNbID());
+
         			
         			if(readButton.getValue() == true){
         				permission.setPermissionType(false);
@@ -475,7 +493,8 @@ protected void run() {
         				savePermissionButton.setEnabled(true);
         			}
         			
-        			permissions.add(permission);
+        			notePermissions.add(permission);
+        			dataProvider.getList().add(user.getUserName());
         			}
         			
         			if(isExisting == true){
@@ -488,8 +507,6 @@ protected void run() {
         			editButton.setEnabled(true);
         			readButton.setValue(false);
         			editButton.setValue(false);
-        			
-        			dataProvider.getList().add(user.getUserName());
         		
         		}
     		}
@@ -520,10 +537,6 @@ protected void run() {
    		 }
    		 if(isExisting == false){
 			 adminService.createNote(note, createNoteCallback());
-			 Update update = new ShowNoteView();
-	          
-	          RootPanel.get("Details").clear();
-	          RootPanel.get("Details").add(update);
    		 }
    		 if(isExisting == true){
    			Window.alert("Diese Notiz existiert bereits im ausgewaehlten Notizbuch");
@@ -532,43 +545,6 @@ protected void run() {
    	 };
    	 return asyncCallback;
     }
-    
-    private AsyncCallback<ArrayList<Note>> getCurrentNoteCallback() {
-      	 AsyncCallback<ArrayList<Note>> asyncCallback = new AsyncCallback<ArrayList<Note>>(){
-      	 
-      	 @Override
-      		public void onFailure(Throwable caught) {
-      			ClientsideSettings.getLogger().severe("Error: " + caught.getMessage());
-      		}
-      	 
-      	 @Override
-      	 public void onSuccess(ArrayList<Note> result) {
-      		 ClientsideSettings.getLogger().
-      		 severe("Success GetCurrentNoteCallback: " + result.getClass().getSimpleName());
-      		 
-      		 for(int x = 0; x < result.size(); x++){
-      			 if(noteTitle.getText() == result.get(x).getnTitle()){
-      				 currentN = result.get(x);
-      			 }
-      		 }
-      		 
-   		 Permission permission = new Permission();
-   			permission.setIsOwner(true);
-   			permission.setNbID(currentNB.getNbID());
-   			permission.setPermissionType(true);
-   			permission.setUserID(user.getUserID());
-   			
-   			notePermissions.add(permission);
-   			
-   			for(int i = 0; i < notePermissions.size(); i++){
-   				permission = notePermissions.get(i);
-   				permission.setNID(currentN.getnID());
-   				adminService.createPermission(permission, createPermissionCallback());
-   			}	
-      	 }
-      	 };
-      	 return asyncCallback;
-       }
     
 }
 
