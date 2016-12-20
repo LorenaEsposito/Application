@@ -196,8 +196,13 @@ public class SearchView extends Update {
 				
 			}
 			if (nb){
-				Window.alert("Notizbuch noch nicht anzeigbar");
-			}
+				Notebook selectedNoteB = ((SingleSelectionModel<Notebook>) notebookTable.getSelectionModel()).getSelectedObject();
+				Cookies.setCookie("selectedNotebookID", (String.valueOf(selectedNoteB.getNbID())));
+		   			Update update = new ShowNotebookView();
+		   			RootPanel.get("Details").clear();
+			   		RootPanel.get("Details").add(update);			}
+			
+			
 			if (un){
 				Window.alert("Nutzer nicht anzeigbar");
 			}
@@ -381,7 +386,7 @@ public class SearchView extends Update {
 			@Override
 			public String getValue(Notebook name) {
 
-				return (String)name.getTitle();
+				return (String)name.getNbTitle();
 			}
 		};
 
