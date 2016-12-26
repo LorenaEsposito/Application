@@ -55,7 +55,7 @@ public interface NoteAdministrationAsync {
 	public void deleteNote(Note n, AsyncCallback<Void> callback)
 			throws IllegalArgumentException;
 
-	public void createPermission(Permission p, AsyncCallback<Void> callback)
+	public void createPermissions(ArrayList<Permission> p, AsyncCallback<Void> callback)
 			throws IllegalArgumentException;
 
 	public void editPermission(Permission p, AsyncCallback<Void> callback)
@@ -87,6 +87,10 @@ public interface NoteAdministrationAsync {
 
 	public void searchForNoteByDD(Date duedate,
 			AsyncCallback<ArrayList<Note>> callback)
+			throws IllegalArgumentException;
+	
+	public void getNotebookByID(int nbID,
+			AsyncCallback<Notebook> callback)
 			throws IllegalArgumentException;
 
 	public void getNotebooksOfUser(AppUser user,

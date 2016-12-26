@@ -414,6 +414,7 @@ public class NoteMapper {
 					note.setNbID(rs.getInt("nbid"));
 					note.setnTitle(rs.getString("title"));
 					note.setnSubtitle(rs.getString("subtitle"));
+					note.setnContent(rs.getString("content"));
 					note.setSource(rs.getString("source"));
 					note.setnCreDate(rs.getDate("creadate"));
 					note.setnModDate(rs.getDate("moddate"));

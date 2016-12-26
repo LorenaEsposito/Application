@@ -34,7 +34,7 @@ public interface NoteAdministration extends RemoteService {
 
 	public void deleteNote(Note n) throws IllegalArgumentException;
 
-	public void createPermission(Permission p) throws IllegalArgumentException;
+	public void createPermissions(ArrayList<Permission> p) throws IllegalArgumentException;
 
 	public void editPermission(Permission p) throws IllegalArgumentException;
 
@@ -52,7 +52,9 @@ public interface NoteAdministration extends RemoteService {
 
 	public ArrayList<Note> searchForNote(String title) throws IllegalArgumentException;
 
-	public ArrayList<Note> searchForNoteByDD(Date duedate) throws IllegalArgumentException;	
+	public ArrayList<Note> searchForNoteByDD(Date duedate) throws IllegalArgumentException;
+	
+	public Notebook getNotebookByID(int nbID) throws IllegalArgumentException;
 
 	public ArrayList<Notebook> getNotebooksOfUser(AppUser user) throws IllegalArgumentException;
 

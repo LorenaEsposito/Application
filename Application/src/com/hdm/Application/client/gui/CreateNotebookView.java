@@ -323,8 +323,8 @@ protected void run() {
 				for(int i = 0; i < permissions.size(); i++){
 					permission = permissions.get(i);
 					permission.setNbID(result.getNbID());
-					adminService.createPermission(permission, createPermissionCallback());
 				}
+				adminService.createPermissions(permissions, createPermissionCallback());
 		          Update update = new ShowNoteView();
 		          
 		          RootPanel.get("Details").clear();

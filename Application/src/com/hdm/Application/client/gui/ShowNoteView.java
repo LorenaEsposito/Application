@@ -1,22 +1,24 @@
 package com.hdm.Application.client.gui;
 
+import java.util.ArrayList;
+
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.MouseOutEvent;
 import com.google.gwt.event.dom.client.MouseOutHandler;
 import com.google.gwt.event.dom.client.MouseOverEvent;
 import com.google.gwt.event.dom.client.MouseOverHandler;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.RootPanel;
-import com.google.gwt.user.client.ui.TextArea;
-import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.hdm.Application.client.Application;
 import com.hdm.Application.client.ClientsideSettings;
 import com.hdm.Application.shared.NoteAdministrationAsync;
+import com.hdm.Application.shared.bo.AppUser;
 import com.hdm.Application.shared.bo.Note;
 
 public class ShowNoteView extends Update{
@@ -25,14 +27,15 @@ public class ShowNoteView extends Update{
 	    return "";
 }
 	
-	//private NoteAdministrationAsync adminService = ClientsideSettings.getAdministration();
+	private NoteAdministrationAsync adminService = ClientsideSettings.getAdministration();
 	
-	private Note note = new Note();
+	public static Note note = new Note();
+	
+	private AppUser user = new AppUser();
 	
 	private String noteTitle = new String();
 	
 	private String notebookTitle = new String();
-	
 
 	/**
 	   * Erstellung aller Panels
@@ -88,39 +91,12 @@ protected void run() {
    **/
   	deleteButton.setStyleName("savePermission-button");
     editButton.setStyleName("savePermission-button");
-  //createButton.setStyleName("notework-menubutton");
-	//textArea.setVisibleLines(20);
-	//textArea.setPixelSize(420, 350);
-	
-	titleLabel.setText(note.getnTitle());
-	subtitleLabel.setText(note.getnSubtitle());
-	
-	noticeLabel.setText(note.getnContent());
+    
+	 adminService.getCurrentUser(getCurrentUserCallback());
 	
   /**
    * Erstellung der Clickhandler
    **/
-  
-//  createButton.addClickHandler(new ClickHandler() {
-//	public void onClick(ClickEvent event) {
-//		
-//		/*
-//		 * Speichern der eingegebenen Werte blockieren, um
-//		 * Mehrfach-Klicks und daraus entstehende, unnoetige Eintraege in
-//		 * der Datenbank zu verhindern.
-//		 */
-//		createButton.setEnabled(false);
-//		createButton.setStylePrimaryName("");
-//
-//        /*
-//         * Showcase instantiieren.
-//         */
-//        Update update = new ShowNoteView();
-//        
-//        RootPanel.get("Details").clear();
-//        RootPanel.get("Details").add(update);
-//  }
-//  });
   
   editButton.addClickHandler(new ClickHandler() {
 	public void onClick(ClickEvent event) {
@@ -131,6 +107,7 @@ protected void run() {
         
         RootPanel.get("Details").clear();
         RootPanel.get("Details").add(update);
+        
   }
   });
   
@@ -163,6 +140,52 @@ protected void run() {
   
 	}
 
+private AsyncCallback<AppUser> getCurrentUserCallback(){
+	AsyncCallback<AppUser> asyncCallback = new AsyncCallback<AppUser>() {
+		
+		@Override
+		public void onFailure(Throwable caught) {
+			ClientsideSettings.getLogger().severe("Error: " + caught.getMessage());
+		}
+	 
+	 @Override
+	 public void onSuccess(AppUser result) {
+		 ClientsideSettings.getLogger().
+		 severe("Success GetCurrentUserCallback: " + result.getClass().getSimpleName());
+		 
+		 user = result;
+		 
+		 adminService.getNotesOfNotebook(notebookTitle, user, getNotesOfNotebookCallback());
+		 
+	 }
+	};
+	return asyncCallback;
+}
+
+private AsyncCallback<ArrayList<Note>> getNotesOfNotebookCallback() {
+	AsyncCallback<ArrayList<Note>> asyncCallback = new AsyncCallback<ArrayList<Note>>() {
+		
+		@Override
+		public void onFailure(Throwable caught) {
+			ClientsideSettings.getLogger().severe("Error: " + caught.getMessage());
+		}
+	 
+	 @Override
+	 public void onSuccess(ArrayList<Note> result) {
+		 ClientsideSettings.getLogger().
+		 severe("Success GetNotesOfNotebookCallback: " + result.getClass().getSimpleName());
+		 for(int i = 0; i < result.size(); i++){
+			 if(noteTitle == result.get(i).getnTitle()) {
+				 note = result.get(i);
+				 titleLabel.setText(note.getnTitle());
+				 subtitleLabel.setText(note.getnSubtitle());
+				 noticeLabel.setText(note.getnContent());
+			 }
+		 }
+	 }
+	};
+	return asyncCallback;
+}
 
 }
 

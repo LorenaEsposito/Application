@@ -5,18 +5,14 @@ import java.util.Date;
 import java.util.Vector;
 
 import com.hdm.Application.server.db.*;
-import com.hdm.Application.shared.*;
 import com.hdm.Application.shared.bo.*;
 
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 import com.hdm.Application.shared.NoteAdministration;
-import com.hdm.Application.shared.NoteAdministrationAsync;
-
 
 @SuppressWarnings("serial")
 public class NoteAdministrationImpl extends RemoteServiceServlet
@@ -27,12 +23,12 @@ public class NoteAdministrationImpl extends RemoteServiceServlet
 	 */
 	private static final long serialVersionUID = 1L;
     
-	private AppUser currentUser = null;
+	//private AppUser currentUser = null;
 
   /**
    * Referenz auf das zugehörige Note-Objekt.
    */
-  private Note note = null;
+  //private Note note = null;
   
   private Date date = new Date();
   
@@ -114,13 +110,15 @@ public AppUser getUserByGoogleID(String name){
 		notebook.setNbModDate(date);
 		this.createNotebook(notebook);
 		
+		ArrayList<Permission> permissions = new ArrayList<Permission>();
 		Permission permission = new Permission();
 		permission.setNbID(notebook.getNbID());
 		permission.setUserID(cUser.getUserID());
 		permission.setNID(0);
 		permission.setIsOwner(true);
 		permission.setPermissionType(true);
-		this.createPermission(permission);
+		permissions.add(permission);
+		this.createPermissions(permissions);
 		
 		AppUser user2 = new AppUser();
 		user2 = this.uMapper.findByGoogleID(name);
@@ -301,8 +299,10 @@ public void deleteNote(Note n) throws IllegalArgumentException {
  *            Die Permission, die in die Datenbank eingefuegt werden soll
  */
 @Override
-public void createPermission(Permission p) throws IllegalArgumentException{
-	this.pMapper.insert(p);
+public void createPermissions(ArrayList<Permission> p) throws IllegalArgumentException{
+	for(int i = 0; i < p.size(); i++){
+		this.pMapper.insert(p.get(i));
+	}
 }
 
 /**
@@ -450,6 +450,12 @@ public ArrayList<Notebook> searchForNotebook(String title) throws IllegalArgumen
   	return notes;
     }
     
+    public Notebook getNotebookByID(int nbID) throws IllegalArgumentException{
+    	Notebook notebook = new Notebook();
+    	notebook = this.nbMapper.findById(nbID);
+    	return notebook;
+    }
+    
     /**
      * In dieser Methode kann anhand eines Users nach dessen Notizbuechern gesucht werden.
      * Diese werden dann in einer ArrayList zurueck gegeben. Ist noch kein Notizbuch angelegt
@@ -465,13 +471,15 @@ public ArrayList<Notebook> searchForNotebook(String title) throws IllegalArgumen
     		notebook.setNbCreDate(date);
     		notebook.setNbModDate(date);
     		this.createNotebook(notebook);
+    		ArrayList<Permission> permissions = new ArrayList<Permission>();
     		Permission permission = new Permission();
     		permission.setNbID(notebook.getNbID());
     		permission.setUserID(u.getUserID());
     		permission.setNID(0);
     		permission.setIsOwner(true);
     		permission.setPermissionType(true);
-    		this.createPermission(permission);
+    		permissions.add(permission);
+    		this.createPermissions(permissions);
     		vector = this.nbMapper.findByUser(u);
     	}
     	

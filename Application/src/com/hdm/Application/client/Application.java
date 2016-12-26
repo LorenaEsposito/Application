@@ -17,6 +17,7 @@ import com.hdm.Application.shared.bo.Notebook;
 import com.hdm.Application.client.ClientsideSettings;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.hdm.Application.client.gui.SearchView;
 import com.hdm.Application.client.gui.ShowNoteView;
@@ -87,6 +88,8 @@ public class Application implements EntryPoint {
 	    
 		 // Create a data provider.
 		public static ListDataProvider<String> dataProvider = new ListDataProvider<String>();
+		
+		public static List<String> list = dataProvider.getList();
 
 		/**
 		 * Eine ArrayList, in der Note-Objekte gespeichert werden

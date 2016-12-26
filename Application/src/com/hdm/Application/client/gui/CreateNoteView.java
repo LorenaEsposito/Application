@@ -40,6 +40,7 @@ public class CreateNoteView extends Update{
 	 * Die AdministrationService ermoeglicht die asynchrone Kommunikation mit der
 	 * Applikationslogik.
 	 */
+	
 	private NoteAdministrationAsync adminService = ClientsideSettings.getAdministration();
 	
 	private String currentNBTitle = new String();
@@ -222,6 +223,12 @@ protected void run() {
 		}
 	});
 	
+	noteSubtitle.addClickHandler(new ClickHandler() {
+		public void onClick(ClickEvent event){
+			noteSubtitle.setText("");
+		}
+	});
+	
 	permissionText.addClickHandler(new ClickHandler(){
 		public void onClick(ClickEvent event){
 			permissionText.setText("");
@@ -297,7 +304,6 @@ protected void run() {
 		note.setnContent(textArea.getText());
 		note.setnCreDate(date);
 		note.setnModDate(date);
-		note.setNbID(currentNB.getNbID());
 
 		adminService.searchForNotebook(currentNBTitle, searchForNotebookCallback());
     }
@@ -384,6 +390,7 @@ protected void run() {
     				 }
     			 }
     		 }
+    		 note.setNbID(currentNB.getNbID());
     		 adminService.getNotesOfNotebook(currentNBTitle, user, getNotesOfNotebookCallback());
     	 }
 		};
@@ -403,7 +410,7 @@ protected void run() {
     		 ClientsideSettings.getLogger().
     		 severe("Success CreateNoteCallback: " + result.getClass().getSimpleName());
     		 
-    		 //Application.dataProvider.getList().add(Application.dataProvider.getList().size() + 1, note.getnTitle());
+    		 Application.list.add(note.getnTitle());
     		 currentN = result;
 
     		 Permission permission = new Permission();
@@ -418,20 +425,21 @@ protected void run() {
     				permission = notePermissions.get(i);
     				permission.setNID(currentN.getnID());
     				permission.setNbID(currentNB.getNbID());
-    				adminService.createPermission(permission, createPermissionCallback());
     				
-    	   			 Update update = new ShowNoteView();
-    		          
-    		          RootPanel.get("Details").clear();
-    		          RootPanel.get("Details").add(update);
-    			}	
+    			}
+	   			 Update update = new ShowNoteView();
+		          
+		          RootPanel.get("Details").clear();
+		          RootPanel.get("Details").add(update);
+		          
+				adminService.createPermissions(notePermissions, createPermissionsCallback());
     	 }
     	};
     	return asyncCallback;
 
     }
     
-    private AsyncCallback<Void> createPermissionCallback() {
+    private AsyncCallback<Void> createPermissionsCallback() {
     	AsyncCallback<Void> asyncCallback = new AsyncCallback<Void>() {
     		
     		@Override
@@ -443,7 +451,6 @@ protected void run() {
     		public void onSuccess(Void result) {
     			ClientsideSettings.getLogger().
     			severe("Success CreatePermissionCallback: " + result.getClass().getSimpleName());
-
     		}
     	};
     	return asyncCallback;
