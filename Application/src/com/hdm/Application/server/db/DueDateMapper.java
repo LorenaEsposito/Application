@@ -1,6 +1,7 @@
 package com.hdm.Application.server.db;
 
 import java.sql.*;
+import java.text.SimpleDateFormat;
 import java.util.Vector;
 
 import com.hdm.Application.shared.bo.DueDate;
@@ -187,8 +188,14 @@ public class DueDateMapper {
 			Statement stmt = con.createStatement();
 
 			// Ueberpruefen welches der aktuell hoechste Primaerschluessel ist.
-			ResultSet rs = stmt.executeQuery("SELECT Max(ddID) AS maxDdId"
-					+ "FROM DueDate");
+			ResultSet rs = stmt.executeQuery("SELECT Max(ddID) AS maxDdId "
+					+ "FROM duedates");
+			
+			String duedate = null;
+			if (dueDate.getdDate() != null) {
+				SimpleDateFormat mySQLformat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+				duedate = mySQLformat.format(dueDate.getdDate());
+			}
 
 			if (rs.next()) {
 				// notebook erhaelt den aktuell hoechsten und um 1
@@ -198,9 +205,9 @@ public class DueDateMapper {
 				stmt = con.createStatement();
 
 				// Neues Objekt wird eingefuegt
-				stmt.executeUpdate("INSERT INTO DueDate (ddID, dDate, nID)"
+				stmt.executeUpdate("INSERT INTO duedates (ddid, duedate, nid) "
 						+ "VALUES (" + dueDate.getDdID() + ",'"
-						+ dueDate.getdDate() + "," + dueDate.getnID() + "')");
+						+ duedate + "'," + dueDate.getnID() + ")");
 
 			}
 

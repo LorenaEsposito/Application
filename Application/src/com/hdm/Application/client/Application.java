@@ -187,6 +187,8 @@ public class Application implements EntryPoint {
  		
  		Update update = new WelcomeView();
  		
+ 		listbox.setSelectedIndex(0);
+ 		
  		cellList.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.ENABLED);
 
  	    // Add a selection model to handle user selection.

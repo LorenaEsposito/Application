@@ -96,7 +96,6 @@ public class EditNoteView extends Update{
    final RadioButton editButton = new RadioButton("Bearbeitungsberechtigung");
    DatePicker duedate = new DatePicker();
    CellList<String> cellList = new CellList<String>(cell);
-   Label testLabel = new Label();
    Label rightsLabel = new Label("Berechtigung vergeben:");
    Label duedateLabel = new Label("Enddatum vergeben:");
    Label mainheadline = new Label("Notiz bearbeiten");
@@ -111,8 +110,6 @@ protected void run() {
     currentNBTitle = Application.listbox.getSelectedItemText();
     
     currentNote = ShowNoteView.note;
-    
-    testLabel.setText(date.toString());
     
  // Create a data provider.
     ListDataProvider<String> dataProvider = new ListDataProvider<String>();
@@ -129,7 +126,6 @@ protected void run() {
     buttonPanel.add(saveNoteButton);
     buttonPanel.add(deleteNoteButton);
     buttonPanel.add(cancelButton);
-    buttonPanel.add(testLabel);
     rightPanel.add(rightsLabel);
     rightPanel.add(permissionPanel);
     permissionPanel.add(permissionText);

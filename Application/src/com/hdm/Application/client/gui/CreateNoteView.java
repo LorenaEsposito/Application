@@ -29,6 +29,7 @@ import com.hdm.Application.client.Application;
 import com.hdm.Application.client.ClientsideSettings;
 import com.hdm.Application.shared.NoteAdministrationAsync;
 import com.hdm.Application.shared.bo.AppUser;
+import com.hdm.Application.shared.bo.DueDate;
 import com.hdm.Application.shared.bo.Note;
 import com.hdm.Application.shared.bo.Notebook;
 import com.hdm.Application.shared.bo.Permission;
@@ -101,7 +102,7 @@ public class CreateNoteView extends Update{
    final Button savePermissionButton = new Button("Save");
    final RadioButton readButton = new RadioButton("Leseberechtigung");
    final RadioButton editButton = new RadioButton("Bearbeitungsberechtigung");
-   DatePicker duedate = new DatePicker();
+   DatePicker datePicker = new DatePicker();
    Label rightsLabel = new Label("Berechtigung vergeben:");
    Label duedateLabel = new Label("Enddatum vergeben:");
    Label mainheadline = new Label("Neue Notiz");
@@ -142,7 +143,7 @@ protected void run() {
     leftPanel.add(noteTitle);
     leftPanel.add(noteSubtitle);
     leftPanel.add(textArea); 
-    rightPanel.add(duedate);
+    rightPanel.add(datePicker);
     mainPanel.add(leftPanel);
     mainPanel.add(rightPanel);
     
@@ -182,7 +183,7 @@ protected void run() {
     readButton.setStyleName("savePermission-button");
     editButton.setStyleName("savePermission-button");
     permissionText.setStyleName("style-Textbox");
-    duedate.setStyleName("datepicker");
+    datePicker.setStyleName("datepicker");
     textArea.setStyleName("TextArea");
     savePermissionButton.setStyleName("savePermission-button");
     buttonPanel.setStyleName("buttonPanel");
@@ -196,7 +197,7 @@ protected void run() {
     /*
 	 * Sperren der Eingabemoeglichkeit im DatePicker bei zukuenftigen Daten
 	 */
-	duedate.addShowRangeHandlerAndFire(new ShowRangeHandler<java.util.Date>() {
+	datePicker.addShowRangeHandlerAndFire(new ShowRangeHandler<java.util.Date>() {
 		@Override
 		public void onShowRange(ShowRangeEvent<Date> event) {
 			Date start = event.getStart();
@@ -206,8 +207,8 @@ protected void run() {
 			Date today = new Date();
 
 			while (temp.before(end)) {
-				if (temp.before(today) && duedate.isDateVisible(temp)) {
-					duedate.setTransientEnabledOnDates(false, temp);
+				if (temp.before(today) && datePicker.isDateVisible(temp)) {
+					datePicker.setTransientEnabledOnDates(false, temp);
 				}
 				CalendarUtil.addDaysToDate(temp, 1);
 			}
@@ -433,6 +434,13 @@ protected void run() {
 		          RootPanel.get("Details").add(update);
 		          
 				adminService.createPermissions(notePermissions, createPermissionsCallback());
+				
+				if(datePicker.getValue() != null) {
+					DueDate duedate = new DueDate();
+					duedate.setdDate(datePicker.getValue());
+					duedate.setnID(currentN.getnID());
+					adminService.createDuedate(duedate, createDuedateCallback());
+				}
     	 }
     	};
     	return asyncCallback;
@@ -451,6 +459,23 @@ protected void run() {
     		public void onSuccess(Void result) {
     			ClientsideSettings.getLogger().
     			severe("Success CreatePermissionCallback: " + result.getClass().getSimpleName());
+    		}
+    	};
+    	return asyncCallback;
+    }
+    
+    private AsyncCallback<Void> createDuedateCallback() {
+    	AsyncCallback<Void> asyncCallback = new AsyncCallback<Void>() {
+    		
+    		@Override
+    		public void onFailure(Throwable caught) {
+    			ClientsideSettings.getLogger().severe("Error: " + caught.getMessage());
+    		}
+    		
+    		@Override
+    		public void onSuccess(Void result) {
+    			ClientsideSettings.getLogger().
+    			severe("Success CreateDuedateCallback: " + result.getClass().getSimpleName());
     		}
     	};
     	return asyncCallback;
