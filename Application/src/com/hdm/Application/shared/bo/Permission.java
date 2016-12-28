@@ -20,7 +20,7 @@ public class Permission implements Serializable{
 	/**
 	 * Der permissiontype der Permission - Lese- oder Bearbeitungsberechtigung
 	 */
-	private boolean permissiontype;
+	private int permissiontype;
 	
 	/**
 	 * Die id des Users der Permission
@@ -67,7 +67,7 @@ public class Permission implements Serializable{
 	 * @return permissiontype
 	 */
 
-	public boolean getPermissionType(){
+	public int getPermissionType(){
 		return permissiontype;
 	}
 	
@@ -75,7 +75,7 @@ public class Permission implements Serializable{
 	 * Setzen des permissiontypes
 	 * @param permissiontype
 	 */
-	public void setPermissionType(boolean permissiontype){
+	public void setPermissionType(int permissiontype){
 		this.permissiontype = permissiontype;
 	}
 	

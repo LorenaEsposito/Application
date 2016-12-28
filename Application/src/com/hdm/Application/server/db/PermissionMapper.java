@@ -83,7 +83,7 @@ public class PermissionMapper {
 
 				Permission p = new Permission();
 				p.setPermissionID(rs.getInt("id"));
-				p.setPermissionType(rs.getBoolean("permissionType"));
+				p.setPermissionType(rs.getInt("permissionType"));
 				p.setUserID(rs.getInt("userID"));
 				p.setNID(rs.getInt("nID"));
 				p.setNbID(rs.getInt("nbID"));
@@ -134,7 +134,7 @@ public class PermissionMapper {
 
 				Permission p = new Permission();
 				p.setPermissionID(rs.getInt("id"));
-				p.setPermissionType(rs.getBoolean("permissionType"));
+				p.setPermissionType(rs.getInt("permissionType"));
 				p.setUserID(rs.getInt("userID"));
 				p.setNID(rs.getInt("nID"));
 				p.setNbID(rs.getInt("nbID"));
@@ -283,7 +283,7 @@ public class PermissionMapper {
 					p.setIsOwner(rs.getBoolean("isowner"));
 					p.setNbID(rs.getInt("nbid"));
 					p.setNID(rs.getInt("nid"));
-					p.setPermissionType(rs.getBoolean("permtype"));
+					p.setPermissionType(rs.getInt("permtype"));
 
 					/**
 					 * Hinzuf�gen des neuen Objekts zum Ergebnisvektor
@@ -322,7 +322,7 @@ public Vector<Permission> findOwnedNotebooks(int appUserID){
 					p.setIsOwner(rs.getBoolean("isowner"));
 					p.setNbID(rs.getInt("nbid"));
 					p.setNID(rs.getInt("nid"));
-					p.setPermissionType(rs.getBoolean("permtype"));
+					p.setPermissionType(rs.getInt("permtype"));
 
 					/**
 					 * Hinzuf�gen des neuen Objekts zum Ergebnisvektor
@@ -353,7 +353,7 @@ public Vector<Permission> findOwnedNotebooks(int appUserID){
 					permission.setIsOwner(rs.getBoolean("isowner"));
 					permission.setNbID(rs.getInt("nbid"));
 					permission.setNID(rs.getInt("nid"));
-					permission.setPermissionType(rs.getBoolean("permtype"));
+					permission.setPermissionType(rs.getInt("permtype"));
 					//Neues Objekt wird dem Ergebnisvektor hinzugefuegt
 					result.addElement(permission);
 				}
