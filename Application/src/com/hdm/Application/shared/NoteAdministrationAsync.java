@@ -104,5 +104,7 @@ public interface NoteAdministrationAsync {
 	public void searchUserByGoogleID(String googleID,
 			AsyncCallback<AppUser> callback)
 			throws IllegalArgumentException;
+
+	void getUserByEmail(String email, AsyncCallback<AppUser> callback);
 	
 }

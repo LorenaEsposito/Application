@@ -11,6 +11,8 @@ import com.hdm.Application.shared.bo.*;
 public interface NoteAdministration extends RemoteService {
 
 	public void init() throws IllegalArgumentException;
+	
+	public AppUser getUserByEmail(String email) throws IllegalArgumentException;
 
 	public AppUser getCurrentUser() throws IllegalArgumentException;
 
