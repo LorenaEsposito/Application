@@ -2,6 +2,8 @@ package com.hdm.Application.client;
 
 import java.sql.Date;
 
+import org.apache.jsp.ah.searchDocumentBody_jsp;
+
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -30,6 +32,7 @@ import com.hdm.Application.shared.bo.AppUser;
 import com.google.gwt.user.datepicker.client.DateBox;
 import com.hdm.Application.shared.report.*;
 
+
 /**
  * Entry-Point-Klasse des <b>application Report-Generators</b>.
  */
@@ -47,7 +50,7 @@ public class ApplicationReport implements EntryPoint {
 	
 	LoginServiceAsync loginService = GWT.create(LoginService.class);
 	private NoteAdministrationAsync adminService = ClientsideSettings.getAdministration();
-	private ReportGeneratorAsync reportGenerator = ClientsideSettings.getReportGenerator();;
+	private ReportGeneratorAsync reportGenerator = ClientsideSettings.getReportGenerator();
 	//Buttons der Navigation. MÃ¼ssen final sein, damit Callbacks sie verÃ¤ndern kÃ¶nnen
 	final Button showReportAllUserNotesButton = new Button("Alle Notizen eines Nutzers anzeigen");
 	final Button showReportFilteredNotesButton = new Button("Alle gefilterten Notizen");
@@ -173,7 +176,7 @@ public class ApplicationReport implements EntryPoint {
 		protected void loadSearchUserPanel() {
 			
 			final Label usernameLabel = new Label();
-			usernameLabel.setText("Nutzer:");
+			usernameLabel.setText("Nutzer-Email:");
 			final TextBox username = new TextBox(); 
 			final Button userSearchButton = new Button("Report generieren");			
 			searchUserPanel.clear();
@@ -182,8 +185,64 @@ public class ApplicationReport implements EntryPoint {
 			searchUserPanel.add(userSearchButton);
 			filterPanel.clear();
 			filterPanel.add(searchUserPanel);
+			
+			userSearchButton.addClickHandler(new ClickHandler() {
+				
+				@Override
+	public void onClick(ClickEvent event) {
+//					adminService.getUserByEmail("weirichandra@yahoo.de",new AsyncCallback<AppUser>(){
+//
+//						@Override
+//						public void onFailure(Throwable caught) {
+//							// TODO Auto-generated method stub
+//							
+//						}
+//
+//						@Override
+//						public void onSuccess(AppUser result) {
+//														
+//						}
+//						
+//						
+//					});
+//					
+//				}
+				AppUser result = new AppUser();	
+				result.setUserID(0);
+				reportGenerator.createAllNotesFromUserReport(result, new AsyncCallback<AllNotesFromUser>() {
+
+					@Override
+					public void onFailure(Throwable caught) {
+						// TODO Auto-generated method stub
+						
+					}
+
+					@Override
+					public void onSuccess(AllNotesFromUser result) {
+						if (result != null) {
+							//Um den Report in HTML-Text zu überführen benötigen wir einen HTMLReportWriter
+							HTMLReportWriter writer = new HTMLReportWriter();
+							//Wir übergeben den erhaltenen Report an den HTMLReportWriter
+							writer.process(result);
+							//Wir leeren das DetailPanel, damit etwaige vorherige Reports nicht mehr angezeigt werden
+							detailPanel.clear();
+							//Wir befüllen das DetailPanel mit dem HTML-Text den wir vom ReporWriter erhalten
+							detailPanel.add(new HTML(writer.getReportText()));
+							//Wir aktivieren den Button zur Anforderung eines Reports wieder, da der angeforderte Report ausgegeben ist
+							
+
+						}
+						
+					}
+					
+				}); }
+
+			});
 		
 	}
+	
+		
+
 		
 protected void loadRadiobuttonPanel() {
 	
@@ -204,6 +263,14 @@ protected void loadRadiobuttonPanel() {
 	filterPanel.clear();
 	filterPanel.add(radiobuttonPanel);
 	
+	searchButton.addClickHandler(new ClickHandler() {
+		
+		@Override
+		public void onClick(ClickEvent event) {
+			
+			Window.alert("Button hat noch keine Funktion.");
+		}
+	});
 	
 	dueDateButton.addValueChangeHandler(new ValueChangeHandler<Boolean>() {
 		
