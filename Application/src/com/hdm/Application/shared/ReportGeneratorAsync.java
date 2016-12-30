@@ -1,6 +1,8 @@
 package com.hdm.Application.shared;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.hdm.Application.shared.bo.AppUser;
+import com.hdm.Application.shared.report.AllNotesFromUser;
 
 /**
  * Das asynchrone Gegenstück des Interface {@link ReportGenerator}. Es wird
@@ -13,5 +15,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 public interface ReportGeneratorAsync {
 
 	void init(AsyncCallback<Void> callback);
+
+	void createAllNotesFromUserReport(AppUser user, AsyncCallback<AllNotesFromUser> callback);
 
 }

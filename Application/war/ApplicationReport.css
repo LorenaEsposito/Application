@@ -1,0 +1,373 @@
+body {
+	font: calibri;
+    text-align: center;  /* Zentrierung im Internet Explorer */
+  }
+
+h1 {
+  font-size: 2em;
+  font-weight: bold;
+  color: #777777;
+  margin: 10px 0px 0px;
+  text-align: left;
+}
+
+.headline {
+	font-weight: bold;
+	margin-top: 10px;
+	margin-bottom: 3px;
+}
+
+.headlinePanel {
+	padding-top: 10px;
+	padding-left: 20px;
+	margin-top:-23px;
+	width: 800px;
+	height:37px;
+	background-color: #006fdd;
+	font-weight: bold;
+	color: #ffffff;
+}
+
+
+.noteTitle {
+	font-size: 20px;
+	color: #666666;
+	margin-top: 5px;
+	margin-left: 10px;
+	margin-bottom: 15px;
+	border: 0px;
+	border-bottom: 1px solid #808080;
+	
+}
+
+.searchPanel{
+	margin-top: 50px;
+	margin-left: 170px;
+	}
+	
+.logoImpressum {
+	font-size: 25px;
+}
+.searchbox {
+	width: 400px;
+	font-size: 15px;
+	color: #666666;
+	margin-left: 10px;
+	margin-bottom: 15px;
+	box-shadow: 0px 2px 2px #c0c0c0;	
+	
+}
+
+.headPanel {
+ width-min: 1000px;
+ margin-left: auto;
+ margin-right: auto;
+}
+
+.navPanel {
+	height:37px;
+	width:18em;
+	background-color: #006fdd;
+}
+
+
+.loginLink {
+	background: url(/Logo.png);
+}
+
+.login{
+	background: url(/LoginBoxFinal.png);
+	background-repeat: no-repeat;
+	background-size: 70%;
+	margin-left: 100px;
+	margin-top: 140px;
+	height:500px;
+	width: 700px;
+	
+}
+
+.loginTextPanel  {
+	width: 300px;
+	margin-top: 100px;
+	margin-left: 42px;
+	
+}
+
+.impressumPanel {
+	background: url(/impressum.png);
+	background-size: 70%;
+	background-repeat: no-repeat;
+	height: 700px;
+	width:1000px;
+}
+.notework-logo {
+	background: url(/Logo.png);
+	background-size:45%;
+	background-repeat:no-repeat;
+	font-weight: bold;
+	width: 230px;
+	height:50px;
+	margin-left: 20px;
+	margin-top: 7px;
+	border: 0px;
+}	
+
+.style-Textbox {
+	margin-top: 10px;
+	margin-bottom: 10px;
+	margin-right:10px;
+	margin-left:10px;
+	height:20px;
+	width: 150px;
+}
+.notework-headline {
+	font-size: 12pt;
+	font-weight: bold;
+	color: #777777;
+	margin: 0px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	text-align: center;
+}
+
+
+.navObject {
+	background: url(/NewNotebook.png);
+	background-size: 100%;
+	font-size: 110%;
+	font-weight: bold;
+	height:40px;
+	width:40px;
+	margin-top: 10px;
+	margin-left: 200px;
+	border: 0px;
+	background-color: transparent;
+}
+
+.CreateRightPanel {
+	background-color: #f7f7f7;
+	width: 270px;
+	height: 500px;
+	padding-left:40px;
+	margin-top: -10px;
+	margin-left: 70px;
+	border-left: 1px solid silver;
+}
+
+.navObject:hover {
+	background: url(/hoverNewNotebook.png);
+	background-size: 100%;
+	font-size: 110%;
+	font-weight: bold;
+	height:40px;
+	width:40px;
+	margin-top: 10px;
+	margin-left: 200px;
+	border: 0px;
+	background-color: transparent;	
+}
+
+.navObject2 {
+	background: url(/NewNotice.png);
+	background-size: 100%;
+	font-size: 110%;
+	font-weight: bold;
+	height:40px;
+	width:40px;
+	margin-top:  8px;
+	margin-left: 200px;
+	border: 0px;
+	background-color: transparent;
+}
+
+.navObject2:hover {
+	background: url(/hoverNewNotice.png);
+	background-size: 100%;
+	font-size: 110%;
+	font-weight: bold;
+	height:40px;
+	width:40px;
+	margin-top:  8px;
+	margin-left: 200px;
+	border: 0px;
+	background-color: transparent;
+}
+
+.navListbox {
+	font-size: 120%;
+	font-weight: bold;
+	width: 240px;
+	height: 37px;
+	margin-left: 0px;
+	margin-top: 0px;
+	border: 0px;
+	background-color: #005bb7;	
+}
+.headObject {
+	font-size: 120%;
+	font-weight: bold;
+	color: #ffffff;
+	width: 12em;
+	margin-left: 10px;
+	margin-top: 15px;
+	border: 0px;
+	background-color: transparent;	
+}
+.headObject:hover {
+	font-size: 120%;
+	font-weight: bold;
+	color: #1188ff;
+	width: 12em;
+	margin-left: 10px;
+	margin-top: 15px;
+	border: 0px;
+	background-color: transparent;	
+}
+
+.savePermission-button{
+	height:25px;
+	width: 100px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	margin-right:10px;
+	margin-left:10px;
+}
+
+
+
+.TextArea {
+	
+	margin-top: 10px;
+	margin-bottom: 10px;
+	margin-right:10px;
+	margin-left:10px;
+}
+
+
+
+.notework-addbutton{
+	background-color: #f7f7f7;
+	font-size: 100%;
+	width: 200px;
+	height:30px;
+	margin-left: 40px;
+	margin-top: 20px;
+	opacity: 0.7;
+	
+	
+}
+
+.listbox {
+	background-color: #f7f7f7;
+	font-size: 100%;
+	width: 200px;
+	height:30px;
+	margin-left: 40px;
+	opacity: 0.7;
+}
+
+.notework-searchbutton{
+	background-color: #f7f7f7;
+	font-size: 100%;
+	width: 200px;
+	height:auto;
+	margin-left: 40px;
+	opacity: 0.7;
+	
+	
+}
+
+
+.detailsPanel {
+	background-color: #ffffff;
+	height:500px;
+	width: 800px;
+	margin-top: 0px;
+	padding-left: 10px;
+	padding-top: 10px;
+	box-shadow: inset 0px 2px 4px #a4a4a4;
+}
+
+.buttonPanel {
+	border: 1px solid #c0c0c0;
+	background-color: #dfdfdf;
+	width: 800px;
+}
+
+.permissionPanel{
+	border: 1px solid #c0c0c0;
+	background-color: #ffffff;
+	box-shadow: 0px 2px 2px #c0c0c0;
+	border-radius:8px;
+}
+div#TopLevelFrame {
+	background: url(/Hintergrund-Notework5.jpg);
+	background-size: auto;
+	background-size: 100%;
+	background-repeat: no-repeat;
+	width-min: 1280px;
+	height-min: 800px;
+	margin: 0 auto;      /* standardkonforme horizontale Zentrierung */
+ }
+
+div#Details {
+	height-min: 500px;
+	width-min: 600px;
+	padding: 1em 1em;
+
+	
+}
+
+div#Navigator {
+	float: left;
+	width: auto;
+	padding: 10px 10px 0px 0px;
+	height: 750px;
+	margin-left: auto;
+	border-right: black;
+	border-right-style: double;
+}
+
+div#Header {
+	height: auto;
+	width-min: 800px;      /* standardkonforme horizontale Zentrierung */
+	background-color: #0052a4;
+	box-shadow: 0px 2px 5px #000;
+}
+
+div#Trailer {
+	clear: both;
+	padding: 10px 0;
+	margin: 0 auto;      /* standardkonforme horizontale Zentrierung */
+	border-top: 1px dashed silver;
+	font-size: 80%;
+	font-weight: bold;
+	text-align: center;
+	color: #ffffff;
+}
+
+/**
+	Ab hier: Alte Deklarationen. KÃ¶nnen ggf. gelÃ¶scht werden.
+*/
+.sendButton {
+  display: block;
+  font-size: 16pt;
+}
+
+/** Most GWT widgets already have a style name defined */
+.gwt-DialogBox {
+  width: 400px;
+}
+
+.dialogVPanel {
+  margin: 5px;
+}
+
+.serverResponseLabelError {
+  color: red;
+}
+
+/** Set ids using widget.getElement().setId("idOfElement") */
+#closeButton {
+  margin: 15px 6px 6px;
+  }

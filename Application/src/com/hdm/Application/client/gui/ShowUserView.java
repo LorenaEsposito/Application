@@ -262,10 +262,10 @@ protected void run() {
     			permission.setUserID(user.getUserID());
     			
     			if(readButton.getValue() == true){
-    				permission.setPermissionType(false);
+    				//permission.setPermissionType(false);
     			}
     			if(editButton.getValue() == true){
-    				permission.setPermissionType(true);
+    				//permission.setPermissionType(true);
     			}
     			if(readButton.getValue() == false && editButton.getValue() == false){
     				Window.alert("Bitte waehlen Sie eine Art der Berechtigung aus");
