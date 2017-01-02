@@ -190,6 +190,7 @@ public class ApplicationReport implements EntryPoint {
 				
 				@Override
 	public void onClick(ClickEvent event) {
+					Window.alert("UserSearchbutton geklickt!");
 //					adminService.getUserByEmail("weirichandra@yahoo.de",new AsyncCallback<AppUser>(){
 //
 //						@Override
@@ -209,6 +210,7 @@ public class ApplicationReport implements EntryPoint {
 //				}
 				AppUser result = new AppUser();	
 				result.setUserID(0);
+				result.setUserName("Andra Weirich");
 				reportGenerator.createAllNotesFromUserReport(result, new AsyncCallback<AllNotesFromUser>() {
 
 					@Override
@@ -219,6 +221,7 @@ public class ApplicationReport implements EntryPoint {
 
 					@Override
 					public void onSuccess(AllNotesFromUser result) {
+						Window.alert("Result: "+result.gettitel());
 						if (result != null) {
 							//Um den Report in HTML-Text zu überführen benötigen wir einen HTMLReportWriter
 							HTMLReportWriter writer = new HTMLReportWriter();

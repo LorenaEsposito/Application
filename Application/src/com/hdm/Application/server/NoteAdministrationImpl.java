@@ -46,7 +46,7 @@ private UserMapper uMapper = null;
  * Referenz auf den DatenbankMapper, der Noteobjekte mit der Datenbank
  * abgleicht.
  */
-private NoteMapper nMapper;
+public NoteMapper nMapper;
 
 /**
  * Referenz auf den DatenbankMapper, der Permissionobjekte mit der Datenbank
@@ -119,7 +119,7 @@ public AppUser getUserByGoogleID(String name){
 		permission.setUserID(cUser.getUserID());
 		permission.setNID(0);
 		permission.setIsOwner(true);
-		permission.setPermissionType(true);
+		//permission.setPermissionType(true);
 		this.createPermission(permission);
 		
 		AppUser user2 = new AppUser();
@@ -466,7 +466,7 @@ public ArrayList<Notebook> searchForNotebook(String title) throws IllegalArgumen
     		permission.setUserID(u.getUserID());
     		permission.setNID(0);
     		permission.setIsOwner(true);
-    		permission.setPermissionType(true);
+    		//permission.setPermissionType(true);
     		this.createPermission(permission);
     		vector = this.nbMapper.findByUser(u);
     	}

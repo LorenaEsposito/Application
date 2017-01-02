@@ -66,7 +66,7 @@ public class HTMLReportWriter extends ReportWriter {
   public String getHeader() {
     StringBuffer result = new StringBuffer();
 
-    result.append("<html><head><title>ClickandLove Report Generator</title></head><body>");
+    result.append("<html><head><title>Report Generator</title></head><body>");
     return result.toString();
   }
 
@@ -87,96 +87,39 @@ public class HTMLReportWriter extends ReportWriter {
    */
   @Override
 public void process(AllNotesFromUser r) {
-    // Zunächst löschen wir das Ergebnis vorhergehender Prozessierungen.
     this.resetReportText();
 
-    /*
-     * In diesen Buffer schreiben wir während der Prozessierung sukzessive
-     * unsere Ergebnisse.
-     */
+    
     StringBuffer result = new StringBuffer();
 
-    /*
-     * Nun werden Schritt für Schritt die einzelnen Bestandteile des Reports
-     * ausgelesen und in HTML-Form übersetzt.
-     */
-    
-    
-    
-    /*
-     * Begonnen wird mit dem Titel des Einzelreports, der stets der volle Name des auszugebenden Profils ist.
-     * Dieser bildet den Kopf der Tabelle und ihm wird die Klasse InfoReportHeader zugeordnet, damit er
-     * später mit CSS gestaltet werden kann.
-     */
-    result.append("<table class=\"InfoReportTable\"><tr>");
+
+    result.append("<table class=\"AllNotesFromUserTable\"><tr>");
     
     Vector<Row> rows = r.getRows();
     Row toprow = rows.elementAt(0);
     
-  	result.append("<th class=\"InfoReportHeader\" colspan=\"3\">" + toprow.getColumnAt(0) + "</th></tr>");
-	  
-		
-		
-    	
-  
-    
-    /*
-     * Nun wird die Zeile mit den Infos des Profils aufgebaut.
-     * Diese teilt sich in drei Spalten:
-     *	- Angaben zu Pflichteigenschaften
-     *	- angegebene Infos weiterer Eigenschaften
-     *	- das Ähnlichkeitsmaß zum Report-Anforderer
-     */
+  	result.append("<th class=\"ReportHeader\" colspan=\"3\"> Das ist der Report bzgl. des Nutzers: " + toprow.getColumnAt(0) + "</th></tr>");
+  	result.append("<th> Notizbuch</th>"+
+  					"<th> Notiztitel</th>"+
+  					 "<th>Erstellungsdatum</tr>");
 
-  	//Aufbau der Spalte/Tabelle zu den Pflichteigenschaften
-    result.append("<tr><td> <table class=PflichtInfoTable>");
-    for (int i = 1; i < 8; i++) {
-        Row row = rows.elementAt(i);
-        result.append("<tr>");
-        for (int k = 0; k < row.getNumColumns(); k++) {
-        	if(k==0){
-        		result.append("<td class=EigColumn>" + row.getColumnAt(k) + "</td>");
-        	}else{
-        		result.append("<td class=InfoColumn>" + row.getColumnAt(k) + "</td>");
-        	}
+  	    for (int i = 1; i < rows.size(); i++) {
+  	    	 Row row = rows.elementAt(i);
+  	        result.append("<tr>");
+        if(i%2 == 0){
+        	for (int k = 0; k < row.getNumColumns(); k++) {
+        		result.append("<td class=\"ContentColumn\" colspan=\"3\">" + row.getColumnAt(k) + "</td>");
           }
-        result.append("</tr>");
         }
-    result.append("</table></td>");
-    
-  	//Aufbau der Spalte/Tabelle zu Infos freiwilliger Eigenschaften
-    result.append("<td> <table class=InfoTable>");
-    for (int i = 8; i < rows.size(); i++) {
-        Row row = rows.elementAt(i);
-        result.append("<tr>");
+        else{
         for (int k = 0; k < row.getNumColumns(); k++) {
-        	if(k==0){
-        		result.append("<td class=EigColumn>" + row.getColumnAt(k) + "</td>");
-        	}else{
-        		result.append("<td class=InfoColumn>" + row.getColumnAt(k) + "</td>");
-        	}
+        		result.append("<td class=\"InfoColumn\">" + row.getColumnAt(k) + "</td>");
           }
+        }
         result.append("</tr>");
         }
     result.append("</table></td>");
       
-  	/*
-  	 * Aufbau der Spalte zum Ähnlichkeitsmaß
-  	 * Damit dieses in einem optisch ansprechenden variabel gefüllten Kreis angezeigt werden kann,
-  	 * bedienen wir uns eines DIV Containers, der mit einer gesonderten CSS Datei gestaltet wird.
-  	 * Diese CSS Datei enthält 100 Sub-Klassen, in welcher das Aussehen des Kreises pro
-  	 * möglicher Prozent-Angabe einzeln definiert ist.
-  	 */
-        result.append("<td class=\"InfoReportHeaderScore\"><div class=\"c100 p"+toprow.getColumnAt(1)+" dark\"> <span>"+ toprow.getColumnAt(1) +"%</span>  <div class=\"slice\">    <div class=\"bar\"></div>    <div class=\"fill\"></div>  </div></div></th></tr>");
-    result.append("</table>");
-    
-    
-
-    /*
-     * Zum Schluss wird unser Arbeits-Buffer in einen String umgewandelt und der
-     * reportText-Variable zugewiesen. Dadurch wird es möglich, anschließend das
-     * Ergebnis mittels getReportText() auszulesen.
-     */
     this.reportText = result.toString();
   }
 
@@ -188,19 +131,10 @@ public void process(AllNotesFromUser r) {
    */
 
 public void process(AllFilteredNotes r) {
-    // Zunächst löschen wir das Ergebnis vorhergehender Prozessierungen.
     this.resetReportText();
 
-    /*
-     * In diesen Buffer schreiben wir während der Prozessierung sukzessive
-     * unsere Ergebnisse.
-     */
     StringBuffer result = new StringBuffer();
 
-    /*
-     * Nun werden Schritt für Schritt die einzelnen Bestandteile des Reports
-     * ausgelesen und in HTML-Form übersetzt.
-     */
     
     result.append("<H1>" + r.gettitel() + "</H1>");
     result.append("<div id=\"MetaData\">");

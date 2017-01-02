@@ -7,10 +7,19 @@ import java.util.Date;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 import com.hdm.Application.server.*;
+import com.hdm.Application.server.db.NoteMapper;
+import com.hdm.Application.server.db.NotebookMapper;
 import com.hdm.Application.shared.*;
 import com.hdm.Application.shared.ReportGenerator;
 import com.hdm.Application.shared.bo.*;
 import com.hdm.Application.shared.report.*;
+
+import com.hdm.Application.shared.report.AllNotesFromUser;
+import com.hdm.Application.shared.report.Column;
+import com.hdm.Application.shared.report.Row;
+
+
+
 
 
 
@@ -35,6 +44,10 @@ public class ReportGeneratorImpl extends RemoteServiceServlet
    */
 	
 	private NoteAdministration noteadministration = null;
+	
+	private NotebookMapper notebookMapper= null;
+	
+	
 
   /**
    * <p>
@@ -65,7 +78,7 @@ public void init() throws IllegalArgumentException {
      * Ein ReportGeneratorImpl-Objekt instantiiert fÃ¼r seinen Eigenbedarf eine
      * NoteAdministrationImpl-Instanz.
      */
-	  
+	  this.notebookMapper = NotebookMapper.notebookMapper();
 	  NoteAdministrationImpl a = new NoteAdministrationImpl();
 	  a.init();
 	  this.noteadministration = a;
@@ -81,8 +94,71 @@ public void init() throws IllegalArgumentException {
     return this.noteadministration;
   }
 
-public AllNotesFromUser createAllNotesFromUserReport(AppUser user) throws IllegalArgumentException {
-	// TODO Auto-generated method stub
-	return null;
+  public AllNotesFromUser createAllNotesFromUserReport(AppUser user) throws IllegalArgumentException {
+
+ /*
+  * Zunächst legen wir uns einen leeren Report an.
+  */
+	 AllNotesFromUser result = new AllNotesFromUser();
+      
+ //Anlegen der Kopfzeile mit dem vollen Namen
+	 Row TopRow = new Row();
+	 TopRow.addColumn(new Column(user.getUserName()));
+	 result.addRow(TopRow);
+	 /*
+  * Hier werden alle Notizen eines Users aufgelistet 
+  */
+	 Note note1 = new Note();
+	 Note note2 = new Note();
+	 
+	 note1.setNbID(1);
+	 note1.setnTitle("Jacke kaufen");
+	 note1.setnContent("Ich habe bei Primark eine Jacke gesehen.");
+	 note1.setnSubtitle("Primark Jacke");
+	 Date date = new Date();
+	 note1.setnCreDate(date);
+	 
+	 note2.setNbID(1);
+	 note2.setnTitle("Jacke kaufen");
+	 note2.setnContent("Ich habe bei Primark eine Jacke gesehen.");
+	 note2.setnSubtitle("Primark Jacke");
+	 Date date1 = new Date();
+	 note2.setnCreDate(date1);
+	 
+	 ArrayList<Note> notes = new ArrayList<Note>();	
+	 notes.add(note1);
+	 notes.add(note2);
+	 System.out.println("notes size : "+notes.size());
+	    for (Note n : notes) {
+	    	
+	        // Eine leere Zeile anlegen.
+	        Row SingleInfoRow = new Row();
+	        
+	      //Notizbuchtitel auslesen
+			//SingleInfoRow.addColumn(new Column(notebookMapper.findById(n.getNbID()).getTitle()));
+	        
+	        //Notiztitel auslesen
+			SingleInfoRow.addColumn(new Column(n.getnTitle()));
+			
+			//Subtitel auslesen
+	        SingleInfoRow.addColumn(new Column(n.getnSubtitle()));
+	        
+	      //Erstellungsdatum  auslesen
+	        SingleInfoRow.addColumn(new Column(n.getnCreDate().toString()));
+			
+	        //Content auslesen
+	        Row contentrow = new Row();
+	        contentrow.addColumn(new Column(n.getnContent()));
+	        
+	        // und schließlich die Zeile dem Report hinzufügen.
+	        
+	        result.addRow(SingleInfoRow);
+	        result.addRow(contentrow);
+
+	      }		
+    return result;
+	    
+	    
+	    
 }
 }

@@ -473,10 +473,10 @@ protected void run() {
         			permission.setNbID(currentNB.getNbID());
         			
         			if(readButton.getValue() == true){
-        				permission.setPermissionType(false);
+        				//permission.setPermissionType(false);
         			}
         			if(editButton.getValue() == true){
-        				permission.setPermissionType(true);
+        				//permission.setPermissionType(true);
         			}
         			if(readButton.getValue() == false && editButton.getValue() == false){
         				Window.alert("Bitte waehlen Sie eine Art der Berechtigung aus");
@@ -521,7 +521,7 @@ protected void run() {
 		 Permission permission = new Permission();
 			permission.setIsOwner(true);
 			permission.setNbID(currentNB.getNbID());
-			permission.setPermissionType(true);
+			//permission.setPermissionType(true);
 			permission.setUserID(user.getUserID());
 			
 			notePermissions.add(permission);

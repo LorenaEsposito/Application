@@ -1,5 +1,5 @@
 body {
-	font: calibri;
+	font-family: sans-serif;
     text-align: center;  /* Zentrierung im Internet Explorer */
   }
 
@@ -276,6 +276,30 @@ h1 {
 	
 	
 }
+
+.AllNotesFromUserTable{
+ background-color: rgba(0, 82, 164, 0.52);
+   border-collapse: collapse;
+  border: none;
+ }
+.ReportHeader {
+	font-size:medium;
+   background-color: rgba(0, 82, 164, 0.66);
+ }
+ .InfoColumn {
+    border-style: solid;
+    text-align: left;
+    padding: 0.5em 1em;
+    border-bottom-width: thin;
+ }
+ .ContentColumn {
+     padding-bottom: 20px;
+    border: black;
+    border-style: solid;
+    text-align: -webkit-left;
+    background-color: rgba(0, 82, 164, 0.70);
+ }	
+
 
 
 .detailsPanel {
