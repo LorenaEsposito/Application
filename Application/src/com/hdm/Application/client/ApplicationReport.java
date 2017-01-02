@@ -72,6 +72,7 @@ public class ApplicationReport implements EntryPoint {
 	final Button logoButton = new Button();
 	private HorizontalPanel headPanel = new HorizontalPanel();
 	
+	
 	/**
 	 * Da diese Klasse die Implementierung des Interface <code>EntryPoint</code>
 	 * zusichert, benÃ¶tigen wir eine Methode
@@ -82,19 +83,6 @@ public class ApplicationReport implements EntryPoint {
 	@Override
 	public void onModuleLoad() {
 
-//		if (reportGenerator == null) {
-//			reportGenerator = ClientsideSettings.getReportGenerator();
-//		}
-//
-//		if ( noteadministration == null) {
-//			Window.alert("NoteAdministration Proxy noch nicht erzeugt.");
-//			
-//			noteadministration = GWT.create(NoteAdministrationAsync.class);
-//		}	
-//		
-		
-		
-		
 		welcomeLabel.setText("Willkommen im Report Generator, bitte wählen Sie in der Navigation zuerst aus welchen Report Sie generieren möchten.");
 		filterPanel.add(welcomeLabel);	
 		searchDateBox.setStyleName("gwt-DateBox");
@@ -265,15 +253,54 @@ protected void loadRadiobuttonPanel() {
 	radiobuttonPanel.add(notebookButton);
 	filterPanel.clear();
 	filterPanel.add(radiobuttonPanel);
+	final boolean dd;
+	final boolean un;
+	final boolean n;
+	final boolean nb;
 	
 	searchButton.addClickHandler(new ClickHandler() {
 		
 		@Override
 		public void onClick(ClickEvent event) {
 			
+			if (dueDateButton.getValue()){
+				
+				
+			}
+			if (erstellungsdatumButton.getValue()){
+				
+			}
+			if (notebookButton.getValue()){
+				
+			}
+
+
+			
 			Window.alert("Button hat noch keine Funktion.");
 		}
 	});
+	
+	notebookButton.addValueChangeHandler(new ValueChangeHandler<Boolean>() {
+		public void onValueChange(ValueChangeEvent<Boolean> event) {
+			searchBox.setVisible(true);
+			searchDateBox.setVisible(false);
+			//notebookTable();
+		}
+
+});
+	erstellungsdatumButton.addValueChangeHandler(new ValueChangeHandler<Boolean>() {
+		
+		
+		@Override
+		public void onValueChange(ValueChangeEvent<Boolean> event) {
+			searchBox.setVisible(false);
+			searchDateBox.setVisible(true);
+			searchDateBox.showDatePicker();
+			//noteTable();
+			
+		}
+	});
+	
 	
 	dueDateButton.addValueChangeHandler(new ValueChangeHandler<Boolean>() {
 		

@@ -10,7 +10,7 @@ import java.util.Vector;
  * <code>getReportText()</code> ausgelesen werden.
  * 
  * @author Thies
- * @author Bueschel
+ * @author Weirich
  */
 public class HTMLReportWriter extends ReportWriter {
 
@@ -108,7 +108,7 @@ public void process(AllNotesFromUser r) {
   	        result.append("<tr>");
         if(i%2 == 0){
         	for (int k = 0; k < row.getNumColumns(); k++) {
-        		result.append("<td class=\"ContentColumn\" colspan=\"3\">" + row.getColumnAt(k) + "</td>");
+        		result.append("<td class=\"ContentColumn\" colspan=\"3\"> Inhalt: <br>" + row.getColumnAt(k) + "</td>");
           }
         }
         else{
@@ -131,64 +131,7 @@ public void process(AllNotesFromUser r) {
    */
 
 public void process(AllFilteredNotes r) {
-    this.resetReportText();
-
-    StringBuffer result = new StringBuffer();
-
-    
-    result.append("<H1>" + r.gettitel() + "</H1>");
-    result.append("<div id=\"MetaData\">");
-    result.append("<div id=\"RequestDetails\">");
-    result.append("<H3>Report Details</H3>");
-    result.append(paragraph2HTML(r.getRequestDetails()));
-    result.append("<p>Report erstellt am " + r.getCreated().toString() + "</p>");
-    result.append("</div>");
-    
-    result.append("<div id=\"SPDetails\">");
-    result.append("<H3>Ihre gewählten Suchkriterien:</H3>");
-    //result.append(paragraph2HTML(r.getSuchprofilDetails()));
-    result.append("</div>");
-    
-   
-    result.append("</div>");
-    result.append("<div id=\"Rahmen\">");
-    result.append("<H2>Gefundene Profile</H2>\n");
-    result.append("</div>");
-    /*
-     * Da AllRelevantProfilesReport ein CompositeReport ist, enthält r
-     * eine Menge von Teil-Reports des Typs createAllInfosOfProfileReport. Für
-     * jeden dieser Teil-Reports rufen wir processcreateAllInfosOfProfileReport
-     * auf. Das Ergebnis des jew. Aufrufs fügen wir dem Buffer hinzu.
-     */
-    for (int i = 0; i < r.getNumSubReports(); i++) {
-      /*
-       * createAllInfosOfProfileReport wird als Typ der SubReports vorausgesetzt.
-       * Sollte dies in einer erweiterten Form des Projekts nicht mehr gelten,
-       * so müsste hier eine detailliertere Implementierung erfolgen.
-       */
-      AllNotesFromUser subReport = (AllNotesFromUser) r.getSubReportAt(i);
-
-      this.process(subReport);
-      
-      result.append(this.reportText + "\n");
-
-      /*
-       * Nach jeder Übersetzung eines Teilreports und anschließendem Auslesen
-       * sollte die Ergebnisvariable zurückgesetzt werden.
-       */
-      this.resetReportText();
-    }
-
-    
-    
-    /*
-     * Zum Schluss wird unser Arbeits-Buffer in einen String umgewandelt und der
-     * reportText-Variable zugewiesen. Dadurch wird es m�glich, anschlie�end das
-     * Ergebnis mittels getReportText() auszulesen.
-     */
-    this.reportText = result.toString();
-    
-  }
+}
 
   /**
    * Auslesen des Ergebnisses der zuletzt aufgerufenen Prozessierungsmethode.

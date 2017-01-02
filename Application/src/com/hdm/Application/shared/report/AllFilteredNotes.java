@@ -15,7 +15,7 @@ import com.hdm.Application.shared.report.CompositeReport;
  * @author Weirich
  */
 public class AllFilteredNotes 
-	extends CompositeReport 
+	extends SimpleReport 
 	implements Serializable {
 
   /**

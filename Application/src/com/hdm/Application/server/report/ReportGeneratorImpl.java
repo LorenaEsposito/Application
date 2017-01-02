@@ -14,10 +14,6 @@ import com.hdm.Application.shared.ReportGenerator;
 import com.hdm.Application.shared.bo.*;
 import com.hdm.Application.shared.report.*;
 
-import com.hdm.Application.shared.report.AllNotesFromUser;
-import com.hdm.Application.shared.report.Column;
-import com.hdm.Application.shared.report.Row;
-
 
 
 
@@ -135,7 +131,7 @@ public void init() throws IllegalArgumentException {
 	        Row SingleInfoRow = new Row();
 	        
 	      //Notizbuchtitel auslesen
-			//SingleInfoRow.addColumn(new Column(notebookMapper.findById(n.getNbID()).getTitle()));
+			SingleInfoRow.addColumn(new Column(notebookMapper.findById(n.getNbID()).getTitle()));
 	        
 	        //Notiztitel auslesen
 			SingleInfoRow.addColumn(new Column(n.getnTitle()));
@@ -148,7 +144,7 @@ public void init() throws IllegalArgumentException {
 			
 	        //Content auslesen
 	        Row contentrow = new Row();
-	        contentrow.addColumn(new Column(n.getnContent()));
+	        contentrow.addColumn(new Column( n.getnContent()));
 	        
 	        // und schließlich die Zeile dem Report hinzufügen.
 	        
@@ -160,5 +156,206 @@ public void init() throws IllegalArgumentException {
 	    
 	    
 	    
+}
+
+@Override
+public AllFilteredNotes createAllFilteredNotesReportED(Date erstellungsDatum) throws IllegalArgumentException {
+	/*
+	  * Zunächst legen wir uns einen leeren Report an.
+	  */
+		 AllNotesFromUser result = new AllNotesFromUser();
+	      
+	 //Anlegen der Kopfzeile mit dem vollen Namen
+		 Row TopRow = new Row();
+		 TopRow.addColumn(new Column(erstellungsDatum.toString()));
+		 result.addRow(TopRow);
+		 /*
+	  * Hier werden alle Notizen eines Users aufgelistet 
+	  */
+		 Note note1 = new Note();
+		 Note note2 = new Note();
+		 
+		 note1.setNbID(1);
+		 note1.setnTitle("Jacke kaufen");
+		 note1.setnContent("Ich habe bei Primark eine Jacke gesehen.");
+		 note1.setnSubtitle("Primark Jacke");
+		 Date date = new Date();
+		 note1.setnCreDate(date);
+		 
+		 note2.setNbID(1);
+		 note2.setnTitle("Jacke kaufen");
+		 note2.setnContent("Ich habe bei Primark eine Jacke gesehen.");
+		 note2.setnSubtitle("Primark Jacke");
+		 Date date1 = new Date();
+		 note2.setnCreDate(date1);
+		 
+		 ArrayList<Note> notes = new ArrayList<Note>();	
+		 notes.add(note1);
+		 notes.add(note2);
+		 System.out.println("notes size : "+notes.size());
+		    for (Note n : notes) {
+		    	
+		        // Eine leere Zeile anlegen.
+		        Row SingleInfoRow = new Row();
+		        
+		      //Notizbuchtitel auslesen
+				//SingleInfoRow.addColumn(new Column(notebookMapper.findById(n.getNbID()).getTitle()));
+		        
+		        //Notiztitel auslesen
+				SingleInfoRow.addColumn(new Column(n.getnTitle()));
+				
+				//Subtitel auslesen
+		        SingleInfoRow.addColumn(new Column(n.getnSubtitle()));
+		        
+		      //Erstellungsdatum  auslesen
+		        SingleInfoRow.addColumn(new Column(n.getnCreDate().toString()));
+				
+		        //Content auslesen
+		        Row contentrow = new Row();
+		        contentrow.addColumn(new Column( n.getnContent()));
+		        
+		        // und schließlich die Zeile dem Report hinzufügen.
+		        
+		        result.addRow(SingleInfoRow);
+		        result.addRow(contentrow);
+
+		      }		
+		    
+		    
+		    	return null;
+}
+
+@Override
+public AllFilteredNotes createAllFilteredNotesReportDD(Date dueDate) throws IllegalArgumentException {
+	/*
+	  * Zunächst legen wir uns einen leeren Report an.
+	  */
+		 AllFilteredNotes result = new AllFilteredNotes();
+	      
+	 //Anlegen der Kopfzeile mit dem vollen Namen
+		 Row TopRow = new Row();
+		 TopRow.addColumn(new Column(dueDate.toString()));
+		 result.addRow(TopRow);
+		 /*
+	  * Hier werden alle Notizen eines Users aufgelistet 
+	  */
+		 Note note1 = new Note();
+		 Note note2 = new Note();
+		 
+		 note1.setNbID(1);
+		 note1.setnTitle("Jacke kaufen");
+		 note1.setnContent("Ich habe bei Primark eine Jacke gesehen.");
+		 note1.setnSubtitle("Primark Jacke");
+		 Date date = new Date();
+		 note1.setnCreDate(date);
+		 
+		 note2.setNbID(1);
+		 note2.setnTitle("Jacke kaufen");
+		 note2.setnContent("Ich habe bei Primark eine Jacke gesehen.");
+		 note2.setnSubtitle("Primark Jacke");
+		 Date date1 = new Date();
+		 note2.setnCreDate(date1);
+		 
+		 ArrayList<Note> notes = new ArrayList<Note>();	
+		 notes.add(note1);
+		 notes.add(note2);
+		 System.out.println("notes size : "+notes.size());
+		    for (Note n : notes) {
+		    	
+		        // Eine leere Zeile anlegen.
+		        Row SingleInfoRow = new Row();
+		        
+		      //Notizbuchtitel auslesen
+				//SingleInfoRow.addColumn(new Column(notebookMapper.findById(n.getNbID()).getTitle()));
+		        
+		        //Notiztitel auslesen
+				SingleInfoRow.addColumn(new Column(n.getnTitle()));
+				
+				//Subtitel auslesen
+		        SingleInfoRow.addColumn(new Column(n.getnSubtitle()));
+		        
+		      //Erstellungsdatum  auslesen
+		        SingleInfoRow.addColumn(new Column(n.getnCreDate().toString()));
+				
+		        //Content auslesen
+		        Row contentrow = new Row();
+		        contentrow.addColumn(new Column( n.getnContent()));
+		        
+		        // und schließlich die Zeile dem Report hinzufügen.
+		        
+		        result.addRow(SingleInfoRow);
+		        result.addRow(contentrow);
+
+		      }		
+		    
+		    
+		    	return null;
+}
+
+@Override
+public AllFilteredNotes createAllFilteredNotesReport(String notebook) throws IllegalArgumentException {
+	/*
+	  * Zunächst legen wir uns einen leeren Report an.
+	  */
+		 AllFilteredNotes result = new AllFilteredNotes();
+	      
+	 //Anlegen der Kopfzeile mit dem vollen Namen
+		 Row TopRow = new Row();
+		 TopRow.addColumn(new Column(notebook));
+		 result.addRow(TopRow);
+		 /*
+	  * Hier werden alle Notizen eines Users aufgelistet 
+	  */
+		 Note note1 = new Note();
+		 Note note2 = new Note();
+		 
+		 note1.setNbID(1);
+		 note1.setnTitle("Jacke kaufen");
+		 note1.setnContent("Ich habe bei Primark eine Jacke gesehen.");
+		 note1.setnSubtitle("Primark Jacke");
+		 Date date = new Date();
+		 note1.setnCreDate(date);
+		 
+		 note2.setNbID(1);
+		 note2.setnTitle("Jacke kaufen");
+		 note2.setnContent("Ich habe bei Primark eine Jacke gesehen.");
+		 note2.setnSubtitle("Primark Jacke");
+		 Date date1 = new Date();
+		 note2.setnCreDate(date1);
+		 
+		 ArrayList<Note> notes = new ArrayList<Note>();	
+		 notes.add(note1);
+		 notes.add(note2);
+		 System.out.println("notes size : "+notes.size());
+		    for (Note n : notes) {
+		    	
+		        // Eine leere Zeile anlegen.
+		        Row SingleInfoRow = new Row();
+		        
+		      //Notizbuchtitel auslesen
+				//SingleInfoRow.addColumn(new Column(notebookMapper.findById(n.getNbID()).getTitle()));
+		        
+		        //Notiztitel auslesen
+				SingleInfoRow.addColumn(new Column(n.getnTitle()));
+				
+				//Subtitel auslesen
+		        SingleInfoRow.addColumn(new Column(n.getnSubtitle()));
+		        
+		      //Erstellungsdatum  auslesen
+		        SingleInfoRow.addColumn(new Column(n.getnCreDate().toString()));
+				
+		        //Content auslesen
+		        Row contentrow = new Row();
+		        contentrow.addColumn(new Column( n.getnContent()));
+		        
+		        // und schließlich die Zeile dem Report hinzufügen.
+		        
+		        result.addRow(SingleInfoRow);
+		        result.addRow(contentrow);
+
+		      }		
+		    
+		    
+		    	return null;
 }
 }

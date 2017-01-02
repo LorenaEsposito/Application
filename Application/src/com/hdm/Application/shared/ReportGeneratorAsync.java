@@ -1,7 +1,10 @@
 package com.hdm.Application.shared;
 
+import java.util.Date;
+
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.hdm.Application.shared.bo.AppUser;
+import com.hdm.Application.shared.report.AllFilteredNotes;
 import com.hdm.Application.shared.report.AllNotesFromUser;
 
 /**
@@ -17,5 +20,11 @@ public interface ReportGeneratorAsync {
 	void init(AsyncCallback<Void> callback);
 
 	void createAllNotesFromUserReport(AppUser user, AsyncCallback<AllNotesFromUser> callback);
+
+	void createAllFilteredNotesReportED(Date erstellungsDatum, AsyncCallback<AllFilteredNotes> callback);
+
+	void createAllFilteredNotesReportDD(Date dueDate, AsyncCallback<AllFilteredNotes> callback);
+
+	void createAllFilteredNotesReport(String notebook, AsyncCallback<AllFilteredNotes> callback);
 
 }
