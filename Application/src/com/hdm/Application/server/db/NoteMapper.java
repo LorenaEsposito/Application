@@ -433,4 +433,79 @@ public class NoteMapper {
 			return result;
 		}
 	 
+		public Vector<Note> findByUser(AppUser user) {
+
+			// DB-Verbindung holen und Variablen zurücksetzen
+			int appUserID = user.getUserID();
+			Connection con = DBConnection.connection();
+			int nID = 0;
+
+			Vector<Note> result = new Vector<Note>();
+			
+			Vector<Integer> nIDs = new Vector<Integer>();
+			
+			try{
+				//Leeres SQL Statement anlegen
+				Statement stmt = con.createStatement();
+				
+				//Statement ausfuellen und als Query an DB schicken
+				ResultSet rs = stmt.executeQuery("SELECT nid FROM permissions "
+						+ "WHERE appuserid=" + appUserID
+						+ " AND isowner=1");
+				
+				while (rs.next()){
+					
+				
+				nID = rs.getInt("nid");
+				
+				nIDs.add(nID);
+				
+				}
+
+		}
+		catch (SQLException e){
+			e.printStackTrace();
+			return null;
+		}
+		
+		try{
+			
+			for(int i = 0; i < nIDs.size(); i++){
+				
+				nID = nIDs.get(i);
+				
+					//Leeres SQL Statement anlegen
+					Statement stmt2 = con.createStatement();
+					
+					//Statement ausfuellen und als Query an DB schicken
+					ResultSet rs2 = stmt2.executeQuery("SELECT nid, nbid, title, subtitle, content, source, creadate, moddate FROM notes "
+							+ "WHERE nid=" + nID);
+					
+					while (rs2.next()){
+						
+					
+						Note note = new Note();
+						note.setnID(rs2.getInt("nid"));
+						note.setnTitle(rs2.getString("title"));
+						note.setnSubtitle(rs2.getString("subtitle"));
+						note.setnContent(rs2.getString("content"));
+						note.setSource(rs2.getString("source"));
+						note.setnCreDate(rs2.getDate("creadate"));
+						note.setnModDate(rs2.getDate("moddate"));
+						
+						// Neues Objekt wird dem Ergebnisvektor hinzugefuegt
+						result.addElement(note);
+					
+					}
+			}
+		}
+			catch (SQLException e){
+
+				e.printStackTrace();
+				return null;
+			}
+		
+			return result;
+
+		}
 }
