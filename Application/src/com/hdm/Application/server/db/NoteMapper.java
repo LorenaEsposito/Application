@@ -393,6 +393,45 @@ public class NoteMapper {
 		//Vektor wird zurueckgegeben
 		 return result;
 	 }
+	 
+	 public Vector<Note> findByCreationDate(Date creadate){
+		 Connection con = DBConnection.connection();
+		 Vector<Note> result = new Vector<Note>();
+		 String sql = "SELECT *"
+					 + " FROM notes" + " WHERE creadate LIKE '" + creadate + "' ORDER BY creadate;";
+		 System.out.println("SQL Statement: "+sql);		 
+		 
+		 try{
+			 Statement stmt = con.createStatement();			 
+			 ResultSet rs = stmt.executeQuery("SELECT *"
+					 + " FROM notes" + " WHERE creadate LIKE '" + creadate + "' ORDER BY creadate;");
+			 			 
+			//Fuer jeden Eintrag im Suchergebnis wird ein Note-Objekt erstellt.
+			 while(rs.next()) {
+				 Note note = new Note();
+				 note.setnID(rs.getInt("nid"));
+				 note.setNbID(rs.getInt("nbid"));
+				 note.setnTitle(rs.getString("title"));
+				 note.setnSubtitle(rs.getString("subtitle"));
+				 note.setnContent(rs.getString("content"));
+				 note.setSource(rs.getString("source"));
+				 note.setnCreDate(rs.getDate("creadate"));
+				 note.setnModDate(rs.getDate("moddate"));
+				 
+				//Neues Objekt wird dem Ergebnisvektor hinzugefuegt
+				 result.addElement(note);
+				 
+			 } 
+		 }
+		 
+		 catch (SQLException e){
+			 System.out.println("SQL FEHLER: "+e);
+			 e.printStackTrace();
+		 }
+		 
+		//Vektor wird zurueckgegeben
+		 return result;
+	 }
 
 	 public Vector<Note> findByNotebook (Notebook notebook){
 			
