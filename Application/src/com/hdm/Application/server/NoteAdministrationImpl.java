@@ -116,7 +116,7 @@ public AppUser getUserByGoogleID(String name){
 		permission.setUserID(cUser.getUserID());
 		permission.setNID(0);
 		permission.setIsOwner(true);
-		permission.setPermissionType(true);
+		permission.setPermissionType(3);
 		permissions.add(permission);
 		this.createPermissions(permissions);
 		
@@ -125,6 +125,12 @@ public AppUser getUserByGoogleID(String name){
 		users.add(user2);
 	}
 	return users.get(0);
+}
+
+public AppUser getUserByID(int userID){
+	AppUser user = new AppUser();
+	user = this.uMapper.findByKey(userID);
+	return user;
 }
 
 /**
@@ -233,7 +239,7 @@ for(int i = 0; i < notes.size(); i++){
 }
 
 Vector<Permission> vector2 = new Vector<Permission>();
-vector2 = this.pMapper.findByNotebook(nb);
+vector2 = this.pMapper.findByNotebookID(nb.getNbID());
 ArrayList<Permission> permissions = new ArrayList<Permission>(vector2);
 
 for(int i = 0; i < permissions.size(); i++){
@@ -269,8 +275,9 @@ public Note createNote(Note n) throws IllegalArgumentException {
  *            Die Note, die aktualisiert werden soll
  */
 @Override
-public void editNote(Note n) throws IllegalArgumentException {
-this.nMapper.updateNote(n);
+public Note editNote(Note n) throws IllegalArgumentException {
+Note note = this.nMapper.updateNote(n);
+return note;
 }
 
 /**
@@ -477,7 +484,7 @@ public ArrayList<Notebook> searchForNotebook(String title) throws IllegalArgumen
     		permission.setUserID(u.getUserID());
     		permission.setNID(0);
     		permission.setIsOwner(true);
-    		permission.setPermissionType(true);
+    		permission.setPermissionType(3);
     		permissions.add(permission);
     		this.createPermissions(permissions);
     		vector = this.nbMapper.findByUser(u);
@@ -558,6 +565,28 @@ public ArrayList<Notebook> searchForNotebook(String title) throws IllegalArgumen
     		notebooks.add(notebook);
     	}
     	return notebooks;
+    }
+    
+    public ArrayList<Permission> getPermissions(int nID, int nbID){
+    	Vector<Permission> vector1 = new Vector<Permission>();
+    	vector1 = this.pMapper.findByNotebookID(nbID);
+    	ArrayList<Permission> permissions = new ArrayList<Permission>();
+    	Vector<Permission> vector2 = new Vector<Permission>();
+    	vector2 = this.pMapper.findByNoteID(nID);
+    	for(int i = 0; i < vector1.size(); i++){
+    		if(vector1.get(i).getNID() == 0){
+    			permissions.add(vector1.get(i));
+    		}
+    		if(vector1.get(i).getNID() != 0){
+    			for(int y = 0; y < vector2.size(); y++){
+    				permissions.add(vector2.get(y));
+    			}
+    		}
+    	}
+//    	for(int i = 0; i < vector2.size(); i++) {
+//    		permissions.add(vector2.get(i));
+//    	}
+    	return permissions;
     }
     
     /**

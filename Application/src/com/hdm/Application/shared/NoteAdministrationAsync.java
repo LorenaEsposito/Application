@@ -27,6 +27,9 @@ public interface NoteAdministrationAsync {
 
 	public void getUserByGoogleID(String name, AsyncCallback<AppUser> callback)
 			throws IllegalArgumentException;
+	
+	public void getUserByID(int userID, AsyncCallback<AppUser> callback)
+			throws IllegalArgumentException;
 
 	public void createUser(AppUser u, AsyncCallback<Void> callback)
 			throws IllegalArgumentException;
@@ -49,7 +52,7 @@ public interface NoteAdministrationAsync {
 	public void createNote(Note n, AsyncCallback<Note> callback)
 			throws IllegalArgumentException;
 
-	public void editNote(Note n, AsyncCallback<Void> callback)
+	public void editNote(Note n, AsyncCallback<Note> callback)
 			throws IllegalArgumentException;
 
 	public void deleteNote(Note n, AsyncCallback<Void> callback)
@@ -107,6 +110,10 @@ public interface NoteAdministrationAsync {
 	
 	public void getOwnedNotebooks(AppUser user,
 			AsyncCallback<ArrayList<Notebook>> callback)
+			throws IllegalArgumentException;
+	
+	public void getPermissions(int nbID, int nID,
+			AsyncCallback<ArrayList<Permission>> callback)
 			throws IllegalArgumentException;
 	
 	public void searchUserByGoogleID(String googleID,

@@ -117,8 +117,7 @@ public class NotebookMapper {
 			
 			//Statement ausfuellen und als Query an DB schicken
 			ResultSet rs = stmt.executeQuery("SELECT nbid FROM permissions "
-					+ "WHERE appuserid=" + appUserID
-					+ " AND isowner=1" + " AND nid=0");
+					+ "WHERE appuserid=" + appUserID);
 			
 			while (rs.next()){
 				

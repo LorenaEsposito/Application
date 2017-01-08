@@ -5,6 +5,7 @@ import com.hdm.Application.shared.FieldVerifier;
 import com.hdm.Application.client.gui.ImpressumView;
 import com.hdm.Application.client.gui.CreateNoteView;
 import com.hdm.Application.client.gui.CreateNotebookView;
+import com.hdm.Application.client.gui.EditNoteView;
 import com.hdm.Application.client.gui.LoginService;
 import com.hdm.Application.client.gui.LoginServiceAsync;
 import com.hdm.Application.client.gui.Update;
@@ -20,7 +21,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.hdm.Application.client.gui.SearchView;
-import com.hdm.Application.client.gui.ShowNoteView;
+import com.google.gwt.cell.client.AbstractCell;
+import com.google.gwt.cell.client.Cell;
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
@@ -28,6 +30,8 @@ import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
+import com.google.gwt.user.cellview.client.AbstractCellTree;
 import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.cellview.client.HasKeyboardSelectionPolicy.KeyboardSelectionPolicy;
 import com.google.gwt.user.client.Cookies;
@@ -45,6 +49,8 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
+import com.google.gwt.view.client.TreeViewModel;
+import com.google.gwt.view.client.TreeViewModel.NodeInfo;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
@@ -67,7 +73,7 @@ public class Application implements EntryPoint {
 		 * Die AdministrationService ermoeglicht die asynchrone Kommunikation mit der
 		 * Applikationslogik.
 		 */
-		private NoteAdministrationAsync adminService = ClientsideSettings.getAdministration();
+		private static NoteAdministrationAsync adminService = ClientsideSettings.getAdministration();
 
 		/**
 		 * Die Instanz des aktuellen Benutzers ermoeglicht den schnellen Zugriff auf
@@ -91,6 +97,30 @@ public class Application implements EntryPoint {
 		
 		public static List<String> list = dataProvider.getList();
 
+//		private static class CustomTreeModel implements TreeViewModel{
+//		/**
+//	     * Get the {@link NodeInfo} that provides the children of the specified
+//	     * value.
+//	     */
+//	    public <T> NodeInfo<?> getNodeInfo(T value) {
+//	      if (value == null) {
+//	        // LEVEL 0.
+//	        // We passed null as the root value. Return the notebooks.
+//
+//	        // Create a data provider that contains the list of composers.
+//	        ListDataProvider<Notebook> notebookProvider = new ListDataProvider<Notebook>(adminService.getNotebooksOfUser(adminService.getCurrentUser(getCurrentUserCallback()), getNotebooksOfUserCallback());
+//
+//	        // Create a cell to display a notebook.
+//	        Cell<Notebook> cell = new AbstractCell<Notebook>() {
+//	          @Override
+//	          public void render(Context context, Notebook value, SafeHtmlBuilder sb) {
+//	            if (value != null) {
+//	              sb.appendEscaped(value.getNbTitle());
+//	            }
+//	          }
+//	        };
+//		}
+		
 		/**
 		 * Eine ArrayList, in der Note-Objekte gespeichert werden
 		 */
@@ -244,7 +274,7 @@ public class Application implements EntryPoint {
 	    selectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
 			public void onSelectionChange(SelectionChangeEvent event) {
 				
-				Update update = new ShowNoteView();
+				Update update = new EditNoteView();
 				RootPanel.get("Details").clear();
 				RootPanel.get("Details").add(update);
 			}
@@ -338,6 +368,11 @@ public class Application implements EntryPoint {
 	    listbox.addChangeHandler(new ChangeHandler() {
 	    	public void onChange(ChangeEvent event) {
 	    		adminService.getNotesOfNotebook(listbox.getSelectedItemText(), currentUser, getNotesOfNotebookCallback());
+	    		
+//	    		Update update = new EditNotebookView();
+//	    		
+//	    		RootPanel.get("Details").clear();
+//	    		RootPanel.get("Details").add(update);
 	    	}
 	    });
 	}

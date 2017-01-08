@@ -102,6 +102,7 @@ public class CreateNoteView extends Update{
    final Button savePermissionButton = new Button("Save");
    final RadioButton readButton = new RadioButton("Leseberechtigung");
    final RadioButton editButton = new RadioButton("Bearbeitungsberechtigung");
+   final RadioButton deleteButton = new RadioButton("Loeschberechtigung");
    DatePicker datePicker = new DatePicker();
    Label rightsLabel = new Label("Berechtigung vergeben:");
    Label duedateLabel = new Label("Enddatum vergeben:");
@@ -137,6 +138,7 @@ protected void run() {
     permissionPanel.add(permissionText);
     permissionPanel.add(readButton);
     permissionPanel.add(editButton);
+    permissionPanel.add(deleteButton);
     permissionPanel.add(savePermissionButton);
     rightPanel.add(cellList);
     rightPanel.add(duedateLabel);
@@ -168,6 +170,7 @@ protected void run() {
     
     readButton.setText("Leseberechtigung");
     editButton.setText("Bearbeitungsberechtigung");
+    deleteButton.setText("Loeschberechtigung");
     permissionText.setText("Name des Berechtigten");
     
     /**
@@ -182,6 +185,7 @@ protected void run() {
     cancelButton.setStyleName("savePermission-button");
     readButton.setStyleName("savePermission-button");
     editButton.setStyleName("savePermission-button");
+    deleteButton.setStyleName("savePermission-button");
     permissionText.setStyleName("style-Textbox");
     datePicker.setStyleName("datepicker");
     textArea.setStyleName("TextArea");
@@ -190,9 +194,6 @@ protected void run() {
     permissionPanel.setStyleName("permissionPanel");
     rightsLabel.setStyleName("headline");
     duedateLabel.setStyleName("headline");
-
-    //editButton.setStyleName("notework-menubutton");
-    //deleteButton.setStyleName("notework-menubutton");
     
     /*
 	 * Sperren der Eingabemoeglichkeit im DatePicker bei zukuenftigen Daten
@@ -238,12 +239,13 @@ protected void run() {
 	
     readButton.addClickHandler(new ClickHandler() {
     	public void onClick(ClickEvent event) {
-    		if(editButton.getValue() == true){
+    		if(editButton.getValue() == true || deleteButton.getValue() == true){
     			editButton.setValue(false);
+    			deleteButton.setValue(false);
     			readButton.setValue(true);
     		}
     		
-    		if(editButton.getValue() != true){
+    		if(editButton.getValue() != true && deleteButton.getValue() != true){
     			readButton.setValue(true);
     		}
     	}
@@ -251,13 +253,28 @@ protected void run() {
     
     editButton.addClickHandler(new ClickHandler() {
     	public void onClick(ClickEvent event){
-    		if(readButton.getValue() == true){
+    		if(readButton.getValue() == true || readButton.getValue() == true){
     			readButton.setValue(false);
+    			deleteButton.setValue(false);
     			editButton.setValue(true);
     		}
     		
-    		if(readButton.getValue() != true){
+    		if(readButton.getValue() != true && deleteButton.getValue() != true){
     			editButton.setValue(true);
+    		}
+    	}
+    });
+    
+    deleteButton.addClickHandler(new ClickHandler() {
+    	public void onClick(ClickEvent event) {
+    		if(readButton.getValue() == true || editButton.getValue() == true){
+    			readButton.setValue(false);
+    			editButton.setValue(false);
+    			deleteButton.setValue(true);
+    		}
+    		
+    		if(readButton.getValue() != true && editButton.getValue() != true){
+    			deleteButton.setValue(true);
     		}
     	}
     });
@@ -277,6 +294,8 @@ protected void run() {
     			readButton.setValue(false);
     			editButton.setEnabled(true);
     			editButton.setValue(false);
+    			deleteButton.setEnabled(true);
+    			deleteButton.setValue(false);
     		}
 
     		String googleID = new String();
@@ -417,7 +436,7 @@ protected void run() {
     		 Permission permission = new Permission();
     			permission.setIsOwner(true);
     			permission.setNbID(currentNB.getNbID());
-    			permission.setPermissionType(true);
+    			permission.setPermissionType(3);
     			permission.setUserID(user.getUserID());
     			
     			notePermissions.add(permission);
@@ -428,7 +447,7 @@ protected void run() {
     				permission.setNbID(currentNB.getNbID());
     				
     			}
-	   			 Update update = new ShowNoteView();
+	   			 Update update = new EditNoteView();
 		          
 		          RootPanel.get("Details").clear();
 		          RootPanel.get("Details").add(update);
@@ -515,12 +534,15 @@ protected void run() {
 
         			
         			if(readButton.getValue() == true){
-        				permission.setPermissionType(false);
+        				permission.setPermissionType(1);
         			}
         			if(editButton.getValue() == true){
-        				permission.setPermissionType(true);
+        				permission.setPermissionType(2);
         			}
-        			if(readButton.getValue() == false && editButton.getValue() == false){
+        			if(deleteButton.getValue() == true){
+        				permission.setPermissionType(3);
+        			}
+        			if(readButton.getValue() == false && editButton.getValue() == false && deleteButton.getValue() == false){
         				Window.alert("Bitte waehlen Sie eine Art der Berechtigung aus");
         				savePermissionButton.setEnabled(true);
         			}
@@ -537,9 +559,10 @@ protected void run() {
         			permissionText.setText("Name des Berechtigten");
         			readButton.setEnabled(true);
         			editButton.setEnabled(true);
+        			deleteButton.setEnabled(true);
         			readButton.setValue(false);
         			editButton.setValue(false);
-        		
+        			deleteButton.setValue(false);
         		}
     		}
     	};

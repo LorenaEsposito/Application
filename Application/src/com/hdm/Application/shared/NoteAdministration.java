@@ -15,6 +15,8 @@ public interface NoteAdministration extends RemoteService {
 	public AppUser getCurrentUser() throws IllegalArgumentException;
 
 	public AppUser getUserByGoogleID(String name) throws IllegalArgumentException;
+	
+	public AppUser getUserByID(int userID) throws IllegalArgumentException;
 
 	public void createUser(AppUser u) throws IllegalArgumentException;
 
@@ -30,7 +32,7 @@ public interface NoteAdministration extends RemoteService {
 
 	public Note createNote(Note n) throws IllegalArgumentException;
 
-	public void editNote(Note n) throws IllegalArgumentException;
+	public Note editNote(Note n) throws IllegalArgumentException;
 
 	public void deleteNote(Note n) throws IllegalArgumentException;
 
@@ -63,6 +65,8 @@ public interface NoteAdministration extends RemoteService {
 	public ArrayList<Permission> getOwnedNotebookPermissions(AppUser user) throws IllegalArgumentException;
 	
 	public ArrayList<Notebook> getOwnedNotebooks(AppUser user) throws IllegalArgumentException;
+	
+	public ArrayList<Permission> getPermissions(int nbID, int nID) throws IllegalArgumentException;
 
 	public AppUser searchUserByGoogleID(String googleID) throws IllegalArgumentException;
 

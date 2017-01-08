@@ -20,7 +20,6 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.MultiSelectionModel;
-import com.hdm.Application.client.Application;
 import com.hdm.Application.client.ClientsideSettings;
 import com.hdm.Application.shared.NoteAdministrationAsync;
 import com.hdm.Application.shared.bo.AppUser;
@@ -83,6 +82,7 @@ public class CreateNotebookView extends Update{
    final Button savePermissionButton = new Button("Save");
    final RadioButton readButton = new RadioButton("Leseberechtigung");
    final RadioButton editButton = new RadioButton("Bearbeitungsberechtigung"); 
+   final RadioButton deleteButton = new RadioButton("Loeschberechtigung");
    Label rightsLabel = new Label("Berechtigung vergeben:");
    Label mainheadline = new Label("Neue Notiz");
 
@@ -117,6 +117,7 @@ protected void run() {
     permissionPanel.add(permissionText);
     permissionPanel.add(readButton);
     permissionPanel.add(editButton);
+    permissionPanel.add(deleteButton);
     permissionPanel.add(savePermissionButton);
     rightPanel.add(cellList);
     leftPanel.add(notebookTitle);
@@ -132,6 +133,7 @@ protected void run() {
     notebookTitle.setText("Überschrift");
     readButton.setText("Leseberechtigung");
     editButton.setText("Bearbeitungsberechtigung");
+    deleteButton.setText("Loeschberechtigung");
     permissionText.setText("Name des Berechtigten");
     
     /**
@@ -145,6 +147,7 @@ protected void run() {
     cancelButton.setStyleName("savePermission-button");
     readButton.setStyleName("savePermission-button");
     editButton.setStyleName("savePermission-button");
+    deleteButton.setStyleName("savePermission-button");
     permissionText.setStyleName("style-Textbox");
     savePermissionButton.setStyleName("savePermission-button");
     buttonPanel.setStyleName("buttonPanel");
@@ -168,12 +171,13 @@ protected void run() {
     
     readButton.addClickHandler(new ClickHandler() {
     	public void onClick(ClickEvent event) {
-    		if(editButton.getValue() == true){
+    		if(editButton.getValue() == true || deleteButton.getValue() == true){
     			editButton.setValue(false);
+    			deleteButton.setValue(false);
     			readButton.setValue(true);
     		}
     		
-    		if(editButton.getValue() != true){
+    		if(editButton.getValue() != true && deleteButton.getValue() != true){
     			readButton.setValue(true);
     		}
     	}
@@ -181,13 +185,28 @@ protected void run() {
     
     editButton.addClickHandler(new ClickHandler() {
     	public void onClick(ClickEvent event){
-    		if(readButton.getValue() == true){
+    		if(readButton.getValue() == true || deleteButton.getValue() == true){
     			readButton.setValue(false);
+    			deleteButton.setValue(false);
     			editButton.setValue(true);
     		}
     		
-    		if(readButton.getValue() != true){
+    		if(readButton.getValue() != true && deleteButton.getValue() != true){
     			editButton.setValue(true);
+    		}
+    	}
+    });
+    
+    deleteButton.addClickHandler(new ClickHandler() {
+    	public void onClick(ClickEvent event) {
+    		if(readButton.getValue() == true || editButton.getValue() == true){
+    			readButton.setValue(false);
+    			editButton.setValue(false);
+    			deleteButton.setValue(true);
+    		}
+    		
+    		if(readButton.getValue() != true && editButton.getValue() != true){
+    			deleteButton.setValue(true);
     		}
     	}
     });
@@ -198,6 +217,7 @@ protected void run() {
     		savePermissionButton.setEnabled(false);
     		readButton.setEnabled(false);
     		editButton.setEnabled(false);
+    		deleteButton.setEnabled(false);
     		savePermissionButton.setStylePrimaryName("savePermission-button");
     		
     		String googleID = new String();
@@ -316,7 +336,7 @@ protected void run() {
     		 Permission permission = new Permission();
 				permission.setIsOwner(true);
 				permission.setNID(0);
-				permission.setPermissionType(true);
+				permission.setPermissionType(3);
 				permission.setUserID(currentUser.getUserID());
 				permissions.add(permission);
 				
@@ -325,7 +345,7 @@ protected void run() {
 					permission.setNbID(result.getNbID());
 				}
 				adminService.createPermissions(permissions, createPermissionCallback());
-		          Update update = new ShowNoteView();
+		          Update update = new EditNoteView();
 		          
 		          RootPanel.get("Details").clear();
 		          RootPanel.get("Details").add(update);
@@ -385,12 +405,15 @@ protected void run() {
         			permission.setIsOwner(false);
         			
         			if(readButton.getValue() == true){
-        				permission.setPermissionType(false);
+        				permission.setPermissionType(1);
         			}
         			if(editButton.getValue() == true){
-        				permission.setPermissionType(true);
+        				permission.setPermissionType(2);
         			}
-        			if(readButton.getValue() == false && editButton.getValue() == false){
+        			if(deleteButton.getValue() == true){
+        				permission.setPermissionType(3);
+        			}
+        			if(readButton.getValue() == false && editButton.getValue() == false && deleteButton.getValue() == false){
         				Window.alert("Bitte waehlen Sie eine Art der Berechtigung aus");
         				savePermissionButton.setEnabled(true);
         			}
@@ -407,9 +430,10 @@ protected void run() {
         			permissionText.setText("Name des Berechtigten");
         			readButton.setEnabled(true);
         			editButton.setEnabled(true);
+        			deleteButton.setEnabled(true);
         			readButton.setValue(false);
         			editButton.setValue(false);
-        		
+        			deleteButton.setValue(false);
         		}
     		}
     	};
