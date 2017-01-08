@@ -1,5 +1,6 @@
 package com.hdm.Application.server;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Vector;
@@ -440,7 +441,9 @@ public ArrayList<Notebook> searchForNotebook(String title) throws IllegalArgumen
    */
     public ArrayList<Note> searchForNoteByDD(Date duedate) throws IllegalArgumentException{
   	Vector<Note> vector = new Vector<Note>();
-//  	vector = this.nMapper.findByDuedate(duedate);
+  	
+  	java.sql.Date date = (java.sql.Date) duedate;
+  	vector = this.nMapper.findByDueDate(date);  
   	ArrayList<Note> notes = new ArrayList<Note>(vector);
 
   	return notes;
@@ -557,15 +560,7 @@ public ArrayList<Notebook> searchForNotebook(String title) throws IllegalArgumen
 	
 	public AppUser getUserByEmail(String email) throws IllegalArgumentException {
 		AppUser user = new AppUser();
-		
-		if (this.uMapper.findByMail(email) == null){
-			user = null;
-		}
-		
-		if (this.uMapper.findByMail(email) != null){
-			user = this.uMapper.findByMail (email);
-			
-		}
+		user = this.uMapper.findByMail (email);
 		return user;
 	}
 }

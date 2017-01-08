@@ -142,8 +142,8 @@ public class UserMapper {
 			/**
 			 * Statement ausf�llen und als Query an die DB schicken
 			 */
-			ResultSet rs = stmt.executeQuery("SELECT appuserid, gid, username, mail FROM users " + "WHERE mail='" + mail
-					+ "' ORDER BY gid");
+			ResultSet rs = stmt.executeQuery("SELECT appuserid, gid, username, mail FROM users WHERE mail='" + mail
+					+ "' ORDER BY gid;");
 
 			/**
 			 * Da id Primaerschl�ssel ist, kann max. nur ein Tupel zur�ckgegeben
@@ -159,7 +159,9 @@ public class UserMapper {
 				return u;
 			}
 		} catch (SQLException e) {
+			System.out.println("SQL Abfrage fehlgeschlagen. findbyUser");
 			e.printStackTrace();
+			
 			return null;
 		}
 

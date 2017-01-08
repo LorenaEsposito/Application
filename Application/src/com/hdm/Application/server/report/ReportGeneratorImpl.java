@@ -2,7 +2,9 @@ package com.hdm.Application.server.report;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Vector;
 
+import org.datanucleus.sco.simple.SqlDate;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
@@ -42,6 +44,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet
 	private NoteAdministration noteadministration = null;
 	
 	private NotebookMapper notebookMapper= null;
+	private NoteMapper noteMapper= null;
 	
 	
 
@@ -75,6 +78,7 @@ public void init() throws IllegalArgumentException {
      * NoteAdministrationImpl-Instanz.
      */
 	  this.notebookMapper = NotebookMapper.notebookMapper();
+	  this.noteMapper = NoteMapper.noteMapper();
 	  NoteAdministrationImpl a = new NoteAdministrationImpl();
 	  a.init();
 	  this.noteadministration = a;
@@ -101,29 +105,7 @@ public void init() throws IllegalArgumentException {
 	 Row TopRow = new Row();
 	 TopRow.addColumn(new Column(user.getUserName()));
 	 result.addRow(TopRow);
-	 /*
-  * Hier werden alle Notizen eines Users aufgelistet 
-  */
-	 Note note1 = new Note();
-	 Note note2 = new Note();
-	 
-	 note1.setNbID(1);
-	 note1.setnTitle("Jacke kaufen");
-	 note1.setnContent("Ich habe bei Primark eine Jacke gesehen.");
-	 note1.setnSubtitle("Primark Jacke");
-	 Date date = new Date();
-	 note1.setnCreDate(date);
-	 
-	 note2.setNbID(1);
-	 note2.setnTitle("Jacke kaufen");
-	 note2.setnContent("Ich habe bei Primark eine Jacke gesehen.");
-	 note2.setnSubtitle("Primark Jacke");
-	 Date date1 = new Date();
-	 note2.setnCreDate(date1);
-	 
-	 ArrayList<Note> notes = new ArrayList<Note>();	
-	 notes.add(note1);
-	 notes.add(note2);
+	 Vector<Note> notes = noteMapper.findByUser(user);
 	 System.out.println("notes size : "+notes.size());
 	    for (Note n : notes) {
 	    	
@@ -163,7 +145,7 @@ public AllFilteredNotes createAllFilteredNotesReportED(Date erstellungsDatum) th
 	/*
 	  * Zunächst legen wir uns einen leeren Report an.
 	  */
-		 AllNotesFromUser result = new AllNotesFromUser();
+	AllFilteredNotes result = new AllFilteredNotes();
 	      
 	 //Anlegen der Kopfzeile mit dem vollen Namen
 		 Row TopRow = new Row();
@@ -172,26 +154,8 @@ public AllFilteredNotes createAllFilteredNotesReportED(Date erstellungsDatum) th
 		 /*
 	  * Hier werden alle Notizen eines Users aufgelistet 
 	  */
-		 Note note1 = new Note();
-		 Note note2 = new Note();
 		 
-		 note1.setNbID(1);
-		 note1.setnTitle("Jacke kaufen");
-		 note1.setnContent("Ich habe bei Primark eine Jacke gesehen.");
-		 note1.setnSubtitle("Primark Jacke");
-		 Date date = new Date();
-		 note1.setnCreDate(date);
-		 
-		 note2.setNbID(1);
-		 note2.setnTitle("Jacke kaufen");
-		 note2.setnContent("Ich habe bei Primark eine Jacke gesehen.");
-		 note2.setnSubtitle("Primark Jacke");
-		 Date date1 = new Date();
-		 note2.setnCreDate(date1);
-		 
-		 ArrayList<Note> notes = new ArrayList<Note>();	
-		 notes.add(note1);
-		 notes.add(note2);
+		 Vector<Note> notes = noteMapper.findByCreationDate(erstellungsDatum);	
 		 System.out.println("notes size : "+notes.size());
 		    for (Note n : notes) {
 		    	
@@ -199,7 +163,7 @@ public AllFilteredNotes createAllFilteredNotesReportED(Date erstellungsDatum) th
 		        Row SingleInfoRow = new Row();
 		        
 		      //Notizbuchtitel auslesen
-				//SingleInfoRow.addColumn(new Column(notebookMapper.findById(n.getNbID()).getTitle()));
+				SingleInfoRow.addColumn(new Column(notebookMapper.findById(n.getNbID()).getTitle()));
 		        
 		        //Notiztitel auslesen
 				SingleInfoRow.addColumn(new Column(n.getnTitle()));
@@ -222,15 +186,16 @@ public AllFilteredNotes createAllFilteredNotesReportED(Date erstellungsDatum) th
 		      }		
 		    
 		    
-		    	return null;
+		    	return result;
 }
 
+@SuppressWarnings("deprecation")
 @Override
 public AllFilteredNotes createAllFilteredNotesReportDD(Date dueDate) throws IllegalArgumentException {
 	/*
 	  * Zunächst legen wir uns einen leeren Report an.
 	  */
-		 AllFilteredNotes result = new AllFilteredNotes();
+		AllFilteredNotes result = new AllFilteredNotes();
 	      
 	 //Anlegen der Kopfzeile mit dem vollen Namen
 		 Row TopRow = new Row();
@@ -239,26 +204,13 @@ public AllFilteredNotes createAllFilteredNotesReportDD(Date dueDate) throws Ille
 		 /*
 	  * Hier werden alle Notizen eines Users aufgelistet 
 	  */
-		 Note note1 = new Note();
-		 Note note2 = new Note();
-		 
-		 note1.setNbID(1);
-		 note1.setnTitle("Jacke kaufen");
-		 note1.setnContent("Ich habe bei Primark eine Jacke gesehen.");
-		 note1.setnSubtitle("Primark Jacke");
-		 Date date = new Date();
-		 note1.setnCreDate(date);
-		 
-		 note2.setNbID(1);
-		 note2.setnTitle("Jacke kaufen");
-		 note2.setnContent("Ich habe bei Primark eine Jacke gesehen.");
-		 note2.setnSubtitle("Primark Jacke");
-		 Date date1 = new Date();
-		 note2.setnCreDate(date1);
-		 
-		 ArrayList<Note> notes = new ArrayList<Note>();	
-		 notes.add(note1);
-		 notes.add(note2);
+		 int tag = dueDate.getDate();
+		 int monat = dueDate.getMonth()+1;
+		 int jahr = dueDate.getYear()+1900;
+		 System.out.println("Datumsformat gefaked: "+jahr+"-"+monat+"-"+tag);
+
+		 String datum = jahr+"-"+monat+"-"+tag;
+		Vector<Note> notes = noteMapper.findByDueDate(java.sql.Date.valueOf(datum));	
 		 System.out.println("notes size : "+notes.size());
 		    for (Note n : notes) {
 		    	
@@ -266,7 +218,7 @@ public AllFilteredNotes createAllFilteredNotesReportDD(Date dueDate) throws Ille
 		        Row SingleInfoRow = new Row();
 		        
 		      //Notizbuchtitel auslesen
-				//SingleInfoRow.addColumn(new Column(notebookMapper.findById(n.getNbID()).getTitle()));
+			SingleInfoRow.addColumn(new Column(notebookMapper.findById(n.getNbID()).getNbTitle()));
 		        
 		        //Notiztitel auslesen
 				SingleInfoRow.addColumn(new Column(n.getnTitle()));
@@ -289,9 +241,11 @@ public AllFilteredNotes createAllFilteredNotesReportDD(Date dueDate) throws Ille
 		      }		
 		    
 		    
-		    	return null;
+		    	return result;
 }
 
+
+@SuppressWarnings("null")
 @Override
 public AllFilteredNotes createAllFilteredNotesReport(String notebook) throws IllegalArgumentException {
 	/*
@@ -303,59 +257,48 @@ public AllFilteredNotes createAllFilteredNotesReport(String notebook) throws Ill
 		 Row TopRow = new Row();
 		 TopRow.addColumn(new Column(notebook));
 		 result.addRow(TopRow);
-		 /*
-	  * Hier werden alle Notizen eines Users aufgelistet 
-	  */
-		 Note note1 = new Note();
-		 Note note2 = new Note();
+		 //Auslesen aller Notebooks welche im Titel den übergebenen String enthalten
+		 Vector<Notebook> notebooks = notebookMapper.findByTitle(notebook);
+		 System.out.println("AUSGABE!!!!! Vector notebooks ist "+notebooks.size()+" groß");
+		 //Vector für Notes aus dem jeweiligen Notebook
+		 Vector<Note> notes = null;
 		 
-		 note1.setNbID(1);
-		 note1.setnTitle("Jacke kaufen");
-		 note1.setnContent("Ich habe bei Primark eine Jacke gesehen.");
-		 note1.setnSubtitle("Primark Jacke");
-		 Date date = new Date();
-		 note1.setnCreDate(date);
-		 
-		 note2.setNbID(1);
-		 note2.setnTitle("Jacke kaufen");
-		 note2.setnContent("Ich habe bei Primark eine Jacke gesehen.");
-		 note2.setnSubtitle("Primark Jacke");
-		 Date date1 = new Date();
-		 note2.setnCreDate(date1);
-		 
-		 ArrayList<Note> notes = new ArrayList<Note>();	
-		 notes.add(note1);
-		 notes.add(note2);
-		 System.out.println("notes size : "+notes.size());
-		    for (Note n : notes) {
-		    	
-		        // Eine leere Zeile anlegen.
-		        Row SingleInfoRow = new Row();
-		        
-		      //Notizbuchtitel auslesen
-				//SingleInfoRow.addColumn(new Column(notebookMapper.findById(n.getNbID()).getTitle()));
-		        
-		        //Notiztitel auslesen
-				SingleInfoRow.addColumn(new Column(n.getnTitle()));
-				
-				//Subtitel auslesen
-		        SingleInfoRow.addColumn(new Column(n.getnSubtitle()));
-		        
-		      //Erstellungsdatum  auslesen
-		        SingleInfoRow.addColumn(new Column(n.getnCreDate().toString()));
-				
-		        //Content auslesen
-		        Row contentrow = new Row();
-		        contentrow.addColumn(new Column( n.getnContent()));
-		        
-		        // und schließlich die Zeile dem Report hinzufügen.
-		        
-		        result.addRow(SingleInfoRow);
-		        result.addRow(contentrow);
-
-		      }		
-		    
-		    
-		    	return null;
+		 //For-Schleife welche die gefundenen Notebooks durchläuft
+		 for (Notebook nb : notebooks) {
+			 //Auslesen aller Notizen des jeweiligen Notebooks und Zwischenspeichern in notes
+			 notes = noteMapper.findByNotebook(nb);
+			 System.out.println("AUSGABE!!!!! Vector notes ist "+notes.size()+" groß");
+			 
+			 //Durchlaufen aller Notizen und das hinzufügen der Zeilen
+			 for (Note n : notes) {			    	
+			        // Eine leere Zeile anlegen.
+			        Row SingleInfoRow = new Row();
+			        
+			      //Notizbuchtitel auslesen
+			        
+				   	SingleInfoRow.addColumn(new Column(nb.getNbTitle()));
+			        
+			        //Notiztitel auslesen
+					SingleInfoRow.addColumn(new Column(n.getnTitle()));
+					
+					//Subtitel auslesen
+			        SingleInfoRow.addColumn(new Column(n.getnSubtitle()));
+			        
+			      //Erstellungsdatum  auslesen
+			        SingleInfoRow.addColumn(new Column(n.getnCreDate().toString()));
+					
+			        //Content auslesen
+			        Row contentrow = new Row();
+			        contentrow.addColumn(new Column( n.getnContent()));
+			        
+			        // und schließlich die Zeile dem Report hinzufügen.
+			        
+			        result.addRow(SingleInfoRow);
+			        result.addRow(contentrow);
+			      
+			      }		
+			    
+		}
+		   return result;
 }
 }

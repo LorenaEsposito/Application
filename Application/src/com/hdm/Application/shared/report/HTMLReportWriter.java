@@ -131,6 +131,41 @@ public void process(AllNotesFromUser r) {
    */
 
 public void process(AllFilteredNotes r) {
+	  this.resetReportText();
+
+	    
+	    StringBuffer result = new StringBuffer();
+
+
+	    result.append("<table class=\"AllFilteredNotesTable\"><tr>");
+	    
+	    Vector<Row> rows = r.getRows();
+	    Row toprow = rows.elementAt(0);
+	    
+	  	result.append("<th class=\"ReportHeader\" colspan=\"4\"> Report nach Filtersuche: " + toprow.getColumnAt(0) + "</th></tr>");
+	  	result.append("<th> Notizbuch</th>"+
+	  					"<th> Notiztitel</th>"+
+	  					"<th> Untertitel</th>"+
+	  					 "<th>Erstellungsdatum</tr>");
+
+	  	    for (int i = 1; i < rows.size(); i++) {
+	  	    	 Row row = rows.elementAt(i);
+	  	        result.append("<tr>");
+	        if(i%2 == 0){
+	        	for (int k = 0; k < row.getNumColumns(); k++) {
+	        		result.append("<td class=\"ContentColumn\" colspan=\"4\"> Inhalt: <br>" + row.getColumnAt(k) + "</td>");
+	          }
+	        }
+	        else{
+	        for (int k = 0; k < row.getNumColumns(); k++) {
+	        		result.append("<td class=\"InfoColumn\">" + row.getColumnAt(k) + "</td>");
+	          }
+	        }
+	        result.append("</tr>");
+	        }
+	    result.append("</table></td>");
+	      
+	    this.reportText = result.toString();
 }
 
   /**

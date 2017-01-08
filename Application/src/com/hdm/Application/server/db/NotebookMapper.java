@@ -71,9 +71,8 @@ public class NotebookMapper {
 			Statement stmt = con.createStatement();
 
 			// Statement ausfuellen und als Query an DB schicken
-			ResultSet rs = stmt
-					.executeQuery("SELECT nbid, title, creadate, moddate FROM notebooks"
-							+ "WHERE nbID=" + nbID);
+			ResultSet rs = stmt.executeQuery("SELECT * FROM notebooks "
+							+ "WHERE nbid ="+nbID+";");
 
 			/**
 			 * Es kann max. ein Ergebnis zurueck gegeben werden, da die id der
@@ -84,11 +83,10 @@ public class NotebookMapper {
 			if (rs.next()) {
 				// Ergebnis-Tupel in Objekt umwandeln
 				Notebook notebook = new Notebook();
-				notebook.setNbID(rs.getInt("nbID"));
-				notebook.setUserID(rs.getInt("userID"));
-				notebook.setNbTitle(rs.getString("nbTitle"));
-				notebook.setNbCreDate(rs.getDate("nbCreDate"));
-				notebook.setNbModDate(rs.getDate("nbModDate"));
+				notebook.setNbID(rs.getInt("nbid"));
+				notebook.setNbTitle(rs.getString("title"));
+				notebook.setNbCreDate(rs.getDate("creadate"));
+				notebook.setNbModDate(rs.getDate("moddate"));
 				return notebook;
 			}
 		} catch (SQLException e) {
@@ -231,8 +229,8 @@ public class NotebookMapper {
 		try {
 			Statement stmt = con.createStatement();
 
-			ResultSet rs = stmt.executeQuery("SELECT nbid, title, creadate, moddate FROM notebooks"
-					+ " WHERE title LIKE '" + nbTitle + "' ORDER BY creadate");
+			ResultSet rs = stmt.executeQuery("SELECT * FROM notebooks"
+					+ " WHERE title LIKE '%" + nbTitle + "%' ORDER BY creadate");
 			
 			//Fuer jeden Eintrag im Suchergebnis wird ein Notebook-Objekt erstellt.
 			while(rs.next()){

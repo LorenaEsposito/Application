@@ -309,27 +309,25 @@ public class NoteMapper {
 		 * Trifft eine Exception ein wird ein teilweise gefuellter oder leerer Vektor ausgegeben
 		 */
 	 
-	 public Vector<Note> findByDueDate(Date dDate){
+	 public Vector<Note> findByDueDate(java.sql.Date dDate){
 		 Connection con = DBConnection.connection();
 		 Vector<Note> result = new Vector<Note>();
 		 
 		 try{
 			 Statement stmt = con.createStatement();
-			 ResultSet rs = stmt.executeQuery("SELECT nID, nbID, userID, nTitle, nSubtitle, nContent, source, nCreDate, nModDate"
-					 + "FROM notes" + "WHERE dDate LIKE '" + dDate + "'ORDER BY nTitle");
+			 ResultSet rs = stmt.executeQuery("SELECT *	FROM notes INNER JOIN duedates ON duedates.nid = notes.nid WHERE duedate = '"+dDate.toString()+"';");
 			 
 			//Fuer jeden Eintrag im Suchergebnis wird ein Note-Objekt erstellt.
 			 while(rs.next()) {
 				 Note note = new Note();
-				 note.setnID(rs.getInt("nID"));
-				 note.setNbID(rs.getInt("nbID"));
-				 note.setUserID(rs.getInt("userID"));
-				 note.setnTitle(rs.getString("nTitle"));
-				 note.setnSubtitle(rs.getString("nSubtitle"));
-				 note.setnContent(rs.getString("nContent"));
+				 note.setnID(rs.getInt("nid"));
+				 note.setNbID(rs.getInt("nbid"));
+				 note.setnTitle(rs.getString("title"));
+				 note.setnSubtitle(rs.getString("subtitle"));
+				 note.setnContent(rs.getString("content"));
 				 note.setSource(rs.getString("source"));
-				 note.setnCreDate(rs.getDate("nCreDate"));
-				 note.setnModDate(rs.getDate("nModDate"));
+				 note.setnCreDate(rs.getDate("creadate"));
+				 note.setnModDate(rs.getDate("moddate"));
 				 
 				//Neues Objekt wird dem Ergebnisvektor hinzugefuegt
 				 result.addElement(note);
@@ -446,8 +444,17 @@ public class NoteMapper {
 				Statement stmt = con.createStatement();
 				
 				//Statement ausfuellen und als Query an DB schicken
-				ResultSet rs = stmt.executeQuery("SELECT nid, nbid, title, subtitle, content, source, creadate, moddate FROM notes"
-						+ " WHERE nbid=" + notebook.getNbID() );
+				String sql;
+				
+				if(notebook.getNbID() != 0){
+					sql= "SELECT nid, nbid, title, subtitle, content, source, creadate, moddate FROM notes"
+							+ " WHERE nbid =" + notebook.getNbID();
+				}else{
+					sql = "SELECT nid, nbid, title, subtitle, content, source, creadate, moddate FROM notes"
+							+ " WHERE title LIKE '%" + notebook.getNbTitle()+"%'";
+				}
+				
+				ResultSet rs = stmt.executeQuery(sql);
 				
 				// Fuer jeden Eintrag wird ein Notebook-Objekt erstellt	
 				while (rs.next()){
@@ -455,8 +462,9 @@ public class NoteMapper {
 					Note note = new Note();
 					note.setnID(rs.getInt("nid"));
 					note.setNbID(rs.getInt("nbid"));
-					note.setTitle(rs.getString("title"));
+					note.setnTitle(rs.getString("title"));
 					note.setnSubtitle(rs.getString("subtitle"));
+					note.setnContent(rs.getString("content"));
 					note.setSource(rs.getString("source"));
 					note.setnCreDate(rs.getDate("creadate"));
 					note.setnModDate(rs.getDate("moddate"));
