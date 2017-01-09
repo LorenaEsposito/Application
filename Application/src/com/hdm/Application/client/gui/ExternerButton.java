@@ -18,7 +18,7 @@ public class ExternerButton extends Update {
 
 protected void run() {
 
-    // Ankündigung, was nun geschehen wird.
+    // AnkÃ¼ndigung, was nun geschehen wird.
 
     this.append("");
 

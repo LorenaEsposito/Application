@@ -113,7 +113,12 @@ public void init() throws IllegalArgumentException {
 	        Row SingleInfoRow = new Row();
 	        
 	      //Notizbuchtitel auslesen
-			SingleInfoRow.addColumn(new Column(notebookMapper.findById(n.getNbID()).getTitle()));
+	        if (n.getNbID() != 0){
+			   	SingleInfoRow.addColumn(new Column (notebookMapper.findById(n.getNbID()).getNbTitle()));
+		        }
+		        else {
+				   	SingleInfoRow.addColumn(new Column ("Notizbuchtitel unbekannt"));
+		        }
 	        
 	        //Notiztitel auslesen
 			SingleInfoRow.addColumn(new Column(n.getnTitle()));
@@ -140,6 +145,7 @@ public void init() throws IllegalArgumentException {
 	    
 }
 
+@SuppressWarnings("deprecation")
 @Override
 public AllFilteredNotes createAllFilteredNotesReportED(Date erstellungsDatum) throws IllegalArgumentException {
 	/*
@@ -154,16 +160,27 @@ public AllFilteredNotes createAllFilteredNotesReportED(Date erstellungsDatum) th
 		 /*
 	  * Hier werden alle Notizen eines Users aufgelistet 
 	  */
-		 
-		 Vector<Note> notes = noteMapper.findByCreationDate(erstellungsDatum);	
+		int tag = erstellungsDatum.getDate();
+		int monat = erstellungsDatum.getMonth()+1;
+		 int jahr = erstellungsDatum.getYear()+1900;
+		 System.out.println("Datumsformat gefaked: "+jahr+"-"+monat+"-"+tag);
+
+		 String datum = jahr+"-"+monat+"-"+tag;
+		Vector<Note> notes = noteMapper.findByCreationDate(java.sql.Date.valueOf(datum));	
 		 System.out.println("notes size : "+notes.size());
 		    for (Note n : notes) {
+		    	
 		    	
 		        // Eine leere Zeile anlegen.
 		        Row SingleInfoRow = new Row();
 		        
 		      //Notizbuchtitel auslesen
-				SingleInfoRow.addColumn(new Column(notebookMapper.findById(n.getNbID()).getTitle()));
+		        if (n.getNbID() != 0){
+				   	SingleInfoRow.addColumn(new Column (notebookMapper.findById(n.getNbID()).getNbTitle()));
+			        }
+			        else {
+					   	SingleInfoRow.addColumn(new Column ("Notizbuchtitel unbekannt"));
+			        }
 		        
 		        //Notiztitel auslesen
 				SingleInfoRow.addColumn(new Column(n.getnTitle()));
@@ -184,8 +201,6 @@ public AllFilteredNotes createAllFilteredNotesReportED(Date erstellungsDatum) th
 		        result.addRow(contentrow);
 
 		      }		
-		    
-		    
 		    	return result;
 }
 
@@ -245,7 +260,6 @@ public AllFilteredNotes createAllFilteredNotesReportDD(Date dueDate) throws Ille
 }
 
 
-@SuppressWarnings("null")
 @Override
 public AllFilteredNotes createAllFilteredNotesReport(String notebook) throws IllegalArgumentException {
 	/*
@@ -299,6 +313,66 @@ public AllFilteredNotes createAllFilteredNotesReport(String notebook) throws Ill
 			      }		
 			    
 		}
+		   return result;
+}
+
+
+@SuppressWarnings("deprecation")
+public AllNotes createAllNotesReport() throws IllegalArgumentException {
+	/*
+	  * Zunächst legen wir uns einen leeren Report an.
+	  */
+		 AllNotes result = new AllNotes();
+	      
+	 //Anlegen der Kopfzeile mit dem vollen Namen
+		 Row TopRow = new Row();
+		 TopRow.addColumn(new Column());
+		 result.addRow(TopRow);
+		 
+		 //Auslesen aller Notes 
+		 Vector<Note> note = noteMapper.findAll();
+		 System.out.println("notes size : "+note.size());
+		    
+		 
+		
+			 //Durchlaufen aller Notizen und das hinzufügen der Zeilen
+			 for (Note n : note) {			    	
+			        // Eine leere Zeile anlegen.
+			        Row SingleInfoRow = new Row();
+			        
+			      //Notizbuchtitel auslesen
+			        
+			        if (n.getNbID() != 0){
+				   	SingleInfoRow.addColumn(new Column (notebookMapper.findById(n.getNbID()).getNbTitle()));
+			        }
+			        else {
+					   	SingleInfoRow.addColumn(new Column ("Notizbuchtitel unbekannt"));
+			        }
+
+			      
+			        
+			        //Notiztitel auslesen
+					SingleInfoRow.addColumn(new Column(n.getnTitle()));
+					
+					//Subtitel auslesen
+			        SingleInfoRow.addColumn(new Column(n.getnSubtitle()));
+			        
+			      //Erstellungsdatum  auslesen
+			        SingleInfoRow.addColumn(new Column(n.getnCreDate().toString()));
+			       
+					
+			        //Content auslesen
+			        Row contentrow = new Row();
+			        contentrow.addColumn(new Column( n.getnContent()));
+			        
+			        // und schließlich die Zeile dem Report hinzufügen.
+			        
+			        result.addRow(SingleInfoRow);
+			        result.addRow(contentrow);
+			      
+			      }		
+			    
+		
 		   return result;
 }
 }

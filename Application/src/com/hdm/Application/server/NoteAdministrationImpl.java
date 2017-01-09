@@ -563,4 +563,12 @@ public ArrayList<Notebook> searchForNotebook(String title) throws IllegalArgumen
 		user = this.uMapper.findByMail (email);
 		return user;
 	}
-}
+	public ArrayList<Note> findAll() throws IllegalArgumentException{
+		Vector<Note> vector = new Vector<Note>();
+		vector = this.nMapper.findAll();
+		ArrayList<Note> notes = new ArrayList<Note>(vector);
+		return notes;
+	}
+	
+    }
+

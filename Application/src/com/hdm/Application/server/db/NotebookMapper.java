@@ -375,4 +375,9 @@ public class NotebookMapper {
 		}
 	}
 
+	public Object getNbID() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

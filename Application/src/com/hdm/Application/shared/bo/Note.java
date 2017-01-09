@@ -113,7 +113,13 @@ public class Note extends NoteObject {
 	 * @return the nCreDate
 	 */
 	public void setnCreDate(Date nCreDate) {
+		
+		if (nCreDate != null){
 		this.nCreDate = nCreDate;
+		}
+		else {
+			this.nCreDate = new Date();
+		}
 	}
 
 	/**

@@ -2,6 +2,7 @@ package com.hdm.Application.shared;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Vector;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.hdm.Application.shared.bo.*;
@@ -106,5 +107,7 @@ public interface NoteAdministrationAsync {
 			throws IllegalArgumentException;
 
 	void getUserByEmail(String email, AsyncCallback<AppUser> callback);
+
+	void findAll(AsyncCallback<ArrayList<Note>> callback);
 	
 }

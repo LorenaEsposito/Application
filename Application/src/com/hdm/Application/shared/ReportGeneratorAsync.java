@@ -1,10 +1,13 @@
 package com.hdm.Application.shared;
 
 import java.util.Date;
+import java.util.Vector;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.hdm.Application.shared.bo.AppUser;
+import com.hdm.Application.shared.bo.Note;
 import com.hdm.Application.shared.report.AllFilteredNotes;
+import com.hdm.Application.shared.report.AllNotes;
 import com.hdm.Application.shared.report.AllNotesFromUser;
 
 /**
@@ -23,8 +26,10 @@ public interface ReportGeneratorAsync {
 
 	void createAllFilteredNotesReportED(Date erstellungsDatum, AsyncCallback<AllFilteredNotes> callback);
 
-	void createAllFilteredNotesReportDD(Date dueDate, AsyncCallback<AllFilteredNotes> callback);
+	void createAllFilteredNotesReportDD(Date date, AsyncCallback<AllFilteredNotes> callback);
 
 	void createAllFilteredNotesReport(String notebook, AsyncCallback<AllFilteredNotes> callback);
+
+	void createAllNotesReport(AsyncCallback<AllNotes> callback);
 
 }

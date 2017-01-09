@@ -268,26 +268,25 @@ public class NoteMapper {
 	 
 	 public Vector<Note> findAll(){
 		 Connection con = DBConnection.connection();
+		 
 		 //Ergebnisvektor vorbereiten
 		 Vector<Note> result = new Vector<Note>();
 		 
 		 try {
 			 Statement stmt = con.createStatement();
-			 ResultSet rs = stmt.executeQuery("SELECT nID, nbID, userID, nTitle, nSubtitle, nContent, source, nCreDate, nModDate"
-					 + "FROM notes" + "ORDER BY nbID");
+			 ResultSet rs = stmt.executeQuery("SELECT nid, nbid, title, subtitle, content, source, creadate, moddate FROM notes ORDER BY nbID");
 			
 			 // Fuer jeden Eintrag wird ein Notebook-Objekt erstellt	
 			 while(rs.next()){
 				 Note note = new Note();
-				 note.setnID(rs.getInt("nID"));
-				 note.setNbID(rs.getInt("nbID"));
-				 note.setUserID(rs.getInt("userID"));
-				 note.setnTitle(rs.getString("nTitle"));
-				 note.setnSubtitle(rs.getString("nSubtitle"));
-				 note.setnContent(rs.getString("nContent"));
+				 note.setnID(rs.getInt("nid"));
+				 note.setNbID(rs.getInt("nbid"));
+				 note.setnTitle(rs.getString("title"));
+				 note.setnSubtitle(rs.getString("subtitle"));
+				 note.setnContent(rs.getString("content"));
 				 note.setSource(rs.getString("source"));
-				 note.setnCreDate(rs.getDate("nCreDate"));
-				 note.setnModDate(rs.getDate("nModDate"));
+				 note.setnCreDate(rs.getDate("creadate"));
+				 note.setnModDate(rs.getDate("moddate"));
 				 
 				// Neues Objekt wird dem Ergebnisvektor hinzugefuegt
 				 result.addElement(note);
@@ -391,19 +390,17 @@ public class NoteMapper {
 		//Vektor wird zurueckgegeben
 		 return result;
 	 }
-	 
-	 public Vector<Note> findByCreationDate(Date creadate){
+		 
+	 public Vector<Note> findByCreationDate(java.sql.Date creadate){
 		 Connection con = DBConnection.connection();
 		 Vector<Note> result = new Vector<Note>();
-		 String sql = "SELECT *"
-					 + " FROM notes" + " WHERE creadate LIKE '" + creadate + "' ORDER BY creadate;";
-		 System.out.println("SQL Statement: "+sql);		 
+		 	 
 		 
 		 try{
 			 Statement stmt = con.createStatement();			 
-			 ResultSet rs = stmt.executeQuery("SELECT *"
-					 + " FROM notes" + " WHERE creadate LIKE '" + creadate + "' ORDER BY creadate;");
-			 			 
+			 ResultSet rs = stmt.executeQuery("SELECT * FROM notes WHERE creadate = '" +creadate.toString()+ "';");
+			 
+			 
 			//Fuer jeden Eintrag im Suchergebnis wird ein Note-Objekt erstellt.
 			 while(rs.next()) {
 				 Note note = new Note();

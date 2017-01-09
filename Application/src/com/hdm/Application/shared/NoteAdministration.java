@@ -2,6 +2,7 @@ package com.hdm.Application.shared;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Vector;
 
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
@@ -63,5 +64,7 @@ public interface NoteAdministration extends RemoteService {
 	public ArrayList<Permission> getOwnedNotebooks(AppUser user) throws IllegalArgumentException;
 
 	public AppUser searchUserByGoogleID(String googleID) throws IllegalArgumentException;
+	
+	public ArrayList<Note> findAll() throws IllegalArgumentException;
 
 }
