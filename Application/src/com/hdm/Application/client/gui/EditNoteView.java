@@ -5,10 +5,14 @@ import java.util.Date;
 import java.util.List;
 
 import com.google.gwt.cell.client.TextCell;
+import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.ShowRangeEvent;
 import com.google.gwt.event.logical.shared.ShowRangeHandler;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.TextColumn;
@@ -30,6 +34,7 @@ import com.hdm.Application.client.Application;
 import com.hdm.Application.client.ClientsideSettings;
 import com.hdm.Application.shared.NoteAdministrationAsync;
 import com.hdm.Application.shared.bo.AppUser;
+import com.hdm.Application.shared.bo.DueDate;
 import com.hdm.Application.shared.bo.Note;
 import com.hdm.Application.shared.bo.Notebook;
 import com.hdm.Application.shared.bo.Permission;
@@ -65,6 +70,8 @@ public class EditNoteView extends Update{
 	private AppUser currentUser = new AppUser();
 	
 	Date date = new Date();
+	
+	DueDate dueDate = new DueDate();
 	
 	TextCell cell = new TextCell();
 	
@@ -326,6 +333,7 @@ protected void run() {
 		newNote.setnContent(textArea.getText());
 		newNote.setnModDate(date);
 		
+		adminService.editDuedate(dueDate, editDuedateCallback());
 //		 adminService.getCurrentUser(getCurrentUserCallback());
 //		 adminService.editNote(newNote, editNoteCallback());
 		
@@ -365,6 +373,12 @@ protected void run() {
     		RootPanel.get("Details").add(update);
     		
     		adminService.deleteNote(currentNote, deleteNoteCallback());
+    	}
+    });
+    
+    duedate.addValueChangeHandler(new ValueChangeHandler<Date>() {
+    	public void onValueChange(ValueChangeEvent<Date> event){
+    		dueDate.setdDate(duedate.getValue());
     	}
     });
 
@@ -414,6 +428,7 @@ private AsyncCallback<ArrayList<Note>> getNotesOfNotebookCallback() {
 				 textArea.setText(currentNote.getnContent());
 				 credate.setText(currentNote.getnCreDate().toString());
 				 moddate.setText(currentNote.getnModDate().toString());
+				 adminService.getDuedate(currentNote.getnID(), getDuedateCallback());
 				 adminService.getPermissions(currentNote.getnID(), currentNote.getNbID(), getPermissionsCallback());
 				 break;
 			 }
@@ -461,6 +476,26 @@ private AsyncCallback<AppUser> getUserByIDCallback(){
 	};
 	return asyncCallback;
 }
+
+private AsyncCallback<DueDate> getDuedateCallback(){
+	AsyncCallback<DueDate> asyncCallback = new AsyncCallback<DueDate>() {
+		
+		@Override
+		public void onFailure(Throwable caught) {
+			ClientsideSettings.getLogger().severe("Error: " + caught.getMessage());
+		}
+	 
+	 @Override
+	 public void onSuccess(DueDate result) {
+		 ClientsideSettings.getLogger().
+		 severe("Success GetDuedateCallback: " + result.getClass().getSimpleName());
+		 dueDate = result;
+		 duedate.setValue(dueDate.getdDate());
+	 }
+	};
+	return asyncCallback;
+}
+
 
 //private AsyncCallback<AppUser> getCurrentUserCallback(){
 //	AsyncCallback<AppUser> asyncCallback = new AsyncCallback<AppUser>() {
@@ -606,5 +641,23 @@ private AsyncCallback<AppUser> getUserByIDCallback(){
     	};
     	return asyncCallback;
     }
+    
+    private AsyncCallback<Void> editDuedateCallback() {
+    	AsyncCallback<Void> asyncCallback = new AsyncCallback<Void>() {
+    		
+    		@Override
+    		public void onFailure(Throwable caught) {
+    			ClientsideSettings.getLogger().severe("Error: " + caught.getMessage());
+    		}
+    		
+    		@Override
+    		public void onSuccess(Void result) {
+    			ClientsideSettings.getLogger().
+    			severe("Success EditDuedateCallback: " + result.getClass().getSimpleName());
+    		}
+    	};
+    	return asyncCallback;
+    }
+    
 }
 

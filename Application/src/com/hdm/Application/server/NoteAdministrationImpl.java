@@ -589,6 +589,12 @@ public ArrayList<Notebook> searchForNotebook(String title) throws IllegalArgumen
     	return permissions;
     }
     
+    public DueDate getDuedate(int nID){
+    	DueDate duedate = new DueDate();
+    	duedate = this.ddMapper.findByNoteID(nID);
+    	return duedate;
+    }
+    
     /**
      * Diese Methode sucht einen bestimmten Nutzer anhand seiner GoogleID
      * 

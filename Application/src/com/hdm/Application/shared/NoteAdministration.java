@@ -68,6 +68,8 @@ public interface NoteAdministration extends RemoteService {
 	
 	public ArrayList<Permission> getPermissions(int nbID, int nID) throws IllegalArgumentException;
 
+	public DueDate getDuedate(int nID) throws IllegalArgumentException;
+	
 	public AppUser searchUserByGoogleID(String googleID) throws IllegalArgumentException;
 
 }

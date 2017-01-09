@@ -116,6 +116,9 @@ public interface NoteAdministrationAsync {
 			AsyncCallback<ArrayList<Permission>> callback)
 			throws IllegalArgumentException;
 	
+	public void getDuedate(int nID, AsyncCallback<DueDate> callback)
+			throws IllegalArgumentException;
+	
 	public void searchUserByGoogleID(String googleID,
 			AsyncCallback<AppUser> callback)
 			throws IllegalArgumentException;
