@@ -343,6 +343,7 @@ protected void run() {
 		saveNoteButton.setEnabled(false);
 		//createButton.setStylePrimaryName("");
 		
+		newNote.setnID(currentNote.getnID());
 		newNote.setnTitle(noteTitleTB.getText());
 		newNote.setnSubtitle(noteSubtitleTB.getText());
 		newNote.setnContent(textArea.getText());
