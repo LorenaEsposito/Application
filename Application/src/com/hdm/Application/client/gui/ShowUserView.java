@@ -292,7 +292,7 @@ protected void run() {
 		note.setnTitle(noteTitle.getText());
 		note.setnSubtitle(noteSubtitle.getText());
 		note.setnContent(textArea.getText());
-		note.setnCreDate(date);
+		note.setnCreDate(date.toString());
 		//Date date = new Date();
 		//note.setnCreDate(date);
 		adminService.createNote(note, createNoteCallback());

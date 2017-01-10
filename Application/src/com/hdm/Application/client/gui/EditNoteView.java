@@ -346,6 +346,7 @@ protected void run() {
 		newNote.setnTitle(noteTitleTB.getText());
 		newNote.setnSubtitle(noteSubtitleTB.getText());
 		newNote.setnContent(textArea.getText());
+		newNote.setnCreDate(credate.getTitle());
 		newNote.setnModDate(date);
 		
 		adminService.editDuedate(dueDate, editDuedateCallback());

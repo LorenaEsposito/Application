@@ -129,20 +129,31 @@ public class NoteMapper {
 	 
 	 public Note updateNote(Note note){
 		 Connection con = DBConnection.connection();
-		 
+		 System.out.println(note.getnID());
+		 System.out.println(note.getnTitle());
+		 System.out.println(note.getnModDate());
+			
+			String modDate = null;
+			if (note.getnModDate() != null) {
+				SimpleDateFormat mySQLformat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+				modDate = mySQLformat.format(note.getnModDate());
+			}
+			
+			 System.out.println(note.getnModDate());
 		 try{
 			 Statement stmt = con.createStatement();
-			 stmt.executeUpdate("UPDATE notes " + "SET title=\"" + note.getnTitle() + "\", " + "subtitle=\"" + note.getnSubtitle() + "\", " 
-			 	+"content=\"" + note.getnContent() + "\", " + "creadate=\"" + note.getnCreDate() + "\", "
-			 	+ "moddate=\"" + note.getnModDate() + " WHERE nid=" + note.getnID());
-			 
+			 stmt.executeUpdate("UPDATE notes " + "SET title='" + note.getnTitle() + "'," + "subtitle='" + note.getnSubtitle() + "'," 
+			 	+"content='" + note.getnContent() + "',"
+			 	+ "moddate='" + modDate + "' WHERE nid=" + note.getnID());
 		 }
 		 catch(SQLException e){
 			 e.printStackTrace();
 		 }
 		 
-		 return note;
+			
+			return note;
 	 }
+	 
 	 
 	 
 
@@ -243,7 +254,7 @@ public class NoteMapper {
 				 note.setnSubtitle(rs.getString("nSubtitle"));
 				 note.setnContent(rs.getString("nContent"));
 				 note.setSource(rs.getString("source"));
-				 note.setnCreDate(rs.getDate("nCreDate"));
+				 note.setnCreDate(rs.getString("nCreDate"));
 				 note.setnModDate(rs.getDate("nModDate"));
 				 
 				 return note;
@@ -285,7 +296,7 @@ public class NoteMapper {
 				 note.setnSubtitle(rs.getString("nSubtitle"));
 				 note.setnContent(rs.getString("nContent"));
 				 note.setSource(rs.getString("source"));
-				 note.setnCreDate(rs.getDate("nCreDate"));
+				 note.setnCreDate(rs.getString("nCreDate"));
 				 note.setnModDate(rs.getDate("nModDate"));
 				 
 				// Neues Objekt wird dem Ergebnisvektor hinzugefuegt
@@ -327,7 +338,7 @@ public class NoteMapper {
 				 note.setnSubtitle(rs.getString("nSubtitle"));
 				 note.setnContent(rs.getString("nContent"));
 				 note.setSource(rs.getString("source"));
-				 note.setnCreDate(rs.getDate("nCreDate"));
+				 note.setnCreDate(rs.getString("nCreDate"));
 				 note.setnModDate(rs.getDate("nModDate"));
 				 
 				//Neues Objekt wird dem Ergebnisvektor hinzugefuegt
@@ -375,7 +386,7 @@ public class NoteMapper {
 				 note.setnSubtitle(rs.getString("subtitle"));
 				 note.setnContent(rs.getString("content"));
 				 note.setSource(rs.getString("source"));
-				 note.setnCreDate(rs.getDate("creadate"));
+				 note.setnCreDate(rs.getString("creadate"));
 				 note.setnModDate(rs.getDate("moddate"));
 				 
 				//Neues Objekt wird dem Ergebnisvektor hinzugefuegt
@@ -414,7 +425,7 @@ public class NoteMapper {
 				 note.setnSubtitle(rs.getString("subtitle"));
 				 note.setnContent(rs.getString("content"));
 				 note.setSource(rs.getString("source"));
-				 note.setnCreDate(rs.getDate("creadate"));
+				 note.setnCreDate(rs.getString("creadate"));
 				 note.setnModDate(rs.getDate("moddate"));
 				 
 				//Neues Objekt wird dem Ergebnisvektor hinzugefuegt
@@ -458,7 +469,7 @@ public class NoteMapper {
 					note.setnSubtitle(rs.getString("subtitle"));
 					note.setnContent(rs.getString("content"));
 					note.setSource(rs.getString("source"));
-					note.setnCreDate(rs.getDate("creadate"));
+					note.setnCreDate(rs.getString("creadate"));
 					note.setnModDate(rs.getDate("moddate"));
 					
 					// Neues Objekt wird dem Ergebnisvektor hinzugefuegt
@@ -529,7 +540,7 @@ public class NoteMapper {
 						note.setnSubtitle(rs2.getString("subtitle"));
 						note.setnContent(rs2.getString("content"));
 						note.setSource(rs2.getString("source"));
-						note.setnCreDate(rs2.getDate("creadate"));
+						note.setnCreDate(rs2.getString("creadate"));
 						note.setnModDate(rs2.getDate("moddate"));
 						
 						// Neues Objekt wird dem Ergebnisvektor hinzugefuegt

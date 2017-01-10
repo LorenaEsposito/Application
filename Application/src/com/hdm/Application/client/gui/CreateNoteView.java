@@ -321,7 +321,7 @@ protected void run() {
 		note.setnTitle(noteTitle.getText());
 		note.setnSubtitle(noteSubtitle.getText());
 		note.setnContent(textArea.getText());
-		note.setnCreDate(date);
+		note.setnCreDate(date.toString());
 		note.setnModDate(date);
 
 		adminService.searchForNotebook(currentNBTitle, searchForNotebookCallback());

@@ -242,11 +242,17 @@ public class DueDateMapper {
 	public DueDate updateDueDate(DueDate dueDate) {
 		Connection con = DBConnection.connection();
 
+		String dDate = null;
+		if (dueDate.getdDate() != null) {
+			SimpleDateFormat mySQLformat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+			dDate = mySQLformat.format(dueDate.getdDate());
+		}
+		
 		try {
 			Statement stmt = con.createStatement();
 
-			stmt.executeUpdate("UPDATE duedates " + "SET duedate=\"" + dueDate.getdDate()
-					+ " WHERE nid =" + dueDate.getnID());
+			stmt.executeUpdate("UPDATE duedates " + "SET duedate='" + dDate
+					+ "' WHERE nid =" + dueDate.getnID());
 
 		} catch (SQLException e) {
 			e.printStackTrace();
