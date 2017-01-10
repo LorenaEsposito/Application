@@ -220,12 +220,11 @@ protected void run() {
     		deleteButton.setEnabled(false);
     		savePermissionButton.setStylePrimaryName("savePermission-button");
     		
-    		String googleID = new String();
+    		String mail = new String();
     		
-    		int atIndex = permissionText.getText().indexOf("@");
-    		googleID = permissionText.getText().substring(0, atIndex);
+    		mail = permissionText.getValue();
     		
-    		adminService.searchUserByGoogleID(googleID, searchUserByGoogleIDCallback());
+    		adminService.searchUserByMail(mail, searchUserByGoogleIDCallback());
     		
     	}
     });
