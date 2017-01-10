@@ -7,7 +7,6 @@ import java.sql.Statement;
 import java.util.Vector;
 
 import com.hdm.Application.shared.bo.Permission;
-import com.hdm.Application.shared.bo.Notebook;
 
 /**
  * Die Mapper-Klasse PermissionMapper stellt eine Schnittstelle zwischen
@@ -198,7 +197,8 @@ public class PermissionMapper {
 				/**
 				 * Jetzt erst erfolgt die tatsaechliche Einf�geoperation
 				 */
-				stmt.executeUpdate("INSERT INTO permissions (pid, permtype, appuserid, nid, nbid) "
+
+				stmt.executeUpdate("INSERT INTO permissions (pid, permtype, appuserid, nid, nbid, isowner) "
 						+ "VALUES ("
 						+ p.getPermissionID()
 						+ ","
@@ -206,17 +206,28 @@ public class PermissionMapper {
 						+ ","
 						+ p.getUserID()
 						+ ","
-						+ p.getNID() + "," + p.getNbID() + ")");
+						+ p.getNID()
+						+ ","
+						+ p.getNbID()
+						+ ","
+						+ p.getIsOwner()
+						+ ")");
 
 				System.out
-						.println("INSERT INTO permissions (pid, permtype, appuserid, nid, nbid) "
+						.println("INSERT INTO permissions (pid, permtype, appuserid, nid, nbid, isowner) "
 								+ "VALUES ("
 								+ p.getPermissionID()
 								+ ","
 								+ p.getPermissionType()
 								+ ","
 								+ p.getUserID()
-								+ "," + p.getNID() + "," + p.getNbID() + ")");
+								+ ","
+								+ p.getNID()
+								+ ","
+								+ p.getNbID()
+								+ ","
+								+ p.getIsOwner()
+								+ ")");
 
 				return p;
 			}
@@ -327,23 +338,26 @@ public Vector<Permission> findOwnedNotebooks(int appUserID){
 					/**
 					 * Hinzuf�gen des neuen Objekts zum Ergebnisvektor
 					 */
+
 					result.addElement(p);
+
 				}
 			} catch (SQLException e) {
 				e.printStackTrace();
+
 			}
 			
 			return result;
 	}
 		
-		public Vector<Permission> findByNotebook(Notebook notebook){
+		public Vector<Permission> findByNotebookID(int nbID){
 			Connection con = DBConnection.connection();
 			Vector<Permission> result = new Vector<Permission>();
 			
 			try{
 				Statement stmt = con.createStatement();
-				ResultSet rs = stmt.executeQuery("SELECT pid, appuserid, isowner, nbid, nid, permtype FROM notebooks"
-						+ " WHERE nbid LIKE " + notebook.getNbID() + " ORDER BY pid");
+				ResultSet rs = stmt.executeQuery("SELECT pid, appuserid, isowner, nbid, nid, permtype FROM permissions"
+						+ " WHERE nbid LIKE " + nbID + " ORDER BY pid");
 				
 				//Fuer jeden Eintrag im Suchergebnis wird ein Permission-Objekt erstellt.
 				while(rs.next()){
@@ -367,6 +381,69 @@ public Vector<Permission> findOwnedNotebooks(int appUserID){
 			return result;
 		}
 		
+		public Vector<Permission> findByNoteID(int nID){
+			Connection con = DBConnection.connection();
+			Vector<Permission> result = new Vector<Permission>();
+			
+			try{
+				Statement stmt = con.createStatement();
+				ResultSet rs = stmt.executeQuery("SELECT pid, appuserid, isowner, nbid, nid, permtype FROM permissions"
+						+ " WHERE nid LIKE " + nID + " ORDER BY pid");
+				
+				//Fuer jeden Eintrag im Suchergebnis wird ein Permission-Objekt erstellt.
+				while(rs.next()){
+					Permission permission = new Permission();
+					permission.setPermissionID(rs.getInt("pid"));
+					permission.setUserID(rs.getInt("appuserid"));
+					permission.setIsOwner(rs.getBoolean("isowner"));
+					permission.setNbID(rs.getInt("nbid"));
+					permission.setNID(rs.getInt("nid"));
+					permission.setPermissionType(rs.getInt("permtype"));
+					//Neues Objekt wird dem Ergebnisvektor hinzugefuegt
+					result.addElement(permission);
+				}
+			}
+			
+			catch (SQLException e){
+				e.printStackTrace();
+			}
+			
+			//Vektor wird zurueckgegeben
+			return result;
+		}
+		
+		
+		public Vector<Permission> findByUserID(int uID){
+			Connection con = DBConnection.connection();
+			Vector<Permission> result = new Vector<Permission>();
+			
+			try{
+				Statement stmt = con.createStatement();
+				ResultSet rs = stmt.executeQuery("SELECT pid, appuserid, isowner, nbid, nid, permtype FROM permissions"
+						+ " WHERE appuserid LIKE " + uID + " ORDER BY pid");
+				
+				//Fuer jeden Eintrag im Suchergebnis wird ein Permission-Objekt erstellt.
+				while(rs.next()){
+					Permission permission = new Permission();
+					permission.setPermissionID(rs.getInt("pid"));
+					permission.setUserID(rs.getInt("appuserid"));
+					permission.setIsOwner(rs.getBoolean("isowner"));
+					permission.setNbID(rs.getInt("nbid"));
+					permission.setNID(rs.getInt("nid"));
+					permission.setPermissionType(rs.getInt("permtype"));
+					//Neues Objekt wird dem Ergebnisvektor hinzugefuegt
+					result.addElement(permission);
+				}
+			}
+			
+			catch (SQLException e){
+				e.printStackTrace();
+			}
+			
+			//Vektor wird zurueckgegeben
+			return result;
+		}
+	
 
 	public Permission edit(Permission p) {
 

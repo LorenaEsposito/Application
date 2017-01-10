@@ -25,7 +25,10 @@ public interface NoteAdministrationAsync {
 	public void getCurrentUser(AsyncCallback<AppUser> callback)
 			throws IllegalArgumentException;
 
-	public void getUserByGoogleID(String name, AsyncCallback<AppUser> callback)
+	public void getUserByMail(String mail, AsyncCallback<AppUser> callback)
+			throws IllegalArgumentException;
+	
+	public void getUserByID(int userID, AsyncCallback<AppUser> callback)
 			throws IllegalArgumentException;
 
 	public void createUser(AppUser u, AsyncCallback<Void> callback)
@@ -37,7 +40,7 @@ public interface NoteAdministrationAsync {
 	public void deleteUser(AppUser u, AsyncCallback<Void> callback)
 			throws IllegalArgumentException;
 
-	public void createNotebook(Notebook nb, AsyncCallback<Void> callback)
+	public void createNotebook(Notebook nb, AsyncCallback<Notebook> callback)
 			throws IllegalArgumentException;
 
 	public void editNotebook(Notebook nb, AsyncCallback<Void> callback)
@@ -46,16 +49,16 @@ public interface NoteAdministrationAsync {
 	public void deleteNotebook(Notebook nb, AsyncCallback<Void> callback)
 			throws IllegalArgumentException;
 
-	public void createNote(Note n, AsyncCallback<Void> callback)
+	public void createNote(Note n, AsyncCallback<Note> callback)
 			throws IllegalArgumentException;
 
-	public void editNote(Note n, AsyncCallback<Void> callback)
+	public void editNote(Note n, AsyncCallback<Note> callback)
 			throws IllegalArgumentException;
 
 	public void deleteNote(Note n, AsyncCallback<Void> callback)
 			throws IllegalArgumentException;
 
-	public void createPermission(Permission p, AsyncCallback<Void> callback)
+	public void createPermissions(ArrayList<Permission> p, AsyncCallback<Void> callback)
 			throws IllegalArgumentException;
 
 	public void editPermission(Permission p, AsyncCallback<Void> callback)
@@ -88,6 +91,10 @@ public interface NoteAdministrationAsync {
 	public void searchForNoteByDD(Date duedate,
 			AsyncCallback<ArrayList<Note>> callback)
 			throws IllegalArgumentException;
+	
+	public void getNotebookByID(int nbID,
+			AsyncCallback<Notebook> callback)
+			throws IllegalArgumentException;
 
 	public void getNotebooksOfUser(AppUser user,
 			AsyncCallback<ArrayList<Notebook>> callback)
@@ -97,14 +104,27 @@ public interface NoteAdministrationAsync {
 			AsyncCallback<ArrayList<Note>> callback)
 			throws IllegalArgumentException;
 
-	public void getOwnedNotebooks(AppUser user,
+	public void getOwnedNotebookPermissions(AppUser user,
 			AsyncCallback<ArrayList<Permission>> callback)
 			throws IllegalArgumentException;
 	
-	public void searchUserByGoogleID(String googleID,
+	public void getOwnedNotebooks(AppUser user,
+			AsyncCallback<ArrayList<Notebook>> callback)
+			throws IllegalArgumentException;
+	
+	public void getPermissions(int nbID, int nID,
+			AsyncCallback<ArrayList<Permission>> callback)
+			throws IllegalArgumentException;
+	
+	public void getPermission(int uID, int nbID, int nID,
+			AsyncCallback<Permission> callback)
+	throws IllegalArgumentException;
+	
+	public void getDuedate(int nID, AsyncCallback<DueDate> callback)
+			throws IllegalArgumentException;
+	
+	public void searchUserByMail(String mail,
 			AsyncCallback<AppUser> callback)
 			throws IllegalArgumentException;
-
-	void getUserByEmail(String email, AsyncCallback<AppUser> callback);
 	
 }

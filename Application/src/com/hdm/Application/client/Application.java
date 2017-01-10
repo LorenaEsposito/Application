@@ -5,6 +5,7 @@ import com.hdm.Application.shared.FieldVerifier;
 import com.hdm.Application.client.gui.ImpressumView;
 import com.hdm.Application.client.gui.CreateNoteView;
 import com.hdm.Application.client.gui.CreateNotebookView;
+import com.hdm.Application.client.gui.EditNoteView;
 import com.hdm.Application.client.gui.LoginService;
 import com.hdm.Application.client.gui.LoginServiceAsync;
 import com.hdm.Application.client.gui.Update;
@@ -17,18 +18,22 @@ import com.hdm.Application.shared.bo.Notebook;
 import com.hdm.Application.client.ClientsideSettings;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.hdm.Application.client.gui.SearchView;
-import com.hdm.Application.client.gui.ShowNoteView;
-import com.google.appengine.api.users.User;
-import com.google.appengine.api.users.UserService;
-import com.google.appengine.api.users.UserServiceFactory;
+import com.google.gwt.cell.client.AbstractCell;
+import com.google.gwt.cell.client.Cell;
+import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
+import com.google.gwt.user.cellview.client.AbstractCellTree;
+import com.google.gwt.user.cellview.client.CellList;
+import com.google.gwt.user.cellview.client.HasKeyboardSelectionPolicy.KeyboardSelectionPolicy;
 import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.Window.Location;
@@ -40,8 +45,12 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.RootPanel;
-import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.view.client.ListDataProvider;
+import com.google.gwt.view.client.SelectionChangeEvent;
+import com.google.gwt.view.client.SingleSelectionModel;
+import com.google.gwt.view.client.TreeViewModel;
+import com.google.gwt.view.client.TreeViewModel.NodeInfo;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
@@ -64,7 +73,7 @@ public class Application implements EntryPoint {
 		 * Die AdministrationService ermoeglicht die asynchrone Kommunikation mit der
 		 * Applikationslogik.
 		 */
-		private NoteAdministrationAsync adminService = ClientsideSettings.getAdministration();
+		private static NoteAdministrationAsync adminService = ClientsideSettings.getAdministration();
 
 		/**
 		 * Die Instanz des aktuellen Benutzers ermoeglicht den schnellen Zugriff auf
@@ -76,11 +85,46 @@ public class Application implements EntryPoint {
 		 * Eine ArrayList, in der Notebook-Objekte gespeichert werden
 		 */
 		private ArrayList<Notebook> notebooks = null;
+		
+		private ArrayList<Note> notes = null;
+		
+		TextCell cell = new TextCell();
+		
+		public final static SingleSelectionModel<String> selectionModel = new SingleSelectionModel<String>();
+	    
+		 // Create a data provider.
+		public static ListDataProvider<String> dataProvider = new ListDataProvider<String>();
+		
+		public static List<String> list = dataProvider.getList();
 
+//		private static class CustomTreeModel implements TreeViewModel{
+//		/**
+//	     * Get the {@link NodeInfo} that provides the children of the specified
+//	     * value.
+//	     */
+//	    public <T> NodeInfo<?> getNodeInfo(T value) {
+//	      if (value == null) {
+//	        // LEVEL 0.
+//	        // We passed null as the root value. Return the notebooks.
+//
+//	        // Create a data provider that contains the list of composers.
+//	        ListDataProvider<Notebook> notebookProvider = new ListDataProvider<Notebook>(adminService.getNotebooksOfUser(adminService.getCurrentUser(getCurrentUserCallback()), getNotebooksOfUserCallback());
+//
+//	        // Create a cell to display a notebook.
+//	        Cell<Notebook> cell = new AbstractCell<Notebook>() {
+//	          @Override
+//	          public void render(Context context, Notebook value, SafeHtmlBuilder sb) {
+//	            if (value != null) {
+//	              sb.appendEscaped(value.getNbTitle());
+//	            }
+//	          }
+//	        };
+//		}
+		
 		/**
 		 * Eine ArrayList, in der Note-Objekte gespeichert werden
 		 */
-		private ArrayList<Note> notes = null;
+		//private ArrayList<Note> notes = null;
 		
 	  /**
 	   * The message displayed to the user when the server cannot be reached or
@@ -103,7 +147,7 @@ public class Application implements EntryPoint {
 	   * Erstellung aller Widgets
 	   */
 
-//	  private Label loginLabel = new Label("Bitte melde dich mit deinem Google Account an, um Notework nutzen zu können. Klicke auf Login und los geht's!");
+//	  private Label loginLabel = new Label("Bitte melde dich mit deinem Google Account an, um Notework nutzen zu kï¿½nnen. Klicke auf Login und los geht's!");
 //	  final Label headerLabel = new Label("Notework");
 
 	  private Label loginLabel = new Label("");
@@ -111,10 +155,6 @@ public class Application implements EntryPoint {
 	  final Label usernameLabel = new Label("Username");
 	  final Label passwordLabel = new Label("Password");
 	  private Anchor signInLink = new Anchor("Login");
-//	  public final static ListBox listbox = new ListBox();
-//	  final Button createNoteButton = new Button("");
-//	  final Button noteButton = new Button("My Recipes");
-//	  final Button signOutButton = new Button("Sign out");
 	  public final static ListBox listbox = new ListBox();
 	  final Button createNoteButton = new Button("");
 	  final Button createNotebookButton = new Button("");
@@ -123,6 +163,8 @@ public class Application implements EntryPoint {
 	  final Button logoButton = new Button();
 	  final Button impressumButton = new Button("Impressum");
 	  final Button hilfeButton = new Button("Hilfe");
+	  final CellList<String> cellList = new CellList<String>(cell);
+	  
  /**
   * Create a remote service proxy to talk to the server-side Greeting service.
   */
@@ -150,7 +192,7 @@ public class Application implements EntryPoint {
       ClientsideSettings.setLoginInfo(result);
       if (loginInfo.isLoggedIn()){                 		
 		   		
-		   		adminService.getUserByEmail(loginInfo.getEmailAddress(), new AsyncCallback<AppUser>() {
+		   		adminService.getUserByMail(loginInfo.getEmailAddress(), new AsyncCallback<AppUser>() {
 
 					@Override
 					public void onFailure(Throwable caught) {
@@ -194,11 +236,22 @@ public class Application implements EntryPoint {
     	 /**
  		 * Auslesen des Profils vom aktuellen Benutzer aus der Datenbank.
  		 */
- 		int atIndex = ClientsideSettings.getLoginInfo().getEmailAddress().indexOf("@");
- 		adminService.getUserByGoogleID(ClientsideSettings.getLoginInfo().getEmailAddress().substring(0, atIndex),
+
+ 		adminService.getUserByMail(ClientsideSettings.getLoginInfo().getEmailAddress(),
  				getCurrentUserCallback());
  		
  		Update update = new WelcomeView();
+ 		
+ 		listbox.setSelectedIndex(0);
+ 		
+ 		cellList.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.ENABLED);
+
+ 	    // Add a selection model to handle user selection.
+ 	    
+ 	    cellList.setSelectionModel(selectionModel);
+ 	    
+	 	 // Connect the list to the data provider.
+ 	    dataProvider.addDataDisplay(cellList);
 
  	    
 	    /**
@@ -231,6 +284,7 @@ public class Application implements EntryPoint {
 	    headButtonPanel.add(signOutButton);
 	    headPanel.add(headButtonPanel);
 	    navPanel.add(listbox);
+	    navPanel2.add(cellList);
 	    navPanel2.add(createNotebookButton);
 	    navPanel2.add(createNoteButton);
 	    RootPanel.get("Header").add(headPanel);
@@ -241,6 +295,15 @@ public class Application implements EntryPoint {
 	    /**
 	     * Implementierung der jeweiligen ClickHandler fuer die einzelnen Widgets
 	     */
+	    
+	    selectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
+			public void onSelectionChange(SelectionChangeEvent event) {
+				
+				Update update = new EditNoteView();
+				RootPanel.get("Details").clear();
+				RootPanel.get("Details").add(update);
+			}
+	    });
 	    
 	    logoButton.addClickHandler(new ClickHandler() {
 		  	public void onClick(ClickEvent event) {
@@ -330,6 +393,11 @@ public class Application implements EntryPoint {
 	    listbox.addChangeHandler(new ChangeHandler() {
 	    	public void onChange(ChangeEvent event) {
 	    		adminService.getNotesOfNotebook(listbox.getSelectedItemText(), currentUser, getNotesOfNotebookCallback());
+	    		
+//	    		Update update = new EditNotebookView();
+//	    		
+//	    		RootPanel.get("Details").clear();
+//	    		RootPanel.get("Details").add(update);
 	    	}
 	    });
 	}
@@ -378,9 +446,10 @@ public class Application implements EntryPoint {
 			.severe("Success GetCurrentUserCallback: " + result.getClass().getSimpleName());
 		 currentUser = result;
 		 
-		 userLabel.setText(currentUser.getGoogleID());
+		 userLabel.setText(currentUser.getUserName());
 		 
 		 adminService.getNotebooksOfUser(currentUser, getNotebooksOfUserCallback());
+		 
 		 
 		 
 	 }
@@ -407,6 +476,7 @@ public class Application implements EntryPoint {
 				 
 				 listbox.setVisibleItemCount(1);
 			 }
+			 adminService.getNotesOfNotebook(listbox.getSelectedValue(), currentUser, getNotesOfNotebookCallback());
 		 }
 	 };
 	 return asyncCallback;
@@ -424,7 +494,12 @@ public class Application implements EntryPoint {
 	 public void onSuccess(ArrayList<Note> result) {
 		 ClientsideSettings.getLogger().
 		 severe("Success GetNotesOfNotebookCallback: " + result.getClass().getSimpleName());
-
+		 
+		 notes = result;
+		 dataProvider.getList().clear();
+		 for(int i = 0; i < notes.size(); i++) {
+			 dataProvider.getList().add(notes.get(i).getnTitle());
+		 }
 	 }
 	 };
 	 return asyncCallback;

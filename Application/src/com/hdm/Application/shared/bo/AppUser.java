@@ -26,17 +26,12 @@ public class AppUser implements Serializable {
 	/**
 	 * Die GoogleID des Users - ebenfalls eindeutiger Primaerschluessel
 	 */
-	private String googleID;
+	private String mail;
 	
 	/**
 	 * Der Name des Users
 	 */
 	private String userName;
-	
-	/**
-	 * Die Email-Adresse des Users
-	 */
-	private String mail;
 	
 	/**
 	 * Die Information, ob der User in der aktuellen Session durch einen Login
@@ -67,16 +62,16 @@ public class AppUser implements Serializable {
 	 * Rueckgabe der GoogleID
 	 * @return googleID
 	 */
-	public String getGoogleID(){
-		return this.googleID;
+	public String getMail(){
+		return this.mail;
 	}
 	
 	/**
 	 * Setzen der GoogleID
 	 * @param googleID
 	 */
-	public void setGoogleID(String googleID){
-		this.googleID = googleID;
+	public void setMail(String mail){
+		this.mail = mail;
 	}
 	
 	/**
@@ -93,22 +88,6 @@ public class AppUser implements Serializable {
 	 */
 	public void setUserName(String userName){
 		this.userName = userName;
-	}
-
-	/**
-	 * Rueckgabe der Mailadresse
-	 * @return mail
-	 */
-	public String getMail() {
-		return mail;
-	}
-
-	/**
-	 * Setzen der Mailadresse
-	 * @param mail
-	 */
-	public void setMail(String mail) {
-		this.mail = mail;
 	}
 	
 }

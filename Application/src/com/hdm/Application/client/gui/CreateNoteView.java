@@ -1,6 +1,5 @@
 package com.hdm.Application.client.gui;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -30,6 +29,7 @@ import com.hdm.Application.client.Application;
 import com.hdm.Application.client.ClientsideSettings;
 import com.hdm.Application.shared.NoteAdministrationAsync;
 import com.hdm.Application.shared.bo.AppUser;
+import com.hdm.Application.shared.bo.DueDate;
 import com.hdm.Application.shared.bo.Note;
 import com.hdm.Application.shared.bo.Notebook;
 import com.hdm.Application.shared.bo.Permission;
@@ -41,6 +41,7 @@ public class CreateNoteView extends Update{
 	 * Die AdministrationService ermoeglicht die asynchrone Kommunikation mit der
 	 * Applikationslogik.
 	 */
+	
 	private NoteAdministrationAsync adminService = ClientsideSettings.getAdministration();
 	
 	private String currentNBTitle = new String();
@@ -48,6 +49,8 @@ public class CreateNoteView extends Update{
 	private Notebook currentNB = new Notebook();
 	
 	private Note currentN = new Note();
+	
+	private	Note note = new Note();
 	
 	private ArrayList<Permission> permissions = new ArrayList<Permission>();
 	
@@ -99,19 +102,17 @@ public class CreateNoteView extends Update{
    final Button savePermissionButton = new Button("Save");
    final RadioButton readButton = new RadioButton("Leseberechtigung");
    final RadioButton editButton = new RadioButton("Bearbeitungsberechtigung");
-   DatePicker duedate = new DatePicker();
+   final RadioButton deleteButton = new RadioButton("Loeschberechtigung");
+   DatePicker datePicker = new DatePicker();
    Label rightsLabel = new Label("Berechtigung vergeben:");
    Label duedateLabel = new Label("Enddatum vergeben:");
    Label mainheadline = new Label("Neue Notiz");
-
 
 protected void run() {
     this.append("");
     
     mainPanel.setStyleName("detailsPanel");
-    
-    mainPanel.setStyleName("detailsPanel");
-    
+
     currentNBTitle = Application.listbox.getSelectedItemText();
     
     
@@ -121,7 +122,7 @@ protected void run() {
     
     cellList.setSelectionModel(selectionModel);
     
- // Connect the table to the data provider.
+ // Connect the list to the data provider.
     dataProvider.addDataDisplay(cellList);
 
 	/**
@@ -137,19 +138,14 @@ protected void run() {
     permissionPanel.add(permissionText);
     permissionPanel.add(readButton);
     permissionPanel.add(editButton);
+    permissionPanel.add(deleteButton);
     permissionPanel.add(savePermissionButton);
     rightPanel.add(cellList);
     rightPanel.add(duedateLabel);
     leftPanel.add(noteTitle);
     leftPanel.add(noteSubtitle);
     leftPanel.add(textArea); 
-    
-    rightPanel.add(duedate);
-    
-  
-  
-    //buttonPanel.add(editButton);
-    //buttonPanel.add(deleteButton);
+    rightPanel.add(datePicker);
     mainPanel.add(leftPanel);
     mainPanel.add(rightPanel);
     
@@ -159,6 +155,7 @@ protected void run() {
     
     textArea.setVisibleLines(20);
     textArea.setPixelSize(420, 350);
+
     noteTitle.setText("Titel");
     noteSubtitle.setText("Subtitel");
     if(Cookies.getCookie("url") != null){
@@ -173,6 +170,7 @@ protected void run() {
     
     readButton.setText("Leseberechtigung");
     editButton.setText("Bearbeitungsberechtigung");
+    deleteButton.setText("Loeschberechtigung");
     permissionText.setText("Name des Berechtigten");
     
     /**
@@ -187,24 +185,20 @@ protected void run() {
     cancelButton.setStyleName("savePermission-button");
     readButton.setStyleName("savePermission-button");
     editButton.setStyleName("savePermission-button");
+    deleteButton.setStyleName("savePermission-button");
     permissionText.setStyleName("style-Textbox");
-    duedate.setStyleName("datepicker");
+    datePicker.setStyleName("datepicker");
     textArea.setStyleName("TextArea");
     savePermissionButton.setStyleName("savePermission-button");
     buttonPanel.setStyleName("buttonPanel");
     permissionPanel.setStyleName("permissionPanel");
     rightsLabel.setStyleName("headline");
     duedateLabel.setStyleName("headline");
-
-    //editButton.setStyleName("notework-menubutton");
-    //deleteButton.setStyleName("notework-menubutton");
-    
-    adminService.searchForNotebook(currentNBTitle, searchForNotebookCallback());
     
     /*
 	 * Sperren der Eingabemoeglichkeit im DatePicker bei zukuenftigen Daten
 	 */
-	duedate.addShowRangeHandlerAndFire(new ShowRangeHandler<java.util.Date>() {
+	datePicker.addShowRangeHandlerAndFire(new ShowRangeHandler<java.util.Date>() {
 		@Override
 		public void onShowRange(ShowRangeEvent<Date> event) {
 			Date start = event.getStart();
@@ -214,8 +208,8 @@ protected void run() {
 			Date today = new Date();
 
 			while (temp.before(end)) {
-				if (temp.before(today) && duedate.isDateVisible(temp)) {
-					duedate.setTransientEnabledOnDates(false, temp);
+				if (temp.before(today) && datePicker.isDateVisible(temp)) {
+					datePicker.setTransientEnabledOnDates(false, temp);
 				}
 				CalendarUtil.addDaysToDate(temp, 1);
 			}
@@ -231,6 +225,12 @@ protected void run() {
 		}
 	});
 	
+	noteSubtitle.addClickHandler(new ClickHandler() {
+		public void onClick(ClickEvent event){
+			noteSubtitle.setText("");
+		}
+	});
+	
 	permissionText.addClickHandler(new ClickHandler(){
 		public void onClick(ClickEvent event){
 			permissionText.setText("");
@@ -239,12 +239,13 @@ protected void run() {
 	
     readButton.addClickHandler(new ClickHandler() {
     	public void onClick(ClickEvent event) {
-    		if(editButton.getValue() == true){
+    		if(editButton.getValue() == true || deleteButton.getValue() == true){
     			editButton.setValue(false);
+    			deleteButton.setValue(false);
     			readButton.setValue(true);
     		}
     		
-    		if(editButton.getValue() != true){
+    		if(editButton.getValue() != true && deleteButton.getValue() != true){
     			readButton.setValue(true);
     		}
     	}
@@ -252,13 +253,28 @@ protected void run() {
     
     editButton.addClickHandler(new ClickHandler() {
     	public void onClick(ClickEvent event){
-    		if(readButton.getValue() == true){
+    		if(readButton.getValue() == true || readButton.getValue() == true){
     			readButton.setValue(false);
+    			deleteButton.setValue(false);
     			editButton.setValue(true);
     		}
     		
-    		if(readButton.getValue() != true){
+    		if(readButton.getValue() != true && deleteButton.getValue() != true){
     			editButton.setValue(true);
+    		}
+    	}
+    });
+    
+    deleteButton.addClickHandler(new ClickHandler() {
+    	public void onClick(ClickEvent event) {
+    		if(readButton.getValue() == true || editButton.getValue() == true){
+    			readButton.setValue(false);
+    			editButton.setValue(false);
+    			deleteButton.setValue(true);
+    		}
+    		
+    		if(readButton.getValue() != true && editButton.getValue() != true){
+    			deleteButton.setValue(true);
     		}
     	}
     });
@@ -278,14 +294,15 @@ protected void run() {
     			readButton.setValue(false);
     			editButton.setEnabled(true);
     			editButton.setValue(false);
+    			deleteButton.setEnabled(true);
+    			deleteButton.setValue(false);
     		}
 
-    		String googleID = new String();
+    		String mail = new String();
     		
-    		int atIndex = permissionText.getText().indexOf("@");
-    		googleID = permissionText.getText().substring(0, atIndex);
+    		mail = permissionText.getValue();
     		
-    		adminService.searchUserByGoogleID(googleID, searchUserByGoogleIDCallback());	
+    		adminService.searchUserByMail(mail, searchUserByGoogleIDCallback());	
     		
     	}
     });
@@ -301,24 +318,13 @@ protected void run() {
 		createButton.setEnabled(false);
 		//createButton.setStylePrimaryName("");
 		
-		Note note = new Note();
 		note.setnTitle(noteTitle.getText());
 		note.setnSubtitle(noteSubtitle.getText());
 		note.setnContent(textArea.getText());
 		note.setnCreDate(date);
 		note.setnModDate(date);
-		note.setNbID(currentNB.getNbID());
 
-		adminService.createNote(note, createNoteCallback());
-		
-
-          /*
-           * Showcase instantiieren.
-           */
-          Update update = new ShowNoteView();
-          
-          RootPanel.get("Details").clear();
-          RootPanel.get("Details").add(update);
+		adminService.searchForNotebook(currentNBTitle, searchForNotebookCallback());
     }
     });
     
@@ -374,14 +380,14 @@ protected void run() {
     		 
     		 user = result;
     		 
-    		 adminService.getOwnedNotebooks(user, getOwnedNotebooksCallback());
+    		 adminService.getOwnedNotebookPermissions(user, getOwnedNotebookPermissionsCallback());
     		 
     	 }
 		};
 		return asyncCallback;
 	}
 	
-	private AsyncCallback<ArrayList<Permission>> getOwnedNotebooksCallback(){
+	private AsyncCallback<ArrayList<Permission>> getOwnedNotebookPermissionsCallback(){
 		AsyncCallback<ArrayList<Permission>> asyncCallback = new AsyncCallback<ArrayList<Permission>>() {
 			
 			@Override
@@ -392,7 +398,7 @@ protected void run() {
     	 @Override
     	 public void onSuccess(ArrayList<Permission> result) {
     		 ClientsideSettings.getLogger().
-    		 severe("Success GetOwnedNotebooksCallback: " + result.getClass().getSimpleName());
+    		 severe("Success GetOwnedNotebookPermissionsCallback: " + result.getClass().getSimpleName());
     		 
     		 permissions = result;
     		 
@@ -403,14 +409,15 @@ protected void run() {
     				 }
     			 }
     		 }
-    		 
+    		 note.setNbID(currentNB.getNbID());
+    		 adminService.getNotesOfNotebook(currentNBTitle, user, getNotesOfNotebookCallback());
     	 }
 		};
 		return asyncCallback;
 	}
 
-    private AsyncCallback<Void> createNoteCallback() {
-    	AsyncCallback<Void> asyncCallback = new AsyncCallback<Void>(){
+    private AsyncCallback<Note> createNoteCallback() {
+    	AsyncCallback<Note> asyncCallback = new AsyncCallback<Note>(){
     		
     		@Override
     		public void onFailure(Throwable caught) {
@@ -418,19 +425,47 @@ protected void run() {
     		}
     	 
     	 @Override
-    	 public void onSuccess(Void result) {
+    	 public void onSuccess(Note result) {
     		 ClientsideSettings.getLogger().
     		 severe("Success CreateNoteCallback: " + result.getClass().getSimpleName());
     		 
-    		 adminService.getNotesOfNotebook(currentNBTitle, user, getNotesOfNotebookCallback());
+    		 Application.list.add(note.getnTitle());
+    		 currentN = result;
 
+    		 Permission permission = new Permission();
+    			permission.setIsOwner(true);
+    			permission.setNbID(currentNB.getNbID());
+    			permission.setPermissionType(3);
+    			permission.setUserID(user.getUserID());
+    			
+    			notePermissions.add(permission);
+    			
+    			for(int i = 0; i < notePermissions.size(); i++){
+    				permission = notePermissions.get(i);
+    				permission.setNID(currentN.getnID());
+    				permission.setNbID(currentNB.getNbID());
+    				
+    			}
+	   			 Update update = new EditNoteView();
+		          
+		          RootPanel.get("Details").clear();
+		          RootPanel.get("Details").add(update);
+		          
+				adminService.createPermissions(notePermissions, createPermissionsCallback());
+				
+				if(datePicker.getValue() != null) {
+					DueDate duedate = new DueDate();
+					duedate.setdDate(datePicker.getValue());
+					duedate.setnID(currentN.getnID());
+					adminService.createDuedate(duedate, createDuedateCallback());
+				}
     	 }
     	};
     	return asyncCallback;
 
     }
     
-    private AsyncCallback<Void> createPermissionCallback() {
+    private AsyncCallback<Void> createPermissionsCallback() {
     	AsyncCallback<Void> asyncCallback = new AsyncCallback<Void>() {
     		
     		@Override
@@ -442,6 +477,23 @@ protected void run() {
     		public void onSuccess(Void result) {
     			ClientsideSettings.getLogger().
     			severe("Success CreatePermissionCallback: " + result.getClass().getSimpleName());
+    		}
+    	};
+    	return asyncCallback;
+    }
+    
+    private AsyncCallback<Void> createDuedateCallback() {
+    	AsyncCallback<Void> asyncCallback = new AsyncCallback<Void>() {
+    		
+    		@Override
+    		public void onFailure(Throwable caught) {
+    			ClientsideSettings.getLogger().severe("Error: " + caught.getMessage());
+    		}
+    		
+    		@Override
+    		public void onSuccess(Void result) {
+    			ClientsideSettings.getLogger().
+    			severe("Success CreateDuedateCallback: " + result.getClass().getSimpleName());
     		}
     	};
     	return asyncCallback;
@@ -468,31 +520,48 @@ protected void run() {
         		}
         		
         		if(user != null){
+        			boolean isExisting = new Boolean(false);
+        			for(int i = 0; i < dataProvider.getList().size(); i++) {
+        				if(user.getUserName() == dataProvider.getList().get(i)) {
+        					isExisting = true;
+        					break;
+        				}
+        			}
+        			if(isExisting == false){
         			permission.setUserID(user.getUserID());
         			permission.setIsOwner(false);
-        			permission.setNbID(currentNB.getNbID());
+
         			
         			if(readButton.getValue() == true){
-        				permission.setPermissionType(false);
+        				permission.setPermissionType(1);
         			}
         			if(editButton.getValue() == true){
-        				permission.setPermissionType(true);
+        				permission.setPermissionType(2);
         			}
-        			if(readButton.getValue() == false && editButton.getValue() == false){
+        			if(deleteButton.getValue() == true){
+        				permission.setPermissionType(3);
+        			}
+        			if(readButton.getValue() == false && editButton.getValue() == false && deleteButton.getValue() == false){
         				Window.alert("Bitte waehlen Sie eine Art der Berechtigung aus");
         				savePermissionButton.setEnabled(true);
         			}
         			
-        			permissions.add(permission);
+        			notePermissions.add(permission);
+        			dataProvider.getList().add(user.getUserName());
+        			}
+        			
+        			if(isExisting == true){
+        				Window.alert("Es wurde bereits eine Berechtigung an diesen User vergeben");
+        			}
         			
         			savePermissionButton.setEnabled(true);
         			permissionText.setText("Name des Berechtigten");
         			readButton.setEnabled(true);
         			editButton.setEnabled(true);
+        			deleteButton.setEnabled(true);
         			readButton.setValue(false);
         			editButton.setValue(false);
-        			
-        			dataProvider.getList().add(user.getUserName());
+        			deleteButton.setValue(false);
         		}
     		}
     	};
@@ -512,29 +581,23 @@ protected void run() {
    		 ClientsideSettings.getLogger().
    		 severe("Success GetNotesOfNotebookCallback: " + result.getClass().getSimpleName());
    		 
-   		 for(int x = 0; x < result.size(); x++){
-   			 if(noteTitle.getText() == result.get(x).getnTitle()){
-   				 currentN = result.get(x);
-   			 }
+   		 boolean isExisting = new Boolean(false);
+   		 for(int y = 0; y < result.size(); y++) {
+   			 if(noteTitle.getText() == result.get(y).getnTitle()) {
+   				 noteTitle.setText("");
+   				 isExisting = true;
+   				 break;
+   			 }   			 
    		 }
-   		 
-		 Permission permission = new Permission();
-			permission.setIsOwner(true);
-			permission.setNbID(currentNB.getNbID());
-			permission.setPermissionType(true);
-			permission.setUserID(user.getUserID());
-			
-			notePermissions.add(permission);
-			
-			for(int i = 0; i < notePermissions.size(); i++){
-				permission = notePermissions.get(i);
-				permission.setNID(currentN.getnID());
-				adminService.createPermission(permission, createPermissionCallback());
-			}	
+   		 if(isExisting == false){
+			 adminService.createNote(note, createNoteCallback());
+   		 }
+   		 if(isExisting == true){
+   			Window.alert("Diese Notiz existiert bereits im ausgewaehlten Notizbuch");
+   		 }
    	 }
    	 };
    	 return asyncCallback;
     }
     
 }
-

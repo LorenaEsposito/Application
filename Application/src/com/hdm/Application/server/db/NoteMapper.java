@@ -85,7 +85,7 @@ public class NoteMapper {
 				
 				String creDate = null;
 				if (note.getnCreDate() != null) {
-					SimpleDateFormat mySQLformat = new SimpleDateFormat("yyyy-MM-dd");
+					SimpleDateFormat mySQLformat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 					creDate = mySQLformat.format(note.getnCreDate());
 				}
 				
@@ -132,10 +132,9 @@ public class NoteMapper {
 		 
 		 try{
 			 Statement stmt = con.createStatement();
-			 stmt.executeUpdate("UPDATE notes " + "SET nTitle=\"" + note.getnTitle() + "\"," + "nSubtitle=\"" + note.getnSubtitle() + "\"" 
-			 	+"nContent=\"" + note.getnContent() +"\"," + "source=\"" + note.getSource() + "\"," + "nCreDate=\"" + note.getnCreDate() 
-			 	+ "nModDate=\"" + note.getnModDate() + "userID=\"" + note.getUserID() + "WHERE nID=" + note.getnID());
-			 //modification Date hinzufuegen --> wie mach ich dass es auf jednefall automatisch hinzugefuegt wird?
+			 stmt.executeUpdate("UPDATE notes " + "SET title=\"" + note.getnTitle() + "\", " + "subtitle=\"" + note.getnSubtitle() + "\", " 
+			 	+"content=\"" + note.getnContent() + "\", " + "creadate=\"" + note.getnCreDate() + "\", "
+			 	+ "moddate=\"" + note.getnModDate() + " WHERE nid=" + note.getnID());
 			 
 		 }
 		 catch(SQLException e){
@@ -455,8 +454,9 @@ public class NoteMapper {
 					Note note = new Note();
 					note.setnID(rs.getInt("nid"));
 					note.setNbID(rs.getInt("nbid"));
-					note.setTitle(rs.getString("title"));
+					note.setnTitle(rs.getString("title"));
 					note.setnSubtitle(rs.getString("subtitle"));
+					note.setnContent(rs.getString("content"));
 					note.setSource(rs.getString("source"));
 					note.setnCreDate(rs.getDate("creadate"));
 					note.setnModDate(rs.getDate("moddate"));

@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.Vector;
 
 import com.hdm.Application.shared.bo.Notebook;
@@ -72,8 +73,9 @@ public class NotebookMapper {
 
 			// Statement ausfuellen und als Query an DB schicken
 			ResultSet rs = stmt
-					.executeQuery("SELECT nbid, title, creadate, moddate FROM notebooks"
-							+ "WHERE nbID=" + nbID);
+
+					.executeQuery("SELECT nbid, title, creadate, moddate FROM notebooks "
+							+ "WHERE nbid=" + nbID);
 
 			/**
 			 * Es kann max. ein Ergebnis zurueck gegeben werden, da die id der
@@ -84,11 +86,10 @@ public class NotebookMapper {
 			if (rs.next()) {
 				// Ergebnis-Tupel in Objekt umwandeln
 				Notebook notebook = new Notebook();
-				notebook.setNbID(rs.getInt("nbID"));
-				notebook.setUserID(rs.getInt("userID"));
-				notebook.setNbTitle(rs.getString("nbTitle"));
-				notebook.setNbCreDate(rs.getDate("nbCreDate"));
-				notebook.setNbModDate(rs.getDate("nbModDate"));
+				notebook.setNbID(rs.getInt("nbid"));
+				notebook.setNbTitle(rs.getString("title"));
+				notebook.setNbCreDate(rs.getDate("creadate"));
+				notebook.setNbModDate(rs.getDate("moddate"));
 				return notebook;
 			}
 		} catch (SQLException e) {
@@ -117,8 +118,7 @@ public class NotebookMapper {
 			
 			//Statement ausfuellen und als Query an DB schicken
 			ResultSet rs = stmt.executeQuery("SELECT nbid FROM permissions "
-					+ "WHERE appuserid=" + appUserID
-					+ " AND isowner=1");
+					+ "WHERE appuserid=" + appUserID);
 			
 			while (rs.next()){
 				
@@ -273,6 +273,12 @@ public class NotebookMapper {
 			// Ueberpruefen welches der aktuell hoechste Primaerschluessel ist.
 			ResultSet rs = stmt
 					.executeQuery("SELECT MAX(nbid) AS 'maxnbID' FROM notebooks");
+			
+			String creDate = null;
+			if (notebook.getNbCreDate() != null) {
+				SimpleDateFormat mySQLformat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+				creDate = mySQLformat.format(notebook.getNbCreDate());
+			}
 
 			if (rs.next()) {
 				// notebook erhaelt den aktuell hoechsten und um 1

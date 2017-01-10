@@ -72,7 +72,7 @@ public class UserMapper {
 			 * Statement ausf�llen und als Query an die DB schicken
 			 */
 
-			ResultSet rs = stmt.executeQuery("SELECT appuserid, gid, username FROM users " + "WHERE appuserid='" + id
+			ResultSet rs = stmt.executeQuery("SELECT appuserid, mail, username FROM users " + "WHERE appuserid='" + id
 					+ "' ORDER BY appuserid");
 
 			/**
@@ -84,6 +84,7 @@ public class UserMapper {
 				AppUser u = new AppUser();
 				u.setUserID(rs.getInt("appuserid"));
 				u.setUserName(rs.getString("username"));
+				u.setMail(rs.getString("mail"));
 				return u;
 			}
 		} catch (SQLException e) {
@@ -94,43 +95,8 @@ public class UserMapper {
 		return null;
 	}
 
-
-	public AppUser findByGoogleID(String gid) {
-		/**
-		 * DB-Verbindung holen & Erzeugen eines neuen SQL-Statements.
-		 */
-		Connection con = DBConnection.connection();
-
-		try {
-			Statement stmt = con.createStatement();
-
-			/**
-			 * Statement ausf�llen und als Query an die DB schicken
-			 */
-			ResultSet rs = stmt.executeQuery("SELECT appuserid, gid, username FROM users " + "WHERE gid='" + gid
-					+ "' ORDER BY gid");
-
-			/**
-			 * Da id Primaerschl�ssel ist, kann max. nur ein Tupel zur�ckgegeben
-			 * werden. Pr�fe, ob ein Ergebnis vorliegt.
-			 */
-			if (rs.next()) {
-
-				AppUser u = new AppUser();
-				u.setUserID(rs.getInt("appuserid"));
-				u.setUserName(rs.getString("username"));
-				u.setGoogleID(rs.getString("gid"));
-				return u;
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return null;
-		}
-
-		return null;
-	}
-	
 	public AppUser findByMail(String mail) {
+
 		/**
 		 * DB-Verbindung holen & Erzeugen eines neuen SQL-Statements.
 		 */
@@ -142,8 +108,8 @@ public class UserMapper {
 			/**
 			 * Statement ausf�llen und als Query an die DB schicken
 			 */
-			ResultSet rs = stmt.executeQuery("SELECT appuserid, gid, username, mail FROM users " + "WHERE mail='" + mail
-					+ "' ORDER BY gid");
+			ResultSet rs = stmt.executeQuery("SELECT appuserid, mail, username FROM users " + "WHERE mail='" + mail
+					+ "' ORDER BY mail");
 
 			/**
 			 * Da id Primaerschl�ssel ist, kann max. nur ein Tupel zur�ckgegeben
@@ -154,7 +120,6 @@ public class UserMapper {
 				AppUser u = new AppUser();
 				u.setUserID(rs.getInt("appuserid"));
 				u.setUserName(rs.getString("username"));
-				u.setGoogleID(rs.getString("gid"));
 				u.setMail(rs.getString("mail"));
 				return u;
 			}
@@ -194,8 +159,9 @@ public class UserMapper {
 			/**
 			 * Statement ausf�llen und als Query an die DB schicken
 			 */
-			ResultSet rs = stmt.executeQuery("SELECT appuserid, , gid, username FROM users " + "WHERE username='" + name
-					+ "' ORDER BY userName");
+
+			ResultSet rs = stmt.executeQuery("SELECT appuserid, mail, username FROM users " + "WHERE username='" + name
+					+ "' ORDER BY username");
 
 			/**
 			 * F�r jeden Eintrag im Suchergebnis wird nun ein Profile-Objekt
@@ -206,6 +172,7 @@ public class UserMapper {
 				AppUser u = new AppUser();
 				u.setUserID(rs.getInt("appuserid"));
 				u.setUserName(rs.getString("username"));
+				u.setMail(rs.getString("mail"));
 
 				/**
 				 * Hinzuf�gen des neuen Objekts zum Ergebnisvektor
@@ -247,7 +214,7 @@ public class UserMapper {
 			 * Statement ausf�llen und als Query an die DB schicken.
 			 */
 
-			ResultSet rs = stmt.executeQuery("SELECT appuserid, gid, username FROM users" + "ORDER BY appuserid");
+			ResultSet rs = stmt.executeQuery("SELECT appuserid, mail, username FROM users" + "ORDER BY appuserid");
 
 			/**
 			 * F�r jeden Eintrag im Suchergebnis wird nun ein Profile-Objekt
@@ -257,6 +224,7 @@ public class UserMapper {
 				AppUser u = new AppUser();
 				u.setUserID(rs.getInt("appuserid"));
 				u.setUserName(rs.getString("username"));
+				u.setMail(rs.getString("mail"));
 
 				/**
 				 * Hinzuf�gen des neuen Objekts zum Ergebnisvektor
@@ -317,12 +285,8 @@ public class UserMapper {
 				 * Jetzt erst erfolgt die tatsaechliche Einf�geoperation
 				 */
 				stmt.executeUpdate(
-						"INSERT INTO users (appuserid, gid, username) "
-								+ "VALUES (" + u.getUserID() + ",'" + u.getGoogleID() + "','" + u.getUserName() +"')");
-
-				System.out.println(
-						"INSERT INTO users (appuserid, gid, username) "
-								+ "VALUES (" + u.getUserID() + ",'" + u.getGoogleID() + "','" + u.getUserName() +"')");
+						"INSERT INTO users (appuserid, mail, username) "
+								+ "VALUES (" + u.getUserID() + ",'" + u.getMail() + "','" + u.getUserName() +"')");
 
 				return u;
 			}
@@ -351,10 +315,6 @@ public class UserMapper {
 		 */
 
 		Connection con = DBConnection.connection();
-		
-		DueDateMapper.deleteAllUserDueDates(u);
-		NoteMapper.deleteAllUserNotes(u);
-		NotebookMapper.deleteAllUserNotebooks(u);
 		
 		try {
 			Statement stmt = con.createStatement();

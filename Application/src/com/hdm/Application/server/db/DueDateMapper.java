@@ -1,6 +1,7 @@
 package com.hdm.Application.server.db;
 
 import java.sql.*;
+import java.text.SimpleDateFormat;
 import java.util.Vector;
 
 import com.hdm.Application.shared.bo.DueDate;
@@ -145,8 +146,9 @@ public class DueDateMapper {
 
 		try {
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT ddID, dDate, nID"
-					+ "FROM DueDate" + "WHERE nID LIKE'" + nID);
+
+			ResultSet rs = stmt.executeQuery("SELECT ddid, duedate, nid "
+					+ "FROM duedates " + "WHERE nid LIKE " + nID);
 
 			/*
 			 * Da nID Primärschlüssel ist, kann max. nur ein Tupel
@@ -156,9 +158,9 @@ public class DueDateMapper {
 			if (rs.next()) {
 				// Ergebnis-Tupel in Objekt umwandeln
 				DueDate dueDate = new DueDate();
-				dueDate.setDdID(rs.getInt("ddID"));
-				dueDate.setdDate(rs.getDate("dDate"));
-				dueDate.setnID(rs.getInt("nID"));
+				dueDate.setDdID(rs.getInt("ddid"));
+				dueDate.setdDate(rs.getDate("duedate"));
+				dueDate.setnID(rs.getInt("nid"));
 
 				return dueDate;
 			}
@@ -187,8 +189,16 @@ public class DueDateMapper {
 			Statement stmt = con.createStatement();
 
 			// Ueberpruefen welches der aktuell hoechste Primaerschluessel ist.
-			ResultSet rs = stmt.executeQuery("SELECT Max(ddID) AS maxDdId"
-					+ "FROM DueDate");
+
+			ResultSet rs = stmt.executeQuery("SELECT Max(ddID) AS maxDdId "
+					+ "FROM duedates");
+			
+			String duedate = null;
+			if (dueDate.getdDate() != null) {
+				SimpleDateFormat mySQLformat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+				duedate = mySQLformat.format(dueDate.getdDate());
+			}
+
 
 			if (rs.next()) {
 				// notebook erhaelt den aktuell hoechsten und um 1
@@ -198,9 +208,11 @@ public class DueDateMapper {
 				stmt = con.createStatement();
 
 				// Neues Objekt wird eingefuegt
-				stmt.executeUpdate("INSERT INTO DueDate (ddID, dDate, nID)"
+
+				stmt.executeUpdate("INSERT INTO duedates (ddid, duedate, nid) "
 						+ "VALUES (" + dueDate.getDdID() + ",'"
-						+ dueDate.getdDate() + "," + dueDate.getnID() + "')");
+						+ duedate + "'," + dueDate.getnID() + ")");
+
 
 			}
 
@@ -233,9 +245,8 @@ public class DueDateMapper {
 		try {
 			Statement stmt = con.createStatement();
 
-			stmt.executeUpdate("UPDATE DueDate" + "SET ddID=\""
-					+ dueDate.getDdID() + "SET dDate=\"" + dueDate.getdDate()
-					+ "WHERE nID" + dueDate.getnID());
+			stmt.executeUpdate("UPDATE duedates " + "SET duedate=\"" + dueDate.getdDate()
+					+ " WHERE nid =" + dueDate.getnID());
 
 		} catch (SQLException e) {
 			e.printStackTrace();

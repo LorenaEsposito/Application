@@ -35,8 +35,6 @@ import com.hdm.Application.shared.bo.DueDate;
 import com.hdm.Application.shared.bo.Note;
 import com.hdm.Application.shared.bo.Notebook;
 
-
-
 public class SearchView extends Update {
 
 	protected String getHeadlineText() {
@@ -185,7 +183,7 @@ public class SearchView extends Update {
 			public void onClick(ClickEvent event){
 			
 			Note selectedNote = ((SingleSelectionModel<Note>) noteTable.getSelectionModel()).getSelectedObject();
-			Window.alert("Titel der Notiz die ausgewählt wurde: " + selectedNote.getnTitle());		
+			Window.alert("Titel der Notiz die ausgewï¿½hlt wurde: " + selectedNote.getnTitle());		
 		
 			if (n || dd ){
 				Note selectedNoteA = ((SingleSelectionModel<Note>) noteTable.getSelectionModel()).getSelectedObject();
@@ -325,7 +323,7 @@ public class SearchView extends Update {
 					}
 				
 				if (!rbselected) {
-					Window.alert("Bitte erst ein Radiobutton ausgewählen!");
+					Window.alert("Bitte erst ein Radiobutton ausgewï¿½hlen!");
 					searchBox.setFocus(true);
 					searchBox.setText("");
 					searchDateBox.setValue(null);
@@ -362,7 +360,7 @@ public class SearchView extends Update {
 		    @Override
 		    public String getValue(AppUser id) {
 		     
-		     return (String)id.getGoogleID()+"@gmail.com";
+		     return (String)id.getMail();
 		    }
 		   };
 		  
