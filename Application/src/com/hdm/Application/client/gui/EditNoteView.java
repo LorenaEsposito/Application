@@ -355,9 +355,13 @@ protected void run() {
 //		 adminService.editNote(newNote, editNoteCallback());
 		
 		boolean isExisting = new Boolean(false);
+		if(newNote.getnTitle() == currentNote.getnTitle()){
+			adminService.editNote(newNote, editNoteCallback());
+		}
+		else{
  		 for(int y = 0; y < notesOfNB.size(); y++) {
  			 if(noteTitleTB.getText() == notesOfNB.get(y).getnTitle()) {
- 				 noteTitleTB.setText("");
+ 				 noteTitleTB.setText(currentNote.getnTitle());
  				 isExisting = true;
  				 break;
  			 }   			 
@@ -368,6 +372,7 @@ protected void run() {
  		 if(isExisting == true){
  			Window.alert("Diese Notiz existiert bereits im ausgewaehlten Notizbuch");
  		 }
+		}
 
           /*
            * Showcase instantiieren.
