@@ -146,8 +146,8 @@ public class DueDateMapper {
 
 		try {
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT ddID, dDate, nID"
-					+ "FROM DueDate" + "WHERE nID LIKE'" + nID);
+			ResultSet rs = stmt.executeQuery("SELECT ddid, duedate, nid "
+					+ "FROM duedates " + "WHERE nid LIKE " + nID);
 
 			/*
 			 * Da nID Primärschlüssel ist, kann max. nur ein Tupel
@@ -157,9 +157,9 @@ public class DueDateMapper {
 			if (rs.next()) {
 				// Ergebnis-Tupel in Objekt umwandeln
 				DueDate dueDate = new DueDate();
-				dueDate.setDdID(rs.getInt("ddID"));
-				dueDate.setdDate(rs.getDate("dDate"));
-				dueDate.setnID(rs.getInt("nID"));
+				dueDate.setDdID(rs.getInt("ddid"));
+				dueDate.setdDate(rs.getDate("duedate"));
+				dueDate.setnID(rs.getInt("nid"));
 
 				return dueDate;
 			}
@@ -240,9 +240,8 @@ public class DueDateMapper {
 		try {
 			Statement stmt = con.createStatement();
 
-			stmt.executeUpdate("UPDATE DueDate" + "SET ddID=\""
-					+ dueDate.getDdID() + "SET dDate=\"" + dueDate.getdDate()
-					+ "WHERE nID" + dueDate.getnID());
+			stmt.executeUpdate("UPDATE duedates " + "SET duedate=\"" + dueDate.getdDate()
+					+ " WHERE nid =" + dueDate.getnID());
 
 		} catch (SQLException e) {
 			e.printStackTrace();

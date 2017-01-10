@@ -25,7 +25,7 @@ public interface NoteAdministrationAsync {
 	public void getCurrentUser(AsyncCallback<AppUser> callback)
 			throws IllegalArgumentException;
 
-	public void getUserByGoogleID(String name, AsyncCallback<AppUser> callback)
+	public void getUserByMail(String mail, AsyncCallback<AppUser> callback)
 			throws IllegalArgumentException;
 	
 	public void getUserByID(int userID, AsyncCallback<AppUser> callback)
@@ -116,10 +116,14 @@ public interface NoteAdministrationAsync {
 			AsyncCallback<ArrayList<Permission>> callback)
 			throws IllegalArgumentException;
 	
+	public void getPermission(int uID, int nbID, int nID,
+			AsyncCallback<Permission> callback)
+	throws IllegalArgumentException;
+	
 	public void getDuedate(int nID, AsyncCallback<DueDate> callback)
 			throws IllegalArgumentException;
 	
-	public void searchUserByGoogleID(String googleID,
+	public void searchUserByMail(String mail,
 			AsyncCallback<AppUser> callback)
 			throws IllegalArgumentException;
 	

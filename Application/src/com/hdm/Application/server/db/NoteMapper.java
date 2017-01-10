@@ -132,10 +132,9 @@ public class NoteMapper {
 		 
 		 try{
 			 Statement stmt = con.createStatement();
-			 stmt.executeUpdate("UPDATE notes " + "SET nTitle=\"" + note.getnTitle() + "\"," + "nSubtitle=\"" + note.getnSubtitle() + "\"" 
-			 	+"nContent=\"" + note.getnContent() +"\"," + "source=\"" + note.getSource() + "\"," + "nCreDate=\"" + note.getnCreDate() 
-			 	+ "nModDate=\"" + note.getnModDate() + "userID=\"" + note.getUserID() + "WHERE nID=" + note.getnID());
-			 //modification Date hinzufuegen --> wie mach ich dass es auf jednefall automatisch hinzugefuegt wird?
+			 stmt.executeUpdate("UPDATE notes " + "SET title=\"" + note.getnTitle() + "\", " + "subtitle=\"" + note.getnSubtitle() + "\", " 
+			 	+"content=\"" + note.getnContent() + "\", " + "creadate=\"" + note.getnCreDate() + "\", "
+			 	+ "moddate=\"" + note.getnModDate() + " WHERE nid=" + note.getnID());
 			 
 		 }
 		 catch(SQLException e){

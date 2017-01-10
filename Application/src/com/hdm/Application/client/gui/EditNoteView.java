@@ -30,6 +30,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.datepicker.client.CalendarUtil;
 import com.google.gwt.user.datepicker.client.DatePicker;
 import com.google.gwt.view.client.ListDataProvider;
+import com.google.gwt.view.client.SingleSelectionModel;
 import com.hdm.Application.client.Application;
 import com.hdm.Application.client.ClientsideSettings;
 import com.hdm.Application.shared.NoteAdministrationAsync;
@@ -67,13 +68,19 @@ public class EditNoteView extends Update{
 	
 	private AppUser user = new AppUser();
 	
+	private AppUser permissionUser = new AppUser();
+	
 	private AppUser currentUser = new AppUser();
+	
+	private Permission permission = new Permission();
 	
 	Date date = new Date();
 	
 	DueDate dueDate = new DueDate();
 	
 	TextCell cell = new TextCell();
+	
+	public final static SingleSelectionModel<String> selectionModel = new SingleSelectionModel<String>();
 	
 	 // Create a data provider.
     ListDataProvider<String> dataProvider = new ListDataProvider<String>();
@@ -111,6 +118,8 @@ public class EditNoteView extends Update{
    final Button cancelButton = new Button("Cancel");
    final Button savePermissionButton = new Button("Save Permission");
    final Button deletePermissionButton = new Button("Berechtigung loeschen");
+   final Button saveDuedateButton = new Button("Speichern");
+   final Button deleteDuedateButton = new Button("Loeschen");
    final RadioButton readButton = new RadioButton("Leseberechtigung");
    final RadioButton editButton = new RadioButton("Bearbeitungsberechtigung");
    final RadioButton deleteButton = new RadioButton("Loeschberechtigung");
@@ -133,6 +142,8 @@ protected void run() {
     
     // Connect the table to the data provider.
     dataProvider.addDataDisplay(cellList);
+    
+    cellList.setSelectionModel(selectionModel);
     
     noteTitle = Application.selectionModel.getSelectedObject();
     
@@ -166,9 +177,10 @@ protected void run() {
     
     leftPanel.add(buttonPanel);
     
-    
-    rightPanel.add(duedate);
     rightPanel.add(cellList);
+    rightPanel.add(duedate);
+    rightPanel.add(saveDuedateButton);
+    rightPanel.add(deleteDuedateButton);
  
     mainPanel.add(datePanel);
     mainPanel.add(leftPanel);
@@ -179,11 +191,25 @@ protected void run() {
         
     textArea.setVisibleLines(20);
     textArea.setPixelSize(420, 350);
-    
     readButton.setText("Leseberechtigung");
     editButton.setText("Bearbeitungsberechtigung");
     deleteButton.setText("Loeschberechtigung");
     permissionTB.setText("Name des Berechtigten");
+    
+    noteTitleTB.setEnabled(false);
+    noteSubtitleTB.setEnabled(false);
+    permissionTB.setEnabled(false);
+    textArea.setEnabled(false);
+    saveNoteButton.setEnabled(false);
+    deleteNoteButton.setEnabled(false);
+    savePermissionButton.setEnabled(false);
+    deletePermissionButton.setEnabled(false);
+    saveDuedateButton.setEnabled(false);
+    deleteDuedateButton.setEnabled(false);
+    readButton.setEnabled(false);
+    editButton.setEnabled(false);
+    deleteButton.setEnabled(false);
+    
     
     /**
      * Zuweisung eines Styles fuer die jeweiligen Widgets
@@ -287,33 +313,22 @@ protected void run() {
     		savePermissionButton.setStylePrimaryName("savePermission-button");
     		
     		
-    		AppUser user = new AppUser();
-    		String googleID = new String();
-			Permission permission = new Permission();
+    		String mail = new String();
     		
-    		int atIndex = permissionTB.getText().indexOf("@");
-    		googleID = permissionTB.getText().substring(0, atIndex);
+    		mail = permissionTB.getValue();
     		
-    		adminService.searchUserByGoogleID(googleID, searchUserByGoogleIDCallback());
+    		adminService.searchUserByMail(mail, searchUserByMailCallback());
     		
-    		if(user != null){
-    			permission.setUserID(user.getUserID());
-    			
-    			if(readButton.getValue() == true){
-    				permission.setPermissionType(1);
-    			}
-    			if(editButton.getValue() == true){
-    				permission.setPermissionType(2);
-    			}
-    			if(deleteButton.getValue() == true){
-    				permission.setPermissionType(3);
-    			}
-    			if(readButton.getValue() == false && editButton.getValue() == false && deleteButton.getValue() == false){
-    				Window.alert("Bitte waehlen Sie eine Art der Berechtigung aus");
-    			}
-    			
-    			permissions.add(permission);
-    		}
+
+    	}
+    });
+    
+    deletePermissionButton.addClickHandler(new ClickHandler() {
+    	public void onClick(ClickEvent event){
+    		deletePermissionButton.setEnabled(false);
+    		savePermissionButton.setEnabled(false);
+    		
+    		adminService.getUserByMail(selectionModel.getSelectedObject(), getUserForPermissionDeleteCallback()); 
     	}
     });
     
@@ -362,6 +377,19 @@ protected void run() {
     }
     });
     
+    deleteNoteButton.addClickHandler(new ClickHandler() {
+    	public void onClick(ClickEvent event) {
+    		deleteNoteButton.setEnabled(false);
+    		
+    		adminService.deleteNote(currentNote, deleteNoteCallback());
+    		
+    		Update update = new WelcomeView();
+    		
+    		RootPanel.get("Details").clear();
+    		RootPanel.get("Details").add(update);
+    	}
+    });
+    
     cancelButton.addClickHandler(new ClickHandler() {
     	public void onClick(ClickEvent event){
     		cancelButton.setEnabled(false);
@@ -371,8 +399,7 @@ protected void run() {
     		
     		RootPanel.get("Details").clear();
     		RootPanel.get("Details").add(update);
-    		
-    		adminService.deleteNote(currentNote, deleteNoteCallback());
+
     	}
     });
     
@@ -451,7 +478,40 @@ private AsyncCallback<ArrayList<Permission>> getPermissionsCallback(){
 		 ClientsideSettings.getLogger().
 		 severe("Success GetPermissionsCallback: " + result.getClass().getSimpleName());
 		 for(int i = 0; i < result.size(); i++) {
+			 if(currentUser.getUserID() == result.get(i).getUserID()){
+				 if(result.get(i).getPermissionType() == 2){
+					 noteTitleTB.setEnabled(true);
+					 noteSubtitleTB.setEnabled(true);
+					    permissionTB.setEnabled(true);
+					    textArea.setEnabled(true);
+					    saveNoteButton.setEnabled(true);
+					    savePermissionButton.setEnabled(true);
+					    deletePermissionButton.setEnabled(true);
+					    saveDuedateButton.setEnabled(true);
+					    deleteDuedateButton.setEnabled(true);
+					    readButton.setEnabled(true);
+					    editButton.setEnabled(true);
+					    deleteButton.setEnabled(true);
+				 }
+				 if(result.get(i).getPermissionType() == 3){
+					 noteTitleTB.setEnabled(true);
+					    noteSubtitleTB.setEnabled(true);
+					    permissionTB.setEnabled(true);
+					    textArea.setEnabled(true);
+					    saveNoteButton.setEnabled(true);
+					    deleteNoteButton.setEnabled(true);
+					    savePermissionButton.setEnabled(true);
+					    deletePermissionButton.setEnabled(true);
+					    saveDuedateButton.setEnabled(true);
+					    deleteDuedateButton.setEnabled(true);
+					    readButton.setEnabled(true);
+					    editButton.setEnabled(true);
+					    deleteButton.setEnabled(true);
+				 }
+			 }
+			 else{
 			 adminService.getUserByID(result.get(i).getUserID(), getUserByIDCallback());
+			 }
 		 }
 		 
 	 }
@@ -471,7 +531,7 @@ private AsyncCallback<AppUser> getUserByIDCallback(){
 	 public void onSuccess(AppUser result) {
 		 ClientsideSettings.getLogger().
 		 severe("Success GetUserByIDCallback: " + result.getClass().getSimpleName());
-		 list.add(result.getUserName());
+		 list.add(result.getMail());
 	 }
 	};
 	return asyncCallback;
@@ -584,6 +644,8 @@ private AsyncCallback<DueDate> getDuedateCallback(){
     	 public void onSuccess(Void result) {
     		 ClientsideSettings.getLogger().
     		 severe("Success DeleteNoteCallback: " + result.getClass().getSimpleName());
+    		 
+    		 deleteNoteButton.setEnabled(true);
     	 }
 		};
 		return asyncCallback;
@@ -624,7 +686,7 @@ private AsyncCallback<DueDate> getDuedateCallback(){
 //    	return asyncCallback;
 //    }
 //    
-    private AsyncCallback<AppUser> searchUserByGoogleIDCallback() {
+    private AsyncCallback<AppUser> searchUserByMailCallback() {
     	AsyncCallback<AppUser> asyncCallback = new AsyncCallback<AppUser>() {
     		
     		@Override
@@ -637,6 +699,47 @@ private AsyncCallback<DueDate> getDuedateCallback(){
     			ClientsideSettings.getLogger().
     			severe("Success SearchUserByGoogleIDCallback: " + result.getClass().getSimpleName());
     			user = result;
+    			
+    			if(user == null){
+        			Window.alert("Der eingegebene Nutzer existiert nicht. Ueberpruefen Sie bitte Ihre Angaben.");
+        		}
+    			
+        		if(user != null){
+        			boolean isExisting = new Boolean(false);
+        			for(int i = 0; i < dataProvider.getList().size(); i++) {
+        				if(user.getUserName() == dataProvider.getList().get(i)) {
+        					isExisting = true;
+        					break;
+        				}
+        			}
+        			
+        			if(isExisting == false){
+            			permission.setUserID(user.getUserID());
+            			permission.setIsOwner(false);
+        			
+        			permission.setUserID(user.getUserID());
+        			
+        			if(readButton.getValue() == true){
+        				permission.setPermissionType(1);
+        			}
+        			if(editButton.getValue() == true){
+        				permission.setPermissionType(2);
+        			}
+        			if(deleteButton.getValue() == true){
+        				permission.setPermissionType(3);
+        			}
+        			if(readButton.getValue() == false && editButton.getValue() == false && deleteButton.getValue() == false){
+        				Window.alert("Bitte waehlen Sie eine Art der Berechtigung aus");
+        			}
+        			
+        			permissions.add(permission);
+        			dataProvider.getList().add(user.getMail());
+        			}
+        			
+        			if(isExisting == true){
+        				Window.alert("Es wurde bereits eine Berechtigung an diesen User vergeben");
+        			}
+        		}
     		}
     	};
     	return asyncCallback;
@@ -654,6 +757,62 @@ private AsyncCallback<DueDate> getDuedateCallback(){
     		public void onSuccess(Void result) {
     			ClientsideSettings.getLogger().
     			severe("Success EditDuedateCallback: " + result.getClass().getSimpleName());
+    		}
+    	};
+    	return asyncCallback;
+    }
+    
+    private AsyncCallback<AppUser> getUserForPermissionDeleteCallback() {
+    	AsyncCallback<AppUser> asyncCallback = new AsyncCallback<AppUser>() {
+    		
+    		@Override
+    		public void onFailure(Throwable caught) {
+    			ClientsideSettings.getLogger().severe("Error: " + caught.getMessage());
+    		}
+    		
+    		@Override
+    		public void onSuccess(AppUser result) {
+    			ClientsideSettings.getLogger().
+    			severe("Success GetUserForPermissionDeleteCallback: " + result.getClass().getSimpleName());
+    			permissionUser = result;
+    			adminService.getPermission(permissionUser.getUserID(), currentNB.getNbID(), currentNote.getnID(), getPermissionCallback());
+    		}
+    	};
+    	return asyncCallback;
+    }
+    
+    private AsyncCallback<Permission> getPermissionCallback() {
+    	AsyncCallback<Permission> asyncCallback = new AsyncCallback<Permission>() {
+    		
+    		@Override
+    		public void onFailure(Throwable caught) {
+    			ClientsideSettings.getLogger().severe("Error: " + caught.getMessage());
+    		}
+    		
+    		@Override
+    		public void onSuccess(Permission result) {
+    			ClientsideSettings.getLogger().
+    			severe("Success GetUserForPermissionDeleteCallback: " + result.getClass().getSimpleName());
+    			adminService.deletePermission(result, deletePermissionCallback());
+    		}
+    	};
+    	return asyncCallback;
+    }
+    
+    private AsyncCallback<Void> deletePermissionCallback() {
+    	AsyncCallback<Void> asyncCallback = new AsyncCallback<Void>() {
+    		
+    		@Override
+    		public void onFailure(Throwable caught) {
+    			ClientsideSettings.getLogger().severe("Error: " + caught.getMessage());
+    		}
+    		
+    		@Override
+    		public void onSuccess(Void result) {
+    			ClientsideSettings.getLogger().
+    			severe("Success GetUserForPermissionDeleteCallback: " + result.getClass().getSimpleName());
+    			deletePermissionButton.setEnabled(true);
+    			savePermissionButton.setEnabled(true);
     		}
     	};
     	return asyncCallback;

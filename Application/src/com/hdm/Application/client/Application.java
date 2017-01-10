@@ -211,8 +211,8 @@ public class Application implements EntryPoint {
     	 /**
  		 * Auslesen des Profils vom aktuellen Benutzer aus der Datenbank.
  		 */
- 		int atIndex = ClientsideSettings.getLoginInfo().getEmailAddress().indexOf("@");
- 		adminService.getUserByGoogleID(ClientsideSettings.getLoginInfo().getEmailAddress().substring(0, atIndex),
+
+ 		adminService.getUserByMail(ClientsideSettings.getLoginInfo().getEmailAddress(),
  				getCurrentUserCallback());
  		
  		Update update = new WelcomeView();
@@ -421,7 +421,7 @@ public class Application implements EntryPoint {
 			.severe("Success GetCurrentUserCallback: " + result.getClass().getSimpleName());
 		 currentUser = result;
 		 
-		 userLabel.setText(currentUser.getGoogleID());
+		 userLabel.setText(currentUser.getUserName());
 		 
 		 adminService.getNotebooksOfUser(currentUser, getNotebooksOfUserCallback());
 		 

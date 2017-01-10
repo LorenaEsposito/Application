@@ -85,23 +85,22 @@ public AppUser getCurrentUser() throws IllegalArgumentException {
 	AppUser currentUser = new AppUser();
 	UserService userService = UserServiceFactory.getUserService();
 	User user = userService.getCurrentUser();
-	int atIndex = user.getEmail().indexOf("@");
-	String userName = user.getEmail().substring(0, atIndex);
-	currentUser = this.getUserByGoogleID(userName);
+	String userName = user.getEmail();
+	currentUser = this.getUserByMail(userName);
 	return currentUser;
 }
 
-public AppUser getUserByGoogleID(String name){
+public AppUser getUserByMail(String mail){
 	ArrayList<AppUser> users = new ArrayList<AppUser>();
 	
-	if (this.uMapper.findByGoogleID(name) != null){
+	if (this.uMapper.findByMail(mail) != null){
 		AppUser user = new AppUser();
-		user = this.uMapper.findByGoogleID(name);
+		user = this.uMapper.findByMail(mail);
 		users.add(user);
 	}
 	else{
 		AppUser cUser = new AppUser();
-		cUser.setGoogleID(name);
+		cUser.setMail(mail);
 		this.createUser(cUser);
 		
 		Notebook notebook = new Notebook();
@@ -121,7 +120,7 @@ public AppUser getUserByGoogleID(String name){
 		this.createPermissions(permissions);
 		
 		AppUser user2 = new AppUser();
-		user2 = this.uMapper.findByGoogleID(name);
+		user2 = this.uMapper.findByMail(mail);
 		users.add(user2);
 	}
 	return users.get(0);
@@ -579,7 +578,9 @@ public ArrayList<Notebook> searchForNotebook(String title) throws IllegalArgumen
     		}
     		if(vector1.get(i).getNID() != 0){
     			for(int y = 0; y < vector2.size(); y++){
-    				permissions.add(vector2.get(y));
+    				if(vector1.get(i).getNID() == vector2.get(y).getNID()){
+    					permissions.add(vector2.get(y));
+    				}
     			}
     		}
     	}
@@ -587,6 +588,32 @@ public ArrayList<Notebook> searchForNotebook(String title) throws IllegalArgumen
 //    		permissions.add(vector2.get(i));
 //    	}
     	return permissions;
+    }
+    
+    public Permission getPermission(int uID, int nbID, int nID){
+    	Vector<Permission> vector1 = new Vector<Permission>();
+    	ArrayList<Permission> permissions = new ArrayList<Permission>();
+    	Permission permission = new Permission();
+    	vector1 = this.pMapper.findByNotebookID(nbID);
+    	
+    	for(int z = 0; z < vector1.size(); z++){
+    		if(vector1.get(z).getUserID() == uID){
+    			permissions.add(vector1.get(z));
+    		}
+    	}
+
+    	if(permissions.size() == 1){
+    		permission = permissions.get(0);
+    	}
+    	else{
+    		for(int i = 0; i < permissions.size(); i++){
+    			if(permissions.get(i).getNID() == nID){
+    				permission = permissions.get(i);
+    				break;
+    			}
+    		}
+    	}
+    	return permission;
     }
     
     public DueDate getDuedate(int nID){
@@ -601,15 +628,15 @@ public ArrayList<Notebook> searchForNotebook(String title) throws IllegalArgumen
      * @param googleID
      * @return AppUser user
      */
-    public AppUser searchUserByGoogleID(String googleID){
+    public AppUser searchUserByMail(String mail){
     	AppUser user = new AppUser();
     	
-    	if(this.uMapper.findByGoogleID(googleID) == null){
+    	if(this.uMapper.findByMail(mail) == null){
     		user = null;
     	}
     	
-    	if(this.uMapper.findByGoogleID(googleID) != null){
-    		user = this.uMapper.findByGoogleID(googleID);
+    	if(this.uMapper.findByMail(mail) != null){
+    		user = this.uMapper.findByMail(mail);
     	}
     	return user;
     }
