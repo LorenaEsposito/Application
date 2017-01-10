@@ -439,14 +439,21 @@ public ArrayList<Notebook> searchForNotebook(String title) throws IllegalArgumen
    * @return notes
    * @throws IllegalArgumentException
    */
-    public ArrayList<Note> searchForNoteByDD(Date duedate) throws IllegalArgumentException{
+    @SuppressWarnings("deprecation")
+	public ArrayList<Note> searchForNoteByDD(Date duedate) throws IllegalArgumentException{
   	Vector<Note> vector = new Vector<Note>();
   	
-  	java.sql.Date date = (java.sql.Date) duedate;
-  	vector = this.nMapper.findByDueDate(date);  
-  	ArrayList<Note> notes = new ArrayList<Note>(vector);
+  	int tag = duedate.getDate();
+	 int monat = duedate.getMonth()+1;
+	 int jahr = duedate.getYear()+1900;
+	 System.out.println("Datumsformat gefaked: "+jahr+"-"+monat+"-"+tag);
 
-  	return notes;
+	 String datum = jahr+"-"+monat+"-"+tag;
+	Vector<Note> notes = this.nMapper.findByDueDate(java.sql.Date.valueOf(datum));	
+	 System.out.println("notes size : "+notes.size());
+	 ArrayList<Note> result = new ArrayList<Note>();
+	 result.addAll(notes);
+  	return result;
     }
     
     /**

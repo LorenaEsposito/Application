@@ -97,7 +97,7 @@ public void init() throws IllegalArgumentException {
   public AllNotesFromUser createAllNotesFromUserReport(AppUser user) throws IllegalArgumentException {
 
  /*
-  * Zunächst legen wir uns einen leeren Report an.
+  * Zunï¿½chst legen wir uns einen leeren Report an.
   */
 	 AllNotesFromUser result = new AllNotesFromUser();
       
@@ -133,7 +133,7 @@ public void init() throws IllegalArgumentException {
 	        Row contentrow = new Row();
 	        contentrow.addColumn(new Column( n.getnContent()));
 	        
-	        // und schließlich die Zeile dem Report hinzufügen.
+	        // und schlieï¿½lich die Zeile dem Report hinzufï¿½gen.
 	        
 	        result.addRow(SingleInfoRow);
 	        result.addRow(contentrow);
@@ -149,7 +149,7 @@ public void init() throws IllegalArgumentException {
 @Override
 public AllFilteredNotes createAllFilteredNotesReportED(Date erstellungsDatum) throws IllegalArgumentException {
 	/*
-	  * Zunächst legen wir uns einen leeren Report an.
+	  * Zunï¿½chst legen wir uns einen leeren Report an.
 	  */
 	AllFilteredNotes result = new AllFilteredNotes();
 	      
@@ -195,7 +195,7 @@ public AllFilteredNotes createAllFilteredNotesReportED(Date erstellungsDatum) th
 		        Row contentrow = new Row();
 		        contentrow.addColumn(new Column( n.getnContent()));
 		        
-		        // und schließlich die Zeile dem Report hinzufügen.
+		        // und schlieï¿½lich die Zeile dem Report hinzufï¿½gen.
 		        
 		        result.addRow(SingleInfoRow);
 		        result.addRow(contentrow);
@@ -208,7 +208,7 @@ public AllFilteredNotes createAllFilteredNotesReportED(Date erstellungsDatum) th
 @Override
 public AllFilteredNotes createAllFilteredNotesReportDD(Date dueDate) throws IllegalArgumentException {
 	/*
-	  * Zunächst legen wir uns einen leeren Report an.
+	  * Zunï¿½chst legen wir uns einen leeren Report an.
 	  */
 		AllFilteredNotes result = new AllFilteredNotes();
 	      
@@ -217,7 +217,7 @@ public AllFilteredNotes createAllFilteredNotesReportDD(Date dueDate) throws Ille
 		 TopRow.addColumn(new Column(dueDate.toString()));
 		 result.addRow(TopRow);
 		 /*
-	  * Hier werden alle Notizen eines Users aufgelistet 
+	  * Hier werden alle Notizen eines DueDates aufgelistet 
 	  */
 		 int tag = dueDate.getDate();
 		 int monat = dueDate.getMonth()+1;
@@ -248,7 +248,7 @@ public AllFilteredNotes createAllFilteredNotesReportDD(Date dueDate) throws Ille
 		        Row contentrow = new Row();
 		        contentrow.addColumn(new Column( n.getnContent()));
 		        
-		        // und schließlich die Zeile dem Report hinzufügen.
+		        // und schlieï¿½lich die Zeile dem Report hinzufï¿½gen.
 		        
 		        result.addRow(SingleInfoRow);
 		        result.addRow(contentrow);
@@ -263,7 +263,7 @@ public AllFilteredNotes createAllFilteredNotesReportDD(Date dueDate) throws Ille
 @Override
 public AllFilteredNotes createAllFilteredNotesReport(String notebook) throws IllegalArgumentException {
 	/*
-	  * Zunächst legen wir uns einen leeren Report an.
+	  * Zunï¿½chst legen wir uns einen leeren Report an.
 	  */
 		 AllFilteredNotes result = new AllFilteredNotes();
 	      
@@ -271,19 +271,19 @@ public AllFilteredNotes createAllFilteredNotesReport(String notebook) throws Ill
 		 Row TopRow = new Row();
 		 TopRow.addColumn(new Column(notebook));
 		 result.addRow(TopRow);
-		 //Auslesen aller Notebooks welche im Titel den übergebenen String enthalten
+		 //Auslesen aller Notebooks welche im Titel den ï¿½bergebenen String enthalten
 		 Vector<Notebook> notebooks = notebookMapper.findByTitle(notebook);
-		 System.out.println("AUSGABE!!!!! Vector notebooks ist "+notebooks.size()+" groß");
-		 //Vector für Notes aus dem jeweiligen Notebook
+		 System.out.println("AUSGABE!!!!! Vector notebooks ist "+notebooks.size()+" groï¿½");
+		 //Vector fï¿½r Notes aus dem jeweiligen Notebook
 		 Vector<Note> notes = null;
 		 
-		 //For-Schleife welche die gefundenen Notebooks durchläuft
+		 //For-Schleife welche die gefundenen Notebooks durchlï¿½uft
 		 for (Notebook nb : notebooks) {
 			 //Auslesen aller Notizen des jeweiligen Notebooks und Zwischenspeichern in notes
 			 notes = noteMapper.findByNotebook(nb);
-			 System.out.println("AUSGABE!!!!! Vector notes ist "+notes.size()+" groß");
+			 System.out.println("AUSGABE!!!!! Vector notes ist "+notes.size()+" groï¿½");
 			 
-			 //Durchlaufen aller Notizen und das hinzufügen der Zeilen
+			 //Durchlaufen aller Notizen und das hinzufï¿½gen der Zeilen
 			 for (Note n : notes) {			    	
 			        // Eine leere Zeile anlegen.
 			        Row SingleInfoRow = new Row();
@@ -305,7 +305,7 @@ public AllFilteredNotes createAllFilteredNotesReport(String notebook) throws Ill
 			        Row contentrow = new Row();
 			        contentrow.addColumn(new Column( n.getnContent()));
 			        
-			        // und schließlich die Zeile dem Report hinzufügen.
+			        // und schlieï¿½lich die Zeile dem Report hinzufï¿½gen.
 			        
 			        result.addRow(SingleInfoRow);
 			        result.addRow(contentrow);
@@ -320,7 +320,7 @@ public AllFilteredNotes createAllFilteredNotesReport(String notebook) throws Ill
 @SuppressWarnings("deprecation")
 public AllNotes createAllNotesReport() throws IllegalArgumentException {
 	/*
-	  * Zunächst legen wir uns einen leeren Report an.
+	  * Zunï¿½chst legen wir uns einen leeren Report an.
 	  */
 		 AllNotes result = new AllNotes();
 	      
@@ -335,7 +335,7 @@ public AllNotes createAllNotesReport() throws IllegalArgumentException {
 		    
 		 
 		
-			 //Durchlaufen aller Notizen und das hinzufügen der Zeilen
+			 //Durchlaufen aller Notizen und das hinzufï¿½gen der Zeilen
 			 for (Note n : note) {			    	
 			        // Eine leere Zeile anlegen.
 			        Row SingleInfoRow = new Row();
@@ -365,7 +365,7 @@ public AllNotes createAllNotesReport() throws IllegalArgumentException {
 			        Row contentrow = new Row();
 			        contentrow.addColumn(new Column( n.getnContent()));
 			        
-			        // und schließlich die Zeile dem Report hinzufügen.
+			        // und schlieï¿½lich die Zeile dem Report hinzufï¿½gen.
 			        
 			        result.addRow(SingleInfoRow);
 			        result.addRow(contentrow);

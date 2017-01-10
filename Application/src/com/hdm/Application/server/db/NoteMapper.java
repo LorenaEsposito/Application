@@ -361,7 +361,7 @@ public class NoteMapper {
 		 try{
 			 Statement stmt = con.createStatement();			 
 			 ResultSet rs = stmt.executeQuery("SELECT *"
-					 + " FROM notes" + " WHERE title LIKE '" + nTitle + "' ORDER BY creadate;");
+					 + " FROM notes" + " WHERE title LIKE '%" + nTitle + "%' ORDER BY creadate;");
 			 			 
 			//Fuer jeden Eintrag im Suchergebnis wird ein Note-Objekt erstellt.
 			 while(rs.next()) {

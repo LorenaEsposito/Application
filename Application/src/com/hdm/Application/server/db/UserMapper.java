@@ -196,8 +196,8 @@ public class UserMapper {
 			/**
 			 * Statement ausf�llen und als Query an die DB schicken
 			 */
-			ResultSet rs = stmt.executeQuery("SELECT appuserid, , gid, username FROM users " + "WHERE username='" + name
-					+ "' ORDER BY userName");
+			ResultSet rs = stmt.executeQuery("SELECT appuserid, gid, username FROM users " + "WHERE username='" + name
+					+ "' ORDER BY username");
 
 			/**
 			 * F�r jeden Eintrag im Suchergebnis wird nun ein Profile-Objekt
