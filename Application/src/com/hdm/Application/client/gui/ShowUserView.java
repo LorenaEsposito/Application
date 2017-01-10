@@ -107,7 +107,7 @@ protected void run() {
     TextColumn<AppUser> nameColumn = new TextColumn<AppUser>(){
     	@Override
     	public String getValue(AppUser user){
-    		return user.getGoogleID();
+    		return user.getMail();
     	}
     };
     
@@ -246,13 +246,12 @@ protected void run() {
     		
     		
     		AppUser user = new AppUser();
-    		String googleID = new String();
+    		String mail = new String();
 			Permission permission = new Permission();
     		
-    		int atIndex = permissionText.getText().indexOf("@");
-    		googleID = permissionText.getText().substring(0, atIndex);
+    		mail = permissionText.getText();
     		
-    		adminService.searchUserByGoogleID(googleID, searchUserByGoogleIDCallback());
+    		adminService.searchUserByMail(mail, searchUserByGoogleIDCallback());
     		
     		if(user == null){
     			Window.alert("Der eingegebene Nutzer existiert nicht. Ueberpruefen Sie bitte Ihre Angaben.");
@@ -262,16 +261,16 @@ protected void run() {
     			permission.setUserID(user.getUserID());
     			
     			if(readButton.getValue() == true){
-    				permission.setPermissionType(false);
+    				permission.setPermissionType(1);
     			}
     			if(editButton.getValue() == true){
-    				permission.setPermissionType(true);
+    				permission.setPermissionType(2);
     			}
     			if(readButton.getValue() == false && editButton.getValue() == false){
     				Window.alert("Bitte waehlen Sie eine Art der Berechtigung aus");
     			}
     			
-    			adminService.createPermission(permission, createPermissionCallback());
+//    			adminService.createPermission(permission, createPermissionCallback());
     			
     			permissions.add(permission);
     		}
@@ -301,7 +300,7 @@ protected void run() {
           /*
            * Showcase instantiieren.
            */
-          Update update = new ShowNoteView();
+          Update update = new EditNoteView();
           
           RootPanel.get("Details").clear();
           RootPanel.get("Details").add(update);
@@ -346,8 +345,8 @@ protected void run() {
 }
     
 
-    private AsyncCallback<Void> createNoteCallback() {
-    	AsyncCallback<Void> asyncCallback = new AsyncCallback<Void>(){
+    private AsyncCallback<Note> createNoteCallback() {
+    	AsyncCallback<Note> asyncCallback = new AsyncCallback<Note>(){
     		
     		@Override
     		public void onFailure(Throwable caught) {
@@ -355,7 +354,7 @@ protected void run() {
     		}
     	 
     	 @Override
-    	 public void onSuccess(Void result) {
+    	 public void onSuccess(Note result) {
     		 ClientsideSettings.getLogger().
     		 severe("Success CreateNoteCallback: " + result.getClass().getSimpleName());
     	 }

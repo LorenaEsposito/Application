@@ -188,7 +188,7 @@ public class SearchView extends Update {
 			if (n || dd ){
 				Note selectedNoteA = ((SingleSelectionModel<Note>) noteTable.getSelectionModel()).getSelectedObject();
 				Cookies.setCookie("selectedNoteID", (String.valueOf(selectedNote.getnID())));
-		   			Update update = new ShowNoteView();
+		   			Update update = new EditNoteView();
 		   			RootPanel.get("Details").clear();
 			   		RootPanel.get("Details").add(update);
 				
