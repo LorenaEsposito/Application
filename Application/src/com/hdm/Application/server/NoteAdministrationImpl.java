@@ -262,6 +262,7 @@ for(int i = 0; i < permissions.size(); i++){
 public Note createNote(Note n) throws IllegalArgumentException {
 	Note note = new Note();
 	note = this.nMapper.createNote(n);
+	System.out.println(note.getnTitle());
 	return note;
 }
 
@@ -293,7 +294,18 @@ return note;
 @Override
 public void deleteNote(Note n) throws IllegalArgumentException {
     this.nMapper.deleteNote(n);
-//	this.pMapper.delete(n);
+    Vector<Permission> vector1 = new Vector<Permission>();
+    vector1 = this.pMapper.findByNoteID(n.getnID());
+    if(vector1.size() != 0){
+    	for(int i = 0; i < vector1.size(); i++){
+	this.pMapper.delete(vector1.get(i));
+    	}
+    }
+    DueDate duedate = new DueDate();
+    duedate = this.ddMapper.findByNoteID(n.getnID());
+    if(duedate != null){
+	this.ddMapper.delete(duedate);
+    }
   }
 
 /**
@@ -373,7 +385,7 @@ public void editDuedate(DueDate dd) throws IllegalArgumentException{
  */
 @Override
 public void deleteDuedate(DueDate dd) throws IllegalArgumentException {
-    this.ddMapper.deleteDueDate(dd);
+    this.ddMapper.delete(dd);
   }
 
 
@@ -413,7 +425,8 @@ public ArrayList<Notebook> searchForNotebook(String title) throws IllegalArgumen
 	vector = this.nbMapper.findByTitle(title);
 	
 	ArrayList<Notebook> notebooks = new ArrayList<Notebook>(vector);
-	
+	System.out.println(title);
+	System.out.println(notebooks.size());
 	return notebooks;
 
 }
@@ -505,7 +518,7 @@ public ArrayList<Notebook> searchForNotebook(String title) throws IllegalArgumen
      * @return ArrayList<Note>
      * @throws IllegalArgumentException
      */
-    public ArrayList<Note> getNotesOfNotebook(String nbTitle, AppUser u) throws IllegalArgumentException{
+    public ArrayList<Note> getNotesOfNotebookTitle(String nbTitle, AppUser u) throws IllegalArgumentException{
     	Vector<Note> vector = new Vector<Note>();
 
     	Notebook nb = new Notebook();
@@ -539,7 +552,14 @@ public ArrayList<Notebook> searchForNotebook(String title) throws IllegalArgumen
     	}
     	
     	ArrayList<Note> notes = new ArrayList<Note>(vector);
-
+    	System.out.println(notes.size());
+    	return notes;
+    }
+    
+    public ArrayList<Note> getNotesOfNotebook(Notebook nb){
+    	Vector<Note> vector = new Vector<Note>();
+    	vector = this.nMapper.findByNotebook(nb);
+    	ArrayList<Note> notes = new ArrayList<Note>(vector);
     	return notes;
     }
     
@@ -553,6 +573,7 @@ public ArrayList<Notebook> searchForNotebook(String title) throws IllegalArgumen
     	Vector<Permission> vector = new Vector<Permission>();
     	vector = this.pMapper.findOwnedNotebooks(user.getUserID());
     	ArrayList<Permission> permissions = new ArrayList<Permission>(vector);
+    	System.out.println(permissions.size());
     	return permissions;
     }
     

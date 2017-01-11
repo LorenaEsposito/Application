@@ -410,7 +410,7 @@ protected void run() {
     			 }
     		 }
     		 note.setNbID(currentNB.getNbID());
-    		 adminService.getNotesOfNotebook(currentNBTitle, user, getNotesOfNotebookCallback());
+    		 adminService.getNotesOfNotebookTitle(currentNBTitle, user, getNotesOfNotebookTitleCallback());
     	 }
 		};
 		return asyncCallback;
@@ -568,7 +568,7 @@ protected void run() {
     	return asyncCallback;
     }
     
-    private AsyncCallback<ArrayList<Note>> getNotesOfNotebookCallback() {
+    private AsyncCallback<ArrayList<Note>> getNotesOfNotebookTitleCallback() {
    	 AsyncCallback<ArrayList<Note>> asyncCallback = new AsyncCallback<ArrayList<Note>>(){
    	 
    	 @Override

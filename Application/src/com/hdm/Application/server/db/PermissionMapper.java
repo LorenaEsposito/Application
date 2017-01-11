@@ -213,22 +213,6 @@ public class PermissionMapper {
 						+ p.getIsOwner()
 						+ ")");
 
-				System.out
-						.println("INSERT INTO permissions (pid, permtype, appuserid, nid, nbid, isowner) "
-								+ "VALUES ("
-								+ p.getPermissionID()
-								+ ","
-								+ p.getPermissionType()
-								+ ","
-								+ p.getUserID()
-								+ ","
-								+ p.getNID()
-								+ ","
-								+ p.getNbID()
-								+ ","
-								+ p.getIsOwner()
-								+ ")");
-
 				return p;
 			}
 		} catch (SQLException e) {
@@ -264,12 +248,13 @@ public class PermissionMapper {
 			 * Statement ausf�llen und als Query an die DB schicken
 			 */
 
-			stmt.executeUpdate("DELETE FROM permissions " + "WHERE id="
+			stmt.executeUpdate("DELETE FROM permissions " + "WHERE pid="
 					+ p.getPermissionID());
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
+	
 		public Vector<Permission> findOwnerByUserId(int appUserID){
 			
 			//DB-Verbindung holen und Variablen zurücksetzen

@@ -6,8 +6,10 @@ import com.hdm.Application.client.gui.ImpressumView;
 import com.hdm.Application.client.gui.CreateNoteView;
 import com.hdm.Application.client.gui.CreateNotebookView;
 import com.hdm.Application.client.gui.EditNoteView;
+import com.hdm.Application.client.gui.EditNotebookView;
 import com.hdm.Application.client.gui.LoginService;
 import com.hdm.Application.client.gui.LoginServiceAsync;
+import com.hdm.Application.client.gui.NotebookNotesTreeViewModel;
 import com.hdm.Application.client.gui.Update;
 import com.hdm.Application.client.gui.WelcomeView;
 import com.hdm.Application.shared.LoginInfo;
@@ -15,6 +17,9 @@ import com.hdm.Application.shared.NoteAdministrationAsync;
 import com.hdm.Application.shared.bo.AppUser;
 import com.hdm.Application.shared.bo.Note;
 import com.hdm.Application.shared.bo.Notebook;
+
+import sun.security.util.AuthResources;
+
 import com.hdm.Application.client.ClientsideSettings;
 
 import java.util.ArrayList;
@@ -33,6 +38,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.user.cellview.client.AbstractCellTree;
 import com.google.gwt.user.cellview.client.CellList;
+import com.google.gwt.user.cellview.client.CellTree;
 import com.google.gwt.user.cellview.client.HasKeyboardSelectionPolicy.KeyboardSelectionPolicy;
 import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.Window;
@@ -51,6 +57,7 @@ import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
 import com.google.gwt.view.client.TreeViewModel;
 import com.google.gwt.view.client.TreeViewModel.NodeInfo;
+import com.google.gwt.core.client.GWT;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
@@ -95,36 +102,7 @@ public class Application implements EntryPoint {
 		 // Create a data provider.
 		public static ListDataProvider<String> dataProvider = new ListDataProvider<String>();
 		
-		public static List<String> list = dataProvider.getList();
-
-//		private static class CustomTreeModel implements TreeViewModel{
-//		/**
-//	     * Get the {@link NodeInfo} that provides the children of the specified
-//	     * value.
-//	     */
-//	    public <T> NodeInfo<?> getNodeInfo(T value) {
-//	      if (value == null) {
-//	        // LEVEL 0.
-//	        // We passed null as the root value. Return the notebooks.
-//
-//	        // Create a data provider that contains the list of composers.
-//	        ListDataProvider<Notebook> notebookProvider = new ListDataProvider<Notebook>(adminService.getNotebooksOfUser(adminService.getCurrentUser(getCurrentUserCallback()), getNotebooksOfUserCallback());
-//
-//	        // Create a cell to display a notebook.
-//	        Cell<Notebook> cell = new AbstractCell<Notebook>() {
-//	          @Override
-//	          public void render(Context context, Notebook value, SafeHtmlBuilder sb) {
-//	            if (value != null) {
-//	              sb.appendEscaped(value.getNbTitle());
-//	            }
-//	          }
-//	        };
-//		}
-		
-		/**
-		 * Eine ArrayList, in der Note-Objekte gespeichert werden
-		 */
-		//private ArrayList<Note> notes = null;
+		public static List<String> list = dataProvider.getList();		
 		
 	  /**
 	   * The message displayed to the user when the server cannot be reached or
@@ -164,6 +142,9 @@ public class Application implements EntryPoint {
 	  final Button impressumButton = new Button("Impressum");
 	  final Button hilfeButton = new Button("Hilfe");
 	  final CellList<String> cellList = new CellList<String>(cell);
+//	  NotebookNotesTreeViewModel nntvm = new NotebookNotesTreeViewModel();
+//	  CellTree cellTree = new CellTree(nntvm, "Root");
+	  
 	  
  /**
   * Create a remote service proxy to talk to the server-side Greeting service.
@@ -174,7 +155,6 @@ public class Application implements EntryPoint {
  * Das ist die EntryPointMethode 
  */
  public void onModuleLoad() {
-	  
 	 
 	 /**
 	  * Setzen des headerLabel 
@@ -252,8 +232,13 @@ public class Application implements EntryPoint {
  	    
 	 	 // Connect the list to the data provider.
  	    dataProvider.addDataDisplay(cellList);
-
  	    
+// 	    nntvm.setEditNotebookView(editNotebookView);
+// 	    editNotebookView.setNntvm(nntvm);
+// 	    
+// 	    nntvm.setEditNoteView(editNoteView);
+// 	    editNoteView.setNntvm(nntvm);
+// 	    
 	    /**
 	     * Zuweisung eines Styles fuer die jeweiligen Widgets
 	     **/
@@ -269,6 +254,8 @@ public class Application implements EntryPoint {
 	    headPanel.setStyleName("headPanel");
 	    navPanel.setStyleName("navPanel");
 	    headButtonPanel.setStyleName("headButtonPanel");
+	    
+//	    cellTree.setAnimationEnabled(true);
 	    
 	    
 	    
@@ -287,6 +274,7 @@ public class Application implements EntryPoint {
 	    navPanel2.add(cellList);
 	    navPanel2.add(createNotebookButton);
 	    navPanel2.add(createNoteButton);
+//	    navPanel2.add(cellTree);
 	    RootPanel.get("Header").add(headPanel);
 	    RootPanel.get("Navigator").add(navPanel);
 	    RootPanel.get("Navigator").add(navPanel2);
@@ -392,7 +380,7 @@ public class Application implements EntryPoint {
 	   
 	    listbox.addChangeHandler(new ChangeHandler() {
 	    	public void onChange(ChangeEvent event) {
-	    		adminService.getNotesOfNotebook(listbox.getSelectedItemText(), currentUser, getNotesOfNotebookCallback());
+	    		adminService.getNotesOfNotebookTitle(listbox.getSelectedItemText(), currentUser, getNotesOfNotebookTitleCallback());
 	    		
 //	    		Update update = new EditNotebookView();
 //	    		
@@ -476,13 +464,13 @@ public class Application implements EntryPoint {
 				 
 				 listbox.setVisibleItemCount(1);
 			 }
-			 adminService.getNotesOfNotebook(listbox.getSelectedValue(), currentUser, getNotesOfNotebookCallback());
+			 adminService.getNotesOfNotebookTitle(listbox.getSelectedValue(), currentUser, getNotesOfNotebookTitleCallback());
 		 }
 	 };
 	 return asyncCallback;
  }
  
- private AsyncCallback<ArrayList<Note>> getNotesOfNotebookCallback() {
+ private AsyncCallback<ArrayList<Note>> getNotesOfNotebookTitleCallback() {
 	 AsyncCallback<ArrayList<Note>> asyncCallback = new AsyncCallback<ArrayList<Note>>(){
 	 
 	 @Override
