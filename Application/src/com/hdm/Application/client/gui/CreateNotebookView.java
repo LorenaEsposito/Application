@@ -16,6 +16,7 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RadioButton;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.view.client.ListDataProvider;
@@ -23,6 +24,7 @@ import com.google.gwt.view.client.MultiSelectionModel;
 import com.hdm.Application.client.ClientsideSettings;
 import com.hdm.Application.shared.NoteAdministrationAsync;
 import com.hdm.Application.shared.bo.AppUser;
+import com.hdm.Application.shared.bo.Note;
 import com.hdm.Application.shared.bo.Notebook;
 import com.hdm.Application.shared.bo.Permission;
 
@@ -35,15 +37,21 @@ public class CreateNotebookView extends Update{
 	 */
 	private NoteAdministrationAsync adminService = ClientsideSettings.getAdministration();
 	
+	private Note n = new Note();
+	
+	private String currentNBTitle = new String();
+	
 	private ArrayList<Permission> permissions = new ArrayList<Permission>();
 	
 	private AppUser user = new AppUser();
-	
-	private AppUser currentUser = new AppUser();
-	
-	private Notebook notebook = new Notebook();
 
 	Date date = new Date();
+
+	//private String currentDateTime =  new SimpleDateFormat("yyyyMMdd_HHmmss").format(date);
+	
+	private AppUser currentUser = new AppUser();
+
+	private Notebook notebook = new Notebook();
 	
 	TextCell cell = new TextCell();
     

@@ -95,8 +95,8 @@ public class UserMapper {
 		return null;
 	}
 
-
 	public AppUser findByMail(String mail) {
+
 		/**
 		 * DB-Verbindung holen & Erzeugen eines neuen SQL-Statements.
 		 */
@@ -108,7 +108,8 @@ public class UserMapper {
 			/**
 			 * Statement ausf�llen und als Query an die DB schicken
 			 */
-			ResultSet rs = stmt.executeQuery("SELECT appuserid, mail, username FROM users " + "WHERE mail='" + mail + "'");
+			ResultSet rs = stmt.executeQuery("SELECT appuserid, mail, username FROM users " + "WHERE mail='" + mail
+					+ "' ORDER BY mail");
 
 			/**
 			 * Da id Primaerschl�ssel ist, kann max. nur ein Tupel zur�ckgegeben
@@ -158,6 +159,7 @@ public class UserMapper {
 			/**
 			 * Statement ausf�llen und als Query an die DB schicken
 			 */
+
 			ResultSet rs = stmt.executeQuery("SELECT appuserid, mail, username FROM users " + "WHERE username='" + name
 					+ "' ORDER BY username");
 
@@ -313,7 +315,6 @@ public class UserMapper {
 		 */
 
 		Connection con = DBConnection.connection();
-		
 		
 		try {
 			Statement stmt = con.createStatement();

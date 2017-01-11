@@ -146,6 +146,7 @@ public class DueDateMapper {
 
 		try {
 			Statement stmt = con.createStatement();
+
 			ResultSet rs = stmt.executeQuery("SELECT ddid, duedate, nid "
 					+ "FROM duedates " + "WHERE nid LIKE " + nID);
 
@@ -188,6 +189,7 @@ public class DueDateMapper {
 			Statement stmt = con.createStatement();
 
 			// Ueberpruefen welches der aktuell hoechste Primaerschluessel ist.
+
 			ResultSet rs = stmt.executeQuery("SELECT Max(ddID) AS maxDdId "
 					+ "FROM duedates");
 			
@@ -197,6 +199,7 @@ public class DueDateMapper {
 				duedate = mySQLformat.format(dueDate.getdDate());
 			}
 
+
 			if (rs.next()) {
 				// notebook erhaelt den aktuell hoechsten und um 1
 				// inkrementierten Primaerschluessel
@@ -205,9 +208,11 @@ public class DueDateMapper {
 				stmt = con.createStatement();
 
 				// Neues Objekt wird eingefuegt
+
 				stmt.executeUpdate("INSERT INTO duedates (ddid, duedate, nid) "
 						+ "VALUES (" + dueDate.getDdID() + ",'"
 						+ duedate + "'," + dueDate.getnID() + ")");
+
 
 			}
 
@@ -237,11 +242,17 @@ public class DueDateMapper {
 	public DueDate updateDueDate(DueDate dueDate) {
 		Connection con = DBConnection.connection();
 
+		String dDate = null;
+		if (dueDate.getdDate() != null) {
+			SimpleDateFormat mySQLformat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+			dDate = mySQLformat.format(dueDate.getdDate());
+		}
+		
 		try {
 			Statement stmt = con.createStatement();
 
-			stmt.executeUpdate("UPDATE duedates " + "SET duedate=\"" + dueDate.getdDate()
-					+ " WHERE nid =" + dueDate.getnID());
+			stmt.executeUpdate("UPDATE duedates " + "SET duedate='" + dDate
+					+ "' WHERE nid =" + dueDate.getnID());
 
 		} catch (SQLException e) {
 			e.printStackTrace();

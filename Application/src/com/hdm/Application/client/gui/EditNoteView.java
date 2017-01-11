@@ -237,7 +237,7 @@ protected void run() {
     credate.setStyleName("");
     moddateLabel.setStyleName("");
     moddate.setStyleName("");
-    
+
 	adminService.getCurrentUser(getCurrentUserCallback());
     
     /*
@@ -418,6 +418,29 @@ protected void run() {
     	}
     });
 
+//    editButton.addClickHandler(new ClickHandler() {
+//  	public void onClick(ClickEvent event) {
+//          /*
+//           * Showcase instantiieren.
+//           */
+//          Update update = new EditNoteView();
+//          
+//          RootPanel.get("Details").clear();
+//          RootPanel.get("Details").add(update);
+//    }
+//    });
+//    
+//    deleteButton.addClickHandler(new ClickHandler() {
+//  	public void onClick(ClickEvent event) {
+//          /*
+//           * Showcase instantiieren.
+//           */
+//          Update update = new NoteOverviewView();
+//          
+//          RootPanel.get("Details").clear();
+//          RootPanel.get("Details").add(update);
+//    }
+//    });
 }
 
 private AsyncCallback<AppUser> getCurrentUserCallback(){

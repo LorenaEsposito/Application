@@ -129,20 +129,31 @@ public class NoteMapper {
 	 
 	 public Note updateNote(Note note){
 		 Connection con = DBConnection.connection();
-		 
+		 System.out.println(note.getnID());
+		 System.out.println(note.getnTitle());
+		 System.out.println(note.getnModDate());
+			
+			String modDate = null;
+			if (note.getnModDate() != null) {
+				SimpleDateFormat mySQLformat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+				modDate = mySQLformat.format(note.getnModDate());
+			}
+			
+			 System.out.println(note.getnModDate());
 		 try{
 			 Statement stmt = con.createStatement();
-			 stmt.executeUpdate("UPDATE notes " + "SET title=\"" + note.getnTitle() + "\", " + "subtitle=\"" + note.getnSubtitle() + "\", " 
-			 	+"content=\"" + note.getnContent() + "\", " + "creadate=\"" + note.getnCreDate() + "\", "
-			 	+ "moddate=\"" + note.getnModDate() + " WHERE nid=" + note.getnID());
-			 
+			 stmt.executeUpdate("UPDATE notes " + "SET title='" + note.getnTitle() + "'," + "subtitle='" + note.getnSubtitle() + "'," 
+			 	+"content='" + note.getnContent() + "',"
+			 	+ "moddate='" + modDate + "' WHERE nid=" + note.getnID());
 		 }
 		 catch(SQLException e){
 			 e.printStackTrace();
 		 }
 		 
-		 return note;
+			
+			return note;
 	 }
+	 
 	 
 	 
 
@@ -241,7 +252,7 @@ public class NoteMapper {
 				 note.setnSubtitle(rs.getString("nSubtitle"));
 				 note.setnContent(rs.getString("nContent"));
 				 note.setSource(rs.getString("source"));
-				 note.setnCreDate(rs.getDate("nCreDate"));
+				 note.setnCreDate(rs.getString("nCreDate"));
 				 note.setnModDate(rs.getDate("nModDate"));
 				 
 				 return note;
@@ -283,7 +294,7 @@ public class NoteMapper {
 				 note.setnSubtitle(rs.getString("nSubtitle"));
 				 note.setnContent(rs.getString("nContent"));
 				 note.setSource(rs.getString("source"));
-				 note.setnCreDate(rs.getDate("nCreDate"));
+				 note.setnCreDate(rs.getString("nCreDate"));
 				 note.setnModDate(rs.getDate("nModDate"));
 				 
 				// Neues Objekt wird dem Ergebnisvektor hinzugefuegt
@@ -325,7 +336,7 @@ public class NoteMapper {
 				 note.setnSubtitle(rs.getString("nSubtitle"));
 				 note.setnContent(rs.getString("nContent"));
 				 note.setSource(rs.getString("source"));
-				 note.setnCreDate(rs.getDate("nCreDate"));
+				 note.setnCreDate(rs.getString("nCreDate"));
 				 note.setnModDate(rs.getDate("nModDate"));
 				 
 				//Neues Objekt wird dem Ergebnisvektor hinzugefuegt
@@ -354,32 +365,75 @@ public class NoteMapper {
 	 public Vector<Note> findByTitle(String nTitle){
 		 Connection con = DBConnection.connection();
 		 Vector<Note> result = new Vector<Note>();
+		 String sql = "SELECT *"
+					 + " FROM notes" + " WHERE title LIKE '" + nTitle + "' ORDER BY creadate;";
+		 System.out.println("SQL Statement: "+sql);		 
 		 
 		 try{
-			 Statement stmt = con.createStatement();
-			 ResultSet rs = stmt.executeQuery("SELECT nID, nbID, userID, nTitle, nSubtitle, nContent, source, nCreDate, nModDate"
-					 + "FROM notes" + "WHERE nTitle LIKE '" + nTitle + "'ORDER BY nCreDate");
-			 
+			 Statement stmt = con.createStatement();			 
+			 ResultSet rs = stmt.executeQuery("SELECT *"
+					 + " FROM notes" + " WHERE title LIKE '" + nTitle + "' ORDER BY creadate;");
+			 			 
 			//Fuer jeden Eintrag im Suchergebnis wird ein Note-Objekt erstellt.
 			 while(rs.next()) {
 				 Note note = new Note();
-				 note.setnID(rs.getInt("nID"));
-				 note.setNbID(rs.getInt("nbID"));
-				 note.setUserID(rs.getInt("userID"));
-				 note.setnTitle(rs.getString("nTitle"));
-				 note.setnSubtitle(rs.getString("nSubtitle"));
-				 note.setnContent(rs.getString("nContent"));
+				 note.setnID(rs.getInt("nid"));
+				 note.setNbID(rs.getInt("nbid"));
+				 //note.setUserID(rs.getInt("userID"));
+				 note.setnTitle(rs.getString("title"));
+				 note.setnSubtitle(rs.getString("subtitle"));
+				 note.setnContent(rs.getString("content"));
 				 note.setSource(rs.getString("source"));
-				 note.setnCreDate(rs.getDate("nCreDate"));
-				 note.setnModDate(rs.getDate("nModDate"));
+				 note.setnCreDate(rs.getString("creadate"));
+				 note.setnModDate(rs.getDate("moddate"));
 				 
 				//Neues Objekt wird dem Ergebnisvektor hinzugefuegt
 				 result.addElement(note);
 				 
-			 }
+			 } 
 		 }
 		 
 		 catch (SQLException e){
+			 System.out.println("SQL FEHLER: "+e);
+			 e.printStackTrace();
+		 }
+		 
+		//Vektor wird zurueckgegeben
+		 return result;
+	 }
+	 
+	 public Vector<Note> findByCreationDate(Date creadate){
+		 Connection con = DBConnection.connection();
+		 Vector<Note> result = new Vector<Note>();
+		 String sql = "SELECT *"
+					 + " FROM notes" + " WHERE creadate LIKE '" + creadate + "' ORDER BY creadate;";
+		 System.out.println("SQL Statement: "+sql);		 
+		 
+		 try{
+			 Statement stmt = con.createStatement();			 
+			 ResultSet rs = stmt.executeQuery("SELECT *"
+					 + " FROM notes" + " WHERE creadate LIKE '" + creadate + "' ORDER BY creadate;");
+			 			 
+			//Fuer jeden Eintrag im Suchergebnis wird ein Note-Objekt erstellt.
+			 while(rs.next()) {
+				 Note note = new Note();
+				 note.setnID(rs.getInt("nid"));
+				 note.setNbID(rs.getInt("nbid"));
+				 note.setnTitle(rs.getString("title"));
+				 note.setnSubtitle(rs.getString("subtitle"));
+				 note.setnContent(rs.getString("content"));
+				 note.setSource(rs.getString("source"));
+				 note.setnCreDate(rs.getString("creadate"));
+				 note.setnModDate(rs.getDate("moddate"));
+				 
+				//Neues Objekt wird dem Ergebnisvektor hinzugefuegt
+				 result.addElement(note);
+				 
+			 } 
+		 }
+		 
+		 catch (SQLException e){
+			 System.out.println("SQL FEHLER: "+e);
 			 e.printStackTrace();
 		 }
 		 
@@ -413,7 +467,7 @@ public class NoteMapper {
 					note.setnSubtitle(rs.getString("subtitle"));
 					note.setnContent(rs.getString("content"));
 					note.setSource(rs.getString("source"));
-					note.setnCreDate(rs.getDate("creadate"));
+					note.setnCreDate(rs.getString("creadate"));
 					note.setnModDate(rs.getDate("moddate"));
 					
 					// Neues Objekt wird dem Ergebnisvektor hinzugefuegt
@@ -427,4 +481,79 @@ public class NoteMapper {
 			return result;
 		}
 	 
+		public Vector<Note> findByUser(AppUser user) {
+
+			// DB-Verbindung holen und Variablen zurücksetzen
+			int appUserID = user.getUserID();
+			Connection con = DBConnection.connection();
+			int nID = 0;
+
+			Vector<Note> result = new Vector<Note>();
+			
+			Vector<Integer> nIDs = new Vector<Integer>();
+			
+			try{
+				//Leeres SQL Statement anlegen
+				Statement stmt = con.createStatement();
+				
+				//Statement ausfuellen und als Query an DB schicken
+				ResultSet rs = stmt.executeQuery("SELECT nid FROM permissions "
+						+ "WHERE appuserid=" + appUserID
+						+ " AND isowner=1");
+				
+				while (rs.next()){
+					
+				
+				nID = rs.getInt("nid");
+				
+				nIDs.add(nID);
+				
+				}
+
+		}
+		catch (SQLException e){
+			e.printStackTrace();
+			return null;
+		}
+		
+		try{
+			
+			for(int i = 0; i < nIDs.size(); i++){
+				
+				nID = nIDs.get(i);
+				
+					//Leeres SQL Statement anlegen
+					Statement stmt2 = con.createStatement();
+					
+					//Statement ausfuellen und als Query an DB schicken
+					ResultSet rs2 = stmt2.executeQuery("SELECT nid, nbid, title, subtitle, content, source, creadate, moddate FROM notes "
+							+ "WHERE nid=" + nID);
+					
+					while (rs2.next()){
+						
+					
+						Note note = new Note();
+						note.setnID(rs2.getInt("nid"));
+						note.setnTitle(rs2.getString("title"));
+						note.setnSubtitle(rs2.getString("subtitle"));
+						note.setnContent(rs2.getString("content"));
+						note.setSource(rs2.getString("source"));
+						note.setnCreDate(rs2.getString("creadate"));
+						note.setnModDate(rs2.getDate("moddate"));
+						
+						// Neues Objekt wird dem Ergebnisvektor hinzugefuegt
+						result.addElement(note);
+					
+					}
+			}
+		}
+			catch (SQLException e){
+
+				e.printStackTrace();
+				return null;
+			}
+		
+			return result;
+
+		}
 }

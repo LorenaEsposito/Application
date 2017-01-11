@@ -197,6 +197,7 @@ public class PermissionMapper {
 				/**
 				 * Jetzt erst erfolgt die tatsaechliche Einf�geoperation
 				 */
+
 				stmt.executeUpdate("INSERT INTO permissions (pid, permtype, appuserid, nid, nbid, isowner) "
 						+ "VALUES ("
 						+ p.getPermissionID()
@@ -211,22 +212,6 @@ public class PermissionMapper {
 						+ ","
 						+ p.getIsOwner()
 						+ ")");
-
-				System.out
-						.println("INSERT INTO permissions (pid, permtype, appuserid, nid, nbid, isowner) "
-								+ "VALUES ("
-								+ p.getPermissionID()
-								+ ","
-								+ p.getPermissionType()
-								+ ","
-								+ p.getUserID()
-								+ ","
-								+ p.getNID()
-								+ ","
-								+ p.getNbID()
-								+ ","
-								+ p.getIsOwner()
-								+ ")");
 
 				return p;
 			}
@@ -344,6 +329,7 @@ public Vector<Permission> findOwnedNotebooks(int appUserID){
 				}
 			} catch (SQLException e) {
 				e.printStackTrace();
+
 			}
 			
 			return result;

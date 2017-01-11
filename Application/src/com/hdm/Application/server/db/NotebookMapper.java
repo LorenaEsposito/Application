@@ -73,6 +73,7 @@ public class NotebookMapper {
 
 			// Statement ausfuellen und als Query an DB schicken
 			ResultSet rs = stmt
+
 					.executeQuery("SELECT nbid, title, creadate, moddate FROM notebooks "
 							+ "WHERE nbid=" + nbID);
 
@@ -292,10 +293,10 @@ public class NotebookMapper {
 						+ notebook.getNbID()
 						+ ",'"
 						+ notebook.getNbTitle()
-						+ "','"
-						+ creDate
-						+ "','"
-						+ creDate + "')");
+						+ "',"
+						+ notebook.getNbCreDate()
+						+ ","
+						+ notebook.getNbModDate() + ")");
 
 			}
 		} catch (SQLException e) {

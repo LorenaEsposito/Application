@@ -28,6 +28,7 @@ public class NoteAdministrationImpl extends RemoteServiceServlet
   /**
    * Referenz auf das zugehörige Note-Objekt.
    */
+
   //private Note note = null;
   
   private Date date = new Date();
@@ -545,6 +546,7 @@ public ArrayList<Notebook> searchForNotebook(String title) throws IllegalArgumen
     		this.createNote(note);
     		vector = this.nMapper.findByNotebook(nb);
     	}    	
+
     	if(this.nbMapper.findById(nb.getNbID()) != null){
     		vector = this.nMapper.findByNotebook(nb);
     	}
@@ -661,4 +663,5 @@ public ArrayList<Notebook> searchForNotebook(String title) throws IllegalArgumen
     	}
     	return user;
     }
+
 }

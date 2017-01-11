@@ -143,5 +143,4 @@ public class Permission implements Serializable{
 		this.isOwner = b;
 		
 	}
-
 }
