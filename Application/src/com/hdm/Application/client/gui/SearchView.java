@@ -196,7 +196,7 @@ public class SearchView extends Update {
 			if (nb){
 				Notebook selectedNoteB = ((SingleSelectionModel<Notebook>) notebookTable.getSelectionModel()).getSelectedObject();
 				Cookies.setCookie("selectedNotebookID", (String.valueOf(selectedNoteB.getNbID())));
-		   			Update update = new ShowNotebookView();
+		   			Update update = new EditNotebookView();
 		   			RootPanel.get("Details").clear();
 			   		RootPanel.get("Details").add(update);			}
 			

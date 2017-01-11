@@ -7,7 +7,7 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.hdm.Application.shared.bo.Note;
 import com.hdm.Application.shared.bo.Notebook;
 
-public class EditNotebookView {
+public class EditNotebookView extends Update {
 	
 	private Notebook currentNotebook = new Notebook();
 	
