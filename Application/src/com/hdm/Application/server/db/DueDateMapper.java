@@ -256,12 +256,12 @@ public class DueDateMapper {
 	 *            (Objekt wird aus DB geloescht)
 	 */
 
-	public void deleteDueDate(DueDate dueDate) {
+	public void delete(DueDate dueDate) {
 		Connection con = DBConnection.connection();
 
 		try {
 			Statement stmt = con.createStatement();
-			stmt.executeUpdate("DELETE FROM duedates" + "WHERE ddID="
+			stmt.executeUpdate("DELETE FROM duedates " + "WHERE ddid="
 					+ dueDate.getDdID());
 		} catch (SQLException e) {
 			e.printStackTrace();

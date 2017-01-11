@@ -100,7 +100,11 @@ public interface NoteAdministrationAsync {
 			AsyncCallback<ArrayList<Notebook>> callback)
 			throws IllegalArgumentException;
 
-	public void getNotesOfNotebook(String nbTitle, AppUser u,
+	public void getNotesOfNotebookTitle(String nbTitle, AppUser u,
+			AsyncCallback<ArrayList<Note>> callback)
+			throws IllegalArgumentException;
+	
+	public void getNotesOfNotebook(Notebook nb,
 			AsyncCallback<ArrayList<Note>> callback)
 			throws IllegalArgumentException;
 

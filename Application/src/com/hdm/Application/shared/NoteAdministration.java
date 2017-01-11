@@ -60,7 +60,9 @@ public interface NoteAdministration extends RemoteService {
 
 	public ArrayList<Notebook> getNotebooksOfUser(AppUser user) throws IllegalArgumentException;
 
-	public ArrayList<Note> getNotesOfNotebook(String nbTitle, AppUser u) throws IllegalArgumentException;
+	public ArrayList<Note> getNotesOfNotebookTitle(String nbTitle, AppUser u) throws IllegalArgumentException;
+	
+	public ArrayList<Note> getNotesOfNotebook(Notebook nb) throws IllegalArgumentException;
 
 	public ArrayList<Permission> getOwnedNotebookPermissions(AppUser user) throws IllegalArgumentException;
 	

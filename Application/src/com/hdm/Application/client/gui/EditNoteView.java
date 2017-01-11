@@ -86,6 +86,8 @@ public class EditNoteView extends Update{
     ListDataProvider<String> dataProvider = new ListDataProvider<String>();
     
     List<String> list = dataProvider.getList();
+    
+    NotebookNotesTreeViewModel nntvm = null;
 	
 	protected String getHeadlineText() {
 	    return "";
@@ -346,6 +348,7 @@ protected void run() {
 		newNote.setnTitle(noteTitleTB.getText());
 		newNote.setnSubtitle(noteSubtitleTB.getText());
 		newNote.setnContent(textArea.getText());
+//		newNote.setnCreDate();
 		newNote.setnModDate(date);
 		
 		adminService.editDuedate(dueDate, editDuedateCallback());
@@ -431,14 +434,14 @@ private AsyncCallback<AppUser> getCurrentUserCallback(){
 		 
 		 currentUser = result;
 		 
-		 adminService.getNotesOfNotebook(currentNBTitle, currentUser, getNotesOfNotebookCallback());
+		 adminService.getNotesOfNotebookTitle(currentNBTitle, currentUser, getNotesOfNotebookTitleCallback());
 		 
 	 }
 	};
 	return asyncCallback;
 }
 
-private AsyncCallback<ArrayList<Note>> getNotesOfNotebookCallback() {
+private AsyncCallback<ArrayList<Note>> getNotesOfNotebookTitleCallback() {
 	AsyncCallback<ArrayList<Note>> asyncCallback = new AsyncCallback<ArrayList<Note>>() {
 		
 		@Override
@@ -668,6 +671,7 @@ private AsyncCallback<DueDate> getDuedateCallback(){
     	 public void onSuccess(Note result) {
     		 ClientsideSettings.getLogger().
     		 severe("Success EditNoteCallback: " + result.getClass().getSimpleName());
+    		 
     	 }
     	};
     	return asyncCallback;
@@ -822,6 +826,28 @@ private AsyncCallback<DueDate> getDuedateCallback(){
     	};
     	return asyncCallback;
     }
+    
+	public void setNntvm(NotebookNotesTreeViewModel nntvm) {
+		this.nntvm = nntvm;
+	}
+    
+    /*
+	 * Wenn der anzuzeigende Kunde gesetzt bzw. gelöscht wird, werden die
+	 * zugehörenden Textfelder mit den Informationen aus dem Kundenobjekt
+	 * gefüllt bzw. gelöscht.
+	 */
+	public void setSelected(Note n) {
+		if (n != null) {
+			currentNote = n;
+			noteTitleTB.setText(currentNote.getnTitle());
+			noteSubtitleTB.setText(currentNote.getnSubtitle());
+			textArea.setText(currentNote.getnContent());
+		} else {
+			noteTitleTB.setText("");
+			noteSubtitleTB.setText("");
+			textArea.setText("");
+		}
+	}
     
 }
 

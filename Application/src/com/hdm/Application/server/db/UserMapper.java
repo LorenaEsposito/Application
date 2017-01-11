@@ -108,8 +108,7 @@ public class UserMapper {
 			/**
 			 * Statement ausf�llen und als Query an die DB schicken
 			 */
-			ResultSet rs = stmt.executeQuery("SELECT appuserid, mail, username FROM users " + "WHERE mail='" + mail
-					+ "' ORDER BY mail");
+			ResultSet rs = stmt.executeQuery("SELECT appuserid, mail, username FROM users " + "WHERE mail='" + mail + "'");
 
 			/**
 			 * Da id Primaerschl�ssel ist, kann max. nur ein Tupel zur�ckgegeben

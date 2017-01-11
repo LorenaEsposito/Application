@@ -263,12 +263,13 @@ public class PermissionMapper {
 			 * Statement ausf�llen und als Query an die DB schicken
 			 */
 
-			stmt.executeUpdate("DELETE FROM permissions " + "WHERE id="
+			stmt.executeUpdate("DELETE FROM permissions " + "WHERE pid="
 					+ p.getPermissionID());
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
+	
 		public Vector<Permission> findOwnerByUserId(int appUserID){
 			
 			//DB-Verbindung holen und Variablen zurücksetzen

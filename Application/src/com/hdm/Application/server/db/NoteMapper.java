@@ -77,11 +77,11 @@ public class NoteMapper {
 		    //Statement ausfuellen und als Query an DB schicken
 		      ResultSet rs = stmt.executeQuery("SELECT MAX(nID) AS maxnID" + " FROM notes");
 
-			//	String modDate = null;
-			//	if (note.getnModDate() != null) {
-			//		SimpleDateFormat mySQLformat = new SimpleDateFormat("yyyy-MM-dd");
-			//		modDate = mySQLformat.format(note.getnModDate());
-			//	}
+				String modDate = null;
+				if (note.getnModDate() != null) {
+					SimpleDateFormat mySQLformat = new SimpleDateFormat("yyyy-MM-dd");
+					modDate = mySQLformat.format(note.getnModDate());
+				}
 				
 				String creDate = null;
 				if (note.getnCreDate() != null) {
@@ -102,7 +102,7 @@ public class NoteMapper {
 		    	  stmt.executeUpdate("INSERT INTO notes (nid, nbid, title, subtitle, content, source, creadate, moddate) "
 		    	            + "VALUES (" + note.getnID() + "," + note.getNbID() + ",'"
 		    	            + note.getnTitle() + "','" + note.getnSubtitle() + "','" + note.getnContent() + "','" + note.getSource() + "','" 
-		    	            + creDate + "','" + creDate + "')");
+		    	            + creDate + "','" + modDate + "')");
 		    	  			// Zweimal Creation-Date, da bei der Creation Mod-Date = Creation-Date
 		      }
 		    }
@@ -155,12 +155,10 @@ public class NoteMapper {
 	 
 	 public void deleteNote(Note note){
 		 Connection con = DBConnection.connection();
-		 
-		 DueDateMapper.deleteAllNoteDueDates(note);
-		 
+
 		 try{
 			 Statement stmt = con.createStatement();
-			 stmt.executeUpdate("DELETE FROM notes" + "WHERE nID=" +note.getnID());	 
+			 stmt.executeUpdate("DELETE FROM notes " + "WHERE nid=" +note.getnID());	 
 		 }
 		 catch (SQLException e){
 			 e.printStackTrace();
@@ -231,8 +229,8 @@ public class NoteMapper {
 		 
 		 try{
 			 Statement stmt = con.createStatement();
-			 ResultSet rs = stmt.executeQuery("SELECT nID, nbID, userID, nTitle, nSubtitle, nContent, source, nCreDate, nModDate" 
-			 + "WHERE nID=" + nID + "ORDER BY nTitle");
+			 ResultSet rs = stmt.executeQuery("SELECT nid, nbid, title, subtitle, content, source, creadate, moddate " 
+			 + "FROM notes " + "WHERE nid=" + nID + " ORDER BY title");
 			
 			 if(rs.next()){
 				 Note note = new Note();
@@ -272,8 +270,8 @@ public class NoteMapper {
 		 
 		 try {
 			 Statement stmt = con.createStatement();
-			 ResultSet rs = stmt.executeQuery("SELECT nID, nbID, userID, nTitle, nSubtitle, nContent, source, nCreDate, nModDate"
-					 + "FROM notes" + "ORDER BY nbID");
+			 ResultSet rs = stmt.executeQuery("SELECT nid, nbid, title, subtitle, content, source, creadate, moddate "
+					 + "FROM notes " + "ORDER BY nbid");
 			
 			 // Fuer jeden Eintrag wird ein Notebook-Objekt erstellt	
 			 while(rs.next()){
