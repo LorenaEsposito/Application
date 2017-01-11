@@ -345,10 +345,11 @@ protected void run() {
 		saveNoteButton.setEnabled(false);
 		//createButton.setStylePrimaryName("");
 		
+		newNote.setnID(currentNote.getnID());
 		newNote.setnTitle(noteTitleTB.getText());
 		newNote.setnSubtitle(noteSubtitleTB.getText());
 		newNote.setnContent(textArea.getText());
-//		newNote.setnCreDate();
+		newNote.setnCreDate(currentNote.getnCreDate());
 		newNote.setnModDate(date);
 		
 		adminService.editDuedate(dueDate, editDuedateCallback());
