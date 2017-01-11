@@ -127,7 +127,7 @@ public class Application implements EntryPoint {
 //	  final Label headerLabel = new Label("Notework");
 
 	  private Label loginLabel = new Label("");
-	  final Label userLabel = new Label();
+	  public static Label userLabel = new Label();
 	  final Label usernameLabel = new Label("Username");
 	  final Label passwordLabel = new Label("Password");
 	  private Anchor signInLink = new Anchor("Login");
