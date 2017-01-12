@@ -66,5 +66,15 @@ public interface NoteAdministration extends RemoteService {
 	public AppUser searchUserByGoogleID(String googleID) throws IllegalArgumentException;
 	
 	public ArrayList<Note> findAll() throws IllegalArgumentException;
+	
+	public ArrayList<Note> findByUserPermission1(AppUser user) throws IllegalArgumentException;
+	
+	public ArrayList<Note> findByUserPermission2(AppUser user) throws IllegalArgumentException;
+	
+	public ArrayList<Note> findByUserPermission3(AppUser user) throws IllegalArgumentException;
+
+	public ArrayList<Note> findAllNotesFromAppUser(AppUser user) throws IllegalArgumentException;
+
+
 
 }

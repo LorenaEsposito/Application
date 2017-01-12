@@ -18,6 +18,7 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
@@ -79,7 +80,7 @@ public class ApplicationReport implements EntryPoint {
 	private Label welcomeLabel = new Label();
 	final Button logoButton = new Button();
 	private HorizontalPanel headPanel = new HorizontalPanel();
-	
+	boolean bb;
 	
 	/**
 	 * Da diese Klasse die Implementierung des Interface <code>EntryPoint</code>
@@ -220,21 +221,29 @@ public class ApplicationReport implements EntryPoint {
 	
 	
 		
-		protected void loadSearchUserPanel() {
-			
-			detailPanel.clear();
-			detailPanel.add(filterPanel);
-			
-			final Label usernameLabel = new Label();
-			usernameLabel.setText("Nutzer-Email:");
-			final TextBox username = new TextBox(); 
-			final Button userSearchButton = new Button("Report generieren");			
-			searchUserPanel.clear();
-			searchUserPanel.add(usernameLabel);
-			searchUserPanel.add(username);
-			searchUserPanel.add(userSearchButton);
-			filterPanel.clear();
-			filterPanel.add(searchUserPanel);
+	protected void loadSearchUserPanel() {
+		
+		detailPanel.clear();
+		detailPanel.add(filterPanel);
+		
+		final Label usernameLabel = new Label();
+		usernameLabel.setText("Nutzer-Email:");
+		final TextBox username = new TextBox(); 
+		final Button userSearchButton = new Button("Report generieren");
+		final CheckBox lebCB = new CheckBox ("Leseberechtigung");
+		final CheckBox bbCB = new CheckBox("Bearbeitungsberechtigung");
+		final CheckBox lbCB = new CheckBox("Löschberechtigung");
+		final CheckBox enCB = new CheckBox("Eigene Notizen");
+		searchUserPanel.clear();
+		searchUserPanel.add(usernameLabel);
+		searchUserPanel.add(username);
+		searchUserPanel.add(userSearchButton);
+		searchUserPanel.add(lebCB);
+		searchUserPanel.add(bbCB);
+		searchUserPanel.add(lbCB);
+		searchUserPanel.add(enCB);
+		filterPanel.clear();
+		filterPanel.add(searchUserPanel);
 			
 			userSearchButton.addClickHandler(new ClickHandler() {
 				
@@ -252,12 +261,16 @@ public class ApplicationReport implements EntryPoint {
 
 						@Override
 						public void onSuccess(final AppUser user) {
+							
 							if(user != null){
-							reportGenerator.createAllNotesFromUserReport(user, new AsyncCallback<AllNotesFromUser>() {
+								
+								
+								if(bbCB.getValue()){
+									reportGenerator.createAllFilteredNotesBB(user, new AsyncCallback<AllNotesFromUser>() {
 
 								@Override
 								public void onFailure(Throwable caught) {
-									// TODO Auto-generated method stub
+									Window.alert("onFailure of createAllFiltereredNotesBB: "+caught);
 									
 								}
 
@@ -286,7 +299,8 @@ public class ApplicationReport implements EntryPoint {
 								}
 								
 							});
-							}
+									}
+								}
 							else{
 								Window.alert("Du funktionierst nicht richtig.");
 							}
@@ -323,11 +337,7 @@ protected void loadRadiobuttonPanel() {
 	radiobuttonPanel.add(notebookButton);
 	filterPanel.clear();
 	filterPanel.add(radiobuttonPanel);
-	final boolean dd;
-	final boolean un;
-	final boolean n;
-	final boolean nb;
-	
+
 	DateTimeFormat datumsFormat = DateTimeFormat.getFormat("dd.MM.yyyy");
 	searchDateBox.setFormat(new DateBox.DefaultFormat(datumsFormat));
 	searchDateBox.getDatePicker().setYearArrowsVisible(true);
@@ -636,4 +646,3 @@ protected void loadRadiobuttonPanel() {
 	}
 	
 }
-

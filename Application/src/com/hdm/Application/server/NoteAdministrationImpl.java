@@ -576,6 +576,33 @@ public ArrayList<Notebook> searchForNotebook(String title) throws IllegalArgumen
 		ArrayList<Note> notes = new ArrayList<Note>(vector);
 		return notes;
 	}
-	
+
+	@Override
+	public ArrayList<Note> findByUserPermission1(AppUser user) throws IllegalArgumentException {
+		Vector<Note> vector = new Vector<Note>();
+		vector = this.nMapper.findByUserPermission1(user);
+		ArrayList<Note> notes = new ArrayList<Note>(vector);
+		return notes;
+	}
+	public ArrayList<Note> findByUserPermission2(AppUser user) throws IllegalArgumentException {
+		Vector<Note> vector = new Vector<Note>();
+		vector = this.nMapper.findByUserPermission2(user);
+		ArrayList<Note> notes = new ArrayList<Note>(vector);
+		return notes;
     }
+	public ArrayList<Note> findByUserPermission3(AppUser user) throws IllegalArgumentException {
+		Vector<Note> vector = new Vector<Note>();
+		vector = this.nMapper.findByUserPermission3(user);
+		ArrayList<Note> notes = new ArrayList<Note>(vector);
+		return notes;
+	}
+
+	@Override
+	public ArrayList<Note> findAllNotesFromAppUser(AppUser user) throws IllegalArgumentException {
+		Vector<Note> vector = new Vector<Note>();
+		vector = this.nMapper.findAllNotesFromAppUser(user);
+		ArrayList<Note> notes = new ArrayList<Note>(vector);
+		return notes;
+	}
+}
 

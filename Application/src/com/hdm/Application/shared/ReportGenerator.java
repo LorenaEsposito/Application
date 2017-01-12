@@ -24,10 +24,18 @@ public interface ReportGenerator extends RemoteService {
 	public AllFilteredNotes createAllFilteredNotesReport (String notebook) throws IllegalArgumentException;
 	
 	public AllNotes createAllNotesReport() throws IllegalArgumentException;
+	
+	public AllNotesFromUser createAllFilteredNotesLB(AppUser user) throws IllegalArgumentException;
+	
+	public AllNotesFromUser createAllFilteredNotesLEB(AppUser user) throws IllegalArgumentException;
+
+	public AllNotesFromUser createAllFilteredNotesBB(AppUser user) throws IllegalArgumentException;
 
 
 	
 	public void init() throws IllegalArgumentException;
+
+	
 
 	
 }

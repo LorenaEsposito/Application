@@ -107,5 +107,13 @@ public interface NoteAdministrationAsync {
 	void getUserByEmail(String email, AsyncCallback<AppUser> callback);
 
 	void findAll(AsyncCallback<ArrayList<Note>> callback);
+
+	void findByUserPermission1(AppUser user, AsyncCallback<ArrayList<Note>> callback);
+
+	void findByUserPermission2(AppUser user, AsyncCallback<ArrayList<Note>> callback);
+
+	void findByUserPermission3(AppUser user, AsyncCallback<ArrayList<Note>> callback);
 	
+	void findAllNotesFromAppUser(AppUser user, AsyncCallback<ArrayList<Note>> callback);
+
 }

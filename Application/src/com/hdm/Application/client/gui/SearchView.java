@@ -220,8 +220,7 @@ public class SearchView extends Update {
 				Window.alert("Nutzer nicht anzeigbar");
 			}
 			}
-			}
-		);
+			});
 			
 			
 		

@@ -32,4 +32,12 @@ public interface ReportGeneratorAsync {
 
 	void createAllNotesReport(AsyncCallback<AllNotes> callback);
 
+	void createAllFilteredNotesLEB(AppUser user, AsyncCallback<AllNotesFromUser> callback);
+	
+	void createAllFilteredNotesBB(AppUser user, AsyncCallback<AllNotesFromUser> callback);
+	
+	void createAllFilteredNotesLB(AppUser user, AsyncCallback<AllNotesFromUser> callback);
+
+
+
 }

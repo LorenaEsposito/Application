@@ -72,7 +72,7 @@ public class UserMapper {
 			 * Statement ausf�llen und als Query an die DB schicken
 			 */
 
-			ResultSet rs = stmt.executeQuery("SELECT appuserid, gid, username FROM users " + "WHERE appuserid='" + id
+			ResultSet rs = stmt.executeQuery("SELECT appuserid,   username FROM users " + "WHERE appuserid='" + id
 					+ "' ORDER BY appuserid");
 
 			/**
@@ -107,7 +107,7 @@ public class UserMapper {
 			/**
 			 * Statement ausf�llen und als Query an die DB schicken
 			 */
-			ResultSet rs = stmt.executeQuery("SELECT appuserid, gid, username FROM users " + "WHERE gid='" + gid
+			ResultSet rs = stmt.executeQuery("SELECT appuserid,   username FROM users " + "WHERE gid='" + gid
 					+ "' ORDER BY gid");
 
 			/**
@@ -142,8 +142,8 @@ public class UserMapper {
 			/**
 			 * Statement ausf�llen und als Query an die DB schicken
 			 */
-			ResultSet rs = stmt.executeQuery("SELECT appuserid, gid, username, mail FROM users WHERE mail='" + mail
-					+ "' ORDER BY gid;");
+			ResultSet rs = stmt.executeQuery("SELECT appuserid, username, mail FROM users WHERE mail='" + mail
+					+ "';");
 
 			/**
 			 * Da id Primaerschl�ssel ist, kann max. nur ein Tupel zur�ckgegeben
@@ -154,12 +154,11 @@ public class UserMapper {
 				AppUser u = new AppUser();
 				u.setUserID(rs.getInt("appuserid"));
 				u.setUserName(rs.getString("username"));
-				u.setGoogleID(rs.getString("gid"));
 				u.setMail(rs.getString("mail"));
 				return u;
 			}
 		} catch (SQLException e) {
-			System.out.println("SQL Abfrage fehlgeschlagen. findbyUser");
+			System.out.println("SQL Abfrage fehlgeschlagen. findbyMail");
 			e.printStackTrace();
 			
 			return null;
@@ -196,7 +195,7 @@ public class UserMapper {
 			/**
 			 * Statement ausf�llen und als Query an die DB schicken
 			 */
-			ResultSet rs = stmt.executeQuery("SELECT appuserid, gid, username FROM users " + "WHERE username='" + name
+			ResultSet rs = stmt.executeQuery("SELECT appuserid, username FROM users " + "WHERE username='" + name
 					+ "' ORDER BY username");
 
 			/**
@@ -249,7 +248,7 @@ public class UserMapper {
 			 * Statement ausf�llen und als Query an die DB schicken.
 			 */
 
-			ResultSet rs = stmt.executeQuery("SELECT appuserid, gid, username FROM users" + "ORDER BY appuserid");
+			ResultSet rs = stmt.executeQuery("SELECT appuserid,   username FROM users" + "ORDER BY appuserid");
 
 			/**
 			 * F�r jeden Eintrag im Suchergebnis wird nun ein Profile-Objekt
@@ -319,13 +318,10 @@ public class UserMapper {
 				 * Jetzt erst erfolgt die tatsaechliche Einf�geoperation
 				 */
 				stmt.executeUpdate(
-						"INSERT INTO users (appuserid, gid, username) "
-								+ "VALUES (" + u.getUserID() + ",'" + u.getGoogleID() + "','" + u.getUserName() +"')");
+						"INSERT INTO users (appuserid, mail,  username) "
+								+ "VALUES (" + u.getUserID() + ",'" +  u.getUserName() + "','" + u.getMail() +"')");
 
-				System.out.println(
-						"INSERT INTO users (appuserid, gid, username) "
-								+ "VALUES (" + u.getUserID() + ",'" + u.getGoogleID() + "','" + u.getUserName() +"')");
-
+				
 				return u;
 			}
 		} catch (SQLException e) {
