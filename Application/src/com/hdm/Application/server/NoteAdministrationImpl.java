@@ -174,15 +174,16 @@ public AppUser editUser(AppUser u) throws IllegalArgumentException{
 public void deleteUser(AppUser u) throws IllegalArgumentException {
     this.uMapper.delete(u);
     
-    Vector<Permission> vector = new Vector<Permission>();
-    vector = this.pMapper.findOwnerByUserId(u.getUserID());
-    ArrayList<Permission> permissions = new ArrayList<Permission>(vector);
-    for(int i = 0; i < permissions.size(); i++){
-    	this.pMapper.delete(permissions.get(i));
-    	if(permissions.get(i).getNID() != 0){
-    	this.nMapper.deleteNote(this.nMapper.findByID(permissions.get(i).getNID()));
+    Vector<Permission> vector1 = new Vector<Permission>();
+    vector1 = this.pMapper.findByUserID(u.getUserID());
+    for(int y = 0; y< vector1.size(); y++){
+    	if(vector1.get(y).getIsOwner() == true && vector1.get(y).getNID() == 0){
+    		this.deleteNotebook(this.nbMapper.findById(vector1.get(y).getNbID()));
     	}
-    	this.nbMapper.deleteNotebook(this.nbMapper.findById(permissions.get(i).getNbID()));
+    	if(vector1.get(y).getIsOwner() == true && vector1.get(y).getNID() != 0){
+    		this.deleteNote(this.nMapper.findByID(vector1.get(y).getNID()));
+    	}
+    	this.pMapper.delete(vector1.get(y));
     }
   }
 

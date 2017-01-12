@@ -14,7 +14,6 @@ import com.hdm.Application.client.Application;
 import com.hdm.Application.client.ClientsideSettings;
 import com.hdm.Application.shared.NoteAdministrationAsync;
 import com.hdm.Application.shared.bo.AppUser;
-import com.hdm.Application.shared.bo.Note;
 
 public class EditProfileView extends Update{
 
@@ -86,6 +85,8 @@ public class EditProfileView extends Update{
 		deleteButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				adminService.deleteUser(currentUser, deleteUserCallback());
+	    		 Window.open(ClientsideSettings.getLoginInfo().getLogoutUrl(), "_self", "");
+	    		 Cookies.removeCookie("userid");
 			}
 		});
 		

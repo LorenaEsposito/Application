@@ -7,6 +7,7 @@ import com.hdm.Application.client.gui.CreateNoteView;
 import com.hdm.Application.client.gui.CreateNotebookView;
 import com.hdm.Application.client.gui.EditNoteView;
 import com.hdm.Application.client.gui.EditNotebookView;
+import com.hdm.Application.client.gui.EditProfileView;
 import com.hdm.Application.client.gui.LoginService;
 import com.hdm.Application.client.gui.LoginServiceAsync;
 import com.hdm.Application.client.gui.NotebookNotesTreeViewModel;
@@ -129,7 +130,7 @@ public class Application implements EntryPoint {
 //	  final Label headerLabel = new Label("Notework");
 
 	  private Label loginLabel = new Label("");
-	  final Label userLabel = new Label();
+	  public static Label userLabel = new Label();
 	  final Label usernameLabel = new Label("Username");
 	  final Label passwordLabel = new Label("Password");
 	  private Anchor signInLink = new Anchor("Login");
@@ -140,7 +141,7 @@ public class Application implements EntryPoint {
 	  final Button searchButton = new Button("Suche");
 	  final Button logoButton = new Button();
 	  final Button impressumButton = new Button("Impressum");
-	  final Button hilfeButton = new Button("Hilfe");
+	  final Button profileButton = new Button("Profil bearbeiten");
 	  final CellList<String> cellList = new CellList<String>(cell);
 //	  NotebookNotesTreeViewModel nntvm = new NotebookNotesTreeViewModel();
 //	  CellTree cellTree = new CellTree(nntvm, "Root");
@@ -171,31 +172,55 @@ public class Application implements EntryPoint {
       loginInfo = result; 
       ClientsideSettings.setLoginInfo(result);
       if (loginInfo.isLoggedIn()){                 		
-		   		loadGUI();
-		   		if(Cookies.getCookie("url") != null) {
-		   			Update update = new CreateNoteView();
-		   			RootPanel.get("Details").clear();
-			   		RootPanel.get("Details").add(update);		   		
+    	  adminService.getUserByMail(loginInfo.getEmailAddress(), new AsyncCallback<AppUser>() {
+
+				@Override
+				public void onFailure(Throwable caught) {
+					Window.alert("Fehler: Nutzer konnte in der Datenbank nicht gefunden werden. Details: "+caught);
+					
+				}
+
+				@Override
+				public void onSuccess(AppUser currentUser) {
+					if (currentUser != null) {
+						Cookies.setCookie("userid", String.valueOf(currentUser.getUserID()));
+						loadGUI();
+						if(Cookies.getCookie("url") != null) {
+				   			Update update = new CreateNoteView();
+				   			RootPanel.get("Details").clear();
+					   		RootPanel.get("Details").add(update);		   		
+						}							
+					}else{
+						Cookies.removeCookie("userid");
+						loginInfo.setLoggedIn(false);
+						
+					}
+					
+				}
+	   			
+	   			
+	   		
+	   		});
+	   				   		
 	       		}
-	 }
+      
      else{
 	   	 	loadLogin();    			   	
          }
-       }
-    });
+      }
+ });
  }
 
 
      public void loadGUI() {
+
     	 
     	 /**
  		 * Auslesen des Profils vom aktuellen Benutzer aus der Datenbank.
  		 */
-
- 		adminService.getUserByMail(ClientsideSettings.getLoginInfo().getEmailAddress(),
+    	 
+  		adminService.getUserByMail(ClientsideSettings.getLoginInfo().getEmailAddress(),
  				getCurrentUserCallback());
- 		
- 		Update update = new WelcomeView();
  		
  		listbox.setSelectedIndex(0);
  		
@@ -222,7 +247,7 @@ public class Application implements EntryPoint {
  		createNoteButton.setStyleName("navObject2");
  		searchButton.setStyleName("headObject");
  		impressumButton.setStyleName("headObject");
- 		hilfeButton.setStyleName("headObject");
+ 		profileButton.setStyleName("headObject");
 	    signOutButton.setStyleName("headObject");
 	    logoButton.setStyleName("notework-logo");
 	    listbox.setStyleName("navListbox");
@@ -242,7 +267,7 @@ public class Application implements EntryPoint {
 	    headButtonPanel.add(logoButton);
 	    headButtonPanel.add(searchButton);
 	    headButtonPanel.add(impressumButton);
-	    headButtonPanel.add(hilfeButton);
+	    headButtonPanel.add(profileButton);
 	    headButtonPanel.add(signOutButton);
 	    headPanel.add(headButtonPanel);
 	    navPanel.add(listbox);
@@ -253,7 +278,6 @@ public class Application implements EntryPoint {
 	    RootPanel.get("Header").add(headPanel);
 	    RootPanel.get("Navigator").add(navPanel);
 	    RootPanel.get("Navigator").add(navPanel2);
-	    RootPanel.get("Details").add(update);
 	    
 	    /**
 	     * Implementierung der jeweiligen ClickHandler fuer die einzelnen Widgets
@@ -313,17 +337,17 @@ public class Application implements EntryPoint {
 		    });	    
 
 
-//	    noteButton.addClickHandler(new ClickHandler() {
-//	  	public void onClick(ClickEvent event) {
-//	          /*
-//	           * Showcase instantiieren.
-//	           */
-//	          Update update = new ShowNoteView();
-//	          
-//	          RootPanel.get("Details").clear();
-//	          RootPanel.get("Details").add(update);
-//	    }
-//	    });
+	    profileButton.addClickHandler(new ClickHandler() {
+	  	public void onClick(ClickEvent event) {
+	          /*
+	           * Showcase instantiieren.
+	           */
+	          Update update = new EditProfileView();
+	          
+	          RootPanel.get("Details").clear();
+	          RootPanel.get("Details").add(update);
+	    }
+	    });
 
 	    
 	    signOutButton.addClickHandler(new ClickHandler() {
@@ -357,12 +381,13 @@ public class Application implements EntryPoint {
 	    	public void onChange(ChangeEvent event) {
 	    		adminService.getNotesOfNotebookTitle(listbox.getSelectedItemText(), currentUser, getNotesOfNotebookTitleCallback());
 	    		
-//	    		Update update = new EditNotebookView();
-//	    		
-//	    		RootPanel.get("Details").clear();
-//	    		RootPanel.get("Details").add(update);
+	    		Update update = new EditNotebookView();
+	    		
+	    		RootPanel.get("Details").clear();
+	    		RootPanel.get("Details").add(update);
 	    	}
 	    });
+	    
 	}
  
  private void loadLogin() {
@@ -392,7 +417,8 @@ public class Application implements EntryPoint {
      Cookies.setCookie("userMail", null);
      Cookies.setCookie("userID", null);
      RootPanel.get("Details").clear();
-     RootPanel.get("Details").add(loginPanel);     
+     RootPanel.get("Details").add(loginPanel); 
+     
     }
  
  private AsyncCallback<AppUser> getCurrentUserCallback() {
@@ -409,7 +435,15 @@ public class Application implements EntryPoint {
 			.severe("Success GetCurrentUserCallback: " + result.getClass().getSimpleName());
 		 currentUser = result;
 		 
+		 if(currentUser.getUserName() != null){
 		 userLabel.setText(currentUser.getUserName());
+		 Update update = new WelcomeView();
+		 RootPanel.get("Details").add(update);
+		 }
+		 else{
+			 Update update = new EditProfileView();
+			 RootPanel.get("Details").add(update);
+		 }
 		 
 		 adminService.getNotebooksOfUser(currentUser, getNotebooksOfUserCallback());
 		 
