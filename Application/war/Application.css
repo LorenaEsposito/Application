@@ -92,6 +92,11 @@ h1 {
 	
 }
 
+.searchPanel {
+	margin-top: 0px;
+	padding-left: 20px;
+}
+
 .impressumPanel {
 	background: url(/impressum.png);
 	background-size: 70%;
@@ -280,6 +285,9 @@ h1 {
 	
 }
 
+.cellList{
+	font-size: 3px;
+}
 
 .detailsPanel {
 	background-color: #ffffff;
@@ -304,14 +312,13 @@ h1 {
 	border-radius:8px;
 }
 div#TopLevelFrame {
-	background: url(/Hintergrund-Notework5.jpg);
-	background-size: auto;
-	background-size: 100%;
 	background-repeat: no-repeat;
 	width-min: 1280px;
 	height-min: 800px;
 	margin: 0 auto;      /* standardkonforme horizontale Zentrierung */
  }
+
+
 
 div#Details {
 	height-min: 500px;

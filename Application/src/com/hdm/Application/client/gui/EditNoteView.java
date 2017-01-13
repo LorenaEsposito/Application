@@ -87,7 +87,6 @@ public class EditNoteView extends Update{
     
     List<String> list = dataProvider.getList();
     
-    NotebookNotesTreeViewModel nntvm = null;
 	
 	protected String getHeadlineText() {
 	    return "";
@@ -851,9 +850,6 @@ private AsyncCallback<DueDate> getDuedateCallback(){
     	return asyncCallback;
     }
     
-	public void setNntvm(NotebookNotesTreeViewModel nntvm) {
-		this.nntvm = nntvm;
-	}
     
     /*
 	 * Wenn der anzuzeigende Kunde gesetzt bzw. gelöscht wird, werden die

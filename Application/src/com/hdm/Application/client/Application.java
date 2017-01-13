@@ -9,7 +9,6 @@ import com.hdm.Application.client.gui.EditNoteView;
 import com.hdm.Application.client.gui.EditNotebookView;
 import com.hdm.Application.client.gui.LoginService;
 import com.hdm.Application.client.gui.LoginServiceAsync;
-import com.hdm.Application.client.gui.NotebookNotesTreeViewModel;
 import com.hdm.Application.client.gui.Update;
 import com.hdm.Application.client.gui.WelcomeView;
 import com.hdm.Application.shared.LoginInfo;
@@ -17,8 +16,6 @@ import com.hdm.Application.shared.NoteAdministrationAsync;
 import com.hdm.Application.shared.bo.AppUser;
 import com.hdm.Application.shared.bo.Note;
 import com.hdm.Application.shared.bo.Notebook;
-
-import sun.security.util.AuthResources;
 
 import com.hdm.Application.client.ClientsideSettings;
 
@@ -225,6 +222,7 @@ public class Application implements EntryPoint {
  		listbox.setSelectedIndex(0);
  		
  		cellList.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.ENABLED);
+ 		
 
  	    // Add a selection model to handle user selection.
  	    

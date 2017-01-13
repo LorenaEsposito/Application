@@ -11,7 +11,7 @@ public class EditNotebookView {
 	
 	private Notebook currentNotebook = new Notebook();
 	
-	NotebookNotesTreeViewModel nntvm = null;
+
 	
 	protected String getHeadlineText() {
 	    return "";
@@ -48,9 +48,7 @@ public class EditNotebookView {
 	    
 	}
 	
-	public void setNntvm(NotebookNotesTreeViewModel nntvm) {
-		this.nntvm = nntvm;
-	}
+
 
 	public void setSelected(Notebook nb) {
 		if (nb != null) {

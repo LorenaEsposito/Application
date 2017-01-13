@@ -39,7 +39,7 @@ public class SearchView extends Update {
 
 	protected String getHeadlineText() {
 
-		return "Search";
+		return "";
 	}
 
 	/**
@@ -108,14 +108,16 @@ public class SearchView extends Update {
 		 * Zuteilung der Widgets zum jeweiligen Panel
 		 */
 
-		searchPanel.add(searchButton);
+		
 		searchPanel.add(searchBox);
 		searchPanel.add(searchDateBox);
+		
 		radiobuttonPanel.add(dueDateButton);
 		radiobuttonPanel.add(userNameButton);
 		radiobuttonPanel.add(noteButton);
 		radiobuttonPanel.add(notebookButton);
 		searchPanel.add(radiobuttonPanel);
+		searchPanel.add(searchButton);
 		searchPanel.add(ergebnisPanel);
 		ergebnisPanel.clear();
 		RootPanel.get("Details").add(searchPanel);
@@ -126,6 +128,7 @@ public class SearchView extends Update {
 		 **/
 		searchDateBox.setVisible(false);		
 		searchButton.setStyleName("notework-menubutton");
+		searchPanel.setStyleName("searchPanel");
 		dueDateButton.setText("Duedate");
 		userNameButton.setText("Username");
 		noteButton.setText("Note");
