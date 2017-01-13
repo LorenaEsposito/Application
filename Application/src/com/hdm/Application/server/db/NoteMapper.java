@@ -529,6 +529,7 @@ public class NoteMapper {
 						
 					
 						Note note = new Note();
+						note.setNbID(rs2.getInt("nbid"));
 						note.setnID(rs2.getInt("nid"));
 						note.setnTitle(rs2.getString("title"));
 						note.setnSubtitle(rs2.getString("subtitle"));
@@ -552,4 +553,396 @@ public class NoteMapper {
 			return result;
 
 		}
+
+
+public Vector<Note> findByUserPermission3(AppUser user) {
+
+	// DB-Verbindung holen und Variablen zurücksetzen
+	int appUserID = user.getUserID();
+	Connection con = DBConnection.connection();
+	int nID = 0;
+
+	Vector<Note> result = new Vector<Note>();
+	
+	Vector<Integer> nIDs = new Vector<Integer>();
+	
+	try{
+		//Leeres SQL Statement anlegen
+		Statement stmt = con.createStatement();
+		
+		//Statement ausfuellen und als Query an DB schicken
+		ResultSet rs = stmt.executeQuery("SELECT nid FROM permissions WHERE appuserid= " + appUserID +" AND permtype=3");
+		
+		while (rs.next()){
+			
+		
+		nID = rs.getInt("nid");
+		
+		nIDs.add(nID);
+		
+		}
+
+}
+catch (SQLException e){
+	e.printStackTrace();
+	return null;
+}
+
+try{
+	
+	for(int i = 0; i < nIDs.size(); i++){
+		
+		nID = nIDs.get(i);
+		
+			//Leeres SQL Statement anlegen
+			Statement stmt2 = con.createStatement();
+			
+			//Statement ausfuellen und als Query an DB schicken
+			ResultSet rs2 = stmt2.executeQuery("SELECT nid, nbid, title, subtitle, content, source, creadate, moddate FROM notes "
+					+ "WHERE nid=" + nID);
+			
+			while (rs2.next()){
+				
+			
+				Note note = new Note();
+				note.setnID(rs2.getInt("nid"));
+				note.setNbID(rs2.getInt("nbid"));
+				note.setnTitle(rs2.getString("title"));
+				note.setnSubtitle(rs2.getString("subtitle"));
+				note.setnContent(rs2.getString("content"));
+				note.setSource(rs2.getString("source"));
+				note.setnCreDate(rs2.getDate("creadate"));
+				note.setnModDate(rs2.getDate("moddate"));
+				
+				// Neues Objekt wird dem Ergebnisvektor hinzugefuegt
+				result.addElement(note);
+			
+			}
+	}
+}
+	catch (SQLException e){
+
+		e.printStackTrace();
+		return null;
+	}
+
+	return result;
+
+}
+
+public Vector<Note> findByUserPermission2(AppUser user) {
+
+	// DB-Verbindung holen und Variablen zurücksetzen
+	int appUserID = user.getUserID();
+	Connection con = DBConnection.connection();
+	int nID = 0;
+
+	Vector<Note> result = new Vector<Note>();
+	
+	Vector<Integer> nIDs = new Vector<Integer>();
+	
+	try{
+		//Leeres SQL Statement anlegen
+		Statement stmt = con.createStatement();
+		
+		//Statement ausfuellen und als Query an DB schicken
+		ResultSet rs = stmt.executeQuery("SELECT nid FROM permissions WHERE appuserid= " + appUserID +" AND permtype=2");
+		
+		while (rs.next()){
+			
+		
+		nID = rs.getInt("nid");
+		
+		nIDs.add(nID);
+		
+		}
+
+}
+catch (SQLException e){
+	e.printStackTrace();
+	return null;
+}
+
+try{
+	
+	for(int i = 0; i < nIDs.size(); i++){
+		
+		nID = nIDs.get(i);
+		
+			//Leeres SQL Statement anlegen
+			Statement stmt2 = con.createStatement();
+			
+			//Statement ausfuellen und als Query an DB schicken
+			ResultSet rs2 = stmt2.executeQuery("SELECT nid, nbid, title, subtitle, content, source, creadate, moddate FROM notes "
+					+ "WHERE nid=" + nID);
+			
+			while (rs2.next()){
+				
+			
+				Note note = new Note();
+				note.setnID(rs2.getInt("nid"));
+				note.setNbID(rs2.getInt("nbid"));
+				note.setnTitle(rs2.getString("title"));
+				note.setnSubtitle(rs2.getString("subtitle"));
+				note.setnContent(rs2.getString("content"));
+				note.setSource(rs2.getString("source"));
+				note.setnCreDate(rs2.getDate("creadate"));
+				note.setnModDate(rs2.getDate("moddate"));
+				
+				// Neues Objekt wird dem Ergebnisvektor hinzugefuegt
+				result.addElement(note);
+			
+			}
+	}
+}
+	catch (SQLException e){
+
+		e.printStackTrace();
+		return null;
+	}
+
+	return result;
+
+}
+
+public Vector<Note> findByUserPermission1(AppUser user) {
+
+	// DB-Verbindung holen und Variablen zurücksetzen
+	int appUserID = user.getUserID();
+	Connection con = DBConnection.connection();
+	int nID = 0;
+
+	Vector<Note> result = new Vector<Note>();
+	
+	Vector<Integer> nIDs = new Vector<Integer>();
+	
+	try{
+		//Leeres SQL Statement anlegen
+		Statement stmt = con.createStatement();
+		
+		//Statement ausfuellen und als Query an DB schicken
+		ResultSet rs = stmt.executeQuery("SELECT nid FROM permissions WHERE appuserid= " + appUserID +" AND permtype=1");
+		
+		while (rs.next()){
+			
+		
+		nID = rs.getInt("nid");
+		
+		nIDs.add(nID);
+		
+		}
+
+}
+catch (SQLException e){
+	e.printStackTrace();
+	return null;
+}
+
+try{
+	
+	for(int i = 0; i < nIDs.size(); i++){
+		
+		nID = nIDs.get(i);
+		
+			//Leeres SQL Statement anlegen
+			Statement stmt2 = con.createStatement();
+			
+			//Statement ausfuellen und als Query an DB schicken
+			ResultSet rs2 = stmt2.executeQuery("SELECT nid, nbid, title, subtitle, content, source, creadate, moddate FROM notes "
+					+ "WHERE nid=" + nID);
+			
+			while (rs2.next()){
+				
+			
+				Note note = new Note();
+				note.setnID(rs2.getInt("nid"));
+				note.setNbID(rs2.getInt("nbid"));
+				note.setnTitle(rs2.getString("title"));
+				note.setnSubtitle(rs2.getString("subtitle"));
+				note.setnContent(rs2.getString("content"));
+				note.setSource(rs2.getString("source"));
+				note.setnCreDate(rs2.getDate("creadate"));
+				note.setnModDate(rs2.getDate("moddate"));
+				
+				// Neues Objekt wird dem Ergebnisvektor hinzugefuegt
+				result.addElement(note);
+			
+			}
+	}
+}
+	catch (SQLException e){
+
+		e.printStackTrace();
+		return null;
+	}
+
+	return result;
+
+}
+public Vector<Note> findAllNotesFromAppUser(AppUser user) {
+
+	// DB-Verbindung holen und Variablen zurücksetzen
+	int appUserID = user.getUserID();
+	Connection con = DBConnection.connection();
+	Vector<Note> result = new Vector<Note>();
+	
+	
+try{
+	
+			//Leeres SQL Statement anlegen
+			Statement stmt2 = con.createStatement();
+			
+			//Statement ausfuellen und als Query an DB schicken
+			ResultSet rs2 = stmt2.executeQuery("SELECT * FROM notes INNER JOIN permissions ON notes.nid = permissions.nid"
+					+" WHERE (permtype > 0 AND appuserid = "+appUserID+") OR (isowner = 1 AND appuserid = "+appUserID+");");
+		 			
+			while (rs2.next()){
+				
+			
+				Note note = new Note();
+				note.setnID(rs2.getInt("nid"));
+				note.setNbID(rs2.getInt("nbid"));
+				note.setnTitle(rs2.getString("title"));
+				note.setnSubtitle(rs2.getString("subtitle"));
+				note.setnContent(rs2.getString("content"));
+				note.setSource(rs2.getString("source"));
+				note.setnCreDate(rs2.getDate("creadate"));
+				note.setnModDate(rs2.getDate("moddate"));
+				note.setpType(rs2.getInt("permtype"));
+				note.setUserID(appUserID);
+				
+				// Neues Objekt wird dem Ergebnisvektor hinzugefuegt
+				result.addElement(note);
+			
+			}
+	
+}
+	catch (SQLException e){
+
+		e.printStackTrace();
+		return null;
+	}
+
+	return result;
+
+}
+
+
+		 			 
+
+	 
+public Vector<Note> findByBetweenCreationDate(java.sql.Date von, java.sql.Date bis){
+	 Connection con = DBConnection.connection();
+	 Vector<Note> result = new Vector<Note>();
+	 	 
+	 
+	 try{
+		 Statement stmt = con.createStatement();			 
+		 ResultSet rs = stmt.executeQuery("SELECT * FROM notes WHERE creadate BETWEEN '"+von.toString()+"' AND '"+bis.toString()+"';");
+		 
+		 
+		//Fuer jeden Eintrag im Suchergebnis wird ein Note-Objekt erstellt.
+		 while(rs.next()) {
+			 Note note = new Note();
+			 note.setnID(rs.getInt("nid"));
+			 note.setNbID(rs.getInt("nbid"));
+			 note.setnTitle(rs.getString("title"));
+			 note.setnSubtitle(rs.getString("subtitle"));
+			 note.setnContent(rs.getString("content"));
+			 note.setSource(rs.getString("source"));
+			 note.setnCreDate(rs.getDate("creadate"));
+			 note.setnModDate(rs.getDate("moddate"));
+			 
+			//Neues Objekt wird dem Ergebnisvektor hinzugefuegt
+			 result.addElement(note);
+			 
+		 } 
+	 }
+	 
+	 catch (SQLException e){
+		 System.out.println("SQL FEHLER: "+e);
+		 e.printStackTrace();
+	 }
+	 
+	//Vektor wird zurueckgegeben
+	 return result;
+}
+public Vector<Note> findOwnNotesFromAppUser(AppUser user) {
+
+	// DB-Verbindung holen und Variablen zurücksetzen
+	int appUserID = user.getUserID();
+	Connection con = DBConnection.connection();
+	int nID = 0;
+
+	Vector<Note> result = new Vector<Note>();
+	
+	Vector<Integer> nIDs = new Vector<Integer>();
+	
+	try{
+		//Leeres SQL Statement anlegen
+		Statement stmt = con.createStatement();
+		
+		//Statement ausfuellen und als Query an DB schicken
+		ResultSet rs = stmt.executeQuery("SELECT nid FROM permissions WHERE appuserid= " + appUserID +" AND  isowner  >0");
+		
+		while (rs.next()){
+			
+		
+		nID = rs.getInt("nid");
+		
+		nIDs.add(nID);
+		
+		}
+
+}
+catch (SQLException e){
+	e.printStackTrace();
+	return null;
+}
+
+try{
+	
+	for(int i = 0; i < nIDs.size(); i++){
+		
+		nID = nIDs.get(i);
+		
+			//Leeres SQL Statement anlegen
+			Statement stmt2 = con.createStatement();
+			
+			//Statement ausfuellen und als Query an DB schicken
+			ResultSet rs2 = stmt2.executeQuery("SELECT nid, nbid, title, subtitle, content, source, creadate, moddate FROM notes "
+					+ "WHERE nid=" + nID);
+			
+			while (rs2.next()){
+				
+			
+				Note note = new Note();
+				note.setnID(rs2.getInt("nid"));
+				note.setNbID(rs2.getInt("nbid"));
+				note.setnTitle(rs2.getString("title"));
+				note.setnSubtitle(rs2.getString("subtitle"));
+				note.setnContent(rs2.getString("content"));
+				note.setSource(rs2.getString("source"));
+				note.setnCreDate(rs2.getDate("creadate"));
+				note.setnModDate(rs2.getDate("moddate"));
+				
+				// Neues Objekt wird dem Ergebnisvektor hinzugefuegt
+				result.addElement(note);
+			
+			}
+	}
+}
+	catch (SQLException e){
+
+		e.printStackTrace();
+		return null;
+	}
+
+	return result;
+
+}
+
+
+		 			 
+
 }

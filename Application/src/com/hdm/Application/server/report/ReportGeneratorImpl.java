@@ -105,7 +105,7 @@ public void init() throws IllegalArgumentException {
 	 Row TopRow = new Row();
 	 TopRow.addColumn(new Column(user.getUserName()));
 	 result.addRow(TopRow);
-	 Vector<Note> notes = noteMapper.findByUser(user);
+	 Vector<Note> notes = noteMapper.findAllNotesFromAppUser(user);
 	 System.out.println("notes size : "+notes.size());
 	    for (Note n : notes) {
 	    	
@@ -126,6 +126,23 @@ public void init() throws IllegalArgumentException {
 			//Subtitel auslesen
 	        SingleInfoRow.addColumn(new Column(n.getnSubtitle()));
 	        
+	        //Berechtigung
+	        switch (n.getpType()) {
+			case 1: 
+				SingleInfoRow.addColumn(new Column("Leseberechtigung"));
+				break;
+			case 2: 
+				SingleInfoRow.addColumn(new Column("Bearbeitungsberechtigung"));
+				break;
+			case 3: 
+				SingleInfoRow.addColumn(new Column("Löschberechtigung"));
+				break;
+
+			default:				
+				SingleInfoRow.addColumn(new Column("Eigene Notiz"));
+				break;
+			}
+	        
 	      //Erstellungsdatum  auslesen
 	        SingleInfoRow.addColumn(new Column(n.getnCreDate().toString()));
 			
@@ -144,7 +161,215 @@ public void init() throws IllegalArgumentException {
 	    
 	    
 }
+  public AllNotesFromUser createOwnNotesFromUserReport(AppUser user) throws IllegalArgumentException {
 
+	  /*
+	   * Zun�chst legen wir uns einen leeren Report an.
+	   */
+	 	 AllNotesFromUser result = new AllNotesFromUser();
+	       
+	  //Anlegen der Kopfzeile mit dem vollen Namen
+	 	 Row TopRow = new Row();
+	 	 TopRow.addColumn(new Column(user.getUserName()));
+	 	 result.addRow(TopRow);
+	 	 Vector<Note> notes = noteMapper.findOwnNotesFromAppUser(user);
+	 	 System.out.println("notes size : "+notes.size());
+	 	    for (Note n : notes) {
+	 	    	
+	 	        // Eine leere Zeile anlegen.
+	 	        Row SingleInfoRow = new Row();
+	 	        
+	 	      //Notizbuchtitel auslesen
+	 	        if (n.getNbID() != 0){
+	 			   	SingleInfoRow.addColumn(new Column (notebookMapper.findById(n.getNbID()).getNbTitle()));
+	 		        }
+	 		        else {
+	 				   	SingleInfoRow.addColumn(new Column ("Notizbuchtitel unbekannt"));
+	 		        }
+	 	        
+	 	        //Notiztitel auslesen
+	 			SingleInfoRow.addColumn(new Column(n.getnTitle()));
+	 			
+	 			//Subtitel auslesen
+	 	        SingleInfoRow.addColumn(new Column(n.getnSubtitle()));
+	 	        
+	 	       //Berechtigung
+	 	        SingleInfoRow.addColumn(new Column("Eigene Notiz"));
+	 	        
+	 	      //Erstellungsdatum  auslesen
+	 	        SingleInfoRow.addColumn(new Column(n.getnCreDate().toString()));
+	 			
+	 	        //Content auslesen
+	 	        Row contentrow = new Row();
+	 	        contentrow.addColumn(new Column( n.getnContent()));
+	 	        
+	 	        // und schlie�lich die Zeile dem Report hinzuf�gen.
+	 	        
+	 	        result.addRow(SingleInfoRow);
+	 	        result.addRow(contentrow);
+
+	 	      }		
+	     return result;
+	 	    
+	 	    
+	 	    
+	 }
+
+  public AllNotesFromUser createAllFilteredNotesLEB(AppUser user) throws IllegalArgumentException {
+
+	  /*
+	   * Zun�chst legen wir uns einen leeren Report an.
+	   */
+	 	 AllNotesFromUser result = new AllNotesFromUser();
+	       
+	  //Anlegen der Kopfzeile mit dem vollen Namen
+	 	 Row TopRow = new Row();
+	 	 TopRow.addColumn(new Column(user.getUserName()));
+	 	 result.addRow(TopRow);
+	 	 Vector<Note> notes = noteMapper.findByUserPermission1(user);
+	 	 System.out.println("notes size : "+notes.size());
+	 	    for (Note n : notes) {
+	 	    	
+	 	        // Eine leere Zeile anlegen.
+	 	        Row SingleInfoRow = new Row();
+	 	        
+	 	      //Notizbuchtitel auslesen
+	 	        if (n.getNbID() != 0){
+	 			   	SingleInfoRow.addColumn(new Column (notebookMapper.findById(n.getNbID()).getNbTitle()));
+	 		        }
+	 		        else {
+	 				   	SingleInfoRow.addColumn(new Column ("Notizbuchtitel unbekannt"));
+	 		        }
+	 	        
+	 	        //Notiztitel auslesen
+	 			SingleInfoRow.addColumn(new Column(n.getnTitle()));
+	 			
+	 			//Subtitel auslesen
+	 	        SingleInfoRow.addColumn(new Column(n.getnSubtitle()));
+	 	        
+	 	     //Berechtigung
+	 	        SingleInfoRow.addColumn(new Column("Leseberechtigung"));
+	 	        
+	 	      //Erstellungsdatum  auslesen
+	 	        SingleInfoRow.addColumn(new Column(n.getnCreDate().toString()));
+	 			
+	 	        //Content auslesen
+	 	        Row contentrow = new Row();
+	 	        contentrow.addColumn(new Column( n.getnContent()));
+	 	        
+	 	        // und schlie�lich die Zeile dem Report hinzuf�gen.
+	 	        
+	 	        result.addRow(SingleInfoRow);
+	 	        result.addRow(contentrow);
+
+	 	      }		
+	     return result;
+	 	    
+	 	    
+	 	    
+	 }
+  
+  public AllNotesFromUser createAllFilteredNotesLB(AppUser user) throws IllegalArgumentException {
+
+	  /*
+	   * Zun�chst legen wir uns einen leeren Report an.
+	   */
+	 	 AllNotesFromUser result = new AllNotesFromUser();
+	       
+	  //Anlegen der Kopfzeile mit dem vollen Namen
+	 	 Row TopRow = new Row();
+	 	 TopRow.addColumn(new Column(user.getUserName()));
+	 	 result.addRow(TopRow);
+	 	 Vector<Note> notes = noteMapper.findByUserPermission3(user);
+	 	 System.out.println("notes size : "+notes.size());
+	 	    for (Note n : notes) {
+	 	    	
+	 	        // Eine leere Zeile anlegen.
+	 	        Row SingleInfoRow = new Row();
+	 	        
+	 	      //Notizbuchtitel auslesen
+	 	        if (n.getNbID() != 0){
+	 			   	SingleInfoRow.addColumn(new Column (notebookMapper.findById(n.getNbID()).getNbTitle()));
+	 		        }
+	 		        else {
+	 				   	SingleInfoRow.addColumn(new Column ("Notizbuchtitel unbekannt"));
+	 		        }
+	 	        
+	 	        //Notiztitel auslesen
+	 			SingleInfoRow.addColumn(new Column(n.getnTitle()));
+	 			
+	 			//Subtitel auslesen
+	 	        SingleInfoRow.addColumn(new Column(n.getnSubtitle()));
+	 	        
+	 	        //Berechtigung
+	 	        SingleInfoRow.addColumn(new Column("Löschberechtigung"));
+	 	        
+	 	      //Erstellungsdatum  auslesen
+	 	        SingleInfoRow.addColumn(new Column(n.getnCreDate().toString()));
+	 			
+	 	        //Content auslesen
+	 	        Row contentrow = new Row();
+	 	        contentrow.addColumn(new Column( n.getnContent()));
+	 	        
+	 	        // und schlie�lich die Zeile dem Report hinzuf�gen.
+	 	        
+	 	        result.addRow(SingleInfoRow);
+	 	        result.addRow(contentrow);
+
+	 	      }		
+	     return result;
+  }
+  
+  public AllNotesFromUser createAllFilteredNotesBB(AppUser user) throws IllegalArgumentException {
+
+	  /*
+	   * Zun�chst legen wir uns einen leeren Report an.
+	   */
+	 	 AllNotesFromUser result = new AllNotesFromUser();
+	       
+	  //Anlegen der Kopfzeile mit dem vollen Namen
+	 	 Row TopRow = new Row();
+	 	 TopRow.addColumn(new Column(user.getUserName()));
+	 	 result.addRow(TopRow);
+	 	 Vector<Note> notes = noteMapper.findByUserPermission2(user);
+	 	 System.out.println("notes size : "+notes.size());
+	 	    for (Note n : notes) {
+	 	    	
+	 	        // Eine leere Zeile anlegen.
+	 	        Row SingleInfoRow = new Row();
+	 	        
+	 	      //Notizbuchtitel auslesen
+	 	        if (n.getNbID() != 0){
+	 			   	SingleInfoRow.addColumn(new Column (notebookMapper.findById(n.getNbID()).getNbTitle()));
+	 		        }
+	 		        else {
+	 				   	SingleInfoRow.addColumn(new Column ("Notizbuchtitel unbekannt"));
+	 		        }
+	 	        
+	 	        //Notiztitel auslesen
+	 			SingleInfoRow.addColumn(new Column(n.getnTitle()));
+	 			
+	 			//Subtitel auslesen
+	 	        SingleInfoRow.addColumn(new Column(n.getnSubtitle()));
+	 	        
+	 	     //Berechtigung
+	 	        SingleInfoRow.addColumn(new Column("Bearbeitungsberechtigung"));
+	 	        
+	 	      //Erstellungsdatum  auslesen
+	 	        SingleInfoRow.addColumn(new Column(n.getnCreDate().toString()));
+	 			
+	 	        //Content auslesen
+	 	        Row contentrow = new Row();
+	 	        contentrow.addColumn(new Column( n.getnContent()));
+	 	        
+	 	        // und schlie�lich die Zeile dem Report hinzuf�gen.
+	 	        
+	 	        result.addRow(SingleInfoRow);
+	 	        result.addRow(contentrow);
+
+	 	      }		
+	     return result;
+  }
 @SuppressWarnings("deprecation")
 @Override
 public AllFilteredNotes createAllFilteredNotesReportED(Date erstellungsDatum) throws IllegalArgumentException {
@@ -261,11 +486,11 @@ public AllFilteredNotes createAllFilteredNotesReportDD(Date dueDate) throws Ille
 
 
 @Override
-public AllFilteredNotes createAllFilteredNotesReport(String notebook) throws IllegalArgumentException {
+public AllNotes createAllFilteredNotesReport(String notebook) throws IllegalArgumentException {
 	/*
 	  * Zun�chst legen wir uns einen leeren Report an.
 	  */
-		 AllFilteredNotes result = new AllFilteredNotes();
+		 AllNotes result = new AllNotes();
 	      
 	 //Anlegen der Kopfzeile mit dem vollen Namen
 		 Row TopRow = new Row();
@@ -314,10 +539,8 @@ public AllFilteredNotes createAllFilteredNotesReport(String notebook) throws Ill
 			    
 		}
 		   return result;
+
 }
-
-
-@SuppressWarnings("deprecation")
 public AllNotes createAllNotesReport() throws IllegalArgumentException {
 	/*
 	  * Zun�chst legen wir uns einen leeren Report an.
@@ -331,6 +554,126 @@ public AllNotes createAllNotesReport() throws IllegalArgumentException {
 		 
 		 //Auslesen aller Notes 
 		 Vector<Note> note = noteMapper.findAll();
+		 System.out.println("notes Größe: "+note.size());
+		    
+		 
+		
+			 //Durchlaufen aller Notizen und das hinzuf�gen der Zeilen
+			 for (Note n : note) {			    	
+			        // Eine leere Zeile anlegen.
+			        Row SingleInfoRow = new Row();
+			        
+			      //nbtitle auslesen
+			        
+			        if (n.getNbID() != 0){
+				   	SingleInfoRow.addColumn(new Column (notebookMapper.findById(n.getNbID()).getNbTitle()));
+			        }
+			        else {
+					   	SingleInfoRow.addColumn(new Column ("Notizbuchtitel unbekannt"));
+			        }
+			        
+			        //Notiztitel auslesen
+					SingleInfoRow.addColumn(new Column(n.getnTitle()));
+					
+					//Subtitel auslesen
+			        SingleInfoRow.addColumn(new Column(n.getnSubtitle()));
+			        
+			      //Permissiontype auslesen
+			        
+			    
+			        
+			        
+			      //Erstellungsdatum  auslesen
+			        SingleInfoRow.addColumn(new Column(n.getnCreDate().toString()));
+			       
+					
+			        //Content auslesen
+			        Row contentrow = new Row();
+			        contentrow.addColumn(new Column( n.getnContent()));
+			        
+			        // und schlie�lich die Zeile dem Report hinzuf�gen.
+			        
+			        result.addRow(SingleInfoRow);
+			        result.addRow(contentrow);
+			      
+			      }		
+			    
+		
+		   return result;
+}
+
+@SuppressWarnings("deprecation")
+@Override
+public AllFilteredNotes findByBetweenCreationDate(Date von, Date bis) throws IllegalArgumentException{
+	/*
+	  * Zun�chst legen wir uns einen leeren Report an.
+	  */
+		AllFilteredNotes result = new AllFilteredNotes();
+	      
+	 //Anlegen der Kopfzeile mit dem vollen Namen
+		 Row TopRow = new Row();
+		 TopRow.addColumn(new Column(von.toString() + bis.toString()));
+		 result.addRow(TopRow);
+		 /*
+	  * Hier werden alle Notizen eines DueDates aufgelistet 
+	  */
+		 int tag = von.getDate();
+		 int monat = von.getMonth()+1;
+		 int jahr = von.getYear()+1900; 
+		 String vonBox = jahr+"-"+monat+"-"+tag;
+		 
+		 int tag1 = bis.getDate();
+		 int monat1 = bis.getMonth()+1;
+		 int jahr1 = bis.getYear()+1900;
+		 String bisBox = jahr1+"-"+monat1+"-"+tag1;
+		 
+		 
+		Vector<Note> notes = noteMapper.findByBetweenCreationDate(java.sql.Date.valueOf(vonBox), java.sql.Date.valueOf(bisBox));
+		 System.out.println("findByBetweenCreationDate!! notes size : "+notes.size());
+		    for (Note n : notes) {
+		    	
+		        // Eine leere Zeile anlegen.
+		        Row SingleInfoRow = new Row();
+		        
+		      //Notizbuchtitel auslesen
+		    	SingleInfoRow.addColumn(new Column(notebookMapper.findById(n.getNbID()).getNbTitle()));
+		        
+		        //Notiztitel auslesen
+				SingleInfoRow.addColumn(new Column(n.getnTitle()));
+				
+				//Subtitel auslesen
+		        SingleInfoRow.addColumn(new Column(n.getnSubtitle()));
+		        
+		      //Erstellungsdatum  auslesen
+		        SingleInfoRow.addColumn(new Column(n.getnCreDate().toString()));
+				
+		        //Content auslesen
+		        Row contentrow = new Row();
+		        contentrow.addColumn(new Column( n.getnContent()));
+		        
+		        // und schlie�lich die Zeile dem Report hinzuf�gen.
+		        
+		        result.addRow(SingleInfoRow);
+		        result.addRow(contentrow);
+
+		      }		
+		    
+		    
+		    	return result;
+}
+
+@Override
+public AllNotes findByTitle(String nTitle) throws IllegalArgumentException {
+	
+	AllNotes result = new AllNotes();
+    
+	 //Anlegen der Kopfzeile mit dem vollen Namen
+		 Row TopRow = new Row();
+		 TopRow.addColumn(new Column());
+		 result.addRow(TopRow);
+		 
+		 //Auslesen aller Notes 
+		 Vector<Note> note = noteMapper.findByTitle(nTitle);
 		 System.out.println("notes size : "+note.size());
 		    
 		 
@@ -375,4 +718,6 @@ public AllNotes createAllNotesReport() throws IllegalArgumentException {
 		
 		   return result;
 }
+
+
 }

@@ -16,6 +16,8 @@ public class Note extends NoteObject {
 	private int userID;
 	private String source;
 	private DueDate dDate;
+	private int pType; 
+	
 
 	/**
 	 * @return the nID
@@ -161,6 +163,14 @@ public class Note extends NoteObject {
 	 */
 	public void setSource(String source) {
 		this.source = source;
+	}
+
+	public int getpType() {
+		return pType;
+	}
+
+	public void setpType(int pType) {
+		this.pType = pType;
 	}
 
 }

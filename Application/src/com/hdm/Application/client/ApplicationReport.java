@@ -1,13 +1,10 @@
 package com.hdm.Application.client;
 
 import java.sql.Date;
-
-import org.apache.jsp.ah.searchDocumentBody_jsp;
-import org.apache.xalan.xsltc.dom.LoadDocument;
+import java.time.LocalDate;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.dev.shell.CloseButton.Callback;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
@@ -25,18 +22,17 @@ import com.google.gwt.user.client.ui.RadioButton;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.datepicker.client.DateBox;
 import com.hdm.Application.client.gui.LoginService;
 import com.hdm.Application.client.gui.LoginServiceAsync;
-import com.hdm.Application.server.db.NoteMapper;
 import com.hdm.Application.shared.LoginInfo;
-import com.hdm.Application.shared.NoteAdministration;
 import com.hdm.Application.shared.NoteAdministrationAsync;
-import com.hdm.Application.shared.ReportGenerator;
 import com.hdm.Application.shared.ReportGeneratorAsync;
 import com.hdm.Application.shared.bo.AppUser;
-import com.hdm.Application.shared.bo.Note;
-import com.google.gwt.user.datepicker.client.DateBox;
-import com.hdm.Application.shared.report.*;
+import com.hdm.Application.shared.report.AllFilteredNotes;
+import com.hdm.Application.shared.report.AllNotes;
+import com.hdm.Application.shared.report.AllNotesFromUser;
+import com.hdm.Application.shared.report.HTMLReportWriter; 
 
 
 /**
@@ -75,11 +71,17 @@ public class ApplicationReport implements EntryPoint {
 	private HorizontalPanel filterPanel = new HorizontalPanel();
 	private HorizontalPanel radiobuttonPanel = new HorizontalPanel();
 	private HorizontalPanel searchUserPanel = new HorizontalPanel();
+	private HorizontalPanel notePanel = new HorizontalPanel();
 	private VerticalPanel ergebnisPanel = new VerticalPanel();
 	private Label welcomeLabel = new Label();
 	final Button logoButton = new Button();
 	private HorizontalPanel headPanel = new HorizontalPanel();
 	
+	boolean leb;
+	boolean bb;
+	boolean lb;
+	boolean en; 
+	boolean an;
 	
 	/**
 	 * Da diese Klasse die Implementierung des Interface <code>EntryPoint</code>
@@ -159,88 +161,54 @@ public class ApplicationReport implements EntryPoint {
 					showReportAllNotes.addClickHandler(new ClickHandler() {
 			
 						public void onClick (ClickEvent event) {
-							detailPanel.clear();
-							
+							loadNotePanel();
 							showReportFilteredNotesButton.setEnabled(true);
-							showReportAllUserNotesButton.setEnabled(true);
-							reportGenerator.createAllNotesReport(new AsyncCallback<AllNotes>() {
-			
-								@Override
-								public void onFailure(Throwable caught) {
-									Window.alert("Generieren des Reports fehlgeschlagen");					
-								}
-			
-								@Override
-								public void onSuccess(AllNotes result) {
-									Window.alert("Resultgröße: " + result.getRows().size());
-									if (result.getRows().size() > 1) {
-										//Um den Report in HTML-Text zu �berf�hren ben�tigen wir einen HTMLReportWriter
-										HTMLReportWriter writer = new HTMLReportWriter();
-										//Wir �bergeben den erhaltenen Report an den HTMLReportWriter
-										writer.process(result);
-										//Wir leeren das DetailPanel, damit etwaige vorherige Reports nicht mehr angezeigt werden
-										searchUserPanel.clear();
-										//Wir bef�llen das DetailPanel mit dem HTML-Text den wir vom ReporWriter erhalten
-										detailPanel.add(new HTML(writer.getReportText()));
-										//Wir aktivieren den Button zur Anforderung eines Reports wieder, da der angeforderte Report ausgegeben ist
-									}
-									else{
-										Label noresult = new Label();
-										String message = "Es wurden keine Notizen gefunden.";
-										noresult.setText(message);
-										detailPanel.clear();
-										detailPanel.add(noresult);
-									}
-									
-									
-								}
-							});
-									
+							showReportAllUserNotesButton.setEnabled(true);								
 									;}
 					});
-							
-				
-				
-				}
-										
+				}				
 						});
 					}
 				} 
 			});
-					
-			
-		
-		
-	
+
 	}//close onmoduleload
+
 	
-	
-	
+	protected void loadSearchUserPanel() {
 		
-	
-	
+		detailPanel.clear();
+		detailPanel.add(filterPanel);
 		
-		protected void loadSearchUserPanel() {
-			
-			detailPanel.clear();
-			detailPanel.add(filterPanel);
-			
-			final Label usernameLabel = new Label();
-			usernameLabel.setText("Nutzer-Email:");
-			final TextBox username = new TextBox(); 
-			final Button userSearchButton = new Button("Report generieren");			
-			searchUserPanel.clear();
-			searchUserPanel.add(usernameLabel);
-			searchUserPanel.add(username);
-			searchUserPanel.add(userSearchButton);
-			filterPanel.clear();
-			filterPanel.add(searchUserPanel);
+		final Label usernameLabel = new Label();
+		usernameLabel.setText("Nutzer-Email:");
+		final TextBox username = new TextBox(); 
+		final Button userSearchButton = new Button("Report generieren");
+		final RadioButton lebB = new RadioButton("Radiobutton-Group","Leseberechtigung");
+		final RadioButton lbB = new RadioButton("Radiobutton-Group","Löschberechtigung");
+		final RadioButton bbB = new RadioButton("Radiobutton-Group","Bearebitungsberechtigung");
+		final RadioButton enB = new RadioButton("Radiobutton-Group","Eigene Notizen");
+		final RadioButton anB = new RadioButton("Radiobutton-Group","Alle Notizen eines Users");
+
+		searchUserPanel.clear();
+		searchUserPanel.add(usernameLabel);
+		searchUserPanel.add(username);
+		searchUserPanel.add(userSearchButton);
+		searchUserPanel.add(lebB);
+		searchUserPanel.add(bbB);
+		searchUserPanel.add(lbB);
+		searchUserPanel.add(enB);
+		searchUserPanel.add(anB);
+
+		filterPanel.clear();
+		filterPanel.add(searchUserPanel);
 			
 			userSearchButton.addClickHandler(new ClickHandler() {
 				
 				@Override
 	public void onClick(ClickEvent event) {
-					adminService.getUserByEmail(username.getText(), new AsyncCallback<AppUser>(){
+							 
+							 adminService.getUserByEmail(username.getText(), new AsyncCallback<AppUser>(){
 						
 						@Override
 						public void onFailure(Throwable caught) {
@@ -249,15 +217,24 @@ public class ApplicationReport implements EntryPoint {
 							showReportFilteredNotesButton.setEnabled(true);
 
 						}
+						@SuppressWarnings("unchecked")
 
 						@Override
 						public void onSuccess(final AppUser user) {
-							if(user != null){
-							reportGenerator.createAllNotesFromUserReport(user, new AsyncCallback<AllNotesFromUser>() {
+							boolean rbselected = false;
+							 leb = lebB.getValue();
+							 bb = bbB.getValue();
+							 lb = lbB.getValue();
+							 en = enB.getValue();
+							 an = anB.getValue();
+							if(user != null){								
+								if(leb){
+									rbselected = true;
+									reportGenerator.createAllFilteredNotesLEB(user, new AsyncCallback<AllNotesFromUser>() {
 
 								@Override
 								public void onFailure(Throwable caught) {
-									// TODO Auto-generated method stub
+									Window.alert("onFailure of createAllFiltereredNotesLEB: "+caught);
 									
 								}
 
@@ -286,10 +263,182 @@ public class ApplicationReport implements EntryPoint {
 								}
 								
 							});
+									}
+								
+							if(bb){
+								rbselected = true;
+								reportGenerator.createAllFilteredNotesBB(user, new AsyncCallback<AllNotesFromUser>(){
+
+									@Override
+									public void onFailure(Throwable caught) {
+										Window.alert("onFailure of createAllFiltereredNotesBB: "+caught);										
+									}
+
+									@Override
+									public void onSuccess(AllNotesFromUser result) {
+										if (result.getRows().size() > 1) {
+											//Um den Report in HTML-Text zu �berf�hren ben�tigen wir einen HTMLReportWriter
+											HTMLReportWriter writer = new HTMLReportWriter();
+											//Wir �bergeben den erhaltenen Report an den HTMLReportWriter
+											writer.process(result);
+											//Wir leeren das DetailPanel, damit etwaige vorherige Reports nicht mehr angezeigt werden
+											searchUserPanel.clear();
+											//Wir bef�llen das DetailPanel mit dem HTML-Text den wir vom ReporWriter erhalten
+											detailPanel.add(new HTML(writer.getReportText()));
+											//Wir aktivieren den Button zur Anforderung eines Reports wieder, da der angeforderte Report ausgegeben ist
+										}
+										else{
+											Label noresult = new Label();
+											String message = "Für den Nutzer: "+ user.getUserName()+" wurden keine Notizen gefunden.";
+											noresult.setText(message);
+											detailPanel.clear();
+											detailPanel.add(noresult);
+										}
+									}
+									
+								});
+							}
+							if(lb){
+								rbselected = true;
+								reportGenerator.createAllFilteredNotesLB(user, new AsyncCallback<AllNotesFromUser>(){
+
+									@Override
+									public void onFailure(Throwable caught) {
+										Window.alert("onFailure of createAllFiltereredNotesLB: "+caught);										
+									}
+
+									@Override
+									public void onSuccess(AllNotesFromUser result) {
+										if (result.getRows().size() > 1) {
+											//Um den Report in HTML-Text zu �berf�hren ben�tigen wir einen HTMLReportWriter
+											HTMLReportWriter writer = new HTMLReportWriter();
+											//Wir �bergeben den erhaltenen Report an den HTMLReportWriter
+											writer.process(result);
+											//Wir leeren das DetailPanel, damit etwaige vorherige Reports nicht mehr angezeigt werden
+											searchUserPanel.clear();
+											//Wir bef�llen das DetailPanel mit dem HTML-Text den wir vom ReporWriter erhalten
+											detailPanel.add(new HTML(writer.getReportText()));
+											//Wir aktivieren den Button zur Anforderung eines Reports wieder, da der angeforderte Report ausgegeben ist
+										}
+										else{
+											Label noresult = new Label();
+											String message = "Für den Nutzer: "+ user.getUserName()+" wurden keine Notizen gefunden.";
+											noresult.setText(message);
+											detailPanel.clear();
+											detailPanel.add(noresult);
+										}
+									}
+									
+								});
+							}
+							
+							if(leb){
+								rbselected = true;
+								reportGenerator.createAllFilteredNotesLEB(user, new AsyncCallback<AllNotesFromUser>(){
+
+									@Override
+									public void onFailure(Throwable caught) {
+										Window.alert("onFailure of createAllFiltereredNotesLEB: "+caught);										
+									}
+
+									@Override
+									public void onSuccess(AllNotesFromUser result) {
+										if (result.getRows().size() > 1) {
+											//Um den Report in HTML-Text zu �berf�hren ben�tigen wir einen HTMLReportWriter
+											HTMLReportWriter writer = new HTMLReportWriter();
+											//Wir �bergeben den erhaltenen Report an den HTMLReportWriter
+											writer.process(result);
+											//Wir leeren das DetailPanel, damit etwaige vorherige Reports nicht mehr angezeigt werden
+											searchUserPanel.clear();
+											//Wir bef�llen das DetailPanel mit dem HTML-Text den wir vom ReporWriter erhalten
+											detailPanel.add(new HTML(writer.getReportText()));
+											//Wir aktivieren den Button zur Anforderung eines Reports wieder, da der angeforderte Report ausgegeben ist
+										}
+										else{
+											Label noresult = new Label();
+											String message = "Für den Nutzer: "+ user.getUserName()+" wurden keine Notizen gefunden.";
+											noresult.setText(message);
+											detailPanel.clear();
+											detailPanel.add(noresult);
+										}
+									}
+									
+								});
+							}
+							if(en){
+								rbselected = true;
+								reportGenerator.createOwnNotesFromUserReport(user, new AsyncCallback<AllNotesFromUser>(){
+
+									@Override
+									public void onFailure(Throwable caught) {
+										Window.alert("onFailure of createOwnNotes: "+caught);										
+									}
+
+									@Override
+									public void onSuccess(AllNotesFromUser result) {
+										if (result.getRows().size() > 1) {
+											//Um den Report in HTML-Text zu �berf�hren ben�tigen wir einen HTMLReportWriter
+											HTMLReportWriter writer = new HTMLReportWriter();
+											//Wir �bergeben den erhaltenen Report an den HTMLReportWriter
+											writer.process(result);
+											//Wir leeren das DetailPanel, damit etwaige vorherige Reports nicht mehr angezeigt werden
+											searchUserPanel.clear();
+											//Wir bef�llen das DetailPanel mit dem HTML-Text den wir vom ReporWriter erhalten
+											detailPanel.add(new HTML(writer.getReportText()));
+											//Wir aktivieren den Button zur Anforderung eines Reports wieder, da der angeforderte Report ausgegeben ist
+										}
+										else{
+											Label noresult = new Label();
+											String message = "Für den Nutzer: "+ user.getUserName()+" wurden keine Notizen gefunden.";
+											noresult.setText(message);
+											detailPanel.clear();
+											detailPanel.add(noresult);
+										}
+									}
+									
+								});
+							}
+							if(an){
+								rbselected = true;
+								reportGenerator.createAllNotesFromUserReport(user, new AsyncCallback<AllNotesFromUser>(){
+
+									@Override
+									public void onFailure(Throwable caught) {
+										Window.alert("onFailure of createAllNotesFromUser: "+caught);										
+									}
+
+									@Override
+									public void onSuccess(AllNotesFromUser result) {
+										if (result.getRows().size() > 1) {
+											//Um den Report in HTML-Text zu �berf�hren ben�tigen wir einen HTMLReportWriter
+											HTMLReportWriter writer = new HTMLReportWriter();
+											//Wir �bergeben den erhaltenen Report an den HTMLReportWriter
+											writer.process(result);
+											//Wir leeren das DetailPanel, damit etwaige vorherige Reports nicht mehr angezeigt werden
+											searchUserPanel.clear();
+											//Wir bef�llen das DetailPanel mit dem HTML-Text den wir vom ReporWriter erhalten
+											detailPanel.add(new HTML(writer.getReportText()));
+											//Wir aktivieren den Button zur Anforderung eines Reports wieder, da der angeforderte Report ausgegeben ist
+										}
+										else{
+											Label noresult = new Label();
+											String message = "Für den Nutzer: "+ user.getUserName()+" wurden keine Notizen gefunden.";
+											noresult.setText(message);
+											detailPanel.clear();
+											detailPanel.add(noresult);
+										}
+									}
+									
+								});
+							}
+							
+							
 							}
 							else{
 								Window.alert("Du funktionierst nicht richtig.");
 							}
+							
+			
 						}
 						
 					});
@@ -308,51 +457,55 @@ protected void loadRadiobuttonPanel() {
 	detailPanel.clear();
 	detailPanel.add(filterPanel);
 	
-	final TextBox searchBox = new TextBox();
+	final Label vonLabel = new Label();
+	vonLabel.setText("Von:");
+	final DateBox vonBox = new DateBox();
+	final Label bisLabel = new Label();
+	bisLabel.setText("Bis:");
+	final DateBox bisBox = new DateBox();
 	final Button searchButton = new Button("Report anzeigen");
-	final RadioButton dueDateButton = new RadioButton("Radiobutton-Group","Fälligkeitsdatum");
-	final RadioButton erstellungsdatumButton = new RadioButton("Radiobutton-Group","Erstellungsdatum");
-	final RadioButton notebookButton = new RadioButton("Radiobutton-Group","Notebook");
 	radiobuttonPanel.clear();
+	radiobuttonPanel.add(vonLabel);
+	radiobuttonPanel.add(vonBox);
+	radiobuttonPanel.add(bisLabel);
+	radiobuttonPanel.add(bisBox);
 	radiobuttonPanel.add(searchButton);
-	radiobuttonPanel.add(searchBox);
-	radiobuttonPanel.add(searchDateBox);
-	searchDateBox.setVisible(false);
-	radiobuttonPanel.add(dueDateButton);
-	radiobuttonPanel.add(erstellungsdatumButton);
-	radiobuttonPanel.add(notebookButton);
+	searchDateBox.setVisible(true);
 	filterPanel.clear();
 	filterPanel.add(radiobuttonPanel);
-	final boolean dd;
-	final boolean un;
-	final boolean n;
-	final boolean nb;
-	
+
 	DateTimeFormat datumsFormat = DateTimeFormat.getFormat("dd.MM.yyyy");
 	searchDateBox.setFormat(new DateBox.DefaultFormat(datumsFormat));
 	searchDateBox.getDatePicker().setYearArrowsVisible(true);
 	searchDateBox.getDatePicker().setYearAndMonthDropdownVisible(true);
     searchDateBox.getDatePicker().setVisibleYearCount(10);
 	
-	
-	
-	
+    
 	
 	searchButton.addClickHandler(new ClickHandler() {
 		
 		@Override
 		public void onClick(ClickEvent event) { 
 			
-			if (dueDateButton.getValue()){
-				Window.alert("Datebox Value: "+searchDateBox.getValue());
-				reportGenerator.createAllFilteredNotesReportDD(searchDateBox.getValue(), new AsyncCallback<AllFilteredNotes>() {
-
+		
+			
+			if (vonBox.getValue() == null && bisBox.getValue() != null ){
+				vonBox.getValue().setTime(0);
+			}
+			if (vonBox.getValue() != null && bisBox.getValue() == null){
+				
+				java.util.Date date = new java.util.Date();
+				bisBox.setValue(date);
+			}
+			
+			if ( vonBox.getValue() == null && bisBox.getValue() == null){
+				
+			}
+				reportGenerator.findByBetweenCreationDate(vonBox.getValue(), bisBox.getValue(), new AsyncCallback<AllFilteredNotes>() {
 					@Override
 					public void onFailure(Throwable caught) {
-						// TODO Auto-generated method stub
-						
+						// TODO Auto-generated method stub	
 					}
-
 					@Override
 					public void onSuccess(AllFilteredNotes result) {
 						if (result.getRows().size() > 1) {
@@ -377,123 +530,196 @@ protected void loadRadiobuttonPanel() {
 					}
 				});
 				
-			}
-			if (erstellungsdatumButton.getValue()){
-				reportGenerator.createAllFilteredNotesReportED(searchDateBox.getValue(), new AsyncCallback<AllFilteredNotes>() {
-
-					
-					@Override
-					public void onFailure(Throwable caught) {
-						Window.alert("Reportanzeige fuer Erstellungsdatum fehlgeschalgen");
-					}
-
-					@Override
-					public void onSuccess(AllFilteredNotes result) {
-						Window.alert("Durchlauf in onSuccess");
-
-						if (result.getRows().size() > 1) {
-							//Um den Report in HTML-Text zu �berf�hren ben�tigen wir einen HTMLReportWriter
-							HTMLReportWriter writer = new HTMLReportWriter();
-							//Wir �bergeben den erhaltenen Report an den HTMLReportWriter
-							writer.process(result);
-							//Wir leeren das DetailPanel, damit etwaige vorherige Reports nicht mehr angezeigt werden
-							searchUserPanel.clear();
-							//Wir bef�llen das DetailPanel mit dem HTML-Text den wir vom ReporWriter erhalten
-							detailPanel.add(new HTML(writer.getReportText()));
-							//Wir aktivieren den Button zur Anforderung eines Reports wieder, da der angeforderte Report ausgegeben ist
-						}
-						else{
-							Label noresult = new Label();
-							String message = "Es wurden keine Notizen gefunden.";
-							noresult.setText(message);
-							detailPanel.clear();
-							detailPanel.add(noresult);
-						}
-					}
-				} );
-			}
-			if (notebookButton.getValue()){
-				Window.alert("Notebookwert ausgefuehrt");
-				reportGenerator.createAllFilteredNotesReport(searchBox.getText(), new AsyncCallback<AllFilteredNotes>() {
-
-					@Override
-					public void onFailure(Throwable caught) {
-						Window.alert("createAllFilteredNotesReport fehler");
-						// TODO Auto-generated method stub
-						
-					}
-
-					@Override
-					public void onSuccess(AllFilteredNotes result) {
-						
-						if (result.getRows().size() > 1) {
-							Window.alert("Result: "+ result.getRows().size());
-							//Um den Report in HTML-Text zu �berf�hren ben�tigen wir einen HTMLReportWriter
-							HTMLReportWriter writer = new HTMLReportWriter();
-							//Wir �bergeben den erhaltenen Report an den HTMLReportWriter
-							writer.process(result);
-							//Wir leeren das DetailPanel, damit etwaige vorherige Reports nicht mehr angezeigt werden
-							detailPanel.clear();
-							//Wir bef�llen das DetailPanel mit dem HTML-Text den wir vom ReporWriter erhalten
-							detailPanel.add(new HTML(writer.getReportText()));
-							//Wir aktivieren den Button zur Anforderung eines Reports wieder, da der angeforderte Report ausgegeben ist
-						}
-						else{
-							Label noresult = new Label();
-							String message = "Es wurden keine Notizen gefunden.";
-							noresult.setText(message);
-							detailPanel.clear();
-							detailPanel.add(noresult);
-						}
-					}
-				});
+			
 				
-			}
+		}
+	});
 
-			
-		}
-	});
 	
 	
 	
-	notebookButton.addValueChangeHandler(new ValueChangeHandler<Boolean>() {
-		public void onValueChange(ValueChangeEvent<Boolean> event) {
-			searchBox.setVisible(true);
-			searchDateBox.setVisible(false);
-			//notebookTable();
-		}
-
-});
-	erstellungsdatumButton.addValueChangeHandler(new ValueChangeHandler<Boolean>() {
-		
-		
-		@Override
-		public void onValueChange(ValueChangeEvent<Boolean> event) {
-			searchBox.setVisible(false);
-			searchDateBox.setVisible(true);
-			searchDateBox.showDatePicker();
-			//noteTable();
-			
-		}
-	});
-	
-	
-	dueDateButton.addValueChangeHandler(new ValueChangeHandler<Boolean>() {
-		
-		
-		@Override
-		public void onValueChange(ValueChangeEvent<Boolean> event) {
-			searchBox.setVisible(false);
-			searchDateBox.setVisible(true);
-			searchDateBox.showDatePicker();
-			//noteTable();
-			
-		}
-	});
 			
 		
 	}
-		
+		private void loadNotePanel(){
+			
+			detailPanel.clear();
+			detailPanel.add(filterPanel);
+			
+			final Label usernameLabel = new Label();
+			usernameLabel.setText("Titelstichwort:");
+			final TextBox sucheNachNotiz = new TextBox(); 
+			final Button noteSearchButton = new Button("Report generieren");
+			final RadioButton no = new RadioButton("Radiobutton-Group","Notiz");
+			final RadioButton nb = new RadioButton("Radiobutton-Group","Notizbuch");
+			final RadioButton aNo = new RadioButton("Radiobutton-Group","Alle Notizen");
+			
+			notePanel.clear();
+			notePanel.add(usernameLabel);
+			notePanel.add(sucheNachNotiz);
+			notePanel.add(noteSearchButton);
+			notePanel.add(no);
+			notePanel.add(nb);
+			notePanel.add(aNo);
+			
+			filterPanel.clear();
+			filterPanel.add(notePanel);
+			
+			no.addValueChangeHandler(new ValueChangeHandler<Boolean>() {
+				
+				
+				@Override
+				public void onValueChange(ValueChangeEvent<Boolean> event) {
+					sucheNachNotiz.setVisible(true);
+					;
+					
+				}
+			});
+			
+			
+			nb.addValueChangeHandler(new ValueChangeHandler<Boolean>() {
+				
+				
+				@Override
+				public void onValueChange(ValueChangeEvent<Boolean> event) {
+					sucheNachNotiz.setVisible(true);
+					
+				
+					
+				}
+			});
+			aNo.addValueChangeHandler(new ValueChangeHandler<Boolean>() {
+				
+				
+				@Override
+				public void onValueChange(ValueChangeEvent<Boolean> event) {
+					sucheNachNotiz.setVisible(true);
+					
+					
+				}
+			});
+			 
+			noteSearchButton.addClickHandler(new ClickHandler() {
+				
+				@Override
+				public void onClick(ClickEvent event) {	
+					
+					if (no.getValue()){
+						reportGenerator.findByTitle(sucheNachNotiz.getText(), new AsyncCallback<AllNotes>() {
+
+							@Override
+							public void onFailure(Throwable caught) {
+								Window.alert("createAllFilteredNotesReport fehler");
+								// TODO Auto-generated method stub
+								
+							}
+
+							@Override
+							public void onSuccess(AllNotes result) {
+								
+								if (result.getRows().size() > 1) {
+									Window.alert("Result: "+ result.getRows().size());
+									//Um den Report in HTML-Text zu �berf�hren ben�tigen wir einen HTMLReportWriter
+									HTMLReportWriter writer = new HTMLReportWriter();
+									//Wir �bergeben den erhaltenen Report an den HTMLReportWriter
+									writer.process(result);
+									//Wir leeren das DetailPanel, damit etwaige vorherige Reports nicht mehr angezeigt werden
+									detailPanel.clear();
+									//Wir bef�llen das DetailPanel mit dem HTML-Text den wir vom ReporWriter erhalten
+									detailPanel.add(new HTML(writer.getReportText()));
+									//Wir aktivieren den Button zur Anforderung eines Reports wieder, da der angeforderte Report ausgegeben ist
+								}
+								else{
+									Label noresult = new Label();
+									String message = "Es wurden keine Notizen gefunden.";
+									noresult.setText(message);
+									detailPanel.clear();
+									detailPanel.add(noresult);
+								}
+							}
+						});
+						
+					}
+					
+					
+					if (nb.getValue()){
+						reportGenerator.createAllFilteredNotesReport(sucheNachNotiz.getText(), new AsyncCallback<AllNotes>() {
+
+							@Override
+							public void onFailure(Throwable caught) {
+								Window.alert("createAllFilteredNotesReport fehler");
+								// TODO Auto-generated method stub
+								
+							}
+
+							@Override
+							public void onSuccess(AllNotes result) {
+								
+								if (result.getRows().size() > 1) {
+									Window.alert("Result: "+ result.getRows().size());
+									//Um den Report in HTML-Text zu �berf�hren ben�tigen wir einen HTMLReportWriter
+									HTMLReportWriter writer = new HTMLReportWriter();
+									//Wir �bergeben den erhaltenen Report an den HTMLReportWriter
+									writer.process(result);
+									//Wir leeren das DetailPanel, damit etwaige vorherige Reports nicht mehr angezeigt werden
+									detailPanel.clear();
+									//Wir bef�llen das DetailPanel mit dem HTML-Text den wir vom ReporWriter erhalten
+									detailPanel.add(new HTML(writer.getReportText()));
+									//Wir aktivieren den Button zur Anforderung eines Reports wieder, da der angeforderte Report ausgegeben ist
+								}
+								else{
+									Label noresult = new Label();
+									String message = "Es wurden keine Notizen gefunden.";
+									noresult.setText(message);
+									detailPanel.clear();
+									detailPanel.add(noresult);
+								}
+							}
+						});
+						
+					}
+					
+					if(aNo.getValue()){
+						reportGenerator.createAllNotesReport(new AsyncCallback<AllNotes>() {
+							
+							@Override
+							public void onFailure(Throwable caught) {
+								Window.alert("Generieren des Reports fehlgeschlagen");					
+							}
+
+							@Override
+							public void onSuccess(AllNotes result) {
+								Window.alert("Resultgröße: " + result.getRows().size());
+								if (result.getRows().size() > 1) {
+									//Um den Report in HTML-Text zu �berf�hren ben�tigen wir einen HTMLReportWriter
+									HTMLReportWriter writer = new HTMLReportWriter();
+									//Wir �bergeben den erhaltenen Report an den HTMLReportWriter
+									writer.process(result);
+									//Wir leeren das DetailPanel, damit etwaige vorherige Reports nicht mehr angezeigt werden
+									searchUserPanel.clear();
+									//Wir bef�llen das DetailPanel mit dem HTML-Text den wir vom ReporWriter erhalten
+									detailPanel.add(new HTML(writer.getReportText()));
+									//Wir aktivieren den Button zur Anforderung eines Reports wieder, da der angeforderte Report ausgegeben ist
+								}
+								else{
+									Label noresult = new Label();
+									String message = "Es wurden keine Notizen gefunden.";
+									noresult.setText(message);
+									detailPanel.clear();
+									detailPanel.add(noresult);
+								}
+								
+								
+							}
+						});
+					}
+					
+					
+				}
+					
+				});
+			}
+	
 
 		private void buildPanels(){
 			
@@ -636,4 +862,3 @@ protected void loadRadiobuttonPanel() {
 	}
 	
 }
-

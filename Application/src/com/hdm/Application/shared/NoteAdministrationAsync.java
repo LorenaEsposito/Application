@@ -107,5 +107,6 @@ public interface NoteAdministrationAsync {
 	void getUserByEmail(String email, AsyncCallback<AppUser> callback);
 
 	void findAll(AsyncCallback<ArrayList<Note>> callback);
+
 	
 }

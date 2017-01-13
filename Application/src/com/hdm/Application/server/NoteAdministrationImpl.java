@@ -576,6 +576,5 @@ public ArrayList<Notebook> searchForNotebook(String title) throws IllegalArgumen
 		ArrayList<Note> notes = new ArrayList<Note>(vector);
 		return notes;
 	}
-	
-    }
 
+}
