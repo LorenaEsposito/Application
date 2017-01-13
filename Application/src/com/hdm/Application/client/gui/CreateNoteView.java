@@ -429,7 +429,7 @@ protected void run() {
     		 ClientsideSettings.getLogger().
     		 severe("Success CreateNoteCallback: " + result.getClass().getSimpleName());
     		 
-    		 Application.list.add(note.getnTitle());
+    		 Application.notesList.add(note.getnTitle());
     		 currentN = result;
 
     		 Permission permission = new Permission();

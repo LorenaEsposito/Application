@@ -62,6 +62,8 @@ public class EditNoteView extends Update{
 	
 	private ArrayList<Permission> permissions = new ArrayList<Permission>();
 	
+	Permission newPermission = new Permission();
+	
 	private ArrayList<Note> notesOfNB = new ArrayList<Note>();
 	
 	private Note newNote = currentNote;
@@ -89,7 +91,7 @@ public class EditNoteView extends Update{
     
     List<String> list = dataProvider.getList();
     
-    NotebookNotesTreeViewModel nntvm = null;
+//    NotebookNotesTreeViewModel nntvm = null;
 	
 	protected String getHeadlineText() {
 	    return "";
@@ -149,9 +151,11 @@ protected void run() {
     
     cellList.setSelectionModel(selectionModel);
     
-    noteTitle = Application.selectionModel.getSelectedObject();
+    noteTitle = Application.notesSelectionModel.getSelectedObject();
     
     currentNBTitle = Application.listbox.getSelectedItemText();
+    
+    currentNB = Application.nbSelectionModel.getSelectedObject();
 
 	/**
      * Zuteilung der Widgets zum jeweiligen Panel
@@ -317,11 +321,16 @@ protected void run() {
     		savePermissionButton.setStylePrimaryName("savePermission-button");
     		
     		
-    		String mail = new String();
+    		if(permissionTB.getValue() != ""){
     		
-    		mail = permissionTB.getValue();
-    		
-    		adminService.searchUserByMail(mail, searchUserByMailCallback());
+    		adminService.searchUserByMail(permissionTB.getValue(), searchUserByMailCallback());
+    		}
+    		if(selectionModel.getSelectedObject() == null){
+    			Window.alert("Erstellen Sie eine neue Berechtigung oder bearbeiten Sie eine bestehende.");
+    		}
+    		if(permissionTB.getValue() == ""){
+    			adminService.searchUserByMail(selectionModel.getSelectedObject(), searchUserByMailCallback());
+    		}
     		
 
     	}
@@ -357,8 +366,9 @@ protected void run() {
 		if(dueDate == null){
 			newDueDate.setnID(currentNote.getnID());
 			adminService.createDuedate(newDueDate, createDuedateCallback());
-		}
+		}else{
 		adminService.editDuedate(dueDate, editDuedateCallback());
+		}
 //		 adminService.getCurrentUser(getCurrentUserCallback());
 //		 adminService.editNote(newNote, editNoteCallback());
 		
@@ -422,8 +432,9 @@ protected void run() {
     	public void onClick(ClickEvent event){
     		if(dueDate != null){
         		dueDate.setdDate(duedate.getValue());	
-    		}
+    		}else{
     		newDueDate.setdDate(duedate.getValue());
+    		}
 
     	}
     });
@@ -706,6 +717,8 @@ private AsyncCallback<DueDate> getDuedateCallback(){
     		 ClientsideSettings.getLogger().
     		 severe("Success EditNoteCallback: " + result.getClass().getSimpleName());
     		 
+    		 Application.notesList.remove(currentNote.getnTitle());
+    		 Application.notesList.add(result.getnTitle());
     	 }
     	};
     	return asyncCallback;
@@ -750,7 +763,7 @@ private AsyncCallback<DueDate> getDuedateCallback(){
         		if(user != null){
         			boolean isExisting = new Boolean(false);
         			for(int i = 0; i < dataProvider.getList().size(); i++) {
-        				if(user.getUserName() == dataProvider.getList().get(i)) {
+        				if(user.getMail() == dataProvider.getList().get(i)) {
         					isExisting = true;
         					break;
         				}
@@ -780,7 +793,22 @@ private AsyncCallback<DueDate> getDuedateCallback(){
         			}
         			
         			if(isExisting == true){
-        				Window.alert("Es wurde bereits eine Berechtigung an diesen User vergeben");
+        				
+        				if(readButton.getValue() == true){
+            				newPermission.setPermissionType(1);
+            			}
+            			if(editButton.getValue() == true){
+            				newPermission.setPermissionType(2);
+            			}
+            			if(deleteButton.getValue() == true){
+            				newPermission.setPermissionType(3);
+            			}
+            			if(readButton.getValue() == false && editButton.getValue() == false && deleteButton.getValue() == false){
+            				Window.alert("Bitte waehlen Sie eine Art der Berechtigung aus");
+            			}
+        				
+        				adminService.getPermission(user.getUserID(), currentNB.getNbID(), currentNote.getnID(), getPermissionCallback());
+        				
         			}
         		}
     		}
@@ -818,13 +846,13 @@ private AsyncCallback<DueDate> getDuedateCallback(){
     			ClientsideSettings.getLogger().
     			severe("Success GetUserForPermissionDeleteCallback: " + result.getClass().getSimpleName());
     			permissionUser = result;
-    			adminService.getPermission(permissionUser.getUserID(), currentNB.getNbID(), currentNote.getnID(), getPermissionCallback());
+    			adminService.getPermission(permissionUser.getUserID(), currentNB.getNbID(), currentNote.getnID(), getPermissionForDeleteCallback());
     		}
     	};
     	return asyncCallback;
     }
     
-    private AsyncCallback<Permission> getPermissionCallback() {
+    private AsyncCallback<Permission> getPermissionForDeleteCallback() {
     	AsyncCallback<Permission> asyncCallback = new AsyncCallback<Permission>() {
     		
     		@Override
@@ -842,7 +870,51 @@ private AsyncCallback<DueDate> getDuedateCallback(){
     	return asyncCallback;
     }
     
+    private AsyncCallback<Permission> getPermissionCallback() {
+    	AsyncCallback<Permission> asyncCallback = new AsyncCallback<Permission>() {
+    		
+    		@Override
+    		public void onFailure(Throwable caught) {
+    			ClientsideSettings.getLogger().severe("Error: " + caught.getMessage());
+    		}
+    		
+    		@Override
+    		public void onSuccess(Permission result) {
+    			ClientsideSettings.getLogger().
+    			severe("Success GetUserForPermissionDeleteCallback: " + result.getClass().getSimpleName());
+
+    			newPermission.setIsOwner(result.getIsOwner());
+    			newPermission.setNbID(result.getNbID());
+    			newPermission.setNID(result.getNID());
+    			newPermission.setPermissionID(result.getPermissionID());
+    			newPermission.setUserID(result.getUserID());
+    			
+    			adminService.editPermission(newPermission, editPermissionCallback());
+    		}
+    	};
+    	return asyncCallback;
+    }
+    
     private AsyncCallback<Void> deletePermissionCallback() {
+    	AsyncCallback<Void> asyncCallback = new AsyncCallback<Void>() {
+    		
+    		@Override
+    		public void onFailure(Throwable caught) {
+    			ClientsideSettings.getLogger().severe("Error: " + caught.getMessage());
+    		}
+    		
+    		@Override
+    		public void onSuccess(Void result) {
+    			ClientsideSettings.getLogger().
+    			severe("Success GetUserForPermissionDeleteCallback: " + result.getClass().getSimpleName());
+    			deletePermissionButton.setEnabled(true);
+    			savePermissionButton.setEnabled(true);
+    		}
+    	};
+    	return asyncCallback;
+    }
+    
+    private AsyncCallback<Void> editPermissionCallback() {
     	AsyncCallback<Void> asyncCallback = new AsyncCallback<Void>() {
     		
     		@Override
@@ -878,27 +950,27 @@ private AsyncCallback<DueDate> getDuedateCallback(){
 	return asyncCallback;
 }
     
-	public void setNntvm(NotebookNotesTreeViewModel nntvm) {
-		this.nntvm = nntvm;
-	}
-    
-    /*
-	 * Wenn der anzuzeigende Kunde gesetzt bzw. gelöscht wird, werden die
-	 * zugehörenden Textfelder mit den Informationen aus dem Kundenobjekt
-	 * gefüllt bzw. gelöscht.
-	 */
-	public void setSelected(Note n) {
-		if (n != null) {
-			currentNote = n;
-			noteTitleTB.setText(currentNote.getnTitle());
-			noteSubtitleTB.setText(currentNote.getnSubtitle());
-			textArea.setText(currentNote.getnContent());
-		} else {
-			noteTitleTB.setText("");
-			noteSubtitleTB.setText("");
-			textArea.setText("");
-		}
-	}
+//	public void setNntvm(NotebookNotesTreeViewModel nntvm) {
+//		this.nntvm = nntvm;
+//	}
+//    
+//    /*
+//	 * Wenn der anzuzeigende Kunde gesetzt bzw. gelöscht wird, werden die
+//	 * zugehörenden Textfelder mit den Informationen aus dem Kundenobjekt
+//	 * gefüllt bzw. gelöscht.
+//	 */
+//	public void setSelected(Note n) {
+//		if (n != null) {
+//			currentNote = n;
+//			noteTitleTB.setText(currentNote.getnTitle());
+//			noteSubtitleTB.setText(currentNote.getnSubtitle());
+//			textArea.setText(currentNote.getnContent());
+//		} else {
+//			noteTitleTB.setText("");
+//			noteSubtitleTB.setText("");
+//			textArea.setText("");
+//		}
+//	}
     
 }
 

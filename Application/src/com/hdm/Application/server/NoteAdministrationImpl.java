@@ -524,6 +524,7 @@ public ArrayList<Notebook> searchForNotebook(String title) throws IllegalArgumen
     			}
     		}
     	}
+    	
     	return notebooks;
     }
     
@@ -608,17 +609,20 @@ public ArrayList<Notebook> searchForNotebook(String title) throws IllegalArgumen
     	Vector<Permission> vector1 = new Vector<Permission>();
     	vector1 = this.pMapper.findByNotebookID(nbID);
     	ArrayList<Permission> permissions = new ArrayList<Permission>();
-    	Vector<Permission> vector2 = new Vector<Permission>();
-    	vector2 = this.pMapper.findByNoteID(nID);
+//    	Vector<Permission> vector2 = new Vector<Permission>();
+//    	vector2 = this.pMapper.findByNoteID(nID);
     	for(int i = 0; i < vector1.size(); i++){
     		if(vector1.get(i).getNID() == 0){
     			permissions.add(vector1.get(i));
     		}
     		if(vector1.get(i).getNID() != 0){
-    			for(int y = 0; y < vector2.size(); y++){
-    				if(vector1.get(i).getNID() == vector2.get(y).getNID()){
-    					permissions.add(vector2.get(y));
-    				}
+//    			for(int y = 0; y < vector2.size(); y++){
+//    				if(vector1.get(i).getNID() == vector2.get(y).getNID()){
+//    					permissions.add(vector2.get(y));
+//    				}
+//    			}
+    			if(vector1.get(i).getNID() == nID){
+    				permissions.add(vector1.get(i));
     			}
     		}
     	}
