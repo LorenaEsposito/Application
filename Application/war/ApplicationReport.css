@@ -4,15 +4,12 @@ body {
   }
 
 h1 {
-  font-size: 2em;
-  font-weight: bold;
   color: #777777;
   margin: 10px 0px 0px;
   text-align: left;
 }
 
 .headline {
-	font-weight: bold;
 	margin-top: 10px;
 	margin-bottom: 3px;
 }
@@ -24,13 +21,11 @@ h1 {
 	width: 800px;
 	height:37px;
 	background-color: #006fdd;
-	font-weight: bold;
 	color: #ffffff;
 }
 
 
 .noteTitle {
-	font-size: 20px;
 	color: #666666;
 	margin-top: 5px;
 	margin-left: 10px;
@@ -46,11 +41,9 @@ h1 {
 	}
 	
 .logoImpressum {
-	font-size: 25px;
 }
 .searchbox {
 	width: 400px;
-	font-size: 15px;
 	color: #666666;
 	margin-left: 10px;
 	margin-bottom: 15px;
@@ -93,18 +86,10 @@ h1 {
 	
 }
 
-.impressumPanel {
-	background: url(/impressum.png);
-	background-size: 70%;
-	background-repeat: no-repeat;
-	height: 700px;
-	width:1000px;
-}
 .notework-logo {
 	background: url(/Logo.png);
-	background-size:45%;
+	background-size:30%;
 	background-repeat:no-repeat;
-	font-weight: bold;
 	width: 230px;
 	height:50px;
 	margin-left: 20px;
@@ -121,8 +106,6 @@ h1 {
 	width: 150px;
 }
 .notework-headline {
-	font-size: 12pt;
-	font-weight: bold;
 	color: #777777;
 	margin: 0px;
 	margin-top: 10px;
@@ -132,9 +115,7 @@ h1 {
 
 
 .navObject {
-	background: url(/NewNotebook.png);
 	background-size: 100%;
-	font-size: 110%;
 	font-weight: bold;
 	height:40px;
 	width:40px;
@@ -155,10 +136,6 @@ h1 {
 }
 
 .navObject:hover {
-	background: url(/hoverNewNotebook.png);
-	background-size: 100%;
-	font-size: 110%;
-	font-weight: bold;
 	height:40px;
 	width:40px;
 	margin-top: 10px;
@@ -168,10 +145,6 @@ h1 {
 }
 
 .navObject2 {
-	background: url(/NewNotice.png);
-	background-size: 100%;
-	font-size: 110%;
-	font-weight: bold;
 	height:40px;
 	width:40px;
 	margin-top:  8px;
@@ -181,10 +154,6 @@ h1 {
 }
 
 .navObject2:hover {
-	background: url(/hoverNewNotice.png);
-	background-size: 100%;
-	font-size: 110%;
-	font-weight: bold;
 	height:40px;
 	width:40px;
 	margin-top:  8px;
@@ -194,18 +163,19 @@ h1 {
 }
 
 .navListbox {
-	font-size: 120%;
-	font-weight: bold;
 	width: 240px;
 	height: 37px;
 	margin-left: 0px;
 	margin-top: 0px;
 	border: 0px;
 	background-color: #005bb7;	
+
+.searchOptions {
+margin-top:10px;
+
+}
 }
 .headObject {
-	font-size: 120%;
-	font-weight: bold;
 	color: #ffffff;
 	width: 12em;
 	margin-left: 10px;
@@ -214,8 +184,6 @@ h1 {
 	background-color: transparent;	
 }
 .headObject:hover {
-	font-size: 120%;
-	font-weight: bold;
 	color: #1188ff;
 	width: 12em;
 	margin-left: 10px;
@@ -247,7 +215,6 @@ h1 {
 
 .notework-addbutton{
 	background-color: #f7f7f7;
-	font-size: 100%;
 	width: 200px;
 	height:30px;
 	margin-left: 40px;
@@ -259,7 +226,6 @@ h1 {
 
 .listbox {
 	background-color: #f7f7f7;
-	font-size: 100%;
 	width: 200px;
 	height:30px;
 	margin-left: 40px;
@@ -268,7 +234,6 @@ h1 {
 
 .notework-searchbutton{
 	background-color: #f7f7f7;
-	font-size: 100%;
 	width: 200px;
 	height:auto;
 	margin-left: 40px;
@@ -324,10 +289,11 @@ h1 {
 	box-shadow: 0px 2px 2px #c0c0c0;
 	border-radius:8px;
 }
+
+.gwt-DateBox {
+}
+
 div#TopLevelFrame {
-	background: url(/Hintergrund-Notework5.jpg);
-	background-size: auto;
-	background-size: 100%;
 	background-repeat: no-repeat;
 	width-min: 1280px;
 	height-min: 800px;
