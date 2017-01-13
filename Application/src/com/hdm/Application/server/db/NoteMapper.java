@@ -529,6 +529,7 @@ public class NoteMapper {
 						
 					
 						Note note = new Note();
+						note.setNbID(rs2.getInt("nbid"));
 						note.setnID(rs2.getInt("nid"));
 						note.setnTitle(rs2.getString("title"));
 						note.setnSubtitle(rs2.getString("subtitle"));
@@ -605,6 +606,7 @@ try{
 			
 				Note note = new Note();
 				note.setnID(rs2.getInt("nid"));
+				note.setNbID(rs2.getInt("nbid"));
 				note.setnTitle(rs2.getString("title"));
 				note.setnSubtitle(rs2.getString("subtitle"));
 				note.setnContent(rs2.getString("content"));
@@ -679,6 +681,7 @@ try{
 			
 				Note note = new Note();
 				note.setnID(rs2.getInt("nid"));
+				note.setNbID(rs2.getInt("nbid"));
 				note.setnTitle(rs2.getString("title"));
 				note.setnSubtitle(rs2.getString("subtitle"));
 				note.setnContent(rs2.getString("content"));
@@ -753,6 +756,7 @@ try{
 			
 				Note note = new Note();
 				note.setnID(rs2.getInt("nid"));
+				note.setNbID(rs2.getInt("nbid"));
 				note.setnTitle(rs2.getString("title"));
 				note.setnSubtitle(rs2.getString("subtitle"));
 				note.setnContent(rs2.getString("content"));
@@ -780,6 +784,94 @@ public Vector<Note> findAllNotesFromAppUser(AppUser user) {
 	// DB-Verbindung holen und Variablen zurücksetzen
 	int appUserID = user.getUserID();
 	Connection con = DBConnection.connection();
+	Vector<Note> result = new Vector<Note>();
+	
+	
+try{
+	
+			//Leeres SQL Statement anlegen
+			Statement stmt2 = con.createStatement();
+			
+			//Statement ausfuellen und als Query an DB schicken
+			ResultSet rs2 = stmt2.executeQuery("SELECT * FROM notes INNER JOIN permissions ON notes.nid = permissions.nid"
+					+" WHERE (permtype > 0 AND appuserid = "+appUserID+") OR (isowner = 1 AND appuserid = "+appUserID+");");
+		 			
+			while (rs2.next()){
+				
+			
+				Note note = new Note();
+				note.setnID(rs2.getInt("nid"));
+				note.setNbID(rs2.getInt("nbid"));
+				note.setnTitle(rs2.getString("title"));
+				note.setnSubtitle(rs2.getString("subtitle"));
+				note.setnContent(rs2.getString("content"));
+				note.setSource(rs2.getString("source"));
+				note.setnCreDate(rs2.getDate("creadate"));
+				note.setnModDate(rs2.getDate("moddate"));
+				note.setpType(rs2.getInt("permtype"));
+				note.setUserID(appUserID);
+				
+				// Neues Objekt wird dem Ergebnisvektor hinzugefuegt
+				result.addElement(note);
+			
+			}
+	
+}
+	catch (SQLException e){
+
+		e.printStackTrace();
+		return null;
+	}
+
+	return result;
+
+}
+
+
+		 			 
+
+	 
+public Vector<Note> findByBetweenCreationDate(java.sql.Date von, java.sql.Date bis){
+	 Connection con = DBConnection.connection();
+	 Vector<Note> result = new Vector<Note>();
+	 	 
+	 
+	 try{
+		 Statement stmt = con.createStatement();			 
+		 ResultSet rs = stmt.executeQuery("SELECT * FROM notes WHERE creadate BETWEEN '"+von.toString()+"' AND '"+bis.toString()+"';");
+		 
+		 
+		//Fuer jeden Eintrag im Suchergebnis wird ein Note-Objekt erstellt.
+		 while(rs.next()) {
+			 Note note = new Note();
+			 note.setnID(rs.getInt("nid"));
+			 note.setNbID(rs.getInt("nbid"));
+			 note.setnTitle(rs.getString("title"));
+			 note.setnSubtitle(rs.getString("subtitle"));
+			 note.setnContent(rs.getString("content"));
+			 note.setSource(rs.getString("source"));
+			 note.setnCreDate(rs.getDate("creadate"));
+			 note.setnModDate(rs.getDate("moddate"));
+			 
+			//Neues Objekt wird dem Ergebnisvektor hinzugefuegt
+			 result.addElement(note);
+			 
+		 } 
+	 }
+	 
+	 catch (SQLException e){
+		 System.out.println("SQL FEHLER: "+e);
+		 e.printStackTrace();
+	 }
+	 
+	//Vektor wird zurueckgegeben
+	 return result;
+}
+public Vector<Note> findOwnNotesFromAppUser(AppUser user) {
+
+	// DB-Verbindung holen und Variablen zurücksetzen
+	int appUserID = user.getUserID();
+	Connection con = DBConnection.connection();
 	int nID = 0;
 
 	Vector<Note> result = new Vector<Note>();
@@ -791,7 +883,7 @@ public Vector<Note> findAllNotesFromAppUser(AppUser user) {
 		Statement stmt = con.createStatement();
 		
 		//Statement ausfuellen und als Query an DB schicken
-		ResultSet rs = stmt.executeQuery("SELECT nid FROM permissions WHERE appuserid= " + appUserID +" AND permtype >0 OR isowner  >0");
+		ResultSet rs = stmt.executeQuery("SELECT nid FROM permissions WHERE appuserid= " + appUserID +" AND  isowner  >0");
 		
 		while (rs.next()){
 			
@@ -826,6 +918,7 @@ try{
 			
 				Note note = new Note();
 				note.setnID(rs2.getInt("nid"));
+				note.setNbID(rs2.getInt("nbid"));
 				note.setnTitle(rs2.getString("title"));
 				note.setnSubtitle(rs2.getString("subtitle"));
 				note.setnContent(rs2.getString("content"));
@@ -848,4 +941,8 @@ try{
 	return result;
 
 }
+
+
+		 			 
+
 }

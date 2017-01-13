@@ -151,7 +151,6 @@ public class SearchView extends Update {
 		 **/
 		dueDateButton.addValueChangeHandler(new ValueChangeHandler<Boolean>() {
 			
-			
 			@Override
 			public void onValueChange(ValueChangeEvent<Boolean> event) {
 				searchBox.setVisible(false);
@@ -234,7 +233,7 @@ public class SearchView extends Update {
 				 dd = dueDateButton.getValue();
 				 un = userNameButton.getValue();
 				 n = noteButton.getValue();
-				 nb = notebookButton.getValue();
+				 nb = notebookButton.getValue(); 
 				
 				if(dd){	
 				   rbselected = true;				   

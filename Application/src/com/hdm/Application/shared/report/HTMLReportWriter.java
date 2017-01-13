@@ -98,10 +98,11 @@ public void process(AllNotesFromUser r) {
     Vector<Row> rows = r.getRows();
     Row toprow = rows.elementAt(0);
     
-  	result.append("<th class=\"ReportHeader\" colspan=\"4\"> Das ist der Report bzgl. des Nutzers: " + toprow.getColumnAt(0) + "</th></tr>");
+  	result.append("<th class=\"ReportHeader\" colspan=\"5\"> Das ist der Report bzgl. des Nutzers: " + toprow.getColumnAt(0) + "</th></tr>");
   	result.append("<th> Notizbuch</th>"+
   					"<th> Notiztitel</th>"+
   					"<th> Untertitel</th>"+
+  					"<th>Berechtigung</th>"+
   					 "<th>Erstellungsdatum</tr>");
 
   	    for (int i = 1; i < rows.size(); i++) {
@@ -109,7 +110,7 @@ public void process(AllNotesFromUser r) {
   	        result.append("<tr>");
         if(i%2 == 0){
         	for (int k = 0; k < row.getNumColumns(); k++) {
-        		result.append("<td class=\"ContentColumn\" colspan=\"3\"> Inhalt: <br>" + row.getColumnAt(k) + "</td>");
+        		result.append("<td class=\"ContentColumn\" colspan=\"5\"> Inhalt: <br>" + row.getColumnAt(k) + "</td>");
           }
         }
         else{
