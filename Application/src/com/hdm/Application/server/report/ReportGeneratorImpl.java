@@ -16,12 +16,6 @@ import com.hdm.Application.shared.ReportGenerator;
 import com.hdm.Application.shared.bo.*;
 import com.hdm.Application.shared.report.*;
 
-
-
-
-
-
-
 /**
  * Implementierung des <code>ReportGenerator</code>-Interface. Die technische
  * Realisierung bzgl. <code>RemoteServiceServlet</code> bzw. GWT RPC erfolgt
@@ -106,7 +100,6 @@ public void init() throws IllegalArgumentException {
 	 TopRow.addColumn(new Column(user.getUserName()));
 	 result.addRow(TopRow);
 	 Vector<Note> notes = noteMapper.findAllNotesFromAppUser(user);
-	 System.out.println("notes size : "+notes.size());
 	    for (Note n : notes) {
 	    	
 	        // Eine leere Zeile anlegen.
@@ -117,7 +110,7 @@ public void init() throws IllegalArgumentException {
 			   	SingleInfoRow.addColumn(new Column (notebookMapper.findById(n.getNbID()).getNbTitle()));
 		        }
 		        else {
-				   	SingleInfoRow.addColumn(new Column ("Notizbuchtitel unbekannt"));
+		    	SingleInfoRow.addColumn(new Column ("Notizbuchtitel unbekannt"));
 		        }
 	        
 	        //Notiztitel auslesen
@@ -143,7 +136,7 @@ public void init() throws IllegalArgumentException {
 				break;
 			}
 	        
-	      //Erstellungsdatum  auslesen
+	        //Erstellungsdatum  auslesen
 	        SingleInfoRow.addColumn(new Column(n.getnCreDate().toString()));
 			
 	        //Content auslesen
@@ -151,16 +144,13 @@ public void init() throws IllegalArgumentException {
 	        contentrow.addColumn(new Column( n.getnContent()));
 	        
 	        // und schlie�lich die Zeile dem Report hinzuf�gen.
-	        
 	        result.addRow(SingleInfoRow);
 	        result.addRow(contentrow);
 
 	      }		
-    return result;
-	    
-	    
-	    
+    return result;   
 }
+  
   public AllNotesFromUser createOwnNotesFromUserReport(AppUser user) throws IllegalArgumentException {
 
 	  /*
@@ -173,7 +163,6 @@ public void init() throws IllegalArgumentException {
 	 	 TopRow.addColumn(new Column(user.getUserName()));
 	 	 result.addRow(TopRow);
 	 	 Vector<Note> notes = noteMapper.findOwnNotesFromAppUser(user);
-	 	 System.out.println("notes size : "+notes.size());
 	 	    for (Note n : notes) {
 	 	    	
 	 	        // Eine leere Zeile anlegen.
@@ -209,10 +198,7 @@ public void init() throws IllegalArgumentException {
 	 	        result.addRow(contentrow);
 
 	 	      }		
-	     return result;
-	 	    
-	 	    
-	 	    
+	     return result;    
 	 }
 
   public AllNotesFromUser createAllFilteredNotesLEB(AppUser user) throws IllegalArgumentException {
@@ -227,7 +213,6 @@ public void init() throws IllegalArgumentException {
 	 	 TopRow.addColumn(new Column(user.getUserName()));
 	 	 result.addRow(TopRow);
 	 	 Vector<Note> notes = noteMapper.findByUserPermission1(user);
-	 	 System.out.println("notes size : "+notes.size());
 	 	    for (Note n : notes) {
 	 	    	
 	 	        // Eine leere Zeile anlegen.
@@ -263,10 +248,7 @@ public void init() throws IllegalArgumentException {
 	 	        result.addRow(contentrow);
 
 	 	      }		
-	     return result;
-	 	    
-	 	    
-	 	    
+	     return result;    
 	 }
   
   public AllNotesFromUser createAllFilteredNotesLB(AppUser user) throws IllegalArgumentException {
@@ -281,7 +263,6 @@ public void init() throws IllegalArgumentException {
 	 	 TopRow.addColumn(new Column(user.getUserName()));
 	 	 result.addRow(TopRow);
 	 	 Vector<Note> notes = noteMapper.findByUserPermission3(user);
-	 	 System.out.println("notes size : "+notes.size());
 	 	    for (Note n : notes) {
 	 	    	
 	 	        // Eine leere Zeile anlegen.
@@ -332,7 +313,6 @@ public void init() throws IllegalArgumentException {
 	 	 TopRow.addColumn(new Column(user.getUserName()));
 	 	 result.addRow(TopRow);
 	 	 Vector<Note> notes = noteMapper.findByUserPermission2(user);
-	 	 System.out.println("notes size : "+notes.size());
 	 	    for (Note n : notes) {
 	 	    	
 	 	        // Eine leere Zeile anlegen.
@@ -388,11 +368,9 @@ public AllFilteredNotes createAllFilteredNotesReportED(Date erstellungsDatum) th
 		int tag = erstellungsDatum.getDate();
 		int monat = erstellungsDatum.getMonth()+1;
 		 int jahr = erstellungsDatum.getYear()+1900;
-		 System.out.println("Datumsformat gefaked: "+jahr+"-"+monat+"-"+tag);
 
 		 String datum = jahr+"-"+monat+"-"+tag;
 		Vector<Note> notes = noteMapper.findByCreationDate(java.sql.Date.valueOf(datum));	
-		 System.out.println("notes size : "+notes.size());
 		    for (Note n : notes) {
 		    	
 		    	
@@ -447,11 +425,9 @@ public AllFilteredNotes createAllFilteredNotesReportDD(Date dueDate) throws Ille
 		 int tag = dueDate.getDate();
 		 int monat = dueDate.getMonth()+1;
 		 int jahr = dueDate.getYear()+1900;
-		 System.out.println("Datumsformat gefaked: "+jahr+"-"+monat+"-"+tag);
 
 		 String datum = jahr+"-"+monat+"-"+tag;
 		Vector<Note> notes = noteMapper.findByDueDate(java.sql.Date.valueOf(datum));	
-		 System.out.println("notes size : "+notes.size());
 		    for (Note n : notes) {
 		    	
 		        // Eine leere Zeile anlegen.
@@ -498,7 +474,7 @@ public AllNotes createAllFilteredNotesReport(String notebook) throws IllegalArgu
 		 result.addRow(TopRow);
 		 //Auslesen aller Notebooks welche im Titel den �bergebenen String enthalten
 		 Vector<Notebook> notebooks = notebookMapper.findByTitle(notebook);
-		 System.out.println("AUSGABE!!!!! Vector notebooks ist "+notebooks.size()+" gro�");
+
 		 //Vector f�r Notes aus dem jeweiligen Notebook
 		 Vector<Note> notes = null;
 		 
@@ -506,7 +482,6 @@ public AllNotes createAllFilteredNotesReport(String notebook) throws IllegalArgu
 		 for (Notebook nb : notebooks) {
 			 //Auslesen aller Notizen des jeweiligen Notebooks und Zwischenspeichern in notes
 			 notes = noteMapper.findByNotebook(nb);
-			 System.out.println("AUSGABE!!!!! Vector notes ist "+notes.size()+" gro�");
 			 
 			 //Durchlaufen aller Notizen und das hinzuf�gen der Zeilen
 			 for (Note n : notes) {			    	
@@ -554,7 +529,6 @@ public AllNotes createAllNotesReport() throws IllegalArgumentException {
 		 
 		 //Auslesen aller Notes 
 		 Vector<Note> note = noteMapper.findAll();
-		 System.out.println("notes Größe: "+note.size());
 		    
 		 
 		
@@ -629,8 +603,8 @@ public AllFilteredNotes findByBetweenCreationDate(Date von, Date bis) throws Ill
 		 
 		 
 		Vector<Note> notes = noteMapper.findByBetweenCreationDate(java.sql.Date.valueOf(vonBox), java.sql.Date.valueOf(bisBox));
-		 System.out.println("findByBetweenCreationDate!! notes size : "+notes.size());
-		    for (Note n : notes) {
+
+		for (Note n : notes) {
 		    	
 		        // Eine leere Zeile anlegen.
 		        Row SingleInfoRow = new Row();
@@ -674,7 +648,6 @@ public AllNotes findByTitle(String nTitle) throws IllegalArgumentException {
 		 
 		 //Auslesen aller Notes 
 		 Vector<Note> note = noteMapper.findByTitle(nTitle);
-		 System.out.println("notes size : "+note.size());
 		    
 		 
 		
@@ -690,10 +663,7 @@ public AllNotes findByTitle(String nTitle) throws IllegalArgumentException {
 			        }
 			        else {
 					   	SingleInfoRow.addColumn(new Column ("Notizbuchtitel unbekannt"));
-			        }
-
-			      
-			        
+			        }			        
 			        //Notiztitel auslesen
 					SingleInfoRow.addColumn(new Column(n.getnTitle()));
 					
@@ -703,7 +673,6 @@ public AllNotes findByTitle(String nTitle) throws IllegalArgumentException {
 			      //Erstellungsdatum  auslesen
 			        SingleInfoRow.addColumn(new Column(n.getnCreDate().toString()));
 			       
-					
 			        //Content auslesen
 			        Row contentrow = new Row();
 			        contentrow.addColumn(new Column( n.getnContent()));

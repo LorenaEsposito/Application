@@ -355,13 +355,13 @@ public class NoteMapper {
 		 Connection con = DBConnection.connection();
 		 Vector<Note> result = new Vector<Note>();
 		 String sql = "SELECT *"
-					 + " FROM notes" + " WHERE title LIKE '" + nTitle + "' ORDER BY creadate;";
+					 + " FROM notes" + " WHERE title LIKE '%" + nTitle + "%' ORDER BY creadate;";
 		 System.out.println("SQL Statement: "+sql);		 
 		 
 		 try{
 			 Statement stmt = con.createStatement();			 
 			 ResultSet rs = stmt.executeQuery("SELECT *"
-					 + " FROM notes" + " WHERE title LIKE '%" + nTitle + "%' ORDER BY creadate;");
+					 + " FROM notes" + " WHERE title LIKE '%" + nTitle + "%' ");
 			 			 
 			//Fuer jeden Eintrag im Suchergebnis wird ein Note-Objekt erstellt.
 			 while(rs.next()) {

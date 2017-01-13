@@ -24,7 +24,7 @@ import com.hdm.Application.shared.report.*;
 public abstract class ReportWriter {
 
   /**
-   * Übersetzen eines <code>AllInfosOfProfileReport</code> in das
+   * Übersetzen eines <code>AllNotesFromUser</code> in das
    * Zielformat.
    * 
    * @param r der zu übersetzende Report
@@ -32,13 +32,20 @@ public abstract class ReportWriter {
   public abstract void process(AllNotesFromUser r);
 
   /**
-   * Übersetzen eines <code>AllProfilesNotVisitedReport</code> in das
+   * Übersetzen eines <code>AllFilteredNotes</code> in das
    * Zielformat.
    * 
    * @param r der zu übersetzende Report
    */
   public abstract void process(AllFilteredNotes r);
   
+  /**
+   * Übersetzen eines <code>AllNotes</code> in das
+   * Zielformat.
+   * 
+   * @param r der zu übersetzende Report
+   */
+  public abstract void process(AllNotes r);
   
 
 

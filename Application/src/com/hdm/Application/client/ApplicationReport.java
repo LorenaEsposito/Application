@@ -37,6 +37,7 @@ import com.hdm.Application.shared.report.HTMLReportWriter;
 
 /**
  * Entry-Point-Klasse des <b>application Report-Generators</b>.
+ * @author Andra Weirich
  */
 public class ApplicationReport implements EntryPoint {
 
@@ -55,8 +56,8 @@ public class ApplicationReport implements EntryPoint {
 	private ReportGeneratorAsync reportGenerator = ClientsideSettings.getReportGenerator();
 	
 	//Buttons der Navigation. Müssen final sein, damit Callbacks sie verändern können
-	final Button showReportAllUserNotesButton = new Button("Alle Notizen eines Nutzers anzeigen");
-	final Button showReportFilteredNotesButton = new Button("Alle gefilterten Notizen");
+	final Button showReportAllUserNotesButton = new Button("Alle Notizen bzgl. Nutzers");
+	final Button showReportFilteredNotesButton = new Button("Alle Notizen bzgl. eines Datums");
 	final Button showReportAllNotes = new Button ("Alle Notizen");
 	final Button showEditor = new Button("Zurück zum Editor");
 	final DateBox searchDateBox = new DateBox();
@@ -89,6 +90,7 @@ public class ApplicationReport implements EntryPoint {
 	 * <code>public void onModuleLoad()</code>. Diese ist das GWT-Pendant der
 	 * <code>main()</code>-Methode normaler Java-Applikationen.
 	 */
+
 
 	@Override
 	public void onModuleLoad() {
@@ -174,7 +176,9 @@ public class ApplicationReport implements EntryPoint {
 
 	}//close onmoduleload
 
-	
+	/**Diese Methode wird aufgerufen, wenn auf den Button Notizen bzgl. Nutzer geklickt wird
+	 * Das searchUserPanel wird aufgebaut und benötigte Button hinzugefügt.
+	 */
 	protected void loadSearchUserPanel() {
 		
 		detailPanel.clear();
@@ -203,6 +207,11 @@ public class ApplicationReport implements EntryPoint {
 		filterPanel.clear();
 		filterPanel.add(searchUserPanel);
 			
+		
+		/**Bei klicken auf den userSearchButton wird zu erst nach einem Nutzer gesucht und daraufhin - falls Nutzer gefunden - wird überprüft
+		 *welcher Radiobutton selected ist. Sobald einer ausgewählt wurde, wird die passende Methode ausgeführt
+		 * 
+		 */
 			userSearchButton.addClickHandler(new ClickHandler() {
 				
 				@Override
@@ -450,8 +459,9 @@ public class ApplicationReport implements EntryPoint {
 	}
 	
 		
-
-		
+/**Diese Methode wird nach Klicken des "Notizen bzg. eines Datum" Button ausgeführt
+  * 
+  */
 protected void loadRadiobuttonPanel() {
 	
 	detailPanel.clear();
@@ -475,22 +485,28 @@ protected void loadRadiobuttonPanel() {
 	filterPanel.add(radiobuttonPanel);
 
 	DateTimeFormat datumsFormat = DateTimeFormat.getFormat("dd.MM.yyyy");
-	searchDateBox.setFormat(new DateBox.DefaultFormat(datumsFormat));
-	searchDateBox.getDatePicker().setYearArrowsVisible(true);
-	searchDateBox.getDatePicker().setYearAndMonthDropdownVisible(true);
-    searchDateBox.getDatePicker().setVisibleYearCount(10);
+	vonBox.setFormat(new DateBox.DefaultFormat(datumsFormat));
+	vonBox.getDatePicker().setYearArrowsVisible(true);
+	vonBox.getDatePicker().setYearAndMonthDropdownVisible(true);
+    vonBox.getDatePicker().setVisibleYearCount(10);
+    
+	bisBox.setFormat(new DateBox.DefaultFormat(datumsFormat));
+	bisBox.getDatePicker().setYearArrowsVisible(true);
+	bisBox.getDatePicker().setYearAndMonthDropdownVisible(true);
+    bisBox.getDatePicker().setVisibleYearCount(10);
 	
     
-	
+	/**wenn der Button geklickt wird, wird geprüft welche DateBox Inhalt halt und welche nicht. Je nach befüllung 
+	 * wird entweder alle Notizen vor einem, nach einem Datum oder zwischen zwei Daten ausgegeben
+	 */
 	searchButton.addClickHandler(new ClickHandler() {
 		
 		@Override
 		public void onClick(ClickEvent event) { 
 			
-		
-			
 			if (vonBox.getValue() == null && bisBox.getValue() != null ){
-				vonBox.getValue().setTime(0);
+				java.util.Date date = new java.util.Date(0);
+				vonBox.setValue(date);
 			}
 			if (vonBox.getValue() != null && bisBox.getValue() == null){
 				
@@ -528,19 +544,14 @@ protected void loadRadiobuttonPanel() {
 						}
 						
 					}
-				});
-				
-			
-				
+				});				
 		}
-	});
-
-	
-	
-	
-			
-		
+	});		
 	}
+
+/**Diese Methode wird aufgerufen, wenn der Button "Alle Notizen geklickt wurde"
+ * 
+ */
 		private void loadNotePanel(){
 			
 			detailPanel.clear();
@@ -565,40 +576,14 @@ protected void loadRadiobuttonPanel() {
 			filterPanel.clear();
 			filterPanel.add(notePanel);
 			
-			no.addValueChangeHandler(new ValueChangeHandler<Boolean>() {
-				
-				
-				@Override
-				public void onValueChange(ValueChangeEvent<Boolean> event) {
-					sucheNachNotiz.setVisible(true);
-					;
-					
-				}
-			});
 			
 			
-			nb.addValueChangeHandler(new ValueChangeHandler<Boolean>() {
-				
-				
-				@Override
-				public void onValueChange(ValueChangeEvent<Boolean> event) {
-					sucheNachNotiz.setVisible(true);
-					
-				
-					
-				}
-			});
-			aNo.addValueChangeHandler(new ValueChangeHandler<Boolean>() {
-				
-				
-				@Override
-				public void onValueChange(ValueChangeEvent<Boolean> event) {
-					sucheNachNotiz.setVisible(true);
-					
-					
-				}
-			});
-			 
+			
+		
+			/**Bei Klicken auf diesen Button werden die Ifs ausgeführt und geschaut welcher Radiobutton geklickt wurde.
+			 * Daraufhin wird nach einem Stichwort in Notizbuch, Notiz gesucht. Oder wenn kein Stichwort 
+			 * vorhanden, dann werden alle Notizen ausgegeben 
+			 */
 			noteSearchButton.addClickHandler(new ClickHandler() {
 				
 				@Override
@@ -719,84 +704,7 @@ protected void loadRadiobuttonPanel() {
 					
 				});
 			}
-	
-
-		private void buildPanels(){
 			
-		//Logout Link URL abrufen und 
-		signOutLink.setStylePrimaryName("application-logout");
-		signOutLink.setHref(loginInfo.getLogoutUrl());
-		
-		//Setzen der Style CSS Klasse
-		showReportAllUserNotesButton.setStylePrimaryName("application-menubutton");
-		showReportFilteredNotesButton.setStylePrimaryName("application-menubutton");
-		showEditor.setStylePrimaryName("application-menubutton");
-
-		//Label definieren, das angezeigt wird, solange der User wartet, bis sein Report generiert ist
-		final Label LoadingLabel = new Label("Dein Report wird generiert. Bitte habe einen Moment Geduld...");
-		
-		
-		
-		//ClickHandler f�r den Button zum Report f�r alle Notizen eines Users
-		showReportAllUserNotesButton.addClickHandler(new ClickHandler() {
-			@Override
-			
-			public void onClick(ClickEvent event) {
-				//Button deaktivieren, damit nicht mehrere Anfragen auf einmal gesendet werden
-				showReportFilteredNotesButton.setEnabled(false);
-				
-				/*
-				 * Prüfung ob zum eingeloggten AppUser ein AppUser in der Datenbank vorhanden ist.
-				 * Dieser Schritt verhindert das Generieren von Reports durch nicht-eingloggte Benutzer
-				 */
-				adminService.getUserByEmail(Cookies.getCookie("userMail"), new AsyncCallback<AppUser>(){
-					
-					@Override
-					public void onFailure(Throwable caught) {
-						//Wenn kein eingeloggtes AppUser gefunden wurde, wird der User benachrichtigt und der Button wieder freigegeben
-						Window.alert("Generieren des Reports fehlgeschlagen: Eingeloggtes AppUser nicht gefunden");
-						showReportFilteredNotesButton.setEnabled(true);
-
-					}
-
-					@Override
-					public void onSuccess(AppUser result) {
-						//Detail Panel leeren
-						detailPanel.clear();
-						//Label anzeigen, das den User informiert, dass sein Report nun generiert wird
-						detailPanel.add(LoadingLabel);
-						//Callback senden, der den angeforderten Report generiert
-						//reportGenerator.createAllNotesFromUserReport(result, new createAllNotesFromUserReportCallback());
-						
-					}
-					
-				});
-			
-				
-
-			}
-		});		
-		
-		//ClickHandler für den Button zum Navigieren zurück zum Editor
-		showEditor.addClickHandler(new ClickHandler(){
-
-			@Override
-			public void onClick(ClickEvent event) {
-				Window.Location.assign(GWT.getHostPageBaseURL());
-				
-			}
-			
-		});
-		
-		
-	
-		RootPanel.get("Navigator").add(navigationPanel);
-		RootPanel.get("Details").add(detailPanel);
-		
-	}
-
-			
-		
 		 private void loadLogin() {
 		     
 		     Cookies.setCookie("usermail", null);
