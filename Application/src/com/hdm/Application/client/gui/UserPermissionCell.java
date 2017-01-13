@@ -8,11 +8,10 @@ import com.hdm.Application.shared.bo.UserPermission;
 
 /**
  * Die Klasse dient zur Darstellung von "UserPermission" Objekten und dient zur Erzeugung von HTML-Code.
- *  In diesem Fall wird die <code>id</code>
- * eines Kontoobjekts mit einem vorangestellten "Kontonnr. " in einem <code>div-</code>Element
+ *  In diesem Fall wird die Googelmail eines Users mit einem vorangestellten "Mail " in einem <code>div-</code>Element
  * erzeugt.
+ * Ebenfalls wird der Berechtigungstyp eines Users mit einem vorangestellten "Berechtigungstyp" als String umgewandelt ausgegeben.
  * 
- * @author rathke
  *
  */
 public class UserPermissionCell extends AbstractCell<UserPermission>{
@@ -28,7 +27,7 @@ public class UserPermissionCell extends AbstractCell<UserPermission>{
 		sb.appendEscaped(value.getMail());
 		sb.appendHtmlConstant("</div>");
 		sb.appendHtmlConstant("<div Berechtigung>");
-		sb.append(value.getPermissionType());
+		sb.appendEscaped(value.getPermissionTypeAsString());
 		sb.appendHtmlConstant("</div>");
 		
 	}
