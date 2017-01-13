@@ -137,7 +137,6 @@ public class Application implements EntryPoint {
 	  final Button searchButton = new Button("Suche");
 	  final Button logoButton = new Button();
 	  final Button impressumButton = new Button("Impressum");
-	  final Button hilfeButton = new Button("Hilfe");
 	  final CellList<String> cellList = new CellList<String>(cell);
 //	  NotebookNotesTreeViewModel nntvm = new NotebookNotesTreeViewModel();
 //	  CellTree cellTree = new CellTree(nntvm, "Root");
@@ -245,7 +244,6 @@ public class Application implements EntryPoint {
  		createNoteButton.setStyleName("navObject2");
  		searchButton.setStyleName("headObject");
  		impressumButton.setStyleName("headObject");
- 		hilfeButton.setStyleName("headObject");
 	    signOutButton.setStyleName("headObject");
 	    logoButton.setStyleName("notework-logo");
 	    listbox.setStyleName("navListbox");
@@ -265,7 +263,6 @@ public class Application implements EntryPoint {
 	    headButtonPanel.add(logoButton);
 	    headButtonPanel.add(searchButton);
 	    headButtonPanel.add(impressumButton);
-	    headButtonPanel.add(hilfeButton);
 	    headButtonPanel.add(signOutButton);
 	    headPanel.add(headButtonPanel);
 	    navPanel.add(listbox);

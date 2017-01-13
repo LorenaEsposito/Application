@@ -50,6 +50,7 @@ public class SearchView extends Update {
 			.getAdministration();
 
 	
+	HorizontalPanel headlinePanel = new HorizontalPanel();
 	VerticalPanel searchPanel = new VerticalPanel();
 	HorizontalPanel radiobuttonPanel = new HorizontalPanel();
 	VerticalPanel ergebnisPanel = new VerticalPanel();
@@ -65,10 +66,10 @@ public class SearchView extends Update {
 	/**
 	 * Erstellung aller Widgets
 	 */
-
+	Label mainheadline = new Label("Suche");
 	TextBox searchBox = new TextBox();
 	DateBox searchDateBox = new DateBox(); 
-	final Button searchButton = new Button("Search");
+	final Button searchButton = new Button("Suchen");
 	final Button showNoteButton = new Button ("Anzeigen");
 	final RadioButton dueDateButton = new RadioButton("Radiobutton-Group","Duedate");
 	final RadioButton userNameButton = new RadioButton("Radiobutton-Group","Username");
@@ -108,7 +109,7 @@ public class SearchView extends Update {
 		 * Zuteilung der Widgets zum jeweiligen Panel
 		 */
 
-		
+		headlinePanel.add(mainheadline);
 		searchPanel.add(searchBox);
 		searchPanel.add(searchDateBox);
 		
@@ -120,12 +121,14 @@ public class SearchView extends Update {
 		searchPanel.add(searchButton);
 		searchPanel.add(ergebnisPanel);
 		ergebnisPanel.clear();
+		RootPanel.get("Details").add(headlinePanel);
 		RootPanel.get("Details").add(searchPanel);
 		
 
 		/**
 		 * Zuweisung eines Styles fuer die jeweiligen Widgets
 		 **/
+		headlinePanel.setStyleName("headlinePanel");
 		searchDateBox.setVisible(false);		
 		searchButton.setStyleName("notework-menubutton");
 		searchPanel.setStyleName("searchPanel");
