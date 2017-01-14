@@ -1,6 +1,7 @@
 body {
 	font-family: sans-serif;
     text-align: center;  /* Zentrierung im Internet Explorer */
+    
   }
 
 h1 {
@@ -269,7 +270,7 @@ margin-top:10px;
 
 .detailsPanel {
 	background-color: #ffffff;
-	height:500px;
+	height:100%;
 	width: 800px;
 	margin-top: 0px;
 	padding-left: 10px;
