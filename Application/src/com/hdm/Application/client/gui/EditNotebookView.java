@@ -1,6 +1,7 @@
 package com.hdm.Application.client.gui;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import com.google.gwt.cell.client.TextCell;
@@ -18,6 +19,7 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.SingleSelectionModel;
+import com.hdm.Application.client.Application;
 import com.hdm.Application.client.ClientsideSettings;
 import com.hdm.Application.shared.NoteAdministrationAsync;
 import com.hdm.Application.shared.bo.AppUser;
@@ -35,15 +37,23 @@ public class EditNotebookView extends Update {
 	
 	private Notebook currentNotebook = new Notebook();
 	
+	private Notebook newNotebook = new Notebook();
+	
 	private AppUser user = new AppUser();
 	
 	private AppUser permissionUser = new AppUser();
 	
+	private AppUser currentUser = new AppUser();
+	
 	private Permission permission = new Permission();
 	
-	private Notebook currentNB = new Notebook();
-	
 	private ArrayList<Permission> permissions = new ArrayList<Permission>();
+	
+	boolean isExisting = new Boolean(false);
+	
+	int index = 0;
+	
+	Date newDate = new Date();
 	
 	TextCell cell = new TextCell();
 	
@@ -95,6 +105,8 @@ public class EditNotebookView extends Update {
 	
 	protected void run() {
 //	    this.append("");
+		
+		adminService.getCurrentUser(getCurrentUserCallback());
 	    
 	    mainPanel.setStyleName("detailsPanel");
 	    
@@ -125,6 +137,10 @@ public class EditNotebookView extends Update {
 	    
 	    RootPanel.get("Details").add(headlinePanel);
 	    RootPanel.get("Details").add(mainPanel);
+	    
+	    readButton.setText("Leseberechtigung");
+	    editButton.setText("Bearbeitungsberechtigung");
+	    deleteButton.setText("Loeschberechtigung");
 	    
 	    /**
 	     * Erstellung der Clickhandler
@@ -184,7 +200,13 @@ public class EditNotebookView extends Update {
 	    		
 	    		mail = permissionTB.getValue();
 	    		
+	    		if(mail == currentUser.getMail()){
+	    			Window.alert("Sie koennen Ihre eigenen Berechtigungen nicht bearbeiten");
+	    		}else{
+	    			
+	    		
 	    		adminService.searchUserByMail(mail, searchUserByMailCallback());
+	    		}
 	    		
 
 	    	}
@@ -199,7 +221,165 @@ public class EditNotebookView extends Update {
 	    	}
 	    });
 	    
+	    saveNBButton.addClickHandler(new ClickHandler() {
+	      	public void onClick(ClickEvent event) {
+	      		
+	      		/*
+	    		 * Speichern der eingegebenen Werte blockieren, um
+	    		 * Mehrfach-Klicks und daraus entstehende, unnoetige Eintraege in
+	    		 * der Datenbank zu verhindern.
+	    		 */
+	    		saveNBButton.setEnabled(false);
+	    		//createButton.setStylePrimaryName("");
+	    		
+	    		newNotebook.setNbID(currentNotebook.getNbID());
+	    		newNotebook.setNbTitle(notebookTitleTB.getValue());
+	    		newNotebook.setNbCreDate(currentNotebook.getNbCreDate());
+	    		newNotebook.setNbModDate(newDate);
+	    		
+//	    		 adminService.getCurrentUser(getCurrentUserCallback());
+//	    		 adminService.editNote(newNote, editNoteCallback());
+	    		
+	    		if(newNotebook.getNbTitle() == currentNotebook.getNbTitle()){
+	    			adminService.editNotebook(newNotebook, editNotebookCallback());
+	    			
+	       		 index = Application.nbDataProvider.getList().indexOf(currentNotebook);
+	       		 Application.nbDataProvider.getList().remove(index);
+	    		 Application.nbDataProvider.refresh();
+	    		 Application.nbDataProvider.getList().set(index, newNotebook);
+	    		 
+	             /*
+	              * Showcase instantiieren.
+	              */
+	             Update update = new EditNotebookView();
+	             
+	             RootPanel.get("Details").clear();
+	             RootPanel.get("Details").add(update);
+	    		}
+	    		else{
+	   			 adminService.getOwnedNotebooks(currentUser, getOwnedNotebooksCallback());
+	    		}
+
+	        }
+	        });
+	    
+	    deleteNBButton.addClickHandler(new ClickHandler() {
+	    	public void onClick(ClickEvent event) {
+	    		deleteNBButton.setEnabled(false);
+	    		
+	    		adminService.deleteNotebook(currentNotebook, deleteNotebookCallback());
+	    		
+	    		Update update = new WelcomeView();
+	    		
+	    		RootPanel.get("Details").clear();
+	    		RootPanel.get("Details").add(update);
+	    	}
+	    });
+	    
+	    cancelButton.addClickHandler(new ClickHandler() {
+	    	public void onClick(ClickEvent event){
+	    		cancelButton.setEnabled(false);
+	    		cancelButton.setStylePrimaryName("");
+	    		
+	    		Update update = new WelcomeView();
+	    		
+	    		RootPanel.get("Details").clear();
+	    		RootPanel.get("Details").add(update);
+
+	    	}
+	    });
+	    
 	}
+	
+	private AsyncCallback<AppUser> getCurrentUserCallback(){
+		AsyncCallback<AppUser> asyncCallback = new AsyncCallback<AppUser>() {
+			
+			@Override
+			public void onFailure(Throwable caught) {
+				ClientsideSettings.getLogger().severe("Error: " + caught.getMessage());
+			}
+		 
+		 @Override
+		 public void onSuccess(AppUser result) {
+			 ClientsideSettings.getLogger().
+			 severe("Success GetCurrentUserCallback: " + result.getClass().getSimpleName());
+			 
+			 currentUser = result;
+			 
+			 currentNotebook = Application.nbSelectionModel.getSelectedObject();
+			 
+			    creDate.setText(currentNotebook.getNbCreDate().toString());
+			    modDate.setText(currentNotebook.getNbModDate().toString());
+			    notebookTitleTB.setText(currentNotebook.getNbTitle());
+			 
+		 }
+		};
+		return asyncCallback;
+	}
+	
+	private AsyncCallback<ArrayList<Notebook>> getOwnedNotebooksCallback(){
+		AsyncCallback<ArrayList<Notebook>> asyncCallback = new AsyncCallback<ArrayList<Notebook>>() {
+			
+			@Override
+			public void onFailure(Throwable caught) {
+				ClientsideSettings.getLogger().severe("Error: " + caught.getMessage());
+			}
+		 
+		 @Override
+		 public void onSuccess(ArrayList<Notebook> result) {
+			 ClientsideSettings.getLogger().
+			 severe("Success GetCurrentUserCallback: " + result.getClass().getSimpleName());
+			 
+			 for(int y = 0; y < result.size(); y++) {
+     			 if(notebookTitleTB.getText() == result.get(y).getNbTitle()) {
+     				 notebookTitleTB.setText(currentNotebook.getNbTitle());
+     				 isExisting = true;
+     				 break;
+     			 }   			 
+     		 }
+     		 if(isExisting == false){
+    			 adminService.editNotebook(newNotebook, editNotebookCallback());
+    			 
+        		 Application.nbList.remove(currentNotebook.getNbTitle());
+        		 Application.nbList.add(newNotebook);
+        		 
+                 /*
+                  * Showcase instantiieren.
+                  */
+                 Update update = new EditNotebookView();
+                 
+                 RootPanel.get("Details").clear();
+                 RootPanel.get("Details").add(update);
+     		 }
+     		 if(isExisting == true){
+     			Window.alert("Dieses Notizbuch existiert bereits.");
+     		 }
+			 
+		 }
+		};
+		return asyncCallback;
+	}
+	
+	private AsyncCallback<Void> editNotebookCallback() {
+    	AsyncCallback<Void> asyncCallback = new AsyncCallback<Void>(){
+    		
+    		@Override
+    		public void onFailure(Throwable caught) {
+    			ClientsideSettings.getLogger().severe("Error: " + caught.getMessage());
+    		}
+    	 
+    	 @Override
+    	 public void onSuccess(Void result) {
+    		 ClientsideSettings.getLogger().
+    		 severe("Success EditNoteCallback: " + result.getClass().getSimpleName());
+    		 
+
+    	 }
+    	};
+    	return asyncCallback;
+
+    }
+	
 	private AsyncCallback<AppUser> searchUserByMailCallback() {
     	AsyncCallback<AppUser> asyncCallback = new AsyncCallback<AppUser>() {
     		
@@ -272,7 +452,7 @@ public class EditNotebookView extends Update {
     			ClientsideSettings.getLogger().
     			severe("Success GetUserForPermissionDeleteCallback: " + result.getClass().getSimpleName());
     			permissionUser = result;
-    			adminService.getPermission(permissionUser.getUserID(), currentNB.getNbID(), 0, getPermissionCallback());
+    			adminService.getPermission(permissionUser.getUserID(), currentNotebook.getNbID(), 0, getPermissionCallback());
     		}
     	};
     	return asyncCallback;
@@ -314,6 +494,27 @@ public class EditNotebookView extends Update {
     	};
     	return asyncCallback;
     }
+	
+	private AsyncCallback<Void> deleteNotebookCallback() {
+		AsyncCallback<Void> asyncCallback = new AsyncCallback<Void>() {
+			
+			@Override
+			public void onFailure(Throwable caught) {
+    			ClientsideSettings.getLogger().severe("Error: " + caught.getMessage());
+    		}
+    	 
+    	 @Override
+    	 public void onSuccess(Void result) {
+    		 ClientsideSettings.getLogger().
+    		 severe("Success DeleteNoteCallback: " + result.getClass().getSimpleName());
+    		 
+    		 Update update = new WelcomeView();
+    		 RootPanel.get("Details").clear();
+    		 RootPanel.get("Details").add(update);
+    	 }
+		};
+		return asyncCallback;
+	}
     
 	
 //	public void setNntvm(NotebookNotesTreeViewModel nntvm) {

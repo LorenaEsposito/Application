@@ -438,6 +438,13 @@ protected void run() {
 
     	}
     });
+    
+    deleteDuedateButton.addClickHandler(new ClickHandler() {
+    	public void onClick(ClickEvent event){
+    		adminService.deleteDuedate(dueDate, deleteDuedateCallback());
+    		
+    	}
+    });
 
 //    editButton.addClickHandler(new ClickHandler() {
 //  	public void onClick(ClickEvent event) {
@@ -698,11 +705,35 @@ private AsyncCallback<DueDate> getDuedateCallback(){
     		 ClientsideSettings.getLogger().
     		 severe("Success DeleteNoteCallback: " + result.getClass().getSimpleName());
     		 
-    		 deleteNoteButton.setEnabled(true);
+    		 Update update = new EditNotebookView();
+    		 RootPanel.get("Details").clear();
+    		 RootPanel.get("Details").add(update);
+    		 
     	 }
 		};
 		return asyncCallback;
 	}
+	
+	   
+		private AsyncCallback<Void> deleteDuedateCallback() {
+			AsyncCallback<Void> asyncCallback = new AsyncCallback<Void>() {
+				
+				@Override
+				public void onFailure(Throwable caught) {
+	    			ClientsideSettings.getLogger().severe("Error: " + caught.getMessage());
+	    		}
+	    	 
+	    	 @Override
+	    	 public void onSuccess(Void result) {
+	    		 ClientsideSettings.getLogger().
+	    		 severe("Success DeleteDuedateCallback: " + result.getClass().getSimpleName());
+	    		 
+	    		 duedate.setValue(null);
+	    		 
+	    	 }
+			};
+			return asyncCallback;
+		}
 
     private AsyncCallback<Note> editNoteCallback() {
     	AsyncCallback<Note> asyncCallback = new AsyncCallback<Note>(){

@@ -321,12 +321,18 @@ public class NotebookMapper {
 
 	public Notebook updateNotebook(Notebook notebook) {
 		Connection con = DBConnection.connection();
+		
+		String modDate = null;
+		if (notebook.getNbModDate() != null) {
+			SimpleDateFormat mySQLformat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+			modDate = mySQLformat.format(notebook.getNbModDate());
+		}
 
 		try {
 			Statement stmt = con.createStatement();
 
-			stmt.executeUpdate("UPDATE notebooks" + "SET title=\""
-					+ notebook.getNbTitle() + "\"," + "WHERE nbid="
+			stmt.executeUpdate("UPDATE notebooks" + " SET title='"
+					+ notebook.getNbTitle() + "', " + "moddate='" + modDate + "' WHERE nbid="
 					+ notebook.getNbID());
 		} catch (SQLException e) {
 			e.printStackTrace();

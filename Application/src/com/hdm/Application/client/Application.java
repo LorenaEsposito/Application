@@ -11,7 +11,7 @@ import com.hdm.Application.client.gui.EditProfileView;
 import com.hdm.Application.client.gui.LoginService;
 import com.hdm.Application.client.gui.LoginServiceAsync;
 import com.hdm.Application.client.gui.NotebookCell;
-import com.hdm.Application.client.gui.NotebookNotesTreeViewModel;
+//import com.hdm.Application.client.gui.NotebookNotesTreeViewModel;
 import com.hdm.Application.client.gui.Update;
 import com.hdm.Application.client.gui.WelcomeView;
 import com.hdm.Application.shared.LoginInfo;
@@ -20,7 +20,7 @@ import com.hdm.Application.shared.bo.AppUser;
 import com.hdm.Application.shared.bo.Note;
 import com.hdm.Application.shared.bo.Notebook;
 
-import sun.security.util.AuthResources;
+
 
 import com.hdm.Application.client.ClientsideSettings;
 
@@ -102,10 +102,17 @@ public class Application implements EntryPoint {
 		TextCell noteCell = new TextCell();
 		
 		NotebookCell nbCell = new NotebookCell();
+	    static ProvidesKey<Notebook> keyProvider = new ProvidesKey<Notebook>() {
+		      public Object getKey(Notebook item) {
+		        // Always do a null check.
+		        return (item == null) ? null : item.getNbID();
+
+			}
+		    };
 		
 		public final static SingleSelectionModel<String> notesSelectionModel = new SingleSelectionModel<String>();
 	    
-		public final static SingleSelectionModel<Notebook> nbSelectionModel = new SingleSelectionModel<Notebook>();
+		public final static SingleSelectionModel<Notebook> nbSelectionModel = new SingleSelectionModel<Notebook>(keyProvider);
 		
 		// Create a data provider.
 		public static ListDataProvider<String> notesDataProvider = new ListDataProvider<String>();
@@ -122,13 +129,7 @@ public class Application implements EntryPoint {
 	     * Define a key provider for a Contact. We use the unique ID as the key,
 	     * which allows to maintain selection even if the name changes.
 	     */
-	    ProvidesKey<Notebook> keyProvider = new ProvidesKey<Notebook>() {
-	      public Object getKey(Notebook item) {
-	        // Always do a null check.
-	        return (item == null) ? null : item.getNbID();
-
-		}
-	    };
+	
 		
 	  /**
 	   * The message displayed to the user when the server cannot be reached or
@@ -151,7 +152,7 @@ public class Application implements EntryPoint {
 	   * Erstellung aller Widgets
 	   */
 
-//	  private Label loginLabel = new Label("Bitte melde dich mit deinem Google Account an, um Notework nutzen zu können. Klicke auf Login und los geht's!");
+//	  private Label loginLabel = new Label("Bitte melde dich mit deinem Google Account an, um Notework nutzen zu kÃ¶nnen. Klicke auf Login und los geht's!");
 //	  final Label headerLabel = new Label("Notework");
 
 	  private Label loginLabel = new Label("");
@@ -578,4 +579,3 @@ public class Application implements EntryPoint {
  }
  
  }
-
