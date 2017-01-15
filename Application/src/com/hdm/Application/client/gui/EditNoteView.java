@@ -332,7 +332,6 @@ protected void run() {
     			adminService.searchUserByMail(selectionModel.getSelectedObject(), searchUserByMailCallback());
     		}
     		
-
     	}
     });
     

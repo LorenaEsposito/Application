@@ -1,5 +1,6 @@
 package com.hdm.Application.server;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Vector;
@@ -43,7 +44,7 @@ private UserMapper uMapper = null;
  * Referenz auf den DatenbankMapper, der Noteobjekte mit der Datenbank
  * abgleicht.
  */
-private NoteMapper nMapper;
+public NoteMapper nMapper;
 
 /**
  * Referenz auf den DatenbankMapper, der Permissionobjekte mit der Datenbank
@@ -469,12 +470,21 @@ public ArrayList<Notebook> searchForNotebook(String title) throws IllegalArgumen
    * @return notes
    * @throws IllegalArgumentException
    */
-    public ArrayList<Note> searchForNoteByDD(Date duedate) throws IllegalArgumentException{
+    @SuppressWarnings("deprecation")
+	public ArrayList<Note> searchForNoteByDD(Date duedate) throws IllegalArgumentException{
   	Vector<Note> vector = new Vector<Note>();
-//  	vector = this.nMapper.findByDuedate(duedate);
-  	ArrayList<Note> notes = new ArrayList<Note>(vector);
+  	
+  	int tag = duedate.getDate();
+	 int monat = duedate.getMonth()+1;
+	 int jahr = duedate.getYear()+1900;
+	 System.out.println("Datumsformat gefaked: "+jahr+"-"+monat+"-"+tag);
 
-  	return notes;
+	 String datum = jahr+"-"+monat+"-"+tag;
+	Vector<Note> notes = this.nMapper.findByDueDate(java.sql.Date.valueOf(datum));	
+	 System.out.println("notes size : "+notes.size());
+	 ArrayList<Note> result = new ArrayList<Note>();
+	 result.addAll(notes);
+  	return result;
     }
     
     public Notebook getNotebookByID(int nbID) throws IllegalArgumentException{
@@ -682,5 +692,18 @@ public ArrayList<Notebook> searchForNotebook(String title) throws IllegalArgumen
     	}
     	return user;
     }
+
+	
+	public AppUser getUserByEmail(String email) throws IllegalArgumentException {
+		AppUser user = new AppUser();
+		user = this.uMapper.findByMail (email);
+		return user;
+	}
+	public ArrayList<Note> findAll() throws IllegalArgumentException{
+		Vector<Note> vector = new Vector<Note>();
+		vector = this.nMapper.findAll();
+		ArrayList<Note> notes = new ArrayList<Note>(vector);
+		return notes;
+	}
 
 }

@@ -72,6 +72,7 @@ public class NotebookMapper {
 			Statement stmt = con.createStatement();
 
 			// Statement ausfuellen und als Query an DB schicken
+
 			ResultSet rs = stmt
 
 					.executeQuery("SELECT nbid, title, creadate, moddate FROM notebooks "
@@ -230,8 +231,8 @@ public class NotebookMapper {
 		try {
 			Statement stmt = con.createStatement();
 
-			ResultSet rs = stmt.executeQuery("SELECT nbid, title, creadate, moddate FROM notebooks"
-					+ " WHERE title LIKE '" + nbTitle + "' ORDER BY creadate");
+			ResultSet rs = stmt.executeQuery("SELECT * FROM notebooks"
+					+ " WHERE title LIKE '%" + nbTitle + "%' ORDER BY creadate");
 			
 			//Fuer jeden Eintrag im Suchergebnis wird ein Notebook-Objekt erstellt.
 			while(rs.next()){
@@ -383,6 +384,11 @@ public class NotebookMapper {
 		catch (SQLException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public Object getNbID() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

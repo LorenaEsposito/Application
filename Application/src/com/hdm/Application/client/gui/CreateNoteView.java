@@ -533,10 +533,14 @@ protected void run() {
 
         			
         			if(readButton.getValue() == true){
+
         				permission.setPermissionType(1);
+
         			}
         			if(editButton.getValue() == true){
+
         				permission.setPermissionType(2);
+
         			}
         			if(deleteButton.getValue() == true){
         				permission.setPermissionType(3);
@@ -595,6 +599,7 @@ protected void run() {
    		 if(isExisting == true){
    			Window.alert("Diese Notiz existiert bereits im ausgewaehlten Notizbuch");
    		 }
+
    	 }
    	 };
    	 return asyncCallback;
