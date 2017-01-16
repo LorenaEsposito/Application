@@ -49,7 +49,6 @@ public class EditNotebookView {
 	}
 	
 
-
 	public void setSelected(Notebook nb) {
 		if (nb != null) {
 			currentNotebook = nb;

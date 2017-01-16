@@ -849,25 +849,7 @@ private AsyncCallback<DueDate> getDuedateCallback(){
     	};
     	return asyncCallback;
     }
-    
-    
-    /*
-	 * Wenn der anzuzeigende Kunde gesetzt bzw. gelöscht wird, werden die
-	 * zugehörenden Textfelder mit den Informationen aus dem Kundenobjekt
-	 * gefüllt bzw. gelöscht.
-	 */
-	public void setSelected(Note n) {
-		if (n != null) {
-			currentNote = n;
-			noteTitleTB.setText(currentNote.getnTitle());
-			noteSubtitleTB.setText(currentNote.getnSubtitle());
-			textArea.setText(currentNote.getnContent());
-		} else {
-			noteTitleTB.setText("");
-			noteSubtitleTB.setText("");
-			textArea.setText("");
-		}
-	}
+   
     
 }
 
