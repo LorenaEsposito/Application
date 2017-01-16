@@ -124,7 +124,9 @@ public class UserMapper {
 				return u;
 			}
 		} catch (SQLException e) {
+			System.out.println("SQL Abfrage fehlgeschlagen. findbyMail");
 			e.printStackTrace();
+			
 			return null;
 		}
 

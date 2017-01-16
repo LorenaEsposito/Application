@@ -7,9 +7,11 @@ import com.hdm.Application.client.gui.CreateNoteView;
 import com.hdm.Application.client.gui.CreateNotebookView;
 import com.hdm.Application.client.gui.EditNoteView;
 import com.hdm.Application.client.gui.EditNotebookView;
+import com.hdm.Application.client.gui.EditProfileView;
 import com.hdm.Application.client.gui.LoginService;
 import com.hdm.Application.client.gui.LoginServiceAsync;
-import com.hdm.Application.client.gui.NotebookNotesTreeViewModel;
+import com.hdm.Application.client.gui.NotebookCell;
+//import com.hdm.Application.client.gui.NotebookNotesTreeViewModel;
 import com.hdm.Application.client.gui.Update;
 import com.hdm.Application.client.gui.WelcomeView;
 import com.hdm.Application.shared.LoginInfo;
@@ -51,7 +53,9 @@ import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.view.client.ListDataProvider;
+import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.SelectionChangeEvent;
+import com.google.gwt.view.client.SelectionModel;
 import com.google.gwt.view.client.SingleSelectionModel;
 import com.google.gwt.view.client.TreeViewModel;
 import com.google.gwt.view.client.TreeViewModel.NodeInfo;
@@ -93,14 +97,37 @@ public class Application implements EntryPoint {
 		
 		private ArrayList<Note> notes = null;
 		
-		TextCell cell = new TextCell();
+		TextCell noteCell = new TextCell();
 		
-		public final static SingleSelectionModel<String> selectionModel = new SingleSelectionModel<String>();
+		NotebookCell nbCell = new NotebookCell();
+	    static ProvidesKey<Notebook> keyProvider = new ProvidesKey<Notebook>() {
+		      public Object getKey(Notebook item) {
+		        // Always do a null check.
+		        return (item == null) ? null : item.getNbID();
+
+			}
+		    };
+		
+		public final static SingleSelectionModel<String> notesSelectionModel = new SingleSelectionModel<String>();
 	    
-		 // Create a data provider.
-		public static ListDataProvider<String> dataProvider = new ListDataProvider<String>();
+		public final static SingleSelectionModel<Notebook> nbSelectionModel = new SingleSelectionModel<Notebook>(keyProvider);
 		
-		public static List<String> list = dataProvider.getList();		
+		// Create a data provider.
+		public static ListDataProvider<String> notesDataProvider = new ListDataProvider<String>();
+		
+		public static List<String> notesList = notesDataProvider.getList();		
+		
+		
+		// Create a data provider.
+		public static ListDataProvider<Notebook> nbDataProvider = new ListDataProvider<Notebook>();
+				
+		public static List<Notebook> nbList = nbDataProvider.getList();	
+		
+	    /*
+	     * Define a key provider for a Contact. We use the unique ID as the key,
+	     * which allows to maintain selection even if the name changes.
+	     */
+	
 		
 	  /**
 	   * The message displayed to the user when the server cannot be reached or
@@ -123,7 +150,7 @@ public class Application implements EntryPoint {
 	   * Erstellung aller Widgets
 	   */
 
-//	  private Label loginLabel = new Label("Bitte melde dich mit deinem Google Account an, um Notework nutzen zu k�nnen. Klicke auf Login und los geht's!");
+//	  private Label loginLabel = new Label("Bitte melde dich mit deinem Google Account an, um Notework nutzen zu kÃ¶nnen. Klicke auf Login und los geht's!");
 //	  final Label headerLabel = new Label("Notework");
 
 	  private Label loginLabel = new Label("");
@@ -138,7 +165,9 @@ public class Application implements EntryPoint {
 	  final Button searchButton = new Button("Suche");
 	  final Button logoButton = new Button();
 	  final Button impressumButton = new Button("Impressum");
-	  final CellList<String> cellList = new CellList<String>(cell);
+	  final Button profileButton = new Button("Profil bearbeiten");
+	  final CellList<String> noteCellList = new CellList<String>(noteCell);
+	  final CellList<Notebook> nbCellList = new CellList<Notebook>(nbCell, keyProvider);
 //	  NotebookNotesTreeViewModel nntvm = new NotebookNotesTreeViewModel();
 //	  CellTree cellTree = new CellTree(nntvm, "Root");
 	  
@@ -168,68 +197,76 @@ public class Application implements EntryPoint {
       loginInfo = result; 
       ClientsideSettings.setLoginInfo(result);
       if (loginInfo.isLoggedIn()){                 		
-		   		
-		   		adminService.getUserByMail(loginInfo.getEmailAddress(), new AsyncCallback<AppUser>() {
+    	  adminService.getUserByMail(loginInfo.getEmailAddress(), new AsyncCallback<AppUser>() {
 
-					@Override
-					public void onFailure(Throwable caught) {
-						Window.alert("Fehler: Nutzer konnte in der Datenbank nicht gefunden werden. Details: "+caught);
+				@Override
+				public void onFailure(Throwable caught) {
+					Window.alert("Fehler: Nutzer konnte in der Datenbank nicht gefunden werden. Details: "+caught);
+					
+				}
+
+				@Override
+				public void onSuccess(AppUser currentUser) {
+					if (currentUser != null) {
+						Cookies.setCookie("userid", String.valueOf(currentUser.getUserID()));
+						loadGUI();
+						if(Cookies.getCookie("url") != null) {
+				   			Update update = new CreateNoteView();
+				   			RootPanel.get("Details").clear();
+					   		RootPanel.get("Details").add(update);		   		
+						}							
+					}else{
+						Cookies.removeCookie("userid");
+						loginInfo.setLoggedIn(false);
 						
 					}
-
-					@Override
-					public void onSuccess(AppUser currentUser) {
-						if (currentUser != null) {
-							Cookies.setCookie("userid", String.valueOf(currentUser.getUserID()));
-							loadGUI();
-							if(Cookies.getCookie("url") != null) {
-					   			Update update = new CreateNoteView();
-					   			RootPanel.get("Details").clear();
-						   		RootPanel.get("Details").add(update);		   		
-				       		}							
-						}else{
-							Cookies.removeCookie("userid");
-							loginInfo.setLoggedIn(false);
-							
-						}
-						
-					}
-		   			
-		   			
-		   		
-		   		});
-		   		
-	 }
+					
+				}
+	   			
+	   			
+	   		
+	   		});
+	   				   		
+	       		}
+      
      else{
 	   	 	loadLogin();    			   	
          }
-       }
-    });
+      }
+ });
  }
 
 
      public void loadGUI() {
+
     	 
     	 /**
  		 * Auslesen des Profils vom aktuellen Benutzer aus der Datenbank.
  		 */
-
- 		adminService.getUserByMail(ClientsideSettings.getLoginInfo().getEmailAddress(),
+    	 
+  		adminService.getUserByMail(ClientsideSettings.getLoginInfo().getEmailAddress(),
  				getCurrentUserCallback());
- 		
- 		Update update = new WelcomeView();
  		
  		listbox.setSelectedIndex(0);
  		
- 		cellList.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.ENABLED);
- 		
+ 		noteCellList.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.ENABLED);
 
  	    // Add a selection model to handle user selection.
  	    
- 	    cellList.setSelectionModel(selectionModel);
+ 	    noteCellList.setSelectionModel(notesSelectionModel);
  	    
 	 	 // Connect the list to the data provider.
- 	    dataProvider.addDataDisplay(cellList);
+ 	    notesDataProvider.addDataDisplay(noteCellList);
+ 	    
+ 	    
+ 		nbCellList.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.ENABLED);
+
+ 	    // Add a selection model to handle user selection.
+ 	    
+ 	    nbCellList.setSelectionModel(nbSelectionModel);
+ 	    
+	 	 // Connect the list to the data provider.
+ 	    nbDataProvider.addDataDisplay(nbCellList);
  	    
 // 	    nntvm.setEditNotebookView(editNotebookView);
 // 	    editNotebookView.setNntvm(nntvm);
@@ -245,6 +282,7 @@ public class Application implements EntryPoint {
  		createNoteButton.setStyleName("navObject2");
  		searchButton.setStyleName("headObject");
  		impressumButton.setStyleName("headObject");
+ 		profileButton.setStyleName("headObject");
 	    signOutButton.setStyleName("headObject");
 	    logoButton.setStyleName("notework-logo");
 	    listbox.setStyleName("navListbox");
@@ -264,26 +302,39 @@ public class Application implements EntryPoint {
 	    headButtonPanel.add(logoButton);
 	    headButtonPanel.add(searchButton);
 	    headButtonPanel.add(impressumButton);
+	    headButtonPanel.add(profileButton);
 	    headButtonPanel.add(signOutButton);
 	    headPanel.add(headButtonPanel);
 	    navPanel.add(listbox);
-	    navPanel2.add(cellList);
+	    navPanel.add(nbCellList);
+	    navPanel2.add(noteCellList);
 	    navPanel2.add(createNotebookButton);
 	    navPanel2.add(createNoteButton);
 //	    navPanel2.add(cellTree);
 	    RootPanel.get("Header").add(headPanel);
 	    RootPanel.get("Navigator").add(navPanel);
 	    RootPanel.get("Navigator").add(navPanel2);
-	    RootPanel.get("Details").add(update);
 	    
 	    /**
 	     * Implementierung der jeweiligen ClickHandler fuer die einzelnen Widgets
 	     */
 	    
-	    selectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
+	    notesSelectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
 			public void onSelectionChange(SelectionChangeEvent event) {
 				
 				Update update = new EditNoteView();
+				RootPanel.get("Details").clear();
+				RootPanel.get("Details").add(update);
+			}
+	    });
+	    
+	    nbSelectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
+			public void onSelectionChange(SelectionChangeEvent event) {
+				Window.alert(nbSelectionModel.getSelectedObject().getNbTitle());
+				
+				adminService.getNotesOfNotebook(nbSelectionModel.getSelectedObject(), getNotesOfNotebookCallback());
+				
+				Update update = new EditNotebookView();
 				RootPanel.get("Details").clear();
 				RootPanel.get("Details").add(update);
 			}
@@ -334,17 +385,17 @@ public class Application implements EntryPoint {
 		    });	    
 
 
-//	    noteButton.addClickHandler(new ClickHandler() {
-//	  	public void onClick(ClickEvent event) {
-//	          /*
-//	           * Showcase instantiieren.
-//	           */
-//	          Update update = new ShowNoteView();
-//	          
-//	          RootPanel.get("Details").clear();
-//	          RootPanel.get("Details").add(update);
-//	    }
-//	    });
+	    profileButton.addClickHandler(new ClickHandler() {
+	  	public void onClick(ClickEvent event) {
+	          /*
+	           * Showcase instantiieren.
+	           */
+	          Update update = new EditProfileView();
+	          
+	          RootPanel.get("Details").clear();
+	          RootPanel.get("Details").add(update);
+	    }
+	    });
 
 	    
 	    signOutButton.addClickHandler(new ClickHandler() {
@@ -378,12 +429,13 @@ public class Application implements EntryPoint {
 	    	public void onChange(ChangeEvent event) {
 	    		adminService.getNotesOfNotebookTitle(listbox.getSelectedItemText(), currentUser, getNotesOfNotebookTitleCallback());
 	    		
-//	    		Update update = new EditNotebookView();
-//	    		
-//	    		RootPanel.get("Details").clear();
-//	    		RootPanel.get("Details").add(update);
+	    		Update update = new EditNotebookView();
+	    		
+	    		RootPanel.get("Details").clear();
+	    		RootPanel.get("Details").add(update);
 	    	}
 	    });
+	    
 	}
  
  private void loadLogin() {
@@ -413,7 +465,8 @@ public class Application implements EntryPoint {
      Cookies.setCookie("userMail", null);
      Cookies.setCookie("userID", null);
      RootPanel.get("Details").clear();
-     RootPanel.get("Details").add(loginPanel);     
+     RootPanel.get("Details").add(loginPanel); 
+     
     }
  
  private AsyncCallback<AppUser> getCurrentUserCallback() {
@@ -430,10 +483,17 @@ public class Application implements EntryPoint {
 			.severe("Success GetCurrentUserCallback: " + result.getClass().getSimpleName());
 		 currentUser = result;
 		 
+		 if(currentUser.getUserName() != null){
 		 userLabel.setText(currentUser.getUserName());
+		 Update update = new WelcomeView();
+		 RootPanel.get("Details").add(update);
+		 }
+		 else{
+			 Update update = new EditProfileView();
+			 RootPanel.get("Details").add(update);
+		 }
 		 
 		 adminService.getNotebooksOfUser(currentUser, getNotebooksOfUserCallback());
-		 
 		 
 		 
 	 }
@@ -456,11 +516,15 @@ public class Application implements EntryPoint {
 			 notebooks = result;
 			 
 			 for (int x = 0; x < notebooks.size(); x++ ){
+				 nbDataProvider.getList().add(notebooks.get(x));
 				 listbox.addItem(notebooks.get(x).getNbTitle());
 				 
 				 listbox.setVisibleItemCount(1);
 			 }
+//			 nbCellList.setVisibleRange(0, 5);
+			 nbSelectionModel.setSelected(notebooks.get(0), true);
 			 adminService.getNotesOfNotebookTitle(listbox.getSelectedValue(), currentUser, getNotesOfNotebookTitleCallback());
+			 adminService.getNotesOfNotebook(nbSelectionModel.getSelectedObject(), getNotesOfNotebookCallback());
 		 }
 	 };
 	 return asyncCallback;
@@ -480,13 +544,36 @@ public class Application implements EntryPoint {
 		 severe("Success GetNotesOfNotebookCallback: " + result.getClass().getSimpleName());
 		 
 		 notes = result;
-		 dataProvider.getList().clear();
+		 notesDataProvider.getList().clear();
 		 for(int i = 0; i < notes.size(); i++) {
-			 dataProvider.getList().add(notes.get(i).getnTitle());
+			 notesDataProvider.getList().add(notes.get(i).getnTitle());
 		 }
 	 }
 	 };
 	 return asyncCallback;
  }
+ 
+ private AsyncCallback<ArrayList<Note>> getNotesOfNotebookCallback() {
+	 AsyncCallback<ArrayList<Note>> asyncCallback = new AsyncCallback<ArrayList<Note>>(){
+	 
+	 @Override
+		public void onFailure(Throwable caught) {
+			ClientsideSettings.getLogger().severe("Error: " + caught.getMessage());
+		}
+	 
+	 @Override
+	 public void onSuccess(ArrayList<Note> result) {
+		 ClientsideSettings.getLogger().
+		 severe("Success GetNotesOfNotebookCallback: " + result.getClass().getSimpleName());
+		 Window.alert("GetNotesOfNotebook-Methode");
+		 notes = result;
+		 notesDataProvider.getList().clear();
+		 for(int i = 0; i < notes.size(); i++) {
+			 notesDataProvider.getList().add(notes.get(i).getnTitle());
+		 }
+	 }
+	 };
+	 return asyncCallback;
  }
-
+ 
+ }

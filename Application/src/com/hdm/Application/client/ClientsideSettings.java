@@ -7,6 +7,8 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 
 import com.hdm.Application.shared.NoteAdministration;
 import com.hdm.Application.shared.NoteAdministrationAsync;
+import com.hdm.Application.shared.ReportGenerator;
+import com.hdm.Application.shared.ReportGeneratorAsync;
 import com.hdm.Application.shared.CommonSettings;
 import com.hdm.Application.shared.LoginInfo;
 
@@ -24,6 +26,7 @@ public class ClientsideSettings extends CommonSettings {
 	 */
 	private static NoteAdministrationAsync administration = null;
 
+	private static ReportGeneratorAsync report = null;
 	/**
 	 * Name des Client-seitigen Loggers.
 	 */
@@ -101,4 +104,26 @@ public class ClientsideSettings extends CommonSettings {
 		}
 		return administration;
 	}
+	
+	public static ReportGeneratorAsync getReportGenerator() {
+		if (report == null) {
+			report = GWT.create(ReportGenerator.class);
+
+			final AsyncCallback<Void> initAdministrationCallback = new AsyncCallback<Void>() {
+				public void onFailure(Throwable caught) {
+					ClientsideSettings.getLogger().severe(
+							"Der Administration konnte nicht initialisiert werden!"
+									+ caught);
+				}
+
+				public void onSuccess(Void result) {
+					ClientsideSettings.getLogger().info(
+							"Der Administration wurde initialisiert.");
+				}
+			};
+			report.init(initAdministrationCallback);
+		}
+		return report;
+	}
+	
 }

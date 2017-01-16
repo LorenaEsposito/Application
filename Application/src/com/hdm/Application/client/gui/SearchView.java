@@ -10,6 +10,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
+import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.TextColumn;
@@ -59,6 +60,8 @@ public class SearchView extends Update {
 	private final CellTable<Notebook> notebookTable = new CellTable<Notebook>();
 	
 	
+	
+	
 	private boolean dd;
 	private boolean un;
 	private boolean n;
@@ -75,6 +78,10 @@ public class SearchView extends Update {
 	final RadioButton userNameButton = new RadioButton("Radiobutton-Group","Username");
 	final RadioButton noteButton = new RadioButton("Radiobutton-Group","Note");
 	final RadioButton notebookButton = new RadioButton("Radiobutton-Group","Notebook");
+	
+	
+    
+    
 	final SingleSelectionModel<Note> selectionModel = new SingleSelectionModel<Note>(new ProvidesKey<Note>() {
 	public Object getKey (Note object){
 		return object.getnID();
@@ -137,11 +144,16 @@ public class SearchView extends Update {
 		noteButton.setText("Note");
 		notebookButton.setText("Notebook");
 		
+		DateTimeFormat datumsFormat = DateTimeFormat.getFormat("dd.MM.yyyy");
+		searchDateBox.setFormat(new DateBox.DefaultFormat(datumsFormat));
+		searchDateBox.getDatePicker().setYearArrowsVisible(true);
+		searchDateBox.getDatePicker().setYearAndMonthDropdownVisible(true);
+	    searchDateBox.getDatePicker().setVisibleYearCount(10);
+		
 		/**
 		 * Erstellung der ClickHandler
 		 **/
 		dueDateButton.addValueChangeHandler(new ValueChangeHandler<Boolean>() {
-			
 			
 			@Override
 			public void onValueChange(ValueChangeEvent<Boolean> event) {
@@ -211,8 +223,7 @@ public class SearchView extends Update {
 				Window.alert("Nutzer nicht anzeigbar");
 			}
 			}
-			}
-		);
+			});
 			
 			
 		
@@ -226,7 +237,7 @@ public class SearchView extends Update {
 				 dd = dueDateButton.getValue();
 				 un = userNameButton.getValue();
 				 n = noteButton.getValue();
-				 nb = notebookButton.getValue();
+				 nb = notebookButton.getValue(); 
 				
 				if(dd){	
 				   rbselected = true;				   

@@ -1,5 +1,6 @@
 package com.hdm.Application.server;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Vector;
@@ -43,7 +44,7 @@ private UserMapper uMapper = null;
  * Referenz auf den DatenbankMapper, der Noteobjekte mit der Datenbank
  * abgleicht.
  */
-private NoteMapper nMapper;
+public NoteMapper nMapper;
 
 /**
  * Referenz auf den DatenbankMapper, der Permissionobjekte mit der Datenbank
@@ -173,16 +174,16 @@ public AppUser editUser(AppUser u) throws IllegalArgumentException{
 @Override
 public void deleteUser(AppUser u) throws IllegalArgumentException {
     this.uMapper.delete(u);
-    
-    Vector<Permission> vector = new Vector<Permission>();
-    vector = this.pMapper.findOwnerByUserId(u.getUserID());
-    ArrayList<Permission> permissions = new ArrayList<Permission>(vector);
-    for(int i = 0; i < permissions.size(); i++){
-    	this.pMapper.delete(permissions.get(i));
-    	if(permissions.get(i).getNID() != 0){
-    	this.nMapper.deleteNote(this.nMapper.findByID(permissions.get(i).getNID()));
+    Vector<Permission> vector1 = new Vector<Permission>();
+    vector1 = this.pMapper.findByUserID(u.getUserID());
+    for(int y = 0; y< vector1.size(); y++){
+    	if(vector1.get(y).getIsOwner() == true && vector1.get(y).getNID() == 0){
+    		this.deleteNotebook(this.nbMapper.findById(vector1.get(y).getNbID()));
     	}
-    	this.nbMapper.deleteNotebook(this.nbMapper.findById(permissions.get(i).getNbID()));
+    	if(vector1.get(y).getIsOwner() == true && vector1.get(y).getNID() != 0){
+    		this.deleteNote(this.nMapper.findByID(vector1.get(y).getNID()));
+    	}
+    	this.pMapper.delete(vector1.get(y));
     }
   }
 
@@ -468,12 +469,21 @@ public ArrayList<Notebook> searchForNotebook(String title) throws IllegalArgumen
    * @return notes
    * @throws IllegalArgumentException
    */
-    public ArrayList<Note> searchForNoteByDD(Date duedate) throws IllegalArgumentException{
+    @SuppressWarnings("deprecation")
+	public ArrayList<Note> searchForNoteByDD(Date duedate) throws IllegalArgumentException{
   	Vector<Note> vector = new Vector<Note>();
-//  	vector = this.nMapper.findByDuedate(duedate);
-  	ArrayList<Note> notes = new ArrayList<Note>(vector);
+  	
+  	int tag = duedate.getDate();
+	 int monat = duedate.getMonth()+1;
+	 int jahr = duedate.getYear()+1900;
+	 System.out.println("Datumsformat gefaked: "+jahr+"-"+monat+"-"+tag);
 
-  	return notes;
+	 String datum = jahr+"-"+monat+"-"+tag;
+	Vector<Note> notes = this.nMapper.findByDueDate(java.sql.Date.valueOf(datum));	
+	 System.out.println("notes size : "+notes.size());
+	 ArrayList<Note> result = new ArrayList<Note>();
+	 result.addAll(notes);
+  	return result;
     }
     
     public Notebook getNotebookByID(int nbID) throws IllegalArgumentException{
@@ -607,17 +617,20 @@ public ArrayList<Notebook> searchForNotebook(String title) throws IllegalArgumen
     	Vector<Permission> vector1 = new Vector<Permission>();
     	vector1 = this.pMapper.findByNotebookID(nbID);
     	ArrayList<Permission> permissions = new ArrayList<Permission>();
-    	Vector<Permission> vector2 = new Vector<Permission>();
-    	vector2 = this.pMapper.findByNoteID(nID);
+//    	Vector<Permission> vector2 = new Vector<Permission>();
+//    	vector2 = this.pMapper.findByNoteID(nID);
     	for(int i = 0; i < vector1.size(); i++){
     		if(vector1.get(i).getNID() == 0){
     			permissions.add(vector1.get(i));
     		}
     		if(vector1.get(i).getNID() != 0){
-    			for(int y = 0; y < vector2.size(); y++){
-    				if(vector1.get(i).getNID() == vector2.get(y).getNID()){
-    					permissions.add(vector2.get(y));
-    				}
+//    			for(int y = 0; y < vector2.size(); y++){
+//    				if(vector1.get(i).getNID() == vector2.get(y).getNID()){
+//    					permissions.add(vector2.get(y));
+//    				}
+//    			}
+    			if(vector1.get(i).getNID() == nID){
+    				permissions.add(vector1.get(i));
     			}
     		}
     	}
@@ -677,5 +690,18 @@ public ArrayList<Notebook> searchForNotebook(String title) throws IllegalArgumen
     	}
     	return user;
     }
+
+	
+	public AppUser getUserByEmail(String email) throws IllegalArgumentException {
+		AppUser user = new AppUser();
+		user = this.uMapper.findByMail (email);
+		return user;
+	}
+	public ArrayList<Note> findAll() throws IllegalArgumentException{
+		Vector<Note> vector = new Vector<Note>();
+		vector = this.nMapper.findAll();
+		ArrayList<Note> notes = new ArrayList<Note>(vector);
+		return notes;
+	}
 
 }
