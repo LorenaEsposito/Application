@@ -31,10 +31,10 @@ public interface NoteAdministrationAsync {
 	public void getUserByID(int userID, AsyncCallback<AppUser> callback)
 			throws IllegalArgumentException;
 
-	public void createUser(AppUser u, AsyncCallback<Void> callback)
+	public void createUser(AppUser u, AsyncCallback<AppUser> callback)
 			throws IllegalArgumentException;
 
-	public void editUser(AppUser u, AsyncCallback<Void> callback)
+	public void editUser(AppUser u, AsyncCallback<AppUser> callback)
 			throws IllegalArgumentException;
 
 	public void deleteUser(AppUser u, AsyncCallback<Void> callback)

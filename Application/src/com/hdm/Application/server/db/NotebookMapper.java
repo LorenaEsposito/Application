@@ -168,7 +168,6 @@ public class NotebookMapper {
 			e.printStackTrace();
 			return null;
 		}
-	
 		return result;
 
 	}
@@ -291,12 +290,12 @@ public class NotebookMapper {
 				stmt.executeUpdate("INSERT INTO notebooks (nbid, title, creadate, moddate) "
 						+ "VALUES ("
 						+ notebook.getNbID()
-						+ ",'"
+						+ ", '"
 						+ notebook.getNbTitle()
-						+ "',"
-						+ notebook.getNbCreDate()
-						+ ","
-						+ notebook.getNbModDate() + ")");
+						+ "', '"
+						+ creDate
+						+ "', '"
+						+ creDate + "')");
 
 			}
 		} catch (SQLException e) {
@@ -346,12 +345,9 @@ public class NotebookMapper {
 	public void deleteNotebook(Notebook notebook) {
 		Connection con = DBConnection.connection();
 
-		DueDateMapper.deleteAllNotebookDueDates(notebook);
-		NoteMapper.deleteAllNotebookNotes(notebook);
-
 		try {
 			Statement stmt = con.createStatement();
-			stmt.executeUpdate("DELETE FROM notebooks" + "WHERE nbid="
+			stmt.executeUpdate("DELETE FROM notebooks " + "WHERE nbid="
 					+ notebook.getNbID());
 		} catch (SQLException e) {
 			e.printStackTrace();

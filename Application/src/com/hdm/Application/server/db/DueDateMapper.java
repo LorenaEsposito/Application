@@ -189,7 +189,7 @@ public class DueDateMapper {
 			Statement stmt = con.createStatement();
 
 			// Ueberpruefen welches der aktuell hoechste Primaerschluessel ist.
-
+			System.out.println(dueDate.getnID());
 			ResultSet rs = stmt.executeQuery("SELECT Max(ddID) AS maxDdId "
 					+ "FROM duedates");
 			
@@ -291,32 +291,7 @@ public class DueDateMapper {
 		}
 	}
 
-	public static void deleteAllNotebookDueDates(Notebook nb) {
-
-		Connection con = DBConnection.connection();
-
-		try {
-			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT nid, nbid, FROM notes"
-					+ "WHERE nbid =" + nb.getNbID());
-
-			// Fuer jeden Eintrag wird ein Notebook-Objekt erstellt
-			while (rs.next()) {
-
-				Integer idInt = new Integer(rs.getInt("nid"));
-				Statement stmt2 = con.createStatement();
-				stmt2.executeUpdate("DELETE FROM duedates" + "WHERE nID="
-						+ idInt.intValue());
-			}
-
-		}
-
-		catch (SQLException e) {
-			e.printStackTrace();
-		}
-
-	}
-
+	
 	public static void deleteAllUserDueDates(AppUser u) {
 		Connection con = DBConnection.connection();
 

@@ -78,6 +78,8 @@ public class EditNoteView extends Update{
 	
 	DueDate dueDate = new DueDate();
 	
+	DueDate newDueDate = new DueDate();
+	
 	TextCell cell = new TextCell();
 	
 	public final static SingleSelectionModel<String> selectionModel = new SingleSelectionModel<String>();
@@ -351,6 +353,10 @@ protected void run() {
 		newNote.setnCreDate(currentNote.getnCreDate());
 		newNote.setnModDate(date);
 		
+		if(dueDate == null){
+			newDueDate.setnID(currentNote.getnID());
+			adminService.createDuedate(newDueDate, createDuedateCallback());
+		}
 		adminService.editDuedate(dueDate, editDuedateCallback());
 //		 adminService.getCurrentUser(getCurrentUserCallback());
 //		 adminService.editNote(newNote, editNoteCallback());
@@ -411,9 +417,13 @@ protected void run() {
     	}
     });
     
-    duedate.addValueChangeHandler(new ValueChangeHandler<Date>() {
-    	public void onValueChange(ValueChangeEvent<Date> event){
-    		dueDate.setdDate(duedate.getValue());
+    saveDuedateButton.addClickHandler(new ClickHandler() {
+    	public void onClick(ClickEvent event){
+    		if(dueDate != null){
+        		dueDate.setdDate(duedate.getValue());	
+    		}
+    		newDueDate.setdDate(duedate.getValue());
+
     	}
     });
 
@@ -850,6 +860,23 @@ private AsyncCallback<DueDate> getDuedateCallback(){
     	return asyncCallback;
     }
    
+    
+  private AsyncCallback<Void> createDuedateCallback() {
+	AsyncCallback<Void> asyncCallback = new AsyncCallback<Void>() {
+		
+		@Override
+		public void onFailure(Throwable caught) {
+			ClientsideSettings.getLogger().severe("Error: " + caught.getMessage());
+		}
+		
+		@Override
+		public void onSuccess(Void result) {
+			ClientsideSettings.getLogger().
+			severe("Success CreateDuedateCallback: " + result.getClass().getSimpleName());
+		}
+	};
+	return asyncCallback;
+}
     
 }
 

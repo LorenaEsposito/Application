@@ -358,8 +358,7 @@ public class UserMapper {
 			 * Statement ausf�llen und als Query an die DB schicken
 			 */
 
-			stmt.executeUpdate("UPDATE users " + "SET userName=\"" + u.getUserName() + "\", "
-			+ " WHERE id=" + u.getUserID());
+			stmt.executeUpdate("UPDATE users " + "SET username='" + u.getUserName() + "' WHERE appuserid=" + u.getUserID());
 
 		} catch (SQLException e) {
 			e.printStackTrace();

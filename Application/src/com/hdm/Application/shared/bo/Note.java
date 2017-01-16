@@ -12,7 +12,7 @@ public class Note extends NoteObject {
 	private int nbID;
 	private String nContent;
 	private Date nModDate;
-	private String nCreDate;
+	private Date nCreDate;
 	private int userID;
 	private String source;
 	private DueDate dDate;
@@ -112,7 +112,7 @@ public class Note extends NoteObject {
 	/**
 	 * @return the nCreDate
 	 */
-	public void setnCreDate(String nCreDate) {
+	public void setnCreDate(Date nCreDate) {
 		this.nCreDate = nCreDate;
 	}
 
@@ -121,7 +121,7 @@ public class Note extends NoteObject {
 	 *            the creDate to set
 	 */
 
-	public String getnCreDate() {
+	public Date getnCreDate() {
 		return nCreDate;
 	}
 

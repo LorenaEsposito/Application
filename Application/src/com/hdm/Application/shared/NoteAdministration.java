@@ -18,9 +18,9 @@ public interface NoteAdministration extends RemoteService {
 	
 	public AppUser getUserByID(int userID) throws IllegalArgumentException;
 
-	public void createUser(AppUser u) throws IllegalArgumentException;
+	public AppUser createUser(AppUser u) throws IllegalArgumentException;
 
-	public void editUser(AppUser u) throws IllegalArgumentException;
+	public AppUser editUser(AppUser u) throws IllegalArgumentException;
 
 	public void deleteUser(AppUser u) throws IllegalArgumentException;
 
