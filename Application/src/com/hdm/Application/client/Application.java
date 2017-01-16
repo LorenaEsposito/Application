@@ -20,8 +20,6 @@ import com.hdm.Application.shared.bo.AppUser;
 import com.hdm.Application.shared.bo.Note;
 import com.hdm.Application.shared.bo.Notebook;
 
-
-
 import com.hdm.Application.client.ClientsideSettings;
 
 import java.util.ArrayList;

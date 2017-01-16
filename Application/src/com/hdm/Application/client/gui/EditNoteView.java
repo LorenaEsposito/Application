@@ -365,7 +365,9 @@ protected void run() {
 		if(dueDate == null){
 			newDueDate.setnID(currentNote.getnID());
 			adminService.createDuedate(newDueDate, createDuedateCallback());
+
 		}else{
+
 		adminService.editDuedate(dueDate, editDuedateCallback());
 		}
 //		 adminService.getCurrentUser(getCurrentUserCallback());
@@ -431,6 +433,7 @@ protected void run() {
     	public void onClick(ClickEvent event){
     		if(dueDate != null){
         		dueDate.setdDate(duedate.getValue());	
+
     		}else{
     		newDueDate.setdDate(duedate.getValue());
     		}
@@ -943,6 +946,7 @@ private AsyncCallback<DueDate> getDuedateCallback(){
     	};
     	return asyncCallback;
     }
+   
     
     private AsyncCallback<Void> editPermissionCallback() {
     	AsyncCallback<Void> asyncCallback = new AsyncCallback<Void>() {

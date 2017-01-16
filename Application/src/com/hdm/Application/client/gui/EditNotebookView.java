@@ -28,7 +28,7 @@ import com.hdm.Application.shared.bo.Notebook;
 import com.hdm.Application.shared.bo.Permission;
 
 public class EditNotebookView extends Update {
-	
+
 	/**
 	 * Die AdministrationService ermoeglicht die asynchrone Kommunikation mit der
 	 * Applikationslogik.
@@ -372,7 +372,6 @@ public class EditNotebookView extends Update {
     	 public void onSuccess(Void result) {
     		 ClientsideSettings.getLogger().
     		 severe("Success EditNoteCallback: " + result.getClass().getSimpleName());
-    		 
 
     	 }
     	};

@@ -174,7 +174,6 @@ public AppUser editUser(AppUser u) throws IllegalArgumentException{
 @Override
 public void deleteUser(AppUser u) throws IllegalArgumentException {
     this.uMapper.delete(u);
-    
     Vector<Permission> vector1 = new Vector<Permission>();
     vector1 = this.pMapper.findByUserID(u.getUserID());
     for(int y = 0; y< vector1.size(); y++){
@@ -534,7 +533,6 @@ public ArrayList<Notebook> searchForNotebook(String title) throws IllegalArgumen
     			}
     		}
     	}
-    	
     	return notebooks;
     }
     

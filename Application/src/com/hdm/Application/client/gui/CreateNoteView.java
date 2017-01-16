@@ -48,7 +48,7 @@ public class CreateNoteView extends Update{
 	
 	private String currentNBTitle = new String();
 	
-	private Notebook currentNB = new Notebook();
+	private Notebook currentNB = Application.nbSelectionModel.getSelectedObject();
 	
 	private Note currentN = new Note();
 	
@@ -57,6 +57,8 @@ public class CreateNoteView extends Update{
 	private ArrayList<Permission> permissions = new ArrayList<Permission>();
 	
 	private ArrayList<Permission> notePermissions = new ArrayList<Permission>();
+	
+	private ArrayList<Permission> nbPermissions = new ArrayList<Permission>();
 	
 	private ArrayList<Notebook> notebooks = new ArrayList<Notebook>();
 	
@@ -102,6 +104,7 @@ public class CreateNoteView extends Update{
    final Button createButton = new Button("Create");
    final Button cancelButton = new Button("Cancel");
    final Button savePermissionButton = new Button("Save");
+   final Button deletePermissionButton = new Button("Loeschen");
    final RadioButton readButton = new RadioButton("Leseberechtigung");
    final RadioButton editButton = new RadioButton("Bearbeitungsberechtigung");
    final RadioButton deleteButton = new RadioButton("Loeschberechtigung");
@@ -112,6 +115,8 @@ public class CreateNoteView extends Update{
 
 protected void run() {
     this.append("");
+    
+    adminService.getCurrentUser(getCurrentUserCallback());
     
     mainPanel.setStyleName("detailsPanel");
 
@@ -142,6 +147,7 @@ protected void run() {
     permissionPanel.add(editButton);
     permissionPanel.add(deleteButton);
     permissionPanel.add(savePermissionButton);
+    permissionPanel.add(deletePermissionButton);
     rightPanel.add(cellList);
     rightPanel.add(duedateLabel);
     leftPanel.add(noteTitle);
@@ -192,10 +198,21 @@ protected void run() {
     datePicker.setStyleName("datepicker");
     textArea.setStyleName("TextArea");
     savePermissionButton.setStyleName("savePermission-button");
+    deletePermissionButton.setStyleName("savePermission-button");
     buttonPanel.setStyleName("buttonPanel");
     permissionPanel.setStyleName("permissionPanel");
     rightsLabel.setStyleName("headline");
     duedateLabel.setStyleName("headline");
+    
+    createButton.setEnabled(false);
+    cancelButton.setEnabled(false);
+    readButton.setEnabled(false);
+    editButton.setEnabled(false);
+    deleteButton.setEnabled(false);
+    savePermissionButton.setEnabled(false);
+    deletePermissionButton.setEnabled(false);
+    
+    
     
     /*
 	 * Sperren der Eingabemoeglichkeit im DatePicker bei zukuenftigen Daten
@@ -299,12 +316,17 @@ protected void run() {
     			deleteButton.setEnabled(true);
     			deleteButton.setValue(false);
     		}
+    		
+    		if(permissionText.getText() == user.getMail()){
+    			Window.alert("Als Eigentuemer der Notiz brauchen Sie keine Berechtigung fuer sich selbst anlegen.");
+    			
+    		}
 
     		String mail = new String();
     		
     		mail = permissionText.getValue();
     		
-    		adminService.searchUserByMail(mail, searchUserByGoogleIDCallback());	
+    		adminService.searchUserByMail(mail, searchUserByMailCallback());	
     		
     	}
     });
@@ -325,8 +347,9 @@ protected void run() {
 		note.setnContent(textArea.getText());
 		note.setnCreDate(date);
 		note.setnModDate(date);
-
-		adminService.searchForNotebook(currentNBTitle, searchForNotebookCallback());
+		note.setNbID(currentNB.getNbID());
+		
+		adminService.getNotesOfNotebook(currentNB, getNotesOfNotebookCallback());
     }
     });
     
@@ -343,29 +366,7 @@ protected void run() {
     });
 
 }
-    
 
-	private AsyncCallback<ArrayList<Notebook>> searchForNotebookCallback(){
-		AsyncCallback<ArrayList<Notebook>> asyncCallback = new AsyncCallback<ArrayList<Notebook>>(){
-			
-			@Override
-			public void onFailure(Throwable caught) {
-    			ClientsideSettings.getLogger().severe("Error: " + caught.getMessage());
-    		}
-    	 
-    	 @Override
-    	 public void onSuccess(ArrayList<Notebook> result) {
-    		 ClientsideSettings.getLogger().
-    		 severe("Success SearchForNotebookCallback: " + result.getClass().getSimpleName());
-    		 
-    		 notebooks = result;
-    		 
-    		 adminService.getCurrentUser(getCurrentUserCallback());
-    		 
-    	 }
-		};
-		return asyncCallback;
-	}
 
 	private AsyncCallback<AppUser> getCurrentUserCallback(){
 		AsyncCallback<AppUser> asyncCallback = new AsyncCallback<AppUser>() {
@@ -382,41 +383,22 @@ protected void run() {
     		 
     		 user = result;
     		 
-    		 adminService.getOwnedNotebookPermissions(user, getOwnedNotebookPermissionsCallback());
+    		    createButton.setEnabled(true);
+    		    cancelButton.setEnabled(true);
+    		    readButton.setEnabled(true);
+    		    editButton.setEnabled(true);
+    		    deleteButton.setEnabled(true);
+    		    savePermissionButton.setEnabled(true);
+    		    deletePermissionButton.setEnabled(true);
+    		    
+    		    adminService.getPermissions(currentNB.getNbID(), 0, getPermissionsCallback());
+    		    
     		 
     	 }
 		};
 		return asyncCallback;
 	}
 	
-	private AsyncCallback<ArrayList<Permission>> getOwnedNotebookPermissionsCallback(){
-		AsyncCallback<ArrayList<Permission>> asyncCallback = new AsyncCallback<ArrayList<Permission>>() {
-			
-			@Override
-			public void onFailure(Throwable caught) {
-    			ClientsideSettings.getLogger().severe("Error: " + caught.getMessage());
-    		}
-    	 
-    	 @Override
-    	 public void onSuccess(ArrayList<Permission> result) {
-    		 ClientsideSettings.getLogger().
-    		 severe("Success GetOwnedNotebookPermissionsCallback: " + result.getClass().getSimpleName());
-    		 
-    		 permissions = result;
-    		 
-    		 for(int i = 0; i < notebooks.size(); i++){
-    			 for(int x = 0; x < permissions.size(); x++){
-    				 if(notebooks.get(i).getNbID() == permissions.get(x).getNbID()){
-    					 currentNB = notebooks.get(i);
-    				 }
-    			 }
-    		 }
-    		 note.setNbID(currentNB.getNbID());
-    		 adminService.getNotesOfNotebookTitle(currentNBTitle, user, getNotesOfNotebookTitleCallback());
-    	 }
-		};
-		return asyncCallback;
-	}
 
     private AsyncCallback<Note> createNoteCallback() {
     	AsyncCallback<Note> asyncCallback = new AsyncCallback<Note>(){
@@ -501,7 +483,7 @@ protected void run() {
     	return asyncCallback;
     }
     
-    private AsyncCallback<AppUser> searchUserByGoogleIDCallback() {
+    private AsyncCallback<AppUser> searchUserByMailCallback() {
     	AsyncCallback<AppUser> asyncCallback = new AsyncCallback<AppUser>() {
     		
     		@Override
@@ -512,7 +494,7 @@ protected void run() {
     		@Override
     		public void onSuccess(AppUser result) {
     			ClientsideSettings.getLogger().
-    			severe("Success SearchUserByGoogleIDCallback: " + result.getClass().getSimpleName());
+    			severe("Success SearchUserByMailCallback: " + result.getClass().getSimpleName());
     			user = result;
     			
     			Permission permission = new Permission();
@@ -574,7 +556,7 @@ protected void run() {
     	return asyncCallback;
     }
     
-    private AsyncCallback<ArrayList<Note>> getNotesOfNotebookTitleCallback() {
+    private AsyncCallback<ArrayList<Note>> getNotesOfNotebookCallback() {
    	 AsyncCallback<ArrayList<Note>> asyncCallback = new AsyncCallback<ArrayList<Note>>(){
    	 
    	 @Override
@@ -605,6 +587,47 @@ protected void run() {
    	 }
    	 };
    	 return asyncCallback;
+    }
+    
+    private AsyncCallback<ArrayList<Permission>> getPermissionsCallback() {
+    	AsyncCallback<ArrayList<Permission>> asyncCallback = new AsyncCallback<ArrayList<Permission>>() {
+    		
+    		@Override
+    		public void onFailure(Throwable caught) {
+    			ClientsideSettings.getLogger().severe("Error: " + caught.getMessage());
+    		}
+    		
+    		@Override
+    		public void onSuccess(ArrayList<Permission> result) {
+    			ClientsideSettings.getLogger().
+    			severe("Success GetPermissionsCallback: " + result.getClass().getSimpleName());
+    			for(int i = 0; i < result.size(); i++){
+    				adminService.getUserByID(result.get(i).getUserID(), getUserByIDCallback());
+    				
+    			}
+    		}
+    	};
+    	return asyncCallback;
+    }
+    
+    private AsyncCallback<AppUser> getUserByIDCallback() {
+    	AsyncCallback<AppUser> asyncCallback = new AsyncCallback<AppUser>() {
+    		
+    		@Override
+    		public void onFailure(Throwable caught) {
+    			ClientsideSettings.getLogger().severe("Error: " + caught.getMessage());
+    		}
+    		
+    		@Override
+    		public void onSuccess(AppUser result) {
+    			ClientsideSettings.getLogger().
+    			severe("Success GetPermissionsCallback: " + result.getClass().getSimpleName());
+    			if(result != user){
+    			dataProvider.getList().add(result.getMail());
+    			}
+    		}
+    	};
+    	return asyncCallback;
     }
     
 }
