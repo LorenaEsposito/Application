@@ -25,6 +25,7 @@ import com.google.gwt.user.datepicker.client.CalendarUtil;
 import com.google.gwt.user.datepicker.client.DatePicker;
 import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.MultiSelectionModel;
+import com.google.gwt.view.client.SingleSelectionModel;
 import com.hdm.Application.client.Application;
 import com.hdm.Application.client.ClientsideSettings;
 import com.hdm.Application.shared.NoteAdministrationAsync;
@@ -33,6 +34,7 @@ import com.hdm.Application.shared.bo.DueDate;
 import com.hdm.Application.shared.bo.Note;
 import com.hdm.Application.shared.bo.Notebook;
 import com.hdm.Application.shared.bo.Permission;
+import com.hdm.Application.shared.bo.UserPermission;
 
 public class CreateNoteView extends Update{
 
@@ -62,14 +64,14 @@ public class CreateNoteView extends Update{
 	
 	Date date = new Date();
 	
-	TextCell cell = new TextCell();
+	UserPermissionCell cell = new UserPermissionCell();
     
-    CellList<String> cellList = new CellList<String>(cell); 
+    CellList<UserPermission> cellList = new CellList<UserPermission>(cell); 
     
-    final MultiSelectionModel<String> selectionModel = new MultiSelectionModel<String>();
+    final SingleSelectionModel<UserPermission> selectionModel = new SingleSelectionModel<UserPermission>();
     
  // Create a data provider.
-    ListDataProvider<String> dataProvider = new ListDataProvider<String>();
+    ListDataProvider<UserPermission> dataProvider = new ListDataProvider<UserPermission>();
 	
 	protected String getHeadlineText() {
 	    return "";
