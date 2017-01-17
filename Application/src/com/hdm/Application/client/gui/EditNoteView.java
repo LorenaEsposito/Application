@@ -488,14 +488,14 @@ private AsyncCallback<AppUser> getCurrentUserCallback(){
 		 
 		 currentUser = result;
 		 
-		 adminService.getNotesOfNotebookTitle(currentNBTitle, currentUser, getNotesOfNotebookTitleCallback());
+		 adminService.getNotesOfNotebook(currentNB, getNotesOfNotebookCallback());
 		 
 	 }
 	};
 	return asyncCallback;
 }
 
-private AsyncCallback<ArrayList<Note>> getNotesOfNotebookTitleCallback() {
+private AsyncCallback<ArrayList<Note>> getNotesOfNotebookCallback() {
 	AsyncCallback<ArrayList<Note>> asyncCallback = new AsyncCallback<ArrayList<Note>>() {
 		
 		@Override

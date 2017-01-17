@@ -62,6 +62,8 @@ public class CreateNoteView extends Update{
 	
 	private AppUser user = new AppUser();
 	
+	private AppUser currentUser = new AppUser();
+	
 	Date date = new Date();
 	
 	UserPermissionCell cell = new UserPermissionCell();
@@ -312,7 +314,7 @@ protected void run() {
     			deleteButton.setValue(false);
     		}
     		
-    		if(permissionText.getText() == user.getMail()){
+    		if(permissionText.getText() == currentUser.getMail()){
     			Window.alert("Als Eigentuemer der Notiz brauchen Sie keine Berechtigung fuer sich selbst anlegen.");
     			
     		}
@@ -395,7 +397,7 @@ protected void run() {
     		 ClientsideSettings.getLogger().
     		 severe("Success GetCurrentUserCallback: " + result.getClass().getSimpleName());
     		 
-    		 user = result;
+    		 currentUser = result;
     		 
     		    createButton.setEnabled(true);
     		    cancelButton.setEnabled(true);
@@ -431,7 +433,7 @@ protected void run() {
     		 currentN = result;
     		 boolean existingP = new Boolean(false);
     		 for(int y = 0; y < permissions.size(); y++){
-    			 if(permissions.get(y).getUserID() == user.getUserID() && permissions.get(y).getIsOwner() == true){
+    			 if(permissions.get(y).getUserID() == currentUser.getUserID() && permissions.get(y).getIsOwner() == true){
     				 existingP = true;
     			 }
     		 }
@@ -440,7 +442,7 @@ protected void run() {
     			permission.setIsOwner(true);
     			permission.setNbID(currentNB.getNbID());
     			permission.setPermissionType(3);
-    			permission.setUserID(user.getUserID());
+    			permission.setUserID(currentUser.getUserID());
     			
     			notePermissions.add(permission);
     		 }
@@ -629,7 +631,7 @@ protected void run() {
     			ClientsideSettings.getLogger().
     			severe("Success GetPermissionsCallback: " + result.getClass().getSimpleName());
     			for(int i = 0; i < result.size(); i++){
-    				if(result.get(i).getUserID() != user.getUserID()){
+    				if(result.get(i).getUserID() != currentUser.getUserID()){
     				UserPermission up = new UserPermission();
     				up.setMail(null);
     				up.setUserID(result.get(i).getUserID());

@@ -142,6 +142,16 @@ public class EditNotebookView extends Update {
 	    editButton.setText("Bearbeitungsberechtigung");
 	    deleteButton.setText("Loeschberechtigung");
 	    
+	    notebookTitleTB.setEnabled(false);
+	    permissionTB.setEnabled(false);
+	    saveNBButton.setEnabled(false);
+	    deleteNBButton.setEnabled(false);
+	    savePermissionButton.setEnabled(false);
+	    deletePermissionButton.setEnabled(false);
+	    readButton.setEnabled(false);
+	    editButton.setEnabled(false);
+	    deleteButton.setEnabled(false); 
+	    
 	    /**
 	     * Erstellung der Clickhandler
 	     **/
@@ -244,7 +254,6 @@ public class EditNotebookView extends Update {
 	    			adminService.editNotebook(newNotebook, editNotebookCallback());
 	    			
 	       		 index = Application.nbDataProvider.getList().indexOf(currentNotebook);
-	       		 Application.nbDataProvider.getList().remove(index);
 	    		 Application.nbDataProvider.getList().set(index, newNotebook);
 	    		 Application.nbDataProvider.refresh();
 	    		 
@@ -311,11 +320,50 @@ public class EditNotebookView extends Update {
 			    creDate.setText(currentNotebook.getNbCreDate().toString());
 			    modDate.setText(currentNotebook.getNbModDate().toString());
 			    notebookTitleTB.setText(currentNotebook.getNbTitle());
+			    
+			    adminService.getPermission(currentUser.getUserID(), currentNotebook.getNbID(), 0, getPermissiontypeCallback());
 			 
 		 }
 		};
 		return asyncCallback;
 	}
+	
+	private AsyncCallback<Permission> getPermissiontypeCallback() {
+    	AsyncCallback<Permission> asyncCallback = new AsyncCallback<Permission>() {
+    		
+    		@Override
+    		public void onFailure(Throwable caught) {
+    			ClientsideSettings.getLogger().severe("Error: " + caught.getMessage());
+    		}
+    		
+    		@Override
+    		public void onSuccess(Permission result) {
+    			ClientsideSettings.getLogger().
+    			severe("Success GetUserForPermissionDeleteCallback: " + result.getClass().getSimpleName());
+    			if(result.getPermissionType() == 2){
+    			    notebookTitleTB.setEnabled(true);
+    			    permissionTB.setEnabled(true);
+    			    saveNBButton.setEnabled(true);
+    			    savePermissionButton.setEnabled(true);
+    			    readButton.setEnabled(true);
+    			    editButton.setEnabled(true);
+    			    deleteButton.setEnabled(true);
+    			}
+    			if(result.getPermissionType() == 3){
+    			    notebookTitleTB.setEnabled(true);
+    			    permissionTB.setEnabled(true);
+    			    saveNBButton.setEnabled(true);
+    			    deleteNBButton.setEnabled(true);
+    			    savePermissionButton.setEnabled(true);
+    			    deletePermissionButton.setEnabled(true);
+    			    readButton.setEnabled(true);
+    			    editButton.setEnabled(true);
+    			    deleteButton.setEnabled(true);
+    			}
+    		}
+    	};
+    	return asyncCallback;
+    }
 	
 	private AsyncCallback<ArrayList<Notebook>> getOwnedNotebooksCallback(){
 		AsyncCallback<ArrayList<Notebook>> asyncCallback = new AsyncCallback<ArrayList<Notebook>>() {
@@ -340,8 +388,8 @@ public class EditNotebookView extends Update {
      		 if(isExisting == false){
     			 adminService.editNotebook(newNotebook, editNotebookCallback());
     			 
-	       		 index = Application.nbDataProvider.getList().indexOf(currentNotebook);
-	       		 Application.nbDataProvider.getList().remove(index);
+	       		 index = Application.nbDataProvider.getList().indexOf(currentNotebook.getNbTitle());
+	       		 Window.alert(Application.nbDataProvider.getList().get(index).toString());
 	    		 Application.nbDataProvider.getList().set(index, newNotebook);
 //	    		 Application.nbDataProvider.refresh();
         		 

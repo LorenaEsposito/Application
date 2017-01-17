@@ -21,6 +21,7 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.MultiSelectionModel;
+import com.google.gwt.view.client.SingleSelectionModel;
 import com.hdm.Application.client.Application;
 import com.hdm.Application.client.ClientsideSettings;
 import com.hdm.Application.shared.NoteAdministrationAsync;
@@ -28,6 +29,7 @@ import com.hdm.Application.shared.bo.AppUser;
 import com.hdm.Application.shared.bo.Note;
 import com.hdm.Application.shared.bo.Notebook;
 import com.hdm.Application.shared.bo.Permission;
+import com.hdm.Application.shared.bo.UserPermission;
 
 public class CreateNotebookView extends Update{
 
@@ -54,14 +56,14 @@ public class CreateNotebookView extends Update{
 
 	private Notebook notebook = new Notebook();
 	
-	TextCell cell = new TextCell();
+	UserPermissionCell cell = new UserPermissionCell();
     
-    CellList<String> cellList = new CellList<String>(cell); 
+    CellList<UserPermission> cellList = new CellList<UserPermission>(cell); 
     
-    final MultiSelectionModel<String> selectionModel = new MultiSelectionModel<String>();
+    final SingleSelectionModel<UserPermission> selectionModel = new SingleSelectionModel<UserPermission>();
     
  // Create a data provider.
-    ListDataProvider<String> dataProvider = new ListDataProvider<String>();
+    ListDataProvider<UserPermission> dataProvider = new ListDataProvider<UserPermission>();
 	
 	protected String getHeadlineText() {
 	    return "";
@@ -88,7 +90,8 @@ public class CreateNotebookView extends Update{
    TextBox permissionText = new TextBox();
    final Button createButton = new Button("Create");
    final Button cancelButton = new Button("Cancel");
-   final Button savePermissionButton = new Button("Save");
+   final Button savePermissionButton = new Button("Speichern");
+   final Button deletePermissionButton = new Button("Loeschen");
    final RadioButton readButton = new RadioButton("Leseberechtigung");
    final RadioButton editButton = new RadioButton("Bearbeitungsberechtigung"); 
    final RadioButton deleteButton = new RadioButton("Loeschberechtigung");
@@ -233,8 +236,18 @@ protected void run() {
     		
     		mail = permissionText.getValue();
     		
-    		adminService.searchUserByMail(mail, searchUserByGoogleIDCallback());
+    		adminService.searchUserByMail(mail, searchUserByMailCallback());
     		
+    	}
+    });
+    
+    deletePermissionButton.addClickHandler(new ClickHandler() {
+    	public void onClick(ClickEvent event) {
+    		if(selectionModel.getSelectedObject() == null){
+    			Window.alert("Bitte wahelen Sie eine Person aus.");
+    		}
+			permissions.remove(selectionModel.getSelectedObject());
+			dataProvider.getList().remove(selectionModel.getSelectedObject());
     	}
     });
     
@@ -351,6 +364,8 @@ protected void run() {
 					permission.setNbID(result.getNbID());
 				}
 				adminService.createPermissions(permissions, createPermissionCallback());
+				
+				Application.nbList.add(result);
 		          Update update = new EditNoteView();
 		          
 		          RootPanel.get("Details").clear();
@@ -378,7 +393,7 @@ protected void run() {
     	return asyncCallback;
     }
     
-    private AsyncCallback<AppUser> searchUserByGoogleIDCallback() {
+    private AsyncCallback<AppUser> searchUserByMailCallback() {
     	AsyncCallback<AppUser> asyncCallback = new AsyncCallback<AppUser>() {
     		
     		@Override
@@ -401,7 +416,7 @@ protected void run() {
         		if(user != null){
         			boolean isExisting = new Boolean(false);
         			for(int i = 0; i < dataProvider.getList().size(); i++) {
-        				if(user.getUserName() == dataProvider.getList().get(i)) {
+        				if(user.getMail() == dataProvider.getList().get(i).getMail()) {
         					isExisting = true;
         					break;
         				}
@@ -409,6 +424,7 @@ protected void run() {
         			if(isExisting == false){
         			permission.setUserID(user.getUserID());
         			permission.setIsOwner(false);
+        			permission.setNID(0);
         			
         			if(readButton.getValue() == true){
         				permission.setPermissionType(1);
@@ -425,7 +441,12 @@ protected void run() {
         			}
         			
         			permissions.add(permission);
-        			dataProvider.getList().add(user.getUserName());
+        			
+        			UserPermission userP = new UserPermission();
+        			userP.setMail(user.getMail());
+        			userP.setUserID(user.getUserID());
+        			userP.setPermissionType(permission.getPermissionType());
+        			dataProvider.getList().add(userP);
         			}
         			
         			if(isExisting == true){
