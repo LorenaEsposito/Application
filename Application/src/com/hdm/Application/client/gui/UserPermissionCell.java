@@ -23,7 +23,7 @@ public class UserPermissionCell extends AbstractCell<UserPermission>{
 			return;
 		}
 		
-		sb.appendHtmlConstant("<div> Mail");
+		sb.appendHtmlConstant("<div Mail>");
 		sb.appendEscaped(value.getMail());
 		sb.appendHtmlConstant("</div>");
 		sb.appendHtmlConstant("<div Berechtigung>");

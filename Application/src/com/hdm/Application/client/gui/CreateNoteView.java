@@ -3,7 +3,6 @@ package com.hdm.Application.client.gui;
 import java.util.ArrayList;
 import java.util.Date;
 
-import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.ShowRangeEvent;
@@ -24,7 +23,6 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.datepicker.client.CalendarUtil;
 import com.google.gwt.user.datepicker.client.DatePicker;
 import com.google.gwt.view.client.ListDataProvider;
-import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.SingleSelectionModel;
 import com.hdm.Application.client.Application;
 import com.hdm.Application.client.ClientsideSettings;
@@ -46,7 +44,7 @@ public class CreateNoteView extends Update{
 	
 	private NoteAdministrationAsync adminService = ClientsideSettings.getAdministration();
 	
-	private String currentNBTitle = new String();
+	int y = 0;
 	
 	private Notebook currentNB = Application.nbSelectionModel.getSelectedObject();
 	
@@ -54,13 +52,13 @@ public class CreateNoteView extends Update{
 	
 	private	Note note = new Note();
 	
+	Permission permission = new Permission();
+	
 	private ArrayList<Permission> permissions = new ArrayList<Permission>();
 	
 	private ArrayList<Permission> notePermissions = new ArrayList<Permission>();
 	
-	private ArrayList<Permission> nbPermissions = new ArrayList<Permission>();
-	
-	private ArrayList<Notebook> notebooks = new ArrayList<Notebook>();
+	private ArrayList<UserPermission> userPermission = new ArrayList<UserPermission>();
 	
 	private AppUser user = new AppUser();
 	
@@ -118,10 +116,7 @@ protected void run() {
     
     adminService.getCurrentUser(getCurrentUserCallback());
     
-    mainPanel.setStyleName("detailsPanel");
-
-    currentNBTitle = Application.listbox.getSelectedItemText();
-    
+    mainPanel.setStyleName("detailsPanel"); 
     
     cellList.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.ENABLED);
 
@@ -415,14 +410,21 @@ protected void run() {
     		 
     		 Application.notesList.add(note.getnTitle());
     		 currentN = result;
+    		 boolean existingP = new Boolean(false);
+    		 for(int y = 0; y < permissions.size(); y++){
+    			 if(permissions.get(y).getUserID() == user.getUserID() && permissions.get(y).getIsOwner() == true){
+    				 existingP = true;
+    			 }
+    		 }
+    		 if(existingP == false){
 
-    		 Permission permission = new Permission();
     			permission.setIsOwner(true);
     			permission.setNbID(currentNB.getNbID());
     			permission.setPermissionType(3);
     			permission.setUserID(user.getUserID());
     			
     			notePermissions.add(permission);
+    		 }
     			
     			for(int i = 0; i < notePermissions.size(); i++){
     				permission = notePermissions.get(i);
@@ -506,7 +508,7 @@ protected void run() {
         		if(user != null){
         			boolean isExisting = new Boolean(false);
         			for(int i = 0; i < dataProvider.getList().size(); i++) {
-        				if(user.getUserName() == dataProvider.getList().get(i)) {
+        				if(user.getMail() == dataProvider.getList().get(i).getMail()) {
         					isExisting = true;
         					break;
         				}
@@ -514,6 +516,7 @@ protected void run() {
         			if(isExisting == false){
         			permission.setUserID(user.getUserID());
         			permission.setIsOwner(false);
+        			permission.setNbID(currentNB.getNbID()); 
 
         			
         			if(readButton.getValue() == true){
@@ -535,7 +538,12 @@ protected void run() {
         			}
         			
         			notePermissions.add(permission);
-        			dataProvider.getList().add(user.getUserName());
+        			
+        			UserPermission userP = new UserPermission();
+        			userP.setMail(user.getMail());
+        			userP.setUserID(user.getUserID());
+        			userP.setPermissionType(permission.getPermissionType());
+        			dataProvider.getList().add(userP);
         			}
         			
         			if(isExisting == true){
@@ -602,9 +610,17 @@ protected void run() {
     			ClientsideSettings.getLogger().
     			severe("Success GetPermissionsCallback: " + result.getClass().getSimpleName());
     			for(int i = 0; i < result.size(); i++){
-    				adminService.getUserByID(result.get(i).getUserID(), getUserByIDCallback());
-    				
+    				if(result.get(i).getUserID() != user.getUserID()){
+    				UserPermission up = new UserPermission();
+    				up.setMail(null);
+    				up.setUserID(result.get(i).getUserID());
+    				up.setPermissionID(result.get(i).getPermissionID());
+    				up.setPermissionType(result.get(i).getPermissionType());
+    				userPermission.add(up);
+    				}
     			}
+    			permissions = result;
+    			adminService.getUserByID(userPermission.get(y).getUserID(), getUserByIDCallback());
     		}
     	};
     	return asyncCallback;
@@ -622,8 +638,14 @@ protected void run() {
     		public void onSuccess(AppUser result) {
     			ClientsideSettings.getLogger().
     			severe("Success GetPermissionsCallback: " + result.getClass().getSimpleName());
-    			if(result != user){
-    			dataProvider.getList().add(result.getMail());
+    			userPermission.get(y).setMail(result.getMail());
+    			y++;
+    			if(y < userPermission.size()){
+    				adminService.getUserByID(userPermission.get(y).getUserID(), getUserByIDCallback());
+    			}else{
+    				for(int x = 0; x < userPermission.size(); x++){
+    					dataProvider.getList().add(userPermission.get(x));
+    				}
     			}
     		}
     	};

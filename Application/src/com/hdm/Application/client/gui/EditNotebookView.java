@@ -245,8 +245,8 @@ public class EditNotebookView extends Update {
 	    			
 	       		 index = Application.nbDataProvider.getList().indexOf(currentNotebook);
 	       		 Application.nbDataProvider.getList().remove(index);
-	    		 Application.nbDataProvider.refresh();
 	    		 Application.nbDataProvider.getList().set(index, newNotebook);
+	    		 Application.nbDataProvider.refresh();
 	    		 
 	             /*
 	              * Showcase instantiieren.
@@ -340,8 +340,10 @@ public class EditNotebookView extends Update {
      		 if(isExisting == false){
     			 adminService.editNotebook(newNotebook, editNotebookCallback());
     			 
-        		 Application.nbList.remove(currentNotebook.getNbTitle());
-        		 Application.nbList.add(newNotebook);
+	       		 index = Application.nbDataProvider.getList().indexOf(currentNotebook);
+	       		 Application.nbDataProvider.getList().remove(index);
+	    		 Application.nbDataProvider.getList().set(index, newNotebook);
+//	    		 Application.nbDataProvider.refresh();
         		 
                  /*
                   * Showcase instantiieren.

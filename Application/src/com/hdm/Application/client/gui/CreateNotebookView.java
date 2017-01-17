@@ -339,8 +339,6 @@ protected void run() {
     		 ClientsideSettings.getLogger().
     		 severe("Success CreateNoteCallback: " + result.getClass().getSimpleName());
     		 
-    		 Application.listbox.addItem(notebook.getNbTitle());
-    		 
     		 Permission permission = new Permission();
 				permission.setIsOwner(true);
 				permission.setNID(0);

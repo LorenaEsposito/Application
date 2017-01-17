@@ -76,6 +76,8 @@ public class EditNoteView extends Update{
 	
 	private Permission permission = new Permission();
 	
+	int index = new Integer(0);
+	
 	Date date = new Date();
 	
 	DueDate dueDate = new DueDate();
@@ -152,8 +154,6 @@ protected void run() {
     cellList.setSelectionModel(selectionModel);
     
     noteTitle = Application.notesSelectionModel.getSelectedObject();
-    
-    currentNBTitle = Application.listbox.getSelectedItemText();
     
     currentNB = Application.nbSelectionModel.getSelectedObject();
 
@@ -750,8 +750,9 @@ private AsyncCallback<DueDate> getDuedateCallback(){
     		 ClientsideSettings.getLogger().
     		 severe("Success EditNoteCallback: " + result.getClass().getSimpleName());
     		 
-    		 Application.notesList.remove(currentNote.getnTitle());
-    		 Application.notesList.add(result.getnTitle());
+    		 index = Application.notesDataProvider.getList().indexOf(currentNote.getnTitle());
+    		 Application.notesList.remove(index);
+    		 Application.notesList.set(index, result.getnTitle());
     	 }
     	};
     	return asyncCallback;

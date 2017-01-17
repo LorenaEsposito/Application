@@ -14,12 +14,19 @@ public class UserPermission implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
 	
-	
+	private int userID;
 	private String mail;
 	private int permissionType;
 	private int permissionID;
 
 	
+	public int getUserID() {
+		return userID;
+	}
+	
+	public void setUserID(int userID) {
+		this.userID = userID;
+	}
 	
 	public String getMail() {
 		return mail;
@@ -44,7 +51,7 @@ public class UserPermission implements Serializable{
 			return "Leseberechtigung";
 		}
 		else if(permissionType == 2){
-			return "Schreibberechtigung";
+			return "Bearbeitungsberechtigung";
 		}
 		else if (permissionType == 3){
 			return "Loeschberechtigung";

@@ -1,7 +1,6 @@
 package com.hdm.Application.client;
 
 
-import com.hdm.Application.shared.FieldVerifier;
 import com.hdm.Application.client.gui.ImpressumView;
 import com.hdm.Application.client.gui.CreateNoteView;
 import com.hdm.Application.client.gui.CreateNotebookView;
@@ -26,8 +25,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.hdm.Application.client.gui.SearchView;
-import com.google.gwt.cell.client.AbstractCell;
-import com.google.gwt.cell.client.Cell;
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
@@ -49,7 +46,6 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.view.client.ListDataProvider;
@@ -158,7 +154,6 @@ public class Application implements EntryPoint {
 	  final Label usernameLabel = new Label("Username");
 	  final Label passwordLabel = new Label("Password");
 	  private Anchor signInLink = new Anchor("Login");
-	  public final static ListBox listbox = new ListBox();
 	  final Button createNoteButton = new Button("");
 	  final Button createNotebookButton = new Button("");
 	  final Button signOutButton = new Button("Ausloggen");
@@ -247,8 +242,6 @@ public class Application implements EntryPoint {
   		adminService.getUserByMail(ClientsideSettings.getLoginInfo().getEmailAddress(),
  				getCurrentUserCallback());
  		
- 		listbox.setSelectedIndex(0);
- 		
  		noteCellList.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.ENABLED);
 
  	    // Add a selection model to handle user selection.
@@ -285,7 +278,6 @@ public class Application implements EntryPoint {
  		profileButton.setStyleName("headObject");
 	    signOutButton.setStyleName("headObject");
 	    logoButton.setStyleName("notework-logo");
-	    listbox.setStyleName("navListbox");
 	    headPanel.setStyleName("headPanel");
 	    navPanel.setStyleName("navPanel");
 	    headButtonPanel.setStyleName("headButtonPanel");
@@ -305,7 +297,6 @@ public class Application implements EntryPoint {
 	    headButtonPanel.add(profileButton);
 	    headButtonPanel.add(signOutButton);
 	    headPanel.add(headButtonPanel);
-	    navPanel.add(listbox);
 	    navPanel.add(nbCellList);
 	    navPanel2.add(noteCellList);
 	    navPanel2.add(createNotebookButton);
@@ -423,18 +414,6 @@ public class Application implements EntryPoint {
 	          RootPanel.get("Details").add(update);
 	    }
 	    });
-
-	   
-	    listbox.addChangeHandler(new ChangeHandler() {
-	    	public void onChange(ChangeEvent event) {
-	    		adminService.getNotesOfNotebookTitle(listbox.getSelectedItemText(), currentUser, getNotesOfNotebookTitleCallback());
-	    		
-	    		Update update = new EditNotebookView();
-	    		
-	    		RootPanel.get("Details").clear();
-	    		RootPanel.get("Details").add(update);
-	    	}
-	    });
 	    
 	}
  
@@ -517,38 +496,11 @@ public class Application implements EntryPoint {
 			 
 			 for (int x = 0; x < notebooks.size(); x++ ){
 				 nbDataProvider.getList().add(notebooks.get(x));
-				 listbox.addItem(notebooks.get(x).getNbTitle());
-				 
-				 listbox.setVisibleItemCount(1);
+
 			 }
 //			 nbCellList.setVisibleRange(0, 5);
-			 nbSelectionModel.setSelected(notebooks.get(0), true);
-			 adminService.getNotesOfNotebookTitle(listbox.getSelectedValue(), currentUser, getNotesOfNotebookTitleCallback());
 			 adminService.getNotesOfNotebook(nbSelectionModel.getSelectedObject(), getNotesOfNotebookCallback());
 		 }
-	 };
-	 return asyncCallback;
- }
- 
- private AsyncCallback<ArrayList<Note>> getNotesOfNotebookTitleCallback() {
-	 AsyncCallback<ArrayList<Note>> asyncCallback = new AsyncCallback<ArrayList<Note>>(){
-	 
-	 @Override
-		public void onFailure(Throwable caught) {
-			ClientsideSettings.getLogger().severe("Error: " + caught.getMessage());
-		}
-	 
-	 @Override
-	 public void onSuccess(ArrayList<Note> result) {
-		 ClientsideSettings.getLogger().
-		 severe("Success GetNotesOfNotebookCallback: " + result.getClass().getSimpleName());
-		 
-		 notes = result;
-		 notesDataProvider.getList().clear();
-		 for(int i = 0; i < notes.size(); i++) {
-			 notesDataProvider.getList().add(notes.get(i).getnTitle());
-		 }
-	 }
 	 };
 	 return asyncCallback;
  }
