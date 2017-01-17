@@ -11,13 +11,12 @@ div#TopLevelFrame {
 	width: 1000px;
 	height:850px;
 	margin: 0 auto;      /* standardkonforme horizontale Zentrierung */
-	border: 1px solid;
  }
 
 div#Details {
 	float:right;
 	height: 750px;
-	width: 730px;
+	width: 746px;
 	border: 1px solid;
 	
 }
@@ -31,7 +30,7 @@ div#Navigator {
 
 div#Header {
 	height: 50px;
-	width: 1000px;      /* standardkonforme horizontale Zentrierung */
+	width: 998px;      /* standardkonforme horizontale Zentrierung */
 	border: 1px solid;
 }
 
@@ -90,7 +89,6 @@ div#Trailer {
 .navObject {
 	background: url(/NewNotebook.png);
 	background-size: 100%;
-	font-size: 110%;
 	font-weight: bold;
 	height:40px;
 	width:40px;
@@ -165,12 +163,9 @@ div#Trailer {
 }
 
 .headlinePanel {
-	padding-top: 10px;
-	padding-left: 20px;
-	margin-top:-23px;
-	width: 800px;
-	height:37px;
-	background-color: #006fdd;
+	width: 746px;
+	height:30px;
+	background-color:#000000;
 	font-weight: bold;
 	color: #ffffff;
 }
@@ -284,12 +279,8 @@ div#Trailer {
 	width: 150px;
 }
 .notework-headline {
-	font-size: 12pt;
+	font-size: 15pt;
 	font-weight: bold;
-	color: #777777;
-	margin: 0px;
-	margin-top: 10px;
-	margin-bottom: 10px;
 	text-align: center;
 }
 
@@ -350,14 +341,14 @@ div#Trailer {
 .detailsPanel {
 	background-color: #ffffff;
 	height:500px;
-	width: 600px;
+	width: 746px;
 	border: 1px solid;
 }
 
 .buttonPanel {
 	border: 1px solid #c0c0c0;
 	background-color: #dfdfdf;
-	width: 800px;
+	width: 746px;
 }
 
 .permissionPanel{
@@ -365,4 +356,5 @@ div#Trailer {
 	background-color: #ffffff;
 	box-shadow: 0px 2px 2px #c0c0c0;
 	border-radius:8px;
+	width:200px;
 }
