@@ -326,6 +326,25 @@ protected void run() {
     	}
     });
     
+    deletePermissionButton.addClickHandler(new ClickHandler() {
+    	public void onClick(ClickEvent event) {
+    		if(selectionModel.getSelectedObject() == null){
+    			Window.alert("Bitte wahelen Sie eine Person aus.");
+    		}else{
+    			boolean deletePossible = new Boolean(true);
+    			for(int i = 0; i < permissions.size(); i++){
+    				if(permissions.get(i).getPermissionID() == selectionModel.getSelectedObject().getPermissionID()){
+    					deletePossible = false;
+    				}
+    			}
+    			if(deletePossible == true){
+    				notePermissions.remove(selectionModel.getSelectedObject());
+    				dataProvider.getList().remove(selectionModel.getSelectedObject());
+    			}
+    		}
+    	}
+    });
+    
     createButton.addClickHandler(new ClickHandler() {
   	public void onClick(ClickEvent event) {
   		
