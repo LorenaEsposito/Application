@@ -143,6 +143,7 @@ public class SearchView extends Update {
 		userNameButton.setText("Username");
 		noteButton.setText("Note");
 		notebookButton.setText("Notebook");
+		radiobuttonPanel.setStyleName("radiobuttonPanel");
 		
 		DateTimeFormat datumsFormat = DateTimeFormat.getFormat("dd.MM.yyyy");
 		searchDateBox.setFormat(new DateBox.DefaultFormat(datumsFormat));

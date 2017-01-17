@@ -25,7 +25,8 @@ div#Navigator {
 	float: left;
 	width: 250px;
 	height: 750px;
-	border: 1px solid;
+	border-left:1px solid;
+	border-bottom: 1px solid;
 }
 
 div#Header {
@@ -84,6 +85,7 @@ div#Trailer {
 	height:37px;
 	width:100px;
 	background-color: #ffffff;
+	border: 1px solid;
 }
 
 .navObject {
@@ -175,6 +177,8 @@ div#Trailer {
 	width: 270px;
 	height: 500px;
 	padding-left:20px;
+	margin-top:-10px;
+	margin-left:-10px;
 	border-left: 1px solid silver;
 	width:500px;
 }
@@ -182,7 +186,9 @@ div#Trailer {
 	background-color: #f7f7f7;
 	width: 270px;
 	height: 500px;
+	padding-top:10px;
 	padding-left:20px;
+	margin-top:-10px;
 	border-left: 1px solid silver;
 	width:244px;
 }
@@ -200,16 +206,19 @@ div#Trailer {
 /*Suchen-----------------------------------------------------------------------------------------*/
 
 .searchPanel{
-	margin-top: 50px;
-	margin-left: 170px;
+padding: 10px;
+
 	}
 	
 .searchbox {
 	width: 400px;
 	font-size: 15px;
-	color: #666666;
-	margin-left: 10px;
-	margin-bottom: 15px;		
+	color: #666666;		
+}
+
+.radiobuttonPanel {
+	padding-top:10px;
+	padding-bottom:10px;
 }
 
 
@@ -351,13 +360,14 @@ div#Trailer {
 	background-color: #ffffff;
 	height:500px;
 	width: 746px;
-	border: 1px solid;
+	padding: 10px;
 }
 
 .buttonPanel {
 	border: 1px solid #c0c0c0;
 	background-color: #dfdfdf;
 	width: 746px;
+	margin-top:-10px;
 }
 
 .permissionPanel{
