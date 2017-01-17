@@ -29,8 +29,8 @@ div#Navigator {
 
 div#Header {
 	height: 50px;
-	width-min: 800px;      /* standardkonforme horizontale Zentrierung */
-	background-color: #0052a4;
+	width-min: 500px;      /* standardkonforme horizontale Zentrierung */
+	background-color: #ffffff;
 	box-shadow: 0px 2px 5px #000;
 }
 
@@ -62,12 +62,16 @@ div#Trailer {
 
 /*Header*/
 
-.headPanel {
- width-min: 1000px;
- margin-left: auto;
- margin-right: auto;
+.headObject {
+	font-size: 120%;
+	font-weight: bold;
+	color: #0000ff;
+	width: 12em;
+	margin-left: 5px;
+	margin-top: 15px;
+	border: 0px;
+	background-color: transparent;	
 }
-
 
 
 
@@ -134,7 +138,7 @@ div#Trailer {
 }
 
 .navListbox {
-	font-size: 120%;
+	font-size: 100%;
 	font-weight: bold;
 	width: 240px;
 	height: 37px;
@@ -307,26 +311,6 @@ div#Trailer {
 	text-align: center;
 }
 
-.headObject {
-	font-size: 120%;
-	font-weight: bold;
-	color: #ffffff;
-	width: 12em;
-	margin-left: 10px;
-	margin-top: 15px;
-	border: 0px;
-	background-color: transparent;	
-}
-.headObject:hover {
-	font-size: 120%;
-	font-weight: bold;
-	color: #1188ff;
-	width: 12em;
-	margin-left: 10px;
-	margin-top: 15px;
-	border: 0px;
-	background-color: transparent;	
-}
 
 .savePermission-button{
 	height:25px;
