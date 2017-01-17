@@ -299,7 +299,6 @@ public class Application implements EntryPoint {
 	     */
 	    
 	    headButtonPanel.add(userLabel);
-	    headButtonPanel.add(logoButton);
 	    headButtonPanel.add(searchButton);
 	    headButtonPanel.add(impressumButton);
 	    headButtonPanel.add(profileButton);

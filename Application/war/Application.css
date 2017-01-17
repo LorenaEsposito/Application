@@ -8,30 +8,31 @@ body {
 /*Designfestlegung der DIV-Boxen (Grundstruktur)----------------------------------------*/
 
 div#TopLevelFrame {
-	background-repeat: no-repeat;
-	width-min: 1280px;
-	height-min: 800px;
+	width: 1000px;
+	height:850px;
 	margin: 0 auto;      /* standardkonforme horizontale Zentrierung */
+	border: 1px solid;
  }
 
 div#Details {
-	height-min: 500px;
-	width-min: 600px;
-	padding: 1em 1em;
+	float:right;
+	height: 750px;
+	width: 730px;
+	border: 1px solid;
+	
 }
 
 div#Navigator {
 	float: left;
-	width: 18em;
+	width: 250px;
 	height: 750px;
-	margin-left: 200px;
+	border: 1px solid;
 }
 
 div#Header {
 	height: 50px;
-	width-min: 500px;      /* standardkonforme horizontale Zentrierung */
-	background-color: #ffffff;
-	box-shadow: 0px 2px 5px #000;
+	width: 1000px;      /* standardkonforme horizontale Zentrierung */
+	border: 1px solid;
 }
 
 div#Trailer {
@@ -42,7 +43,7 @@ div#Trailer {
 	font-size: 80%;
 	font-weight: bold;
 	text-align: center;
-	color: #ffffff;
+	color: #000000;
 }
 
 
@@ -63,9 +64,9 @@ div#Trailer {
 /*Header*/
 
 .headObject {
-	font-size: 120%;
+	font-size: 100%;
 	font-weight: bold;
-	color: #0000ff;
+	color: #000000;
 	width: 12em;
 	margin-left: 5px;
 	margin-top: 15px;
@@ -82,8 +83,8 @@ div#Trailer {
 
 .navPanel {
 	height:37px;
-	width:18em;
-	background-color: #006fdd;
+	width:100px;
+	background-color: #ffffff;
 }
 
 .navObject {
@@ -139,13 +140,9 @@ div#Trailer {
 
 .navListbox {
 	font-size: 100%;
-	font-weight: bold;
-	width: 240px;
-	height: 37px;
-	margin-left: 0px;
-	margin-top: 0px;
-	border: 0px;
-	background-color: #005bb7;	
+	width: 200px;
+	height: 30px;
+
 }
 
 
@@ -183,8 +180,6 @@ div#Trailer {
 	width: 270px;
 	height: 500px;
 	padding-left:40px;
-	margin-top: -10px;
-	margin-left: 70px;
 	border-left: 1px solid silver;
 }
 
@@ -210,8 +205,7 @@ div#Trailer {
 	font-size: 15px;
 	color: #666666;
 	margin-left: 10px;
-	margin-bottom: 15px;
-	box-shadow: 0px 2px 2px #c0c0c0;		
+	margin-bottom: 15px;		
 }
 
 
@@ -281,18 +275,6 @@ div#Trailer {
 
 /*Allgemeine Designfestlegungen----------------------------------------------------------------------------------*/
 
-.notework-logo {
-	background: url(/Logo.png);
-	background-size:45%;
-	background-repeat:no-repeat;
-	font-weight: bold;
-	width: 230px;
-	height:50px;
-	margin-left: 20px;
-	margin-top: 7px;
-	border: 0px;
-}	
-
 .style-Textbox {
 	margin-top: 10px;
 	margin-bottom: 10px;
@@ -352,10 +334,8 @@ div#Trailer {
 .listbox {
 	background-color: #f7f7f7;
 	font-size: 100%;
-	width: 200px;
-	height:30px;
-	margin-left: 40px;
-	opacity: 0.7;
+	width: 150px;
+	height:20px;
 }
 
 .notework-searchbutton{
@@ -364,23 +344,14 @@ div#Trailer {
 	width: 200px;
 	height:30px;
 	margin-left: 40px;
-	opacity: 0.7;
 	
-	
-}
-
-.cellList{
-	font-size: 3px;
 }
 
 .detailsPanel {
 	background-color: #ffffff;
 	height:500px;
-	width: 800px;
-	margin-top: 0px;
-	padding-left: 20px;
-	padding-top: 10px;
-	box-shadow: inset 0px 2px 4px #a4a4a4;
+	width: 600px;
+	border: 1px solid;
 }
 
 .buttonPanel {
