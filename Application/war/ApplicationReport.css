@@ -154,6 +154,17 @@ h1 {
 	border-left: 1px solid silver;
 }
 
+.CreateNotebookLeftPanel {
+	background-color: #f7f7f7;
+	width: 300px;
+	height: 500px;
+	padding-left:40px;
+	margin-top: -10px;
+	margin-left: 70px;
+	border-left: 1px solid silver;
+	
+}
+
 .navObject:hover {
 	background: url(/hoverNewNotebook.png);
 	background-size: 100%;
@@ -170,7 +181,7 @@ h1 {
 .navObject2 {
 	background: url(/NewNotice.png);
 	background-size: 100%;
-	font-size: 110%;
+	font-size: 100%;
 	font-weight: bold;
 	height:40px;
 	width:40px;
@@ -183,7 +194,7 @@ h1 {
 .navObject2:hover {
 	background: url(/hoverNewNotice.png);
 	background-size: 100%;
-	font-size: 110%;
+	font-size: 100%;
 	font-weight: bold;
 	height:40px;
 	width:40px;
@@ -194,7 +205,7 @@ h1 {
 }
 
 .navListbox {
-	font-size: 120%;
+	font-size: 100%;
 	font-weight: bold;
 	width: 240px;
 	height: 37px;
@@ -204,7 +215,7 @@ h1 {
 	background-color: #005bb7;	
 }
 .headObject {
-	font-size: 120%;
+	font-size: 100%;
 	font-weight: bold;
 	color: #ffffff;
 	width: 12em;
@@ -214,7 +225,7 @@ h1 {
 	background-color: transparent;	
 }
 .headObject:hover {
-	font-size: 120%;
+	font-size: 100%;
 	font-weight: bold;
 	color: #1188ff;
 	width: 12em;
