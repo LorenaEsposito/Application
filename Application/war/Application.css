@@ -1,62 +1,66 @@
 
+
+
 body {
     text-align: center;  /* Zentrierung im Internet Explorer */
   }
 
-h1 {
-  font-size: 2em;
-  font-weight: bold;
-  color: #777777;
-  margin: 10px 0px 0px;
-  text-align: left;
+/*Designfestlegung der DIV-Boxen (Grundstruktur)----------------------------------------*/
+
+div#TopLevelFrame {
+	background-repeat: no-repeat;
+	width-min: 1280px;
+	height-min: 800px;
+	margin: 0 auto;      /* standardkonforme horizontale Zentrierung */
+ }
+
+div#Details {
+	height-min: 500px;
+	width-min: 600px;
+	padding: 1em 1em;
 }
 
-.headline {
-	font-weight: bold;
-	margin-top: 10px;
-	margin-bottom: 3px;
+div#Navigator {
+	float: left;
+	width: 18em;
+	height: 750px;
+	margin-left: 200px;
 }
 
-.headlinePanel {
-	padding-top: 10px;
-	padding-left: 20px;
-	margin-top:-23px;
-	width: 800px;
-	height:37px;
-	background-color: #006fdd;
+div#Header {
+	height: 50px;
+	width-min: 800px;      /* standardkonforme horizontale Zentrierung */
+	background-color: #0052a4;
+	box-shadow: 0px 2px 5px #000;
+}
+
+div#Trailer {
+	clear: both;
+	padding: 10px 0;
+	margin: 0 auto;      /* standardkonforme horizontale Zentrierung */
+	border-top: 1px dashed silver;
+	font-size: 80%;
 	font-weight: bold;
+	text-align: center;
 	color: #ffffff;
 }
 
 
-.noteTitle {
-	font-size: 20px;
-	color: #666666;
-	margin-top: 5px;
-	margin-left: 10px;
-	margin-bottom: 15px;
-	border: 0px;
-	border-bottom: 1px solid #808080;
-	
-}
 
-.searchPanel{
-	margin-top: 50px;
-	margin-left: 170px;
-	}
-	
-.logoImpressum {
-	font-size: 25px;
-}
-.searchbox {
-	width: 400px;
-	font-size: 15px;
-	color: #666666;
-	margin-left: 10px;
-	margin-bottom: 15px;
-	box-shadow: 0px 2px 2px #c0c0c0;	
-	
-}
+
+
+
+
+
+/* Nun folgen diverse CSS Designs f�r Panels,Texte,Textboxen etc.--------------------------------------------- */
+
+
+
+
+
+
+
+/*Header*/
 
 .headPanel {
  width-min: 1000px;
@@ -64,77 +68,19 @@ h1 {
  margin-right: auto;
 }
 
+
+
+
+
+
+
+/*Navigation---------------------------------------------------------------------------------------------------*/
+
 .navPanel {
 	height:37px;
 	width:18em;
 	background-color: #006fdd;
 }
-
-
-.loginLink {
-	background: url(/Logo.png);
-}
-
-.login{
-	background: url(/LoginBoxFinal.png);
-	background-repeat: no-repeat;
-	background-size: 70%;
-	margin-left: 100px;
-	margin-top: 140px;
-	height:500px;
-	width: 700px;
-	
-}
-
-.loginTextPanel  {
-	width: 300px;
-	margin-top: 100px;
-	margin-left: 42px;
-	
-}
-
-.searchPanel {
-	margin-top:10px;
-	padding-left: 20px;
-}
-
-.impressumPanel {
-	background: url(/impressum.png);
-	background-size: 70%;
-	background-repeat: no-repeat;
-	height: 700px;
-	width:1000px;
-}
-.notework-logo {
-	background: url(/Logo.png);
-	background-size:45%;
-	background-repeat:no-repeat;
-	font-weight: bold;
-	width: 230px;
-	height:50px;
-	margin-left: 20px;
-	margin-top: 7px;
-	border: 0px;
-}	
-
-.style-Textbox {
-	margin-top: 10px;
-	margin-bottom: 10px;
-	margin-right:10px;
-	margin-left:10px;
-	height:20px;
-	width: 150px;
-}
-.notework-headline {
-	font-size: 12pt;
-	font-weight: bold;
-	color: #777777;
-	margin: 0px;
-	margin-top: 10px;
-	margin-bottom: 10px;
-	text-align: center;
-}
-
 
 .navObject {
 	background: url(/NewNotebook.png);
@@ -147,16 +93,6 @@ h1 {
 	margin-left: 200px;
 	border: 0px;
 	background-color: transparent;
-}
-
-.CreateRightPanel {
-	background-color: #f7f7f7;
-	width: 270px;
-	height: 500px;
-	padding-left:40px;
-	margin-top: -10px;
-	margin-left: 70px;
-	border-left: 1px solid silver;
 }
 
 .navObject:hover {
@@ -207,6 +143,170 @@ h1 {
 	border: 0px;
 	background-color: #005bb7;	
 }
+
+
+
+
+
+
+
+
+/*Notiz erstellen---------------------------------------------------------------------------------------*/
+
+.noteTitle {
+	font-size: 20px;
+	color: #666666;
+	margin-top: 5px;
+	margin-left: 10px;
+	margin-bottom: 15px;
+	border: 0px;
+	border-bottom: 1px solid #808080;
+}
+
+.headlinePanel {
+	padding-top: 10px;
+	padding-left: 20px;
+	margin-top:-23px;
+	width: 800px;
+	height:37px;
+	background-color: #006fdd;
+	font-weight: bold;
+	color: #ffffff;
+}
+
+.CreateRightPanel {
+	background-color: #f7f7f7;
+	width: 270px;
+	height: 500px;
+	padding-left:40px;
+	margin-top: -10px;
+	margin-left: 70px;
+	border-left: 1px solid silver;
+}
+
+
+
+
+
+
+
+
+
+
+
+/*Suchen-----------------------------------------------------------------------------------------*/
+
+.searchPanel{
+	margin-top: 50px;
+	margin-left: 170px;
+	}
+	
+.searchbox {
+	width: 400px;
+	font-size: 15px;
+	color: #666666;
+	margin-left: 10px;
+	margin-bottom: 15px;
+	box-shadow: 0px 2px 2px #c0c0c0;		
+}
+
+
+
+
+
+
+
+
+
+
+
+/*Impressum----------------------------------------------------------------------------------------*/
+
+.logoImpressum {
+	font-size: 25px;
+}
+
+.impressumPanel {
+	background: url(/impressum.png);
+	background-size: 70%;
+	background-repeat: no-repeat;
+	height: 700px;
+	width:1000px;
+}
+
+
+
+
+
+
+
+
+
+/*Login---------------------------------------------------------------------------------------------*/
+
+.loginLink {
+	background: url(/Logo.png);
+}
+
+.login{
+	background: url(/LoginBoxFinal.png);
+	background-repeat: no-repeat;
+	background-size: 70%;
+	margin-left: 100px;
+	margin-top: 140px;
+	height:500px;
+	width: 700px;
+	
+}
+
+.loginTextPanel  {
+	width: 300px;
+	margin-top: 100px;
+	margin-left: 42px;
+	
+}
+
+
+
+
+
+
+
+
+
+
+/*Allgemeine Designfestlegungen----------------------------------------------------------------------------------*/
+
+.notework-logo {
+	background: url(/Logo.png);
+	background-size:45%;
+	background-repeat:no-repeat;
+	font-weight: bold;
+	width: 230px;
+	height:50px;
+	margin-left: 20px;
+	margin-top: 7px;
+	border: 0px;
+}	
+
+.style-Textbox {
+	margin-top: 10px;
+	margin-bottom: 10px;
+	margin-right:10px;
+	margin-left:10px;
+	height:20px;
+	width: 150px;
+}
+.notework-headline {
+	font-size: 12pt;
+	font-weight: bold;
+	color: #777777;
+	margin: 0px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	text-align: center;
+}
+
 .headObject {
 	font-size: 120%;
 	font-weight: bold;
@@ -311,71 +411,3 @@ h1 {
 	box-shadow: 0px 2px 2px #c0c0c0;
 	border-radius:8px;
 }
-div#TopLevelFrame {
-	background-repeat: no-repeat;
-	width-min: 1280px;
-	height-min: 800px;
-	margin: 0 auto;      /* standardkonforme horizontale Zentrierung */
- }
-
-
-
-div#Details {
-	height-min: 500px;
-	width-min: 600px;
-	padding: 1em 1em;
-
-	
-}
-
-div#Navigator {
-	float: left;
-	width: 18em;
-	height: 750px;
-	margin-left: 200px;
- 	
-}
-
-div#Header {
-	height: 50px;
-	width-min: 800px;      /* standardkonforme horizontale Zentrierung */
-	background-color: #0052a4;
-	box-shadow: 0px 2px 5px #000;
-}
-
-div#Trailer {
-	clear: both;
-	padding: 10px 0;
-	margin: 0 auto;      /* standardkonforme horizontale Zentrierung */
-	border-top: 1px dashed silver;
-	font-size: 80%;
-	font-weight: bold;
-	text-align: center;
-	color: #ffffff;
-}
-
-/**
-	Ab hier: Alte Deklarationen. KÃ¶nnen ggf. gelÃ¶scht werden.
-*/
-.sendButton {
-  display: block;
-  font-size: 16pt;
-}
-
-/** Most GWT widgets already have a style name defined */
-.gwt-DialogBox {
-  width: 400px;
-}
-
-.dialogVPanel {
-  margin: 5px;
-}
-
-.serverResponseLabelError {
-  color: red;
-}
-
-/** Set ids using widget.getElement().setId("idOfElement") */
-#closeButton {
-  margin: 15px 6px 6px;
-  }
