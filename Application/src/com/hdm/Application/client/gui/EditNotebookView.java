@@ -97,7 +97,7 @@ public class EditNotebookView extends Update {
 	Button saveNBButton = new Button("Speichern");
 	Button deleteNBButton = new Button("Loeschen");
 	Button cancelButton = new Button("Abbrechen");
-	final Button savePermissionButton = new Button("Save Permission");
+	final Button savePermissionButton = new Button("Save");
 	final Button deletePermissionButton = new Button("Berechtigung loeschen");
 	final RadioButton readButton = new RadioButton("Leseberechtigung");
 	final RadioButton editButton = new RadioButton("Bearbeitungsberechtigung");
@@ -115,15 +115,14 @@ public class EditNotebookView extends Update {
 	     */
 	    
 	    headlinePanel.add(mainheadline);
-	    leftPanel.add(creDateLabel);
-	    leftPanel.add(creDate);
-	    leftPanel.add(modDateLabel);
-	    leftPanel.add(modDate);
 	    leftPanel.add(notebookTitleTB);
-	    leftPanel.add(buttonPanel);
 	    buttonPanel.add(saveNBButton);
 	    buttonPanel.add(deleteNBButton);
 	    buttonPanel.add(cancelButton);
+	    buttonPanel.add(creDateLabel);
+	    buttonPanel.add(creDate);
+	    buttonPanel.add(modDateLabel);
+	    buttonPanel.add(modDate);
 	    permissionPanel.add(permissionTB);
 	    permissionPanel.add(readButton);
 	    permissionPanel.add(editButton);
@@ -137,6 +136,23 @@ public class EditNotebookView extends Update {
 	    
 	    RootPanel.get("Details").add(headlinePanel);
 	    RootPanel.get("Details").add(mainPanel);
+	    RootPanel.get("Details").add(buttonPanel);
+	    
+	    headlinePanel.setStyleName("headlinePanel");
+	    leftPanel.setStyleName("CreateLeftPanel");
+	    rightPanel.setStyleName("CreateRightPanel");
+	    notebookTitleTB.setStyleName("noteTitle");
+	    deleteNBButton.setStyleName("savePermission-button");
+	    saveNBButton.setStyleName("savePermission-button");
+	    cancelButton.setStyleName("savePermission-button");
+	    readButton.setStyleName("savePermission-button");
+	    editButton.setStyleName("savePermission-button");
+	    deleteButton.setStyleName("savePermission-button");
+	    permissionTB.setStyleName("style-Textbox");
+	    savePermissionButton.setStyleName("savePermission-button");
+	    buttonPanel.setStyleName("buttonPanel");
+	    permissionPanel.setStyleName("permissionPanel");
+	    rightsLabel.setStyleName("headline");
 	    
 	    readButton.setText("Leseberechtigung");
 	    editButton.setText("Bearbeitungsberechtigung");
