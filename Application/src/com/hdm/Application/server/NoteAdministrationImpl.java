@@ -683,10 +683,12 @@ public ArrayList<Notebook> searchForNotebook(String title) throws IllegalArgumen
     	
     	if(this.uMapper.findByMail(mail) == null){
     		user = null;
+    		System.out.println("User nicht vorhanden");
     	}
     	
     	if(this.uMapper.findByMail(mail) != null){
     		user = this.uMapper.findByMail(mail);
+    		System.out.println("User ist:" + user);
     	}
     	return user;
     }

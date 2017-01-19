@@ -321,8 +321,7 @@ public class Application implements EntryPoint {
 	    
 	    nbSelectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
 			public void onSelectionChange(SelectionChangeEvent event) {
-				Window.alert(nbSelectionModel.getSelectedObject().getNbTitle());
-				
+
 				adminService.getNotesOfNotebook(nbSelectionModel.getSelectedObject(), getNotesOfNotebookCallback());
 				
 				Update update = new EditNotebookView();
@@ -346,10 +345,12 @@ public class Application implements EntryPoint {
 	  	public void onClick(ClickEvent event) {
 	          /*
 	           * Showcase instantiieren.
-	           */
+	           */ 
+	          
 	          Update update = new CreateNotebookView();
 	          RootPanel.get("Details").clear();
 	          RootPanel.get("Details").add(update);
+	          
 	    }
 	    });
 	    
@@ -461,16 +462,10 @@ public class Application implements EntryPoint {
 		 ClientsideSettings.getLogger()
 			.severe("Success GetCurrentUserCallback: " + result.getClass().getSimpleName());
 		 currentUser = result;
-		 
-		 if(currentUser.getUserName() != null){
-		 userLabel.setText(currentUser.getUserName());
+
+		 userLabel.setText(currentUser.getMail());
 		 Update update = new WelcomeView();
 		 RootPanel.get("Details").add(update);
-		 }
-		 else{
-			 Update update = new EditProfileView();
-			 RootPanel.get("Details").add(update);
-		 }
 		 
 		 adminService.getNotebooksOfUser(currentUser, getNotebooksOfUserCallback());
 		 
@@ -517,7 +512,6 @@ public class Application implements EntryPoint {
 	 public void onSuccess(ArrayList<Note> result) {
 		 ClientsideSettings.getLogger().
 		 severe("Success GetNotesOfNotebookCallback: " + result.getClass().getSimpleName());
-		 Window.alert("GetNotesOfNotebook-Methode");
 		 notes = result;
 		 notesDataProvider.getList().clear();
 		 for(int i = 0; i < notes.size(); i++) {

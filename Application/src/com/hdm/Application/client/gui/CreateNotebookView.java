@@ -40,13 +40,9 @@ public class CreateNotebookView extends Update{
 	 */
 	private NoteAdministrationAsync adminService = ClientsideSettings.getAdministration();
 	
-	private Note n = new Note();
-	
-	private String currentNBTitle = new String();
-	
 	private ArrayList<Permission> permissions = new ArrayList<Permission>();
 	
-	private AppUser user = new AppUser();
+	private AppUser user = null;
 
 	Date date = new Date();
 
@@ -55,6 +51,8 @@ public class CreateNotebookView extends Update{
 	private AppUser currentUser = new AppUser();
 
 	private Notebook notebook = new Notebook();
+	
+	private Notebook newNB = new Notebook();
 	
 	UserPermissionCell cell = new UserPermissionCell();
     
@@ -96,11 +94,14 @@ public class CreateNotebookView extends Update{
    final RadioButton editButton = new RadioButton("Bearbeitungsberechtigung"); 
    final RadioButton deleteButton = new RadioButton("Loeschberechtigung");
    Label rightsLabel = new Label("Berechtigung vergeben:");
-   Label mainheadline = new Label("Neue Notiz");
+   Label mainheadline = new Label("Neues Notizbuch");
+   Label permissionWarning = new Label("");
 
 
 protected void run() {
     this.append("");
+    
+    adminService.getCurrentUser(getCurrentUserCallback());
     
     mainPanel.setStyleName("detailsPanel");
     
@@ -127,10 +128,12 @@ protected void run() {
     rightPanel.add(rightsLabel);
     rightPanel.add(permissionPanel);
     permissionPanel.add(permissionText);
+    permissionPanel.add(permissionWarning);
     permissionPanel.add(readButton);
     permissionPanel.add(editButton);
     permissionPanel.add(deleteButton);
     permissionPanel.add(savePermissionButton);
+    permissionPanel.add(deletePermissionButton); 
     rightPanel.add(cellList);
     leftPanel.add(notebookTitle);
     
@@ -161,10 +164,21 @@ protected void run() {
     editButton.setStyleName("savePermission-button");
     deleteButton.setStyleName("savePermission-button");
     permissionText.setStyleName("style-Textbox");
+    permissionWarning.setStyleName(""); 
     savePermissionButton.setStyleName("savePermission-button");
     buttonPanel.setStyleName("buttonPanel");
     permissionPanel.setStyleName("permissionPanel");
     rightsLabel.setStyleName("headline");
+    
+    notebookTitle.setEnabled(false);
+    permissionText.setEnabled(false);
+    createButton.setEnabled(false);
+    cancelButton.setEnabled(false);
+    savePermissionButton.setEnabled(false);
+    deletePermissionButton.setEnabled(false);
+    readButton.setEnabled(false);
+    editButton.setEnabled(false);
+    deleteButton.setEnabled(false); 
   	
     /**
      * Erstellung der Clickhandler
@@ -228,23 +242,30 @@ protected void run() {
     		
     		if(permissionText.getText() == ""){
     			Window.alert("Bitte eine E-Mail-Adresse eingeben");
+        		savePermissionButton.setEnabled(false);
+        		readButton.setEnabled(false);
+        		editButton.setEnabled(false);
+        		deleteButton.setEnabled(false);
+        		savePermissionButton.setStylePrimaryName("savePermission-button");
     			}
     		
-    		savePermissionButton.setEnabled(false);
-    		readButton.setEnabled(false);
-    		editButton.setEnabled(false);
-    		deleteButton.setEnabled(false);
-    		savePermissionButton.setStylePrimaryName("savePermission-button");
+
     		
        		if(permissionText.getText() == currentUser.getMail()){
     			Window.alert("Als Eigentuemer der Notiz brauchen Sie keine Berechtigung fuer sich selbst anlegen.");
-    		}
+        		savePermissionButton.setEnabled(false);
+        		readButton.setEnabled(false);
+        		editButton.setEnabled(false);
+        		deleteButton.setEnabled(false);
+        		savePermissionButton.setStylePrimaryName("savePermission-button");
+    		}else{
     		
     		String mail = new String();
     		
     		mail = permissionText.getValue();
     		
     		adminService.searchUserByMail(mail, searchUserByMailCallback());
+    		}
     		
     	}
     });
@@ -272,7 +293,8 @@ protected void run() {
 		notebook.setNbTitle(notebookTitle.getText());
 		notebook.setNbCreDate(date);
 		notebook.setNbModDate(date);
-	    adminService.getCurrentUser(getCurrentUserCallback());
+		
+		 adminService.getOwnedNotebooks(currentUser, getOwnedNotebooksCallback());
 	    
     }
     });
@@ -305,7 +327,15 @@ protected void run() {
 			 
 			 currentUser = result;
 			 
-			 adminService.getOwnedNotebooks(currentUser, getOwnedNotebooksCallback());
+			    notebookTitle.setEnabled(true);
+			    permissionText.setEnabled(true);
+			    createButton.setEnabled(true);
+			    cancelButton.setEnabled(true);
+			    savePermissionButton.setEnabled(true);
+			    deletePermissionButton.setEnabled(true);
+			    readButton.setEnabled(true);
+			    editButton.setEnabled(true);
+			    deleteButton.setEnabled(true);
 			 
 		 }
 		};
@@ -359,9 +389,11 @@ protected void run() {
     	 public void onSuccess(Notebook result) {
     		 ClientsideSettings.getLogger().
     		 severe("Success CreateNoteCallback: " + result.getClass().getSimpleName());
+    		 newNB = result;
     		 
     		 Permission permission = new Permission();
 				permission.setIsOwner(true);
+				permission.setNbID(result.getNbID()); 
 				permission.setNID(0);
 				permission.setPermissionType(3);
 				permission.setUserID(currentUser.getUserID());
@@ -379,12 +411,9 @@ protected void run() {
 
 				adminService.createPermissions(permissions, createPermissionCallback());
 				
-				Application.nbList.add(result);
-				Application.nbSelectionModel.setSelected(result, true); 
-		          Update update = new EditNoteView();
-		          
-		          RootPanel.get("Details").clear();
-		          RootPanel.get("Details").add(update);
+				Application.nbList.add(newNB);
+				Application.nbSelectionModel.setSelected(newNB, true);
+
     	 }
     	};
     	return asyncCallback;
@@ -403,6 +432,7 @@ protected void run() {
     		public void onSuccess(Void result) {
     			ClientsideSettings.getLogger().
     			severe("Success CreatePermissionCallback: " + result.getClass().getSimpleName());
+ 
     		}
     	};
     	return asyncCallback;
@@ -419,11 +449,12 @@ protected void run() {
     		@Override
     		public void onSuccess(AppUser result) {
     			ClientsideSettings.getLogger().
-    			severe("Success SearchUserByGoogleIDCallback: " + result.getClass().getSimpleName());
+    			severe("Success SearchUserByMailCallback: " + result.getClass().getSimpleName());
+    			Window.alert("Methode wird ausgefuehrt"); 
     			user = result;
     			
     			if(user == null){
-        			Window.alert("Der eingegebene Nutzer existiert nicht. Ueberpruefen Sie bitte Ihre Angaben.");
+        			permissionWarning.setText("Bitte gib eine Mailadresse eines Users ein.");
         		}
         		
         		if(user != null){
@@ -438,6 +469,7 @@ protected void run() {
         				UserPermission userP = new UserPermission();
             			userP.setMail(user.getMail());
             			userP.setUserID(user.getUserID());
+            			permissionWarning.setText(""); 
         			
         			if(readButton.getValue() == true){
         				userP.setPermissionType(1);
@@ -449,7 +481,7 @@ protected void run() {
         				userP.setPermissionType(3);
         			}
         			if(readButton.getValue() == false && editButton.getValue() == false && deleteButton.getValue() == false){
-        				Window.alert("Bitte waehlen Sie eine Art der Berechtigung aus");
+        				permissionWarning.setText("Bitte waehle eine Berechtigungsart aus."); 
         				savePermissionButton.setEnabled(true);
         			}
         			
@@ -457,18 +489,18 @@ protected void run() {
         			}
         			
         			if(isExisting == true){
-        				Window.alert("Es wurde bereits eine Berechtigung an diesen User vergeben");
+        				permissionWarning.setText("Es wurde bereits eine Berechtigung an diesen User vergeben.");
         			}
-        			
-        			savePermissionButton.setEnabled(true);
-        			permissionText.setText("Name des Berechtigten");
-        			readButton.setEnabled(true);
-        			editButton.setEnabled(true);
-        			deleteButton.setEnabled(true);
-        			readButton.setValue(false);
-        			editButton.setValue(false);
-        			deleteButton.setValue(false);
+        		
         		}
+    			savePermissionButton.setEnabled(true);
+    			permissionText.setText("Name des Berechtigten");
+    			readButton.setEnabled(true);
+    			editButton.setEnabled(true);
+    			deleteButton.setEnabled(true);
+    			readButton.setValue(false);
+    			editButton.setValue(false);
+    			deleteButton.setValue(false);
     		}
     	};
     	return asyncCallback;

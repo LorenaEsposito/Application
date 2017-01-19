@@ -39,6 +39,7 @@ import com.hdm.Application.shared.bo.DueDate;
 import com.hdm.Application.shared.bo.Note;
 import com.hdm.Application.shared.bo.Notebook;
 import com.hdm.Application.shared.bo.Permission;
+import com.hdm.Application.shared.bo.UserPermission;
 
 public class EditNoteView extends Update{
 
@@ -55,8 +56,6 @@ public class EditNoteView extends Update{
 	private Note currentNote = new Note();
 	
 	private Notebook currentNB = new Notebook();
-	
-	private String currentNBTitle = new String();
 	
 	private String noteTitle = new String();
 	
@@ -84,14 +83,14 @@ public class EditNoteView extends Update{
 	
 	DueDate newDueDate = new DueDate();
 	
-	TextCell cell = new TextCell();
+	UserPermissionCell cell = new UserPermissionCell();
 	
-	public final static SingleSelectionModel<String> selectionModel = new SingleSelectionModel<String>();
+	public final static SingleSelectionModel<UserPermission> selectionModel = new SingleSelectionModel<UserPermission>();
 	
 	 // Create a data provider.
-    ListDataProvider<String> dataProvider = new ListDataProvider<String>();
+    ListDataProvider<UserPermission> dataProvider = new ListDataProvider<UserPermission>();
     
-    List<String> list = dataProvider.getList();
+    List<UserPermission> list = dataProvider.getList();
     
 //    NotebookNotesTreeViewModel nntvm = null;
 	
@@ -132,7 +131,7 @@ public class EditNoteView extends Update{
    final RadioButton editButton = new RadioButton("Bearbeitungsberechtigung");
    final RadioButton deleteButton = new RadioButton("Loeschberechtigung");
    DatePicker duedate = new DatePicker();
-   CellList<String> cellList = new CellList<String>(cell);
+   CellList<UserPermission> cellList = new CellList<UserPermission>(cell);
    Label rightsLabel = new Label("Berechtigung vergeben:");
    Label duedateLabel = new Label("Enddatum vergeben:");
    Label mainheadline = new Label("Notiz bearbeiten");
@@ -325,11 +324,11 @@ protected void run() {
     		
     		adminService.searchUserByMail(permissionTB.getValue(), searchUserByMailCallback());
     		}
-    		if(selectionModel.getSelectedObject() == null){
+    		if(selectionModel.getSelectedObject() == null && permissionTB.getValue() == ""){
     			Window.alert("Erstellen Sie eine neue Berechtigung oder bearbeiten Sie eine bestehende.");
     		}
-    		if(permissionTB.getValue() == ""){
-    			adminService.searchUserByMail(selectionModel.getSelectedObject(), searchUserByMailCallback());
+    		else{
+    			adminService.searchUserByMail(selectionModel.getSelectedObject().getMail(), searchUserByMailCallback());
     		}
     		
     	}
@@ -340,7 +339,7 @@ protected void run() {
     		deletePermissionButton.setEnabled(false);
     		savePermissionButton.setEnabled(false);
     		
-    		adminService.getUserByMail(selectionModel.getSelectedObject(), getUserForPermissionDeleteCallback()); 
+    		adminService.getUserByMail(selectionModel.getSelectedObject().getMail(), getUserForPermissionDeleteCallback()); 
     	}
     });
     
@@ -444,6 +443,7 @@ protected void run() {
     deleteDuedateButton.addClickHandler(new ClickHandler() {
     	public void onClick(ClickEvent event){
     		adminService.deleteDuedate(dueDate, deleteDuedateCallback());
+    		duedate.setValue(null);
     		
     	}
     });
@@ -570,7 +570,7 @@ private AsyncCallback<AppUser> getUserByIDCallback(){
 	 public void onSuccess(AppUser result) {
 		 ClientsideSettings.getLogger().
 		 severe("Success GetUserByIDCallback: " + result.getClass().getSimpleName());
-		 list.add(result.getMail());
+//		 list.add(result.getMail());
 	 }
 	};
 	return asyncCallback;
@@ -630,8 +630,6 @@ private AsyncCallback<DueDate> getDuedateCallback(){
 	    	 public void onSuccess(Void result) {
 	    		 ClientsideSettings.getLogger().
 	    		 severe("Success DeleteDuedateCallback: " + result.getClass().getSimpleName());
-	    		 
-	    		 duedate.setValue(null);
 	    		 
 	    	 }
 			};
@@ -697,7 +695,7 @@ private AsyncCallback<DueDate> getDuedateCallback(){
         		if(user != null){
         			boolean isExisting = new Boolean(false);
         			for(int i = 0; i < dataProvider.getList().size(); i++) {
-        				if(user.getMail() == dataProvider.getList().get(i)) {
+        				if(user.getMail() == dataProvider.getList().get(i).getMail()) {
         					isExisting = true;
         					break;
         				}
@@ -723,7 +721,7 @@ private AsyncCallback<DueDate> getDuedateCallback(){
         			}
         			
         			permissions.add(permission);
-        			dataProvider.getList().add(user.getMail());
+//        			dataProvider.getList().add(user.getMail());
         			}
         			
         			if(isExisting == true){

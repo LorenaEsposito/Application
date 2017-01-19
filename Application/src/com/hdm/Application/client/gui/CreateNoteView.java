@@ -447,6 +447,7 @@ protected void run() {
     		 severe("Success CreateNoteCallback: " + result.getClass().getSimpleName());
     		 
     		 Application.notesList.add(note.getnTitle());
+    		 Application.notesSelectionModel.setSelected(result.getnTitle(), true); 
     		 currentN = result;
     		 boolean existingP = new Boolean(false);
     		 for(int i = 0; i < permissions.size(); i++){

@@ -7,8 +7,7 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.hdm.Application.client.ClientsideSettings;
 import com.hdm.Application.shared.NoteAdministrationAsync;
-import com.hdm.Application.shared.bo.AppUser;
-import com.google.gwt.user.client.ui.RootPanel; 
+import com.hdm.Application.shared.bo.AppUser; 
 
 
 public class WelcomeView extends Update {
@@ -72,8 +71,7 @@ public class WelcomeView extends Update {
 				.severe("Success GetCurrentUserCallback: " + result.getClass().getSimpleName());
 			 currentUser = result;
 
-			 welcomeLabel.setText("Willkommen " + currentUser.getUserName() + 
-					 " zu deinem ganz persoenlichen Notizbuch-System.");
+			 welcomeLabel.setText("Willkommen zu deinem ganz persoenlichen Notizbuch-System.");
 		 }
 		 };
 		 return asyncCallback;
