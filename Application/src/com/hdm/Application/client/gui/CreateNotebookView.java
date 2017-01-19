@@ -226,11 +226,19 @@ protected void run() {
     savePermissionButton.addClickHandler(new ClickHandler() {
     	public void onClick(ClickEvent event) {
     		
+    		if(permissionText.getText() == ""){
+    			Window.alert("Bitte eine E-Mail-Adresse eingeben");
+    			}
+    		
     		savePermissionButton.setEnabled(false);
     		readButton.setEnabled(false);
     		editButton.setEnabled(false);
     		deleteButton.setEnabled(false);
     		savePermissionButton.setStylePrimaryName("savePermission-button");
+    		
+       		if(permissionText.getText() == currentUser.getMail()){
+    			Window.alert("Als Eigentuemer der Notiz brauchen Sie keine Berechtigung fuer sich selbst anlegen.");
+    		}
     		
     		String mail = new String();
     		
@@ -245,9 +253,9 @@ protected void run() {
     	public void onClick(ClickEvent event) {
     		if(selectionModel.getSelectedObject() == null){
     			Window.alert("Bitte wahelen Sie eine Person aus.");
-    		}
-			permissions.remove(selectionModel.getSelectedObject());
+    		}else{
 			dataProvider.getList().remove(selectionModel.getSelectedObject());
+    		}
     	}
     });
     
@@ -359,13 +367,20 @@ protected void run() {
 				permission.setUserID(currentUser.getUserID());
 				permissions.add(permission);
 				
-				for(int i = 0; i < permissions.size(); i++){
-					permission = permissions.get(i);
+				
+				for(int i = 0; i < dataProvider.getList().size(); i++){
+					permission.setIsOwner(false);
 					permission.setNbID(result.getNbID());
+					permission.setNID(0);
+					permission.setPermissionType(dataProvider.getList().get(i).getPermissionType());
+					permission.setUserID(dataProvider.getList().get(i).getUserID());
+					permissions.add(permission);
 				}
+
 				adminService.createPermissions(permissions, createPermissionCallback());
 				
 				Application.nbList.add(result);
+				Application.nbSelectionModel.setSelected(result, true); 
 		          Update update = new EditNoteView();
 		          
 		          RootPanel.get("Details").clear();
@@ -407,8 +422,6 @@ protected void run() {
     			severe("Success SearchUserByGoogleIDCallback: " + result.getClass().getSimpleName());
     			user = result;
     			
-    			Permission permission = new Permission();
-    			
     			if(user == null){
         			Window.alert("Der eingegebene Nutzer existiert nicht. Ueberpruefen Sie bitte Ihre Angaben.");
         		}
@@ -422,30 +435,24 @@ protected void run() {
         				}
         			}
         			if(isExisting == false){
-        			permission.setUserID(user.getUserID());
-        			permission.setIsOwner(false);
-        			permission.setNID(0);
+        				UserPermission userP = new UserPermission();
+            			userP.setMail(user.getMail());
+            			userP.setUserID(user.getUserID());
         			
         			if(readButton.getValue() == true){
-        				permission.setPermissionType(1);
+        				userP.setPermissionType(1);
         			}
         			if(editButton.getValue() == true){
-        				permission.setPermissionType(2);
+        				userP.setPermissionType(2);
         			}
         			if(deleteButton.getValue() == true){
-        				permission.setPermissionType(3);
+        				userP.setPermissionType(3);
         			}
         			if(readButton.getValue() == false && editButton.getValue() == false && deleteButton.getValue() == false){
         				Window.alert("Bitte waehlen Sie eine Art der Berechtigung aus");
         				savePermissionButton.setEnabled(true);
         			}
         			
-        			permissions.add(permission);
-        			
-        			UserPermission userP = new UserPermission();
-        			userP.setMail(user.getMail());
-        			userP.setUserID(user.getUserID());
-        			userP.setPermissionType(permission.getPermissionType());
         			dataProvider.getList().add(userP);
         			}
         			

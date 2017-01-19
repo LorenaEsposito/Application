@@ -302,9 +302,24 @@ protected void run() {
     		readButton.setEnabled(false);
     		editButton.setEnabled(false);
     		savePermissionButton.setStylePrimaryName("savePermission-button");
-    	
+    		
+    		if(selectionModel.getSelectedObject() != null){
+				if(readButton.getValue() == true){
+					selectionModel.getSelectedObject().setPermissionType(1);
+				}
+				if(editButton.getValue() == true){
+					selectionModel.getSelectedObject().setPermissionType(2);
+				}
+				if(deleteButton.getValue() == true){
+					selectionModel.getSelectedObject().setPermissionType(3); 
+				}
+				dataProvider.refresh();
+			}
+    		
     		if(permissionText.getText() == ""){
+    			
     			Window.alert("Bitte eine E-Mail-Adresse eingeben");
+    			}
     			savePermissionButton.setEnabled(true);
     			readButton.setEnabled(true);
     			readButton.setValue(false);
@@ -312,7 +327,7 @@ protected void run() {
     			editButton.setValue(false);
     			deleteButton.setEnabled(true);
     			deleteButton.setValue(false);
-    		}
+    		
     		
     		if(permissionText.getText() == currentUser.getMail()){
     			Window.alert("Als Eigentuemer der Notiz brauchen Sie keine Berechtigung fuer sich selbst anlegen.");
@@ -340,8 +355,10 @@ protected void run() {
     				}
     			}
     			if(deletePossible == true){
-    				notePermissions.remove(selectionModel.getSelectedObject());
+    				
     				dataProvider.getList().remove(selectionModel.getSelectedObject());
+    			}else{
+    				Window.alert("Die ausgewaehlte Person kann nicht von der Berechtigungsliste geloescht werden.");
     			}
     		}
     	}
@@ -407,7 +424,7 @@ protected void run() {
     		    savePermissionButton.setEnabled(true);
     		    deletePermissionButton.setEnabled(true);
     		    
-    		    adminService.getPermissions(currentNB.getNbID(), 0, getPermissionsCallback());
+    		    adminService.getPermissions(0, currentNB.getNbID(), getPermissionsCallback()); 
     		    
     		 
     	 }
@@ -432,8 +449,8 @@ protected void run() {
     		 Application.notesList.add(note.getnTitle());
     		 currentN = result;
     		 boolean existingP = new Boolean(false);
-    		 for(int y = 0; y < permissions.size(); y++){
-    			 if(permissions.get(y).getUserID() == currentUser.getUserID() && permissions.get(y).getIsOwner() == true){
+    		 for(int i = 0; i < permissions.size(); i++){
+    			 if(permissions.get(i).getUserID() == currentUser.getUserID() && permissions.get(i).getIsOwner() == true){
     				 existingP = true;
     			 }
     		 }
@@ -446,13 +463,24 @@ protected void run() {
     			
     			notePermissions.add(permission);
     		 }
-    			
-    			for(int i = 0; i < notePermissions.size(); i++){
-    				permission = notePermissions.get(i);
-    				permission.setNID(currentN.getnID());
-    				permission.setNbID(currentNB.getNbID());
-    				
-    			}
+    		 boolean savePermission = new Boolean(true);
+    		 for(int x = 0; x < dataProvider.getList().size(); x++){
+    			 for(int z = 0; z < permissions.size(); z++){
+    				 if(permissions.get(z).getUserID() == dataProvider.getList().get(x).getUserID()){
+    					 savePermission = false;
+    				 }
+    			 }
+    			 if(savePermission == true){
+    				 Permission permission = new Permission();
+    				 permission.setIsOwner(false);
+    				 permission.setNbID(currentNB.getNbID());
+    				 permission.setNID(currentN.getnID());
+    				 permission.setPermissionType(dataProvider.getList().get(x).getPermissionType());
+    				 permission.setUserID(dataProvider.getList().get(x).getUserID());
+    				 notePermissions.add(permission);
+    			 }
+    		 }
+ 
 	   			 Update update = new EditNoteView();
 		          
 		          RootPanel.get("Details").clear();
@@ -520,8 +548,6 @@ protected void run() {
     			severe("Success SearchUserByMailCallback: " + result.getClass().getSimpleName());
     			user = result;
     			
-    			Permission permission = new Permission();
-    			
     			if(user == null){
         			Window.alert("Der eingegebene Nutzer existiert nicht. Ueberpruefen Sie bitte Ihre Angaben.");
         		}
@@ -535,35 +561,29 @@ protected void run() {
         				}
         			}
         			if(isExisting == false){
-        			permission.setUserID(user.getUserID());
-        			permission.setIsOwner(false);
-        			permission.setNbID(currentNB.getNbID()); 
 
+            			UserPermission userP = new UserPermission();
+            			userP.setMail(user.getMail());
+            			userP.setUserID(user.getUserID());
         			
         			if(readButton.getValue() == true){
 
-        				permission.setPermissionType(1);
+            			userP.setPermissionType(1);
 
         			}
         			if(editButton.getValue() == true){
 
-        				permission.setPermissionType(2);
+            			userP.setPermissionType(2);
 
         			}
         			if(deleteButton.getValue() == true){
-        				permission.setPermissionType(3);
+            			userP.setPermissionType(3);
         			}
         			if(readButton.getValue() == false && editButton.getValue() == false && deleteButton.getValue() == false){
         				Window.alert("Bitte waehlen Sie eine Art der Berechtigung aus");
         				savePermissionButton.setEnabled(true);
         			}
         			
-        			notePermissions.add(permission);
-        			
-        			UserPermission userP = new UserPermission();
-        			userP.setMail(user.getMail());
-        			userP.setUserID(user.getUserID());
-        			userP.setPermissionType(permission.getPermissionType());
         			dataProvider.getList().add(userP);
         			}
         			
@@ -641,6 +661,7 @@ protected void run() {
     				}
     			}
     			permissions = result;
+    			y = 0;
     			adminService.getUserByID(userPermission.get(y).getUserID(), getUserByIDCallback());
     		}
     	};

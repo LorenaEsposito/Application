@@ -80,7 +80,7 @@ public class EditNoteView extends Update{
 	
 	Date date = new Date();
 	
-	DueDate dueDate = new DueDate();
+	DueDate dueDate = null;
 	
 	DueDate newDueDate = new DueDate();
 	
@@ -448,29 +448,6 @@ protected void run() {
     	}
     });
 
-//    editButton.addClickHandler(new ClickHandler() {
-//  	public void onClick(ClickEvent event) {
-//          /*
-//           * Showcase instantiieren.
-//           */
-//          Update update = new EditNoteView();
-//          
-//          RootPanel.get("Details").clear();
-//          RootPanel.get("Details").add(update);
-//    }
-//    });
-//    
-//    deleteButton.addClickHandler(new ClickHandler() {
-//  	public void onClick(ClickEvent event) {
-//          /*
-//           * Showcase instantiieren.
-//           */
-//          Update update = new NoteOverviewView();
-//          
-//          RootPanel.get("Details").clear();
-//          RootPanel.get("Details").add(update);
-//    }
-//    });
 }
 
 private AsyncCallback<AppUser> getCurrentUserCallback(){
@@ -617,82 +594,6 @@ private AsyncCallback<DueDate> getDuedateCallback(){
 	};
 	return asyncCallback;
 }
-
-
-//private AsyncCallback<AppUser> getCurrentUserCallback(){
-//	AsyncCallback<AppUser> asyncCallback = new AsyncCallback<AppUser>() {
-//		
-//		@Override
-//		public void onFailure(Throwable caught) {
-//			ClientsideSettings.getLogger().severe("Error: " + caught.getMessage());
-//		}
-//	 
-//	 @Override
-//	 public void onSuccess(AppUser result) {
-//		 ClientsideSettings.getLogger().
-//		 severe("Success GetCurrentUserCallback: " + result.getClass().getSimpleName());
-//		 
-//		 user = result;
-//		 
-//		 adminService.getNotebookByID(currentNote.getNbID(), getNotebookByIDCallback());
-//		 
-//	 }
-//	};
-//	return asyncCallback;
-//}
-//
-//private AsyncCallback<Notebook> getNotebookByIDCallback(){
-//	AsyncCallback<Notebook> asyncCallback = new AsyncCallback<Notebook>() {
-//		
-//		@Override
-//		public void onFailure(Throwable caught) {
-//			ClientsideSettings.getLogger().severe("Error: " + caught.getMessage());
-//		}
-//	 
-//	 @Override
-//	 public void onSuccess(Notebook result) {
-//		 ClientsideSettings.getLogger().
-//		 severe("Success GetOwnedNotebookPermissionsCallback: " + result.getClass().getSimpleName());
-//		 
-//		 currentNB = result;
-//		
-//		 adminService.getNotesOfNotebook(currentNB.getNbTitle(), user, getNotesOfNotebookCallback());
-//	 }
-//	};
-//	return asyncCallback;
-//}
-//
-//private AsyncCallback<ArrayList<Note>> getNotesOfNotebookCallback() {
-//  	 AsyncCallback<ArrayList<Note>> asyncCallback = new AsyncCallback<ArrayList<Note>>(){
-//  	 
-//  	 @Override
-//  		public void onFailure(Throwable caught) {
-//  			ClientsideSettings.getLogger().severe("Error: " + caught.getMessage());
-//  		}
-//  	 
-//  	 @Override
-//  	 public void onSuccess(ArrayList<Note> result) {
-//  		 ClientsideSettings.getLogger().
-//  		 severe("Success GetNotesOfNotebookCallback: " + result.getClass().getSimpleName());
-//  		 
-//  		 boolean isExisting = new Boolean(false);
-//  		 for(int y = 0; y < result.size(); y++) {
-//  			 if(noteTitleTB.getText() == result.get(y).getnTitle()) {
-//  				 noteTitleTB.setText("");
-//  				 isExisting = true;
-//  				 break;
-//  			 }   			 
-//  		 }
-//  		 if(isExisting == false){
-//			 adminService.editNote(newNote, editNoteCallback());
-//  		 }
-//  		 if(isExisting == true){
-//  			Window.alert("Diese Notiz existiert bereits im ausgewaehlten Notizbuch");
-//  		 }
-//  	 }
-//  	 };
-//  	 return asyncCallback;
-//   }
    
 	private AsyncCallback<Void> deleteNoteCallback() {
 		AsyncCallback<Void> asyncCallback = new AsyncCallback<Void>() {
@@ -751,7 +652,6 @@ private AsyncCallback<DueDate> getDuedateCallback(){
     		 severe("Success EditNoteCallback: " + result.getClass().getSimpleName());
     		 
     		 index = Application.notesDataProvider.getList().indexOf(currentNote.getnTitle());
-    		 Application.notesList.remove(index);
     		 Application.notesList.set(index, result.getnTitle());
     	 }
     	};

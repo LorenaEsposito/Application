@@ -499,7 +499,7 @@ public class Application implements EntryPoint {
 
 			 }
 //			 nbCellList.setVisibleRange(0, 5);
-			 adminService.getNotesOfNotebook(nbSelectionModel.getSelectedObject(), getNotesOfNotebookCallback());
+//			 adminService.getNotesOfNotebook(nbSelectionModel.getSelectedObject(), getNotesOfNotebookCallback());
 		 }
 	 };
 	 return asyncCallback;

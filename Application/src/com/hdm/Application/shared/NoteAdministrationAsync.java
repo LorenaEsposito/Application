@@ -117,7 +117,7 @@ public interface NoteAdministrationAsync {
 			AsyncCallback<ArrayList<Notebook>> callback)
 			throws IllegalArgumentException;
 	
-	public void getPermissions(int nbID, int nID,
+	public void getPermissions(int nID, int nbID,
 			AsyncCallback<ArrayList<Permission>> callback)
 			throws IllegalArgumentException;
 	
