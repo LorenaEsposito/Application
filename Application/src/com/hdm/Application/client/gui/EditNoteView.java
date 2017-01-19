@@ -122,8 +122,8 @@ public class EditNoteView extends Update{
    final Button saveNoteButton = new Button("Save Note");
    final Button deleteNoteButton = new Button("Delete Note");
    final Button cancelButton = new Button("Cancel");
-   final Button savePermissionButton = new Button("Save Permission");
-   final Button deletePermissionButton = new Button("Berechtigung loeschen");
+   final Button savePermissionButton = new Button("Save");
+   final Button deletePermissionButton = new Button("Loeschen");
    final Button saveDuedateButton = new Button("Speichern");
    final Button deleteDuedateButton = new Button("Loeschen");
    final RadioButton readButton = new RadioButton("Leseberechtigung");
@@ -183,20 +183,18 @@ protected void run() {
     datePanel.add(moddateLabel);
     datePanel.add(moddate);
     
-    leftPanel.add(buttonPanel);
-    
     rightPanel.add(cellList);
     rightPanel.add(duedate);
     rightPanel.add(saveDuedateButton);
     rightPanel.add(deleteDuedateButton);
  
-    mainPanel.add(datePanel);
     mainPanel.add(leftPanel);
     mainPanel.add(rightPanel);
     
     RootPanel.get("Details").add(headlinePanel);
     RootPanel.get("Details").add(mainPanel);
-        
+    RootPanel.get("Details").add(buttonPanel); 
+    
     textArea.setVisibleLines(20);
     textArea.setPixelSize(420, 350);
     readButton.setText("Leseberechtigung");
@@ -222,7 +220,10 @@ protected void run() {
     /**
      * Zuweisung eines Styles fuer die jeweiligen Widgets
      **/
+
     headlinePanel.setStyleName("headlinePanel");
+    leftPanel.setStyleName("CreateLeftPanel");
+    rightPanel.setStyleName("CreateRightPanel");
     noteTitleTB.setStyleName("noteTitle");
     noteSubtitleTB.setStyleName("noteTitle");
     saveNoteButton.setStyleName("savePermission-button");
@@ -239,10 +240,6 @@ protected void run() {
     permissionPanel.setStyleName("permissionPanel");
     rightsLabel.setStyleName("headline");
     duedateLabel.setStyleName("headline");
-    credateLabel.setStyleName("");
-    credate.setStyleName("");
-    moddateLabel.setStyleName("");
-    moddate.setStyleName("");
 
 	adminService.getCurrentUser(getCurrentUserCallback());
     
