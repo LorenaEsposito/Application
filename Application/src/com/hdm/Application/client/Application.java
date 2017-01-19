@@ -159,11 +159,10 @@ public class Application implements EntryPoint {
 	  final Label passwordLabel = new Label("Password");
 	  private Anchor signInLink = new Anchor("Login");
 	  public final static ListBox listbox = new ListBox();
-	  final Button createNoteButton = new Button("");
-	  final Button createNotebookButton = new Button("");
+	  final Button createNoteButton = new Button("Notiz erstellen");
+	  final Button createNotebookButton = new Button("Notizbuch erstellen");
 	  final Button signOutButton = new Button("Ausloggen");
 	  final Button searchButton = new Button("Suche");
-	  final Button logoButton = new Button();
 	  final Button impressumButton = new Button("Impressum");
 	  final Button profileButton = new Button("Profil bearbeiten");
 	  final CellList<String> noteCellList = new CellList<String>(noteCell);
@@ -284,7 +283,6 @@ public class Application implements EntryPoint {
  		impressumButton.setStyleName("headObject");
  		profileButton.setStyleName("headObject");
 	    signOutButton.setStyleName("headObject");
-	    logoButton.setStyleName("notework-logo");
 	    listbox.setStyleName("navListbox");
 	    headPanel.setStyleName("headPanel");
 	    navPanel.setStyleName("navPanel");
@@ -339,17 +337,7 @@ public class Application implements EntryPoint {
 			}
 	    });
 	    
-	    logoButton.addClickHandler(new ClickHandler() {
-		  	public void onClick(ClickEvent event) {
-		          /*
-		           * Showcase instantiieren.
-		           */
-		          Update update = new WelcomeView();
-		          RootPanel.get("Details").clear();
-		          RootPanel.get("Details").add(update);
-		    }
-		    });
-	    
+	
 	    createNotebookButton.addClickHandler(new ClickHandler() {
 	  	public void onClick(ClickEvent event) {
 	          /*
@@ -444,11 +432,7 @@ public class Application implements EntryPoint {
      signInLink.setStyleName("loginLink");
      loginLabel.setStyleName("loginLink2");
      loginPanel.setStyleName("login");
-     logoButton.setStyleName("notework-logo");
      
-     
-     
-     headPanel.add(logoButton);
      RootPanel.get("Header").add(headPanel);
      loginTextPanel.add(loginLabel);
      loginTextPanel.add(signInLink);
