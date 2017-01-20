@@ -450,14 +450,11 @@ protected void run() {
     		public void onSuccess(AppUser result) {
     			ClientsideSettings.getLogger().
     			severe("Success SearchUserByMailCallback: " + result.getClass().getSimpleName());
-    			Window.alert("Methode wird ausgefuehrt"); 
     			user = result;
     			
-    			if(user == null){
+    			if(user.getMail() == "error"){
         			permissionWarning.setText("Bitte gib eine Mailadresse eines Users ein.");
-        		}
-        		
-        		if(user != null){
+        		}else{
         			boolean isExisting = new Boolean(false);
         			for(int i = 0; i < dataProvider.getList().size(); i++) {
         				if(user.getMail() == dataProvider.getList().get(i).getMail()) {

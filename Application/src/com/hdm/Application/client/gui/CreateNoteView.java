@@ -60,7 +60,7 @@ public class CreateNoteView extends Update{
 	
 	private ArrayList<UserPermission> userPermission = new ArrayList<UserPermission>();
 	
-	private AppUser user = new AppUser();
+	private AppUser user = null;
 	
 	private AppUser currentUser = new AppUser();
 	
@@ -548,12 +548,10 @@ protected void run() {
     			ClientsideSettings.getLogger().
     			severe("Success SearchUserByMailCallback: " + result.getClass().getSimpleName());
     			user = result;
-    			
-    			if(user == null){
-        			Window.alert("Der eingegebene Nutzer existiert nicht. Ueberpruefen Sie bitte Ihre Angaben.");
-        		}
         		
-        		if(user != null){
+    			if(user.getMail() == "error"){
+    				Window.alert("Der eingegebene Nutzer existiert nicht. Ueberpruefen Sie bitte Ihre Angaben.");
+    			}else{
         			boolean isExisting = new Boolean(false);
         			for(int i = 0; i < dataProvider.getList().size(); i++) {
         				if(user.getMail() == dataProvider.getList().get(i).getMail()) {
@@ -591,16 +589,16 @@ protected void run() {
         			if(isExisting == true){
         				Window.alert("Es wurde bereits eine Berechtigung an diesen User vergeben");
         			}
-        			
-        			savePermissionButton.setEnabled(true);
-        			permissionText.setText("Name des Berechtigten");
-        			readButton.setEnabled(true);
-        			editButton.setEnabled(true);
-        			deleteButton.setEnabled(true);
-        			readButton.setValue(false);
-        			editButton.setValue(false);
-        			deleteButton.setValue(false);
+
         		}
+    			savePermissionButton.setEnabled(true);
+    			permissionText.setText("Name des Berechtigten");
+    			readButton.setEnabled(true);
+    			editButton.setEnabled(true);
+    			deleteButton.setEnabled(true);
+    			readButton.setValue(false);
+    			editButton.setValue(false);
+    			deleteButton.setValue(false);
     		}
     	};
     	return asyncCallback;

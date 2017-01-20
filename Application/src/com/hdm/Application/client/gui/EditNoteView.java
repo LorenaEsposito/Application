@@ -361,11 +361,12 @@ protected void run() {
 		newNote.setnCreDate(currentNote.getnCreDate());
 		newNote.setnModDate(date);
 		
-		if(dueDate == null){
+		if(dueDate == null && newDueDate.getdDate() != null){
 			newDueDate.setnID(currentNote.getnID());
 			adminService.createDuedate(newDueDate, createDuedateCallback());
 
-		}else{
+		}
+		if(dueDate != null){
 
 		adminService.editDuedate(dueDate, editDuedateCallback());
 		}
@@ -651,6 +652,7 @@ private AsyncCallback<DueDate> getDuedateCallback(){
     		 
     		 index = Application.notesDataProvider.getList().indexOf(currentNote.getnTitle());
     		 Application.notesList.set(index, result.getnTitle());
+    		 Application.notesSelectionModel.setSelected(result.getnTitle(), true); 
     	 }
     	};
     	return asyncCallback;
@@ -688,11 +690,9 @@ private AsyncCallback<DueDate> getDuedateCallback(){
     			severe("Success SearchUserByGoogleIDCallback: " + result.getClass().getSimpleName());
     			user = result;
     			
-    			if(user == null){
+    			if(user.getMail() == "error"){
         			Window.alert("Der eingegebene Nutzer existiert nicht. Ueberpruefen Sie bitte Ihre Angaben.");
-        		}
-    			
-        		if(user != null){
+        		}else{
         			boolean isExisting = new Boolean(false);
         			for(int i = 0; i < dataProvider.getList().size(); i++) {
         				if(user.getMail() == dataProvider.getList().get(i).getMail()) {

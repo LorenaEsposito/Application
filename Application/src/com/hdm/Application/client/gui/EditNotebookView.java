@@ -255,7 +255,6 @@ public class EditNotebookView extends Update {
 	    			
 	       		 index = Application.nbDataProvider.getList().indexOf(currentNotebook);
 	    		 Application.nbDataProvider.getList().set(index, newNotebook);
-	    		 Application.nbDataProvider.refresh();
 	    		 
 	             /*
 	              * Showcase instantiieren.
@@ -376,8 +375,7 @@ public class EditNotebookView extends Update {
 		 @Override
 		 public void onSuccess(ArrayList<Notebook> result) {
 			 ClientsideSettings.getLogger().
-			 severe("Success GetCurrentUserCallback: " + result.getClass().getSimpleName());
-			 
+			 severe("Success GetOwnedNotebooksCallback: " + result.getClass().getSimpleName());
 			 for(int y = 0; y < result.size(); y++) {
      			 if(notebookTitleTB.getText() == result.get(y).getNbTitle()) {
      				 notebookTitleTB.setText(currentNotebook.getNbTitle());
@@ -387,10 +385,9 @@ public class EditNotebookView extends Update {
      		 }
      		 if(isExisting == false){
     			 adminService.editNotebook(newNotebook, editNotebookCallback());
-    			 
-	       		 index = Application.nbDataProvider.getList().indexOf(currentNotebook.getNbTitle());
-	       		 Window.alert(Application.nbDataProvider.getList().get(index).toString());
+	       		 index = Application.nbDataProvider.getList().indexOf(currentNotebook);
 	    		 Application.nbDataProvider.getList().set(index, newNotebook);
+	    		 Application.nbSelectionModel.setSelected(newNotebook, true);
 //	    		 Application.nbDataProvider.refresh();
         		 
                  /*
@@ -403,6 +400,7 @@ public class EditNotebookView extends Update {
      		 }
      		 if(isExisting == true){
      			Window.alert("Dieses Notizbuch existiert bereits.");
+     			saveNBButton.setEnabled(true);
      		 }
 			 
 		 }
@@ -443,11 +441,9 @@ public class EditNotebookView extends Update {
     			severe("Success SearchUserByGoogleIDCallback: " + result.getClass().getSimpleName());
     			user = result;
     			
-    			if(user == null){
+    			if(user.getMail() == "error"){
         			Window.alert("Der eingegebene Nutzer existiert nicht. Ueberpruefen Sie bitte Ihre Angaben.");
-        		}
-    			
-        		if(user != null){
+        		}else{
         			boolean isExisting = new Boolean(false);
         			for(int i = 0; i < dataProvider.getList().size(); i++) {
         				if(user.getUserName() == dataProvider.getList().get(i)) {
