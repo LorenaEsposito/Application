@@ -346,6 +346,15 @@ div#Trailer {
   display: block;
   font-size: 16pt;
 }
+.usernamelabel {
+	margin-left: 350px;
+}
+
+.noteSearchButton{
+	left-margin: 200px;
+}
+
+
 
 /** Most GWT widgets already have a style name defined */
 .gwt-DialogBox {

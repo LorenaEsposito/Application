@@ -71,7 +71,8 @@ public class ApplicationReport implements EntryPoint {
 	private HorizontalPanel filterPanel = new HorizontalPanel();
 	private HorizontalPanel radiobuttonPanel = new HorizontalPanel();
 	private HorizontalPanel searchUserPanel = new HorizontalPanel();
-	private HorizontalPanel notePanel = new HorizontalPanel();
+	private VerticalPanel notePanel = new VerticalPanel();
+	private HorizontalPanel hpRadiobuttonPanel = new HorizontalPanel();
 	private VerticalPanel ergebnisPanel = new VerticalPanel();
 	private Label welcomeLabel = new Label();
 	final Button logoButton = new Button();
@@ -547,20 +548,25 @@ protected void loadRadiobuttonPanel() {
 			detailPanel.add(filterPanel);
 			
 			final Label usernameLabel = new Label();
-			usernameLabel.setText("Titelstichwort:");
+			usernameLabel.setText("Titelstichwort");
+			usernameLabel.setStylePrimaryName("usernamelabel");
 			final TextBox sucheNachNotiz = new TextBox(); 
-			final Button noteSearchButton = new Button("Report generieren");
-			final RadioButton no = new RadioButton("Radiobutton-Group","Notiz");
+			sucheNachNotiz.setStylePrimaryName("usernamelabel");
 			final RadioButton nb = new RadioButton("Radiobutton-Group","Notizbuch");
+			final RadioButton no = new RadioButton("Radiobutton-Group","Notiz");
 			final RadioButton aNo = new RadioButton("Radiobutton-Group","Alle Notizen");
+			final Button noteSearchButton = new Button("Report generieren");
+			noteSearchButton.setStylePrimaryName("usernamelabel");
+			hpRadiobuttonPanel.setStylePrimaryName("usernamelabel");
 			
 			notePanel.clear();
 			notePanel.add(usernameLabel);
 			notePanel.add(sucheNachNotiz);
+			notePanel.add(hpRadiobuttonPanel);
+			hpRadiobuttonPanel.add(no);
+			hpRadiobuttonPanel.add(nb);
+			hpRadiobuttonPanel.add(aNo);
 			notePanel.add(noteSearchButton);
-			notePanel.add(no);
-			notePanel.add(nb);
-			notePanel.add(aNo);
 			
 			filterPanel.clear();
 			filterPanel.add(notePanel);
