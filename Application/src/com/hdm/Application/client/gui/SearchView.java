@@ -140,10 +140,10 @@ public class SearchView extends Update {
 		searchButton.setStyleName("savePermission-button");
 		showNoteButton.setStyleName("savePermission-button");
 		searchPanel.setStyleName("searchPanel");
-		dueDateButton.setText("Duedate");
-		userNameButton.setText("Username");
-		noteButton.setText("Note");
-		notebookButton.setText("Notebook");
+		dueDateButton.setText("Enddatum");
+		userNameButton.setText("Profilname");
+		noteButton.setText("Notiz");
+		notebookButton.setText("Notizbuch");
 		radiobuttonPanel.setStyleName("radiobuttonPanel");
 		
 		DateTimeFormat datumsFormat = DateTimeFormat.getFormat("dd.MM.yyyy");

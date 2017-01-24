@@ -296,6 +296,8 @@ public class Application implements EntryPoint {
 	    noteLabel.setStyleName("navLabel");
 	    noteLabel2.setStyleName("navLabel");
 	    userLabel.setStyleName("usernameLabel");
+	    createNoteButton.setStyleName("createNoteButton");
+	    createNotebookButton.setStyleName("createNoteButton");
 	    
 //	    cellTree.setAnimationEnabled(true);
 	    
