@@ -84,11 +84,25 @@ div#Trailer {
 
 /*Navigation---------------------------------------------------------------------------------------------------*/
 
+.navLabel {
+	font-weight:bold;
+	margin-top:5px;
+	margin-bottom:5px;
+}
+
 .navPanel {
 	height:37px;
 	width:252px;
 	border:0px;
 	background-color: #a3cafa;
+	padding:12px;
+}
+
+.navPanel2 {
+	height:37px;
+	width:252px;
+	border-top:1px solid;
+	border-bottom:1px solid;
 	padding:12px;
 }
 
@@ -255,6 +269,12 @@ padding: 10px;
 
 /*Allgemeine Designfestlegungen----------------------------------------------------------------------------------*/
 
+
+.usernameLabel{
+	color: #ffffff;
+	margin-left:5px;
+	margin-top:5px;
+}
 .style-Textbox {
 	margin-top: 10px;
 	margin-bottom: 10px;

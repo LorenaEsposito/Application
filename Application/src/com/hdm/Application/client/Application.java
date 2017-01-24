@@ -283,7 +283,11 @@ public class Application implements EntryPoint {
 	    signOutButton.setStyleName("headObject");
 	    headPanel.setStyleName("headPanel");
 	    navPanel.setStyleName("navPanel");
+	    navPanel2.setStyleName("navPanel2");
 	    headButtonPanel.setStyleName("headButtonPanel");
+	    notebookLabel.setStyleName("navLabel");
+	    noteLabel.setStyleName("navLabel");
+	    userLabel.setStyleName("usernameLabel");
 	    
 //	    cellTree.setAnimationEnabled(true);
 	    
