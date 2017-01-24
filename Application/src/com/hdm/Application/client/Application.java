@@ -285,7 +285,7 @@ public class Application implements EntryPoint {
  		impressumButton.setStyleName("headObject");
  		profileButton.setStyleName("headObject");
  		developerButton.setStyleName("headObject"); 
-	    signOutButton.setStyleName("headObject");
+	    signOutButton.setStyleName("headObjectSignout");
 	    headPanel.setStyleName("headPanel");
 	    navPanel.setStyleName("navPanel");
 	    navPanel2.setStyleName("navPanel2");
