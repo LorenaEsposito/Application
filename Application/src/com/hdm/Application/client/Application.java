@@ -330,7 +330,7 @@ public class Application implements EntryPoint {
 	    createNoteButton.setEnabled(false);
 	    
 	    notebookLabel.setText("Eigene Notizbuecher");
-	    noteLabel.setText("Eigene Notizen");
+	    noteLabel.setText("Waehle eine Notiz");
 	    noteLabel2.setText("Notizbuecher mit Berechtigung");
 	    
 	    /**
