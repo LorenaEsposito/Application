@@ -4,6 +4,7 @@ package com.hdm.Application.client;
 import com.hdm.Application.client.gui.ImpressumView;
 import com.hdm.Application.client.gui.CreateNoteView;
 import com.hdm.Application.client.gui.CreateNotebookView;
+import com.hdm.Application.client.gui.DeveloperView;
 import com.hdm.Application.client.gui.EditNoteView;
 import com.hdm.Application.client.gui.EditNotebookView;
 import com.hdm.Application.client.gui.EditProfileView;
@@ -161,6 +162,7 @@ public class Application implements EntryPoint {
 	  final Button logoButton = new Button();
 	  final Button impressumButton = new Button("Impressum");
 	  final Button profileButton = new Button("Profil bearbeiten");
+	  final Button developerButton = new Button("Entwickler");
 	  final CellList<String> noteCellList = new CellList<String>(noteCell);
 	  final CellList<Notebook> nbCellList = new CellList<Notebook>(nbCell, keyProvider);
 //	  NotebookNotesTreeViewModel nntvm = new NotebookNotesTreeViewModel();
@@ -276,6 +278,7 @@ public class Application implements EntryPoint {
  		searchButton.setStyleName("headObject");
  		impressumButton.setStyleName("headObject");
  		profileButton.setStyleName("headObject");
+ 		developerButton.setStyleName("headObject"); 
 	    signOutButton.setStyleName("headObject");
 	    logoButton.setStyleName("notework-logo");
 	    headPanel.setStyleName("headPanel");
@@ -296,6 +299,7 @@ public class Application implements EntryPoint {
 	    headButtonPanel.add(impressumButton);
 	    headButtonPanel.add(profileButton);
 	    headButtonPanel.add(signOutButton);
+	    headButtonPanel.add(developerButton); 
 	    headPanel.add(headButtonPanel);
 	    navPanel.add(nbCellList);
 	    navPanel2.add(noteCellList);
@@ -379,6 +383,18 @@ public class Application implements EntryPoint {
 		    });	    
 
 
+	    developerButton.addClickHandler(new ClickHandler() {
+	  	public void onClick(ClickEvent event) {
+	          /*
+	           * Showcase instantiieren.
+	           */
+	          Update update = new DeveloperView();
+	          
+	          RootPanel.get("Details").clear();
+	          RootPanel.get("Details").add(update);
+	    }
+	    });
+	    
 	    profileButton.addClickHandler(new ClickHandler() {
 	  	public void onClick(ClickEvent event) {
 	          /*
