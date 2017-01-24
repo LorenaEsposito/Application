@@ -101,9 +101,9 @@ public class CreateNoteView extends Update{
    TextBox noteSubtitle = new TextBox();
    TextBox permissionText = new TextBox();
    TextArea textArea = new TextArea();
-   final Button createButton = new Button("Create");
-   final Button cancelButton = new Button("Cancel");
-   final Button savePermissionButton = new Button("Save");
+   final Button createButton = new Button("Erstellen");
+   final Button cancelButton = new Button("Abbrechen");
+   final Button savePermissionButton = new Button("Speichern");
    final Button deletePermissionButton = new Button("Loeschen");
    final RadioButton readButton = new RadioButton("Leseberechtigung");
    final RadioButton editButton = new RadioButton("Bearbeitungsberechtigung");
@@ -162,7 +162,7 @@ protected void run() {
     textArea.setPixelSize(420, 350);
 
     noteTitle.setText("Titel");
-    noteSubtitle.setText("Subtitel");
+    noteSubtitle.setText("Untertitel");
     if(Cookies.getCookie("url") != null){
         textArea.setText(
           "Hier finden Sie den Link den Sie speichern wollten: "

@@ -90,8 +90,8 @@ public class CreateNotebookView extends Update{
    
    TextBox notebookTitle = new TextBox();
    TextBox permissionText = new TextBox();
-   final Button createButton = new Button("Create");
-   final Button cancelButton = new Button("Cancel");
+   final Button createButton = new Button("Erstellen");
+   final Button cancelButton = new Button("Abbrechen");
    final Button savePermissionButton = new Button("Speichern");
    final Button deletePermissionButton = new Button("Loeschen");
    final RadioButton readButton = new RadioButton("Leseberechtigung");
@@ -149,7 +149,7 @@ protected void run() {
     RootPanel.get("Details").add(buttonPanel);
     
     
-    notebookTitle.setText("Überschrift");
+    notebookTitle.setText("Ueberschrift");
     readButton.setText("Leseberechtigung");
     editButton.setText("Bearbeitungsberechtigung");
     deleteButton.setText("Loeschberechtigung");
@@ -173,6 +173,7 @@ protected void run() {
     buttonPanel.setStyleName("buttonPanel");
     permissionPanel.setStyleName("permissionPanel");
     rightsLabel.setStyleName("headline");
+    deletePermissionButton.setStyleName("savePermission-button");
     
     notebookTitle.setEnabled(false);
     permissionText.setEnabled(false);

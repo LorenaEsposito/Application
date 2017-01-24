@@ -106,8 +106,8 @@ public class EditNotebookView extends Update {
 	Button saveNBButton = new Button("Speichern");
 	Button deleteNBButton = new Button("Loeschen");
 	Button cancelButton = new Button("Abbrechen");
-	final Button savePermissionButton = new Button("Save");
-	final Button deletePermissionButton = new Button("Berechtigung loeschen");
+	final Button savePermissionButton = new Button("Speichern");
+	final Button deletePermissionButton = new Button("Loeschen");
 	final RadioButton readButton = new RadioButton("Leseberechtigung");
 	final RadioButton editButton = new RadioButton("Bearbeitungsberechtigung");
 	final RadioButton deleteButton = new RadioButton("Loeschberechtigung");
@@ -167,6 +167,7 @@ public class EditNotebookView extends Update {
 	    buttonPanel.setStyleName("buttonPanel");
 	    permissionPanel.setStyleName("permissionPanel");
 	    rightsLabel.setStyleName("headline");
+	    deletePermissionButton.setStyleName("savePermission-button");
 	    
 	    readButton.setText("Leseberechtigung");
 	    editButton.setText("Bearbeitungsberechtigung");

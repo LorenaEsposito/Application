@@ -31,8 +31,10 @@ div#Navigator {
 
 div#Header {
 	height: 50px;
-	width: 998px;      /* standardkonforme horizontale Zentrierung */
+	width: 1000px;      /* standardkonforme horizontale Zentrierung */
 	border: 1px solid;
+	background-color: #004e9b;
+	border: 0px;
 }
 
 div#Trailer {
@@ -66,7 +68,7 @@ div#Trailer {
 .headObject {
 	font-size: 100%;
 	font-weight: bold;
-	color: #000000;
+	color: #ffffff;
 	width: 12em;
 	margin-left: 5px;
 	margin-top: 15px;
@@ -83,9 +85,9 @@ div#Trailer {
 
 .navPanel {
 	height:37px;
-	width:100px;
-	background-color: #ffffff;
-	border: 1px solid;
+	width:252px;
+	border:0px;
+	background-color: #a3cafa;
 }
 
 .navObject {
@@ -122,6 +124,7 @@ div#Trailer {
 .noteTitle {
 	font-size: 20px;
 	color: #666666;
+	width: 400px;
 	margin-top: 5px;
 	margin-left: 10px;
 	margin-bottom: 15px;
@@ -132,9 +135,10 @@ div#Trailer {
 .headlinePanel {
 	width: 746px;
 	height:30px;
-	background-color:#000000;
+	background-color:#004e9b;
 	font-weight: bold;
 	color: #ffffff;
+	padding: 6px;
 }
 
 .CreateLeftPanel {
@@ -301,7 +305,7 @@ padding: 10px;
 }
 
 .listbox {
-	background-color: #f7f7f7;
+	background-color: #ffffff;
 	font-size: 100%;
 	width: 150px;
 	height:20px;
@@ -335,4 +339,8 @@ padding: 10px;
 	background-color: #ffffff;
 	box-shadow: 0px 2px 2px #c0c0c0;
 	border-radius:8px;
+}
+
+.warningLabel {
+	color: #ff0000;
 }

@@ -154,8 +154,8 @@ public class Application implements EntryPoint {
 	  final Label usernameLabel = new Label("Username");
 	  final Label passwordLabel = new Label("Password");
 	  private Anchor signInLink = new Anchor("Login");
-	  public final static Button createNoteButton = new Button("");
-	  final Button createNotebookButton = new Button("");
+	  public final static Button createNoteButton = new Button("Notiz erstellen");
+	  final Button createNotebookButton = new Button("Notizbuch erstellen");
 	  final Button signOutButton = new Button("Ausloggen");
 	  final Button searchButton = new Button("Suche");
 	  final Button impressumButton = new Button("Impressum");
