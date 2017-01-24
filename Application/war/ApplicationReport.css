@@ -25,6 +25,14 @@ h1 {
 	color: #ffffff;
 }
 
+.loadRadiobuttonPanel{
+	margin-left: 10px;
+}
+
+.loadSearchUserPanel{
+	margin-left: 10px;
+	
+}
 
 .noteTitle {
 	color: #666666;
@@ -241,7 +249,7 @@ margin-top:10px;
 
 
 .AllNotesFromUserTable{
- background-color: #1188ff;
+ background-color: #004e9b;
    border-collapse: collapse;
    border: none;
 }
@@ -265,7 +273,7 @@ margin-top:10px;
     border: black;
     border-style: 1px solid black;
     text-align: -webkit-left;
-    background-color: #1188ff;
+    background-color: #004e9b;
  }	
 
 
@@ -275,6 +283,7 @@ margin-top:10px;
 	height:100%;
 	width: 800px;
 	margin-top: 0px;
+	margin-left: 10px;
 	padding-left: 10px;
 	padding-top: 10px;
 	box-shadow: inset 0px 2px 4px #a4a4a4;
@@ -347,11 +356,16 @@ div#Trailer {
   font-size: 16pt;
 }
 .usernamelabel {
-	margin-left: 350px;
+	margin-left: 10px;
 }
 
 .noteSearchButton{
-	left-margin: 200px;
+	margin-left: 200px;
+}
+
+.loadRadiobuttonPanel{
+	margin-left: 10px;
+	
 }
 
 

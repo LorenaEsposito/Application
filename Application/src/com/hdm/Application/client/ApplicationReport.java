@@ -70,7 +70,7 @@ public class ApplicationReport implements EntryPoint {
 	private VerticalPanel detailPanel = new VerticalPanel();
 	private HorizontalPanel filterPanel = new HorizontalPanel();
 	private HorizontalPanel radiobuttonPanel = new HorizontalPanel();
-	private HorizontalPanel searchUserPanel = new HorizontalPanel();
+	private VerticalPanel searchUserPanel = new VerticalPanel();
 	private VerticalPanel notePanel = new VerticalPanel();
 	private HorizontalPanel hpRadiobuttonPanel = new HorizontalPanel();
 	private VerticalPanel ergebnisPanel = new VerticalPanel();
@@ -182,24 +182,34 @@ public class ApplicationReport implements EntryPoint {
 		detailPanel.add(filterPanel);
 		
 		final Label usernameLabel = new Label();
-		usernameLabel.setText("Nutzer-Email:");
+		usernameLabel.setText("Nutzer-Email");
+		usernameLabel.setStylePrimaryName("usernamelabel");
 		final TextBox username = new TextBox(); 
-		final Button userSearchButton = new Button("Report generieren");
+		username.setStylePrimaryName("usernamelabel");
 		final RadioButton lebB = new RadioButton("Radiobutton-Group","Leseberechtigung");
+		lebB.setStylePrimaryName("usernamelabel");
 		final RadioButton lbB = new RadioButton("Radiobutton-Group","Löschberechtigung");
-		final RadioButton bbB = new RadioButton("Radiobutton-Group","Bearebitungsberechtigung");
+		lbB.setStylePrimaryName("usernamelabel");
+		final RadioButton bbB = new RadioButton("Radiobutton-Group","Bearbeitungsberechtigung");
+		bbB.setStylePrimaryName("usernamelabel");
 		final RadioButton enB = new RadioButton("Radiobutton-Group","Eigene Notizen");
+		enB.setStylePrimaryName("usernamelabel");
 		final RadioButton anB = new RadioButton("Radiobutton-Group","Alle Notizen eines Users");
+		anB.setStylePrimaryName("usernamelabel");
+		final Button userSearchButton = new Button("Report generieren");
+		userSearchButton.setStylePrimaryName("usernamelabel");
+		
+		
 
 		searchUserPanel.clear();
 		searchUserPanel.add(usernameLabel);
 		searchUserPanel.add(username);
-		searchUserPanel.add(userSearchButton);
 		searchUserPanel.add(lebB);
 		searchUserPanel.add(bbB);
 		searchUserPanel.add(lbB);
 		searchUserPanel.add(enB);
 		searchUserPanel.add(anB);
+		searchUserPanel.add(userSearchButton);
 
 		filterPanel.clear();
 		filterPanel.add(searchUserPanel);
@@ -459,12 +469,16 @@ protected void loadRadiobuttonPanel() {
 	detailPanel.add(filterPanel);
 	
 	final Label vonLabel = new Label();
-	vonLabel.setText("Von:");
+	vonLabel.setText("Von");
+	vonLabel.setStylePrimaryName("loadRadiobuttonPanel");
 	final DateBox vonBox = new DateBox();
 	final Label bisLabel = new Label();
-	bisLabel.setText("Bis:");
+	bisLabel.setStylePrimaryName("loadRadiobuttonPanel");
+	bisLabel.setText("Bis");
 	final DateBox bisBox = new DateBox();
 	final Button searchButton = new Button("Report anzeigen");
+	searchButton.setStylePrimaryName("loadRadiobuttonPanel");
+	
 	radiobuttonPanel.clear();
 	radiobuttonPanel.add(vonLabel);
 	radiobuttonPanel.add(vonBox);
@@ -571,6 +585,7 @@ protected void loadRadiobuttonPanel() {
 			filterPanel.clear();
 			filterPanel.add(notePanel);
 			
+			
 			no.addValueChangeHandler(new ValueChangeHandler<Boolean>() {
 				
 				
@@ -612,7 +627,7 @@ protected void loadRadiobuttonPanel() {
 					
 					if (no.getValue()){
 						reportGenerator.findByTitle(sucheNachNotiz.getText(), new AsyncCallback<AllNotes>() {
-
+							
 							@Override
 							public void onFailure(Throwable caught) {
 								Window.alert("createAllFilteredNotesReport fehler");
