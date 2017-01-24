@@ -222,8 +222,10 @@ public Notebook createNotebook(Notebook nb) throws IllegalArgumentException {
  *            Das Notebook, das aktualisiert werden soll
  */
 @Override
-public void editNotebook(Notebook nb) throws IllegalArgumentException {
-this.nbMapper.updateNotebook(nb);
+public Notebook editNotebook(Notebook nb) throws IllegalArgumentException {
+	Notebook notebook = new Notebook();
+	this.nbMapper.updateNotebook(nb);
+	return notebook;
 }
 
 /**
@@ -343,8 +345,12 @@ public void createPermissions(ArrayList<Permission> p) throws IllegalArgumentExc
  *            Die Permission, die aktualisiert werden soll
  */
 @Override
-public void editPermission(Permission p) throws IllegalArgumentException{
-//	this.pMapper.edit(p);
+public ArrayList<Permission> editPermissions(ArrayList<Permission> p) throws IllegalArgumentException{
+	ArrayList<Permission> permissions = new ArrayList<Permission>();
+	for(int i = 0; i < p.size(); i++){
+	permissions.add(this.pMapper.edit(p.get(i)));
+	}
+	return permissions;
 }
 /**
  * Loescht die uebergebene Permission endgueltig aus der Datenbank.
@@ -609,7 +615,6 @@ public ArrayList<Notebook> searchForNotebook(String title) throws IllegalArgumen
     		Notebook notebook = this.nbMapper.findById(permissions.get(i).getNbID());
     		notebooks.add(notebook);
     	}
-    	System.out.println(notebooks.size());
     	return notebooks;
     }
     
@@ -680,13 +685,10 @@ public ArrayList<Notebook> searchForNotebook(String title) throws IllegalArgumen
      */
     public AppUser searchUserByMail(String mail){
     	AppUser user = new AppUser();
-    	
     	if(this.uMapper.findByMail(mail) == null){
-    		user = null;
-    	}
-    	
-    	if(this.uMapper.findByMail(mail) != null){
-    		user = this.uMapper.findByMail(mail);
+    		user.setMail("error");
+    	}else{
+    	user = this.uMapper.findByMail(mail);
     	}
     	return user;
     }

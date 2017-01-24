@@ -3,7 +3,6 @@ package com.hdm.Application.client.gui;
 import java.util.ArrayList;
 import java.util.Date;
 
-import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.ShowRangeEvent;
@@ -24,7 +23,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.datepicker.client.CalendarUtil;
 import com.google.gwt.user.datepicker.client.DatePicker;
 import com.google.gwt.view.client.ListDataProvider;
-import com.google.gwt.view.client.MultiSelectionModel;
+import com.google.gwt.view.client.SingleSelectionModel;
 import com.hdm.Application.client.Application;
 import com.hdm.Application.client.ClientsideSettings;
 import com.hdm.Application.shared.NoteAdministrationAsync;
@@ -33,6 +32,7 @@ import com.hdm.Application.shared.bo.DueDate;
 import com.hdm.Application.shared.bo.Note;
 import com.hdm.Application.shared.bo.Notebook;
 import com.hdm.Application.shared.bo.Permission;
+import com.hdm.Application.shared.bo.UserPermission;
 
 public class CreateNoteView extends Update{
 
@@ -44,7 +44,7 @@ public class CreateNoteView extends Update{
 	
 	private NoteAdministrationAsync adminService = ClientsideSettings.getAdministration();
 	
-	private String currentNBTitle = new String();
+	int y = 0;
 	
 	private Notebook currentNB = Application.nbSelectionModel.getSelectedObject();
 	
@@ -52,26 +52,28 @@ public class CreateNoteView extends Update{
 	
 	private	Note note = new Note();
 	
+	Permission permission = new Permission();
+	
 	private ArrayList<Permission> permissions = new ArrayList<Permission>();
 	
 	private ArrayList<Permission> notePermissions = new ArrayList<Permission>();
 	
-	private ArrayList<Permission> nbPermissions = new ArrayList<Permission>();
+	private ArrayList<UserPermission> userPermission = new ArrayList<UserPermission>();
 	
-	private ArrayList<Notebook> notebooks = new ArrayList<Notebook>();
+	private AppUser user = null;
 	
-	private AppUser user = new AppUser();
+	private AppUser currentUser = new AppUser();
 	
 	Date date = new Date();
 	
-	TextCell cell = new TextCell();
+	UserPermissionCell cell = new UserPermissionCell();
     
-    CellList<String> cellList = new CellList<String>(cell); 
+    CellList<UserPermission> cellList = new CellList<UserPermission>(cell); 
     
-    final MultiSelectionModel<String> selectionModel = new MultiSelectionModel<String>();
+    final SingleSelectionModel<UserPermission> selectionModel = new SingleSelectionModel<UserPermission>();
     
  // Create a data provider.
-    ListDataProvider<String> dataProvider = new ListDataProvider<String>();
+    ListDataProvider<UserPermission> dataProvider = new ListDataProvider<UserPermission>();
 	
 	protected String getHeadlineText() {
 	    return "";
@@ -116,10 +118,7 @@ protected void run() {
     
     adminService.getCurrentUser(getCurrentUserCallback());
     
-    mainPanel.setStyleName("detailsPanel");
-
-    currentNBTitle = Application.listbox.getSelectedItemText();
-    
+    mainPanel.setStyleName("detailsPanel"); 
     
     cellList.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.ENABLED);
 
@@ -302,30 +301,73 @@ protected void run() {
     		savePermissionButton.setEnabled(false);
     		readButton.setEnabled(false);
     		editButton.setEnabled(false);
+    		deleteButton.setEnabled(false);
     		savePermissionButton.setStylePrimaryName("savePermission-button");
-    	
-    		if(permissionText.getText() == ""){
-    			Window.alert("Bitte eine E-Mail-Adresse eingeben");
-    			savePermissionButton.setEnabled(true);
-    			readButton.setEnabled(true);
-    			readButton.setValue(false);
-    			editButton.setEnabled(true);
-    			editButton.setValue(false);
-    			deleteButton.setEnabled(true);
-    			deleteButton.setValue(false);
-    		}
     		
-    		if(permissionText.getText() == user.getMail()){
-    			Window.alert("Als Eigentuemer der Notiz brauchen Sie keine Berechtigung fuer sich selbst anlegen.");
-    			
-    		}
+    		
+if(permissionText.getValue() != ""){
+	if(permissionText.getText() == currentUser.getMail()){
+		Window.alert("Als Eigentuemer der Notiz brauchen Sie keine Berechtigung fuer sich selbst anlegen.");
+		savePermissionButton.setEnabled(true);
+		readButton.setEnabled(true);
+		editButton.setEnabled(true);
+		deleteButton.setEnabled(true);
+		savePermissionButton.setStylePrimaryName("savePermission-button");
+	}else{
+        		
+		adminService.searchUserByMail(permissionText.getValue(), searchUserByMailCallback());
+        }
+}
 
-    		String mail = new String();
+        		
+        	if(selectionModel.getSelectedObject() == null && permissionText.getValue() == ""){
+        			Window.alert("Erstellen Sie eine neue Berechtigung oder bearbeiten Sie eine bestehende.");
+        		}
+        		else{
+        			UserPermission editUP = new UserPermission();
+        			editUP = selectionModel.getSelectedObject();
+        			if(readButton.getValue() == true){
+        				editUP.setPermissionType(1);
+        				dataProvider.getList().set(dataProvider.getList().indexOf(selectionModel.getSelectedObject()), editUP);
+        			}
+        			if(editButton.getValue() == true){
+        				editUP.setPermissionType(2); 
+        				dataProvider.getList().set(dataProvider.getList().indexOf(selectionModel.getSelectedObject()), editUP);
+        			}
+        			if(deleteButton.getValue() == true){
+        				editUP.setPermissionType(3);
+        				dataProvider.getList().set(dataProvider.getList().indexOf(selectionModel.getSelectedObject()), editUP);
+        			}
+        			if(readButton.getValue() == false && editButton.getValue() == false && deleteButton.getValue() == false){
+        				Window.alert("Bitte waehlen Sie eine Art der Berechtigung aus");
+        			}
+            		savePermissionButton.setEnabled(true);
+            		readButton.setEnabled(true);
+            		editButton.setEnabled(true);
+            		deleteButton.setEnabled(true);
+        		}
     		
-    		mail = permissionText.getValue();
-    		
-    		adminService.searchUserByMail(mail, searchUserByMailCallback());	
-    		
+    	}
+    });
+    
+    deletePermissionButton.addClickHandler(new ClickHandler() {
+    	public void onClick(ClickEvent event) {
+    		if(selectionModel.getSelectedObject() == null){
+    			Window.alert("Bitte wahelen Sie eine Person aus.");
+    		}else{
+    			boolean deletePossible = new Boolean(true);
+    			for(int i = 0; i < permissions.size(); i++){
+    				if(permissions.get(i).getPermissionID() == selectionModel.getSelectedObject().getPermissionID()){
+    					deletePossible = false;
+    				}
+    			}
+    			if(deletePossible == true){
+    				
+    				dataProvider.getList().remove(selectionModel.getSelectedObject());
+    			}else{
+    				Window.alert("Die ausgewaehlte Person kann nicht von der Berechtigungsliste geloescht werden.");
+    			}
+    		}
     	}
     });
     
@@ -379,7 +421,7 @@ protected void run() {
     		 ClientsideSettings.getLogger().
     		 severe("Success GetCurrentUserCallback: " + result.getClass().getSimpleName());
     		 
-    		 user = result;
+    		 currentUser = result;
     		 
     		    createButton.setEnabled(true);
     		    cancelButton.setEnabled(true);
@@ -389,7 +431,7 @@ protected void run() {
     		    savePermissionButton.setEnabled(true);
     		    deletePermissionButton.setEnabled(true);
     		    
-    		    adminService.getPermissions(currentNB.getNbID(), 0, getPermissionsCallback());
+    		    adminService.getPermissions(0, currentNB.getNbID(), getPermissionsCallback()); 
     		    
     		 
     	 }
@@ -412,28 +454,49 @@ protected void run() {
     		 severe("Success CreateNoteCallback: " + result.getClass().getSimpleName());
     		 
     		 Application.notesList.add(note.getnTitle());
+    		 Application.notesSelectionModel.setSelected(result.getnTitle(), true); 
     		 currentN = result;
+    		 boolean existingP = new Boolean(false);
+    		 for(int i = 0; i < permissions.size(); i++){
+    			 if(permissions.get(i).getUserID() == currentUser.getUserID() && permissions.get(i).getIsOwner() == true){
+    				 existingP = true;
+    			 }
+    		 }
+    		 if(existingP == false){
 
-    		 Permission permission = new Permission();
     			permission.setIsOwner(true);
     			permission.setNbID(currentNB.getNbID());
+    			permission.setNID(currentN.getnID());
     			permission.setPermissionType(3);
-    			permission.setUserID(user.getUserID());
+    			permission.setUserID(currentUser.getUserID());
     			
     			notePermissions.add(permission);
-    			
-    			for(int i = 0; i < notePermissions.size(); i++){
-    				permission = notePermissions.get(i);
-    				permission.setNID(currentN.getnID());
-    				permission.setNbID(currentNB.getNbID());
-    				
-    			}
-	   			 Update update = new EditNoteView();
-		          
-		          RootPanel.get("Details").clear();
-		          RootPanel.get("Details").add(update);
-		          
+    		 }
+    		 boolean savePermission = new Boolean(true);
+    		 for(int x = 0; x < dataProvider.getList().size(); x++){
+    			 for(int z = 0; z < permissions.size(); z++){
+    				 if(permissions.get(z).getUserID() == dataProvider.getList().get(x).getUserID()){
+    					 savePermission = false;
+    				 }
+    			 }
+    			 if(savePermission == true){
+    				 Permission permission = new Permission();
+    				 permission.setIsOwner(false);
+    				 permission.setNbID(currentNB.getNbID());
+    				 permission.setNID(currentN.getnID());
+    				 permission.setPermissionType(dataProvider.getList().get(x).getPermissionType());
+    				 permission.setUserID(dataProvider.getList().get(x).getUserID());
+    				 notePermissions.add(permission);
+    			 }
+    		 }
+// 
+//	   			 Update update = new EditNoteView();
+//		          
+//		          RootPanel.get("Details").clear();
+//		          RootPanel.get("Details").add(update);
+		        if(notePermissions.size() != 0){  
 				adminService.createPermissions(notePermissions, createPermissionsCallback());
+		        }
 				
 				if(datePicker.getValue() != null) {
 					DueDate duedate = new DueDate();
@@ -494,61 +557,57 @@ protected void run() {
     			ClientsideSettings.getLogger().
     			severe("Success SearchUserByMailCallback: " + result.getClass().getSimpleName());
     			user = result;
-    			
-    			Permission permission = new Permission();
-    			
-    			if(user == null){
-        			Window.alert("Der eingegebene Nutzer existiert nicht. Ueberpruefen Sie bitte Ihre Angaben.");
-        		}
         		
-        		if(user != null){
+    			if(user.getMail() == "error"){
+    				Window.alert("Der eingegebene Nutzer existiert nicht. Ueberpruefen Sie bitte Ihre Angaben.");
+    			}else{
         			boolean isExisting = new Boolean(false);
         			for(int i = 0; i < dataProvider.getList().size(); i++) {
-        				if(user.getUserName() == dataProvider.getList().get(i)) {
+        				if(user.getMail() == dataProvider.getList().get(i).getMail()) {
         					isExisting = true;
         					break;
         				}
         			}
         			if(isExisting == false){
-        			permission.setUserID(user.getUserID());
-        			permission.setIsOwner(false);
 
+            			UserPermission userP = new UserPermission();
+            			userP.setMail(user.getMail());
+            			userP.setUserID(user.getUserID());
         			
         			if(readButton.getValue() == true){
 
-        				permission.setPermissionType(1);
+            			userP.setPermissionType(1);
 
         			}
         			if(editButton.getValue() == true){
 
-        				permission.setPermissionType(2);
+            			userP.setPermissionType(2);
 
         			}
         			if(deleteButton.getValue() == true){
-        				permission.setPermissionType(3);
+            			userP.setPermissionType(3);
         			}
         			if(readButton.getValue() == false && editButton.getValue() == false && deleteButton.getValue() == false){
         				Window.alert("Bitte waehlen Sie eine Art der Berechtigung aus");
         				savePermissionButton.setEnabled(true);
         			}
         			
-        			notePermissions.add(permission);
-        			dataProvider.getList().add(user.getUserName());
+        			dataProvider.getList().add(userP);
         			}
         			
         			if(isExisting == true){
         				Window.alert("Es wurde bereits eine Berechtigung an diesen User vergeben");
         			}
-        			
-        			savePermissionButton.setEnabled(true);
-        			permissionText.setText("Name des Berechtigten");
-        			readButton.setEnabled(true);
-        			editButton.setEnabled(true);
-        			deleteButton.setEnabled(true);
-        			readButton.setValue(false);
-        			editButton.setValue(false);
-        			deleteButton.setValue(false);
+
         		}
+    			savePermissionButton.setEnabled(true);
+    			permissionText.setText("");
+    			readButton.setEnabled(true);
+    			editButton.setEnabled(true);
+    			deleteButton.setEnabled(true);
+    			readButton.setValue(false);
+    			editButton.setValue(false);
+    			deleteButton.setValue(false);
     		}
     	};
     	return asyncCallback;
@@ -600,9 +659,18 @@ protected void run() {
     			ClientsideSettings.getLogger().
     			severe("Success GetPermissionsCallback: " + result.getClass().getSimpleName());
     			for(int i = 0; i < result.size(); i++){
-    				adminService.getUserByID(result.get(i).getUserID(), getUserByIDCallback());
-    				
+    				if(result.get(i).getUserID() != currentUser.getUserID()){
+    				UserPermission up = new UserPermission();
+    				up.setMail(null);
+    				up.setUserID(result.get(i).getUserID());
+    				up.setPermissionID(result.get(i).getPermissionID());
+    				up.setPermissionType(result.get(i).getPermissionType());
+    				userPermission.add(up);
+    				}
     			}
+    			permissions = result;
+    			y = 0;
+    			adminService.getUserByID(userPermission.get(y).getUserID(), getUserByIDCallback());
     		}
     	};
     	return asyncCallback;
@@ -619,9 +687,15 @@ protected void run() {
     		@Override
     		public void onSuccess(AppUser result) {
     			ClientsideSettings.getLogger().
-    			severe("Success GetPermissionsCallback: " + result.getClass().getSimpleName());
-    			if(result != user){
-    			dataProvider.getList().add(result.getMail());
+    			severe("Success GetUserByIDCallback: " + result.getClass().getSimpleName());
+    			userPermission.get(y).setMail(result.getMail());
+    			y++;
+    			if(y < userPermission.size()){
+    				adminService.getUserByID(userPermission.get(y).getUserID(), getUserByIDCallback());
+    			}else{
+    				for(int x = 0; x < userPermission.size(); x++){
+    					dataProvider.getList().add(userPermission.get(x));
+    				}
     			}
     		}
     	};

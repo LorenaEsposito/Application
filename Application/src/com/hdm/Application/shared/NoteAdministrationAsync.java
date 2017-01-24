@@ -2,7 +2,6 @@ package com.hdm.Application.shared;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Vector;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.hdm.Application.shared.bo.*;
@@ -44,7 +43,7 @@ public interface NoteAdministrationAsync {
 	public void createNotebook(Notebook nb, AsyncCallback<Notebook> callback)
 			throws IllegalArgumentException;
 
-	public void editNotebook(Notebook nb, AsyncCallback<Void> callback)
+	public void editNotebook(Notebook nb, AsyncCallback<Notebook> callback)
 			throws IllegalArgumentException;
 
 	public void deleteNotebook(Notebook nb, AsyncCallback<Void> callback)
@@ -62,7 +61,7 @@ public interface NoteAdministrationAsync {
 	public void createPermissions(ArrayList<Permission> p, AsyncCallback<Void> callback)
 			throws IllegalArgumentException;
 
-	public void editPermission(Permission p, AsyncCallback<Void> callback)
+	public void editPermissions(ArrayList<Permission> p, AsyncCallback<ArrayList<Permission>> callback)
 			throws IllegalArgumentException;
 
 	public void deletePermission(Permission p, AsyncCallback<Void> callback)
@@ -117,7 +116,7 @@ public interface NoteAdministrationAsync {
 			AsyncCallback<ArrayList<Notebook>> callback)
 			throws IllegalArgumentException;
 	
-	public void getPermissions(int nbID, int nID,
+	public void getPermissions(int nID, int nbID,
 			AsyncCallback<ArrayList<Permission>> callback)
 			throws IllegalArgumentException;
 	

@@ -338,7 +338,7 @@ public class NotebookMapper {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-
+		System.out.println("Update successfull");
 		return notebook;
 	}
 

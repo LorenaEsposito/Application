@@ -1,7 +1,6 @@
 package com.hdm.Application.client;
 
 
-import com.hdm.Application.shared.FieldVerifier;
 import com.hdm.Application.client.gui.ImpressumView;
 import com.hdm.Application.client.gui.CreateNoteView;
 import com.hdm.Application.client.gui.CreateNotebookView;
@@ -19,15 +18,13 @@ import com.hdm.Application.shared.NoteAdministrationAsync;
 import com.hdm.Application.shared.bo.AppUser;
 import com.hdm.Application.shared.bo.Note;
 import com.hdm.Application.shared.bo.Notebook;
-
+import com.hdm.Application.shared.bo.Permission;
 import com.hdm.Application.client.ClientsideSettings;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import com.hdm.Application.client.gui.SearchView;
-import com.google.gwt.cell.client.AbstractCell;
-import com.google.gwt.cell.client.Cell;
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
@@ -49,7 +46,6 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.view.client.ListDataProvider;
@@ -158,9 +154,8 @@ public class Application implements EntryPoint {
 	  final Label usernameLabel = new Label("Username");
 	  final Label passwordLabel = new Label("Password");
 	  private Anchor signInLink = new Anchor("Login");
-	  public final static ListBox listbox = new ListBox();
-	  final Button createNoteButton = new Button("Notiz erstellen");
-	  final Button createNotebookButton = new Button("Notizbuch erstellen");
+	  public final static Button createNoteButton = new Button("");
+	  final Button createNotebookButton = new Button("");
 	  final Button signOutButton = new Button("Ausloggen");
 	  final Button searchButton = new Button("Suche");
 	  final Button impressumButton = new Button("Impressum");
@@ -246,8 +241,6 @@ public class Application implements EntryPoint {
   		adminService.getUserByMail(ClientsideSettings.getLoginInfo().getEmailAddress(),
  				getCurrentUserCallback());
  		
- 		listbox.setSelectedIndex(0);
- 		
  		noteCellList.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.ENABLED);
 
  	    // Add a selection model to handle user selection.
@@ -283,7 +276,6 @@ public class Application implements EntryPoint {
  		impressumButton.setStyleName("headObject");
  		profileButton.setStyleName("headObject");
 	    signOutButton.setStyleName("headObject");
-	    listbox.setStyleName("navListbox");
 	    headPanel.setStyleName("headPanel");
 	    navPanel.setStyleName("navPanel");
 	    headButtonPanel.setStyleName("headButtonPanel");
@@ -302,7 +294,6 @@ public class Application implements EntryPoint {
 	    headButtonPanel.add(profileButton);
 	    headButtonPanel.add(signOutButton);
 	    headPanel.add(headButtonPanel);
-	    navPanel.add(listbox);
 	    navPanel.add(nbCellList);
 	    navPanel2.add(noteCellList);
 	    navPanel2.add(createNotebookButton);
@@ -311,6 +302,8 @@ public class Application implements EntryPoint {
 	    RootPanel.get("Header").add(headPanel);
 	    RootPanel.get("Navigator").add(navPanel);
 	    RootPanel.get("Navigator").add(navPanel2);
+	    
+	    createNoteButton.setEnabled(false);
 	    
 	    /**
 	     * Implementierung der jeweiligen ClickHandler fuer die einzelnen Widgets
@@ -327,10 +320,9 @@ public class Application implements EntryPoint {
 	    
 	    nbSelectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
 			public void onSelectionChange(SelectionChangeEvent event) {
-				Window.alert(nbSelectionModel.getSelectedObject().getNbTitle());
-				
+
 				adminService.getNotesOfNotebook(nbSelectionModel.getSelectedObject(), getNotesOfNotebookCallback());
-				
+				adminService.getPermission(currentUser.getUserID(), nbSelectionModel.getSelectedObject().getNbID(), 0, getPermissionCallback());
 				Update update = new EditNotebookView();
 				RootPanel.get("Details").clear();
 				RootPanel.get("Details").add(update);
@@ -342,10 +334,12 @@ public class Application implements EntryPoint {
 	  	public void onClick(ClickEvent event) {
 	          /*
 	           * Showcase instantiieren.
-	           */
+	           */ 
+	          
 	          Update update = new CreateNotebookView();
 	          RootPanel.get("Details").clear();
 	          RootPanel.get("Details").add(update);
+	          
 	    }
 	    });
 	    
@@ -410,18 +404,6 @@ public class Application implements EntryPoint {
 	          RootPanel.get("Details").add(update);
 	    }
 	    });
-
-	   
-	    listbox.addChangeHandler(new ChangeHandler() {
-	    	public void onChange(ChangeEvent event) {
-	    		adminService.getNotesOfNotebookTitle(listbox.getSelectedItemText(), currentUser, getNotesOfNotebookTitleCallback());
-	    		
-	    		Update update = new EditNotebookView();
-	    		
-	    		RootPanel.get("Details").clear();
-	    		RootPanel.get("Details").add(update);
-	    	}
-	    });
 	    
 	}
  
@@ -465,16 +447,10 @@ public class Application implements EntryPoint {
 		 ClientsideSettings.getLogger()
 			.severe("Success GetCurrentUserCallback: " + result.getClass().getSimpleName());
 		 currentUser = result;
-		 
-		 if(currentUser.getUserName() != null){
-		 userLabel.setText(currentUser.getUserName());
+
+		 userLabel.setText(currentUser.getMail());
 		 Update update = new WelcomeView();
 		 RootPanel.get("Details").add(update);
-		 }
-		 else{
-			 Update update = new EditProfileView();
-			 RootPanel.get("Details").add(update);
-		 }
 		 
 		 adminService.getNotebooksOfUser(currentUser, getNotebooksOfUserCallback());
 		 
@@ -500,38 +476,11 @@ public class Application implements EntryPoint {
 			 
 			 for (int x = 0; x < notebooks.size(); x++ ){
 				 nbDataProvider.getList().add(notebooks.get(x));
-				 listbox.addItem(notebooks.get(x).getNbTitle());
-				 
-				 listbox.setVisibleItemCount(1);
+
 			 }
 //			 nbCellList.setVisibleRange(0, 5);
-			 nbSelectionModel.setSelected(notebooks.get(0), true);
-			 adminService.getNotesOfNotebookTitle(listbox.getSelectedValue(), currentUser, getNotesOfNotebookTitleCallback());
-			 adminService.getNotesOfNotebook(nbSelectionModel.getSelectedObject(), getNotesOfNotebookCallback());
+//			 adminService.getNotesOfNotebook(nbSelectionModel.getSelectedObject(), getNotesOfNotebookCallback());
 		 }
-	 };
-	 return asyncCallback;
- }
- 
- private AsyncCallback<ArrayList<Note>> getNotesOfNotebookTitleCallback() {
-	 AsyncCallback<ArrayList<Note>> asyncCallback = new AsyncCallback<ArrayList<Note>>(){
-	 
-	 @Override
-		public void onFailure(Throwable caught) {
-			ClientsideSettings.getLogger().severe("Error: " + caught.getMessage());
-		}
-	 
-	 @Override
-	 public void onSuccess(ArrayList<Note> result) {
-		 ClientsideSettings.getLogger().
-		 severe("Success GetNotesOfNotebookCallback: " + result.getClass().getSimpleName());
-		 
-		 notes = result;
-		 notesDataProvider.getList().clear();
-		 for(int i = 0; i < notes.size(); i++) {
-			 notesDataProvider.getList().add(notes.get(i).getnTitle());
-		 }
-	 }
 	 };
 	 return asyncCallback;
  }
@@ -548,11 +497,30 @@ public class Application implements EntryPoint {
 	 public void onSuccess(ArrayList<Note> result) {
 		 ClientsideSettings.getLogger().
 		 severe("Success GetNotesOfNotebookCallback: " + result.getClass().getSimpleName());
-		 Window.alert("GetNotesOfNotebook-Methode");
 		 notes = result;
 		 notesDataProvider.getList().clear();
 		 for(int i = 0; i < notes.size(); i++) {
 			 notesDataProvider.getList().add(notes.get(i).getnTitle());
+		 }
+	 }
+	 };
+	 return asyncCallback;
+ }
+ 
+ private AsyncCallback<Permission> getPermissionCallback() {
+	 AsyncCallback<Permission> asyncCallback = new AsyncCallback<Permission>(){
+	 
+	 @Override
+		public void onFailure(Throwable caught) {
+			ClientsideSettings.getLogger().severe("Error: " + caught.getMessage());
+		}
+	 
+	 @Override
+	 public void onSuccess(Permission result) {
+		 ClientsideSettings.getLogger().
+		 severe("Success GetPermissionCallback: " + result.getClass().getSimpleName());
+		 if(result.getPermissionType() == 2 || result.getPermissionType() == 3){
+			 createNoteButton.setEnabled(true);
 		 }
 	 }
 	 };

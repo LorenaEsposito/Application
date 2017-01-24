@@ -2,7 +2,6 @@ package com.hdm.Application.shared;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Vector;
 
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
@@ -27,7 +26,7 @@ public interface NoteAdministration extends RemoteService {
 
 	public Notebook createNotebook(Notebook nb) throws IllegalArgumentException;
 
-	public void editNotebook(Notebook nb) throws IllegalArgumentException;
+	public Notebook editNotebook(Notebook nb) throws IllegalArgumentException;
 
 	public void deleteNotebook(Notebook nb) throws IllegalArgumentException;
 
@@ -39,7 +38,7 @@ public interface NoteAdministration extends RemoteService {
 
 	public void createPermissions(ArrayList<Permission> p) throws IllegalArgumentException;
 
-	public void editPermission(Permission p) throws IllegalArgumentException;
+	public ArrayList<Permission> editPermissions(ArrayList<Permission> p) throws IllegalArgumentException;
 
 	public void deletePermission(Permission p) throws IllegalArgumentException;
 
@@ -69,7 +68,7 @@ public interface NoteAdministration extends RemoteService {
 	
 	public ArrayList<Notebook> getOwnedNotebooks(AppUser user) throws IllegalArgumentException;
 	
-	public ArrayList<Permission> getPermissions(int nbID, int nID) throws IllegalArgumentException;
+	public ArrayList<Permission> getPermissions(int nID, int nbID) throws IllegalArgumentException;
 	
 	public Permission getPermission(int uID, int nbID, int nID) throws IllegalArgumentException;
 

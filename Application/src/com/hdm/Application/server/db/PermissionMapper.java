@@ -445,8 +445,8 @@ public Vector<Permission> findOwnedNotebooks(int appUserID){
 			 * Statement ausf�llen und als Query an die DB schicken
 			 */
 
-			stmt.executeUpdate("UPDATE permissions " + "SET permtype=\""
-					+ p.getPermissionType() + "\", " + " WHERE id="
+			stmt.executeUpdate("UPDATE permissions " + "SET permtype="
+					+ p.getPermissionType() + " WHERE pid="
 					+ p.getPermissionID());
 
 		} catch (SQLException e) {
