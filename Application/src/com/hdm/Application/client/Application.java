@@ -143,6 +143,7 @@ public class Application implements EntryPoint {
 	  private HorizontalPanel headButtonPanel = new HorizontalPanel();
 	  private VerticalPanel navPanel = new VerticalPanel();
 	  private VerticalPanel navPanel2 = new VerticalPanel();
+	  private VerticalPanel navPanel3 = new VerticalPanel();
 	  /**
 	   * Erstellung aller Widgets
 	   */
@@ -284,6 +285,7 @@ public class Application implements EntryPoint {
 	    headPanel.setStyleName("headPanel");
 	    navPanel.setStyleName("navPanel");
 	    navPanel2.setStyleName("navPanel2");
+	    navPanel3.setStyleName("navPanel3");
 	    headButtonPanel.setStyleName("headButtonPanel");
 	    notebookLabel.setStyleName("navLabel");
 	    noteLabel.setStyleName("navLabel");
@@ -308,12 +310,14 @@ public class Application implements EntryPoint {
 	    navPanel.add(nbCellList);
 	    navPanel2.add(noteLabel);
 	    navPanel2.add(noteCellList);
-	    navPanel2.add(createNotebookButton);
-	    navPanel2.add(createNoteButton);
+	    navPanel3.add(createNotebookButton);
+	    navPanel3.add(createNoteButton);
 //	    navPanel2.add(cellTree);
 	    RootPanel.get("Header").add(headPanel);
+	    RootPanel.get("Navigator").add(navPanel3);
 	    RootPanel.get("Navigator").add(navPanel);
 	    RootPanel.get("Navigator").add(navPanel2);
+	   
 	    
 	    createNoteButton.setEnabled(false);
 	    
