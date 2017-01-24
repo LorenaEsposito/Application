@@ -180,6 +180,7 @@ protected void run() {
     permissionPanel.add(deleteButton);
     permissionPanel.add(savePermissionButton);
     permissionPanel.add(deletePermissionButton);
+    rightPanel.add(cellList);
     rightPanel.add(duedateLabel);
     leftPanel.add(noteTitleTB);
     leftPanel.add(noteSubtitleTB);
@@ -189,7 +190,7 @@ protected void run() {
     datePanel.add(moddateLabel);
     datePanel.add(moddate);
     
-    rightPanel.add(cellList);
+    
     rightPanel.add(duedate);
     rightPanel.add(saveDuedateButton);
     rightPanel.add(deleteDuedateButton);

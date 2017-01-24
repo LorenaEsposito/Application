@@ -479,7 +479,7 @@ public class Application implements EntryPoint {
 			.severe("Success GetCurrentUserCallback: " + result.getClass().getSimpleName());
 		 currentUser = result;
 
-		 userLabel.setText(currentUser.getMail());
+		 userLabel.setText("Sie sind eingeloggt als: " + currentUser.getMail());
 		 Update update = new WelcomeView();
 		 RootPanel.get("Details").add(update);
 		 

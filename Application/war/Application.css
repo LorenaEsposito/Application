@@ -52,14 +52,7 @@ div#Trailer {
 
 
 
-
-
-
-
 /* Nun folgen diverse CSS Designs für Panels,Texte,Textboxen etc.--------------------------------------------- */
-
-
-
 
 
 
@@ -134,9 +127,6 @@ div#Trailer {
 
 
 }
-
-
-
 
 
 
@@ -342,7 +332,12 @@ padding: 10px;
 	margin-top: 20px;
 	opacity: 0.7;
 	
-	
+}
+
+.headline {
+	font-weight:bold;
+	margin-top:3px;
+}
 }
 
 .listbox {
