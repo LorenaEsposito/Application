@@ -134,7 +134,7 @@ h1 {
 .navObject {
 	background: url(/NewNotebook.png);
 	background-size: 100%;
-	font-size: 110%;
+	font-size: 100%;
 	font-weight: bold;
 	height:40px;
 	width:40px;
@@ -168,7 +168,7 @@ h1 {
 .navObject:hover {
 	background: url(/hoverNewNotebook.png);
 	background-size: 100%;
-	font-size: 110%;
+	font-size: 100%;
 	font-weight: bold;
 	height:40px;
 	width:40px;
