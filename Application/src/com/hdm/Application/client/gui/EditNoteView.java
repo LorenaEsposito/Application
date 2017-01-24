@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -61,6 +60,14 @@ public class EditNoteView extends Update{
 	
 	private ArrayList<Permission> permissions = new ArrayList<Permission>();
 	
+	private ArrayList<Permission> newPermissions = new ArrayList<Permission>();
+	
+	private ArrayList<Permission> editPermissions = new ArrayList<Permission>();
+	
+	private ArrayList<UserPermission> userPermission = new ArrayList<UserPermission>();
+	
+	private int y = new Integer(0);
+	
 	Permission newPermission = new Permission();
 	
 	private ArrayList<Note> notesOfNB = new ArrayList<Note>();
@@ -69,7 +76,7 @@ public class EditNoteView extends Update{
 	
 	private AppUser user = new AppUser();
 	
-	private AppUser permissionUser = new AppUser();
+//	private AppUser permissionUser = new AppUser();
 	
 	private AppUser currentUser = new AppUser();
 	
@@ -317,18 +324,48 @@ protected void run() {
     		savePermissionButton.setEnabled(false);
     		readButton.setEnabled(false);
     		editButton.setEnabled(false);
+    		deleteButton.setEnabled(false);
     		savePermissionButton.setStylePrimaryName("savePermission-button");
     		
     		
     		if(permissionTB.getValue() != ""){
+	    		if(permissionTB.getText() == currentUser.getMail()){
+	    			Window.alert("Als Eigentuemer der Notiz brauchen Sie keine Berechtigung fuer sich selbst anlegen.");
+	        		savePermissionButton.setEnabled(true);
+	        		readButton.setEnabled(true);
+	        		editButton.setEnabled(true);
+	        		deleteButton.setEnabled(true);
+	        		savePermissionButton.setStylePrimaryName("savePermission-button");
+	    		}else{
     		
-    		adminService.searchUserByMail(permissionTB.getValue(), searchUserByMailCallback());
+	    			adminService.searchUserByMail(permissionTB.getValue(), searchUserByMailNewCallback());
+	    			}
     		}
     		if(selectionModel.getSelectedObject() == null && permissionTB.getValue() == ""){
     			Window.alert("Erstellen Sie eine neue Berechtigung oder bearbeiten Sie eine bestehende.");
     		}
     		else{
-    			adminService.searchUserByMail(selectionModel.getSelectedObject().getMail(), searchUserByMailCallback());
+    			adminService.searchUserByMail(selectionModel.getSelectedObject().getMail(), searchUserByMailEditCallback());
+    			UserPermission editUP = new UserPermission();
+    			editUP = selectionModel.getSelectedObject();
+    			if(readButton.getValue() == true){
+    				editUP.setPermissionType(1);
+    				userPermission.set(userPermission.indexOf(selectionModel.getSelectedObject()), editUP);
+    				dataProvider.getList().set(dataProvider.getList().indexOf(selectionModel.getSelectedObject()), editUP);
+    			}
+    			if(editButton.getValue() == true){
+    				editUP.setPermissionType(2);
+    				userPermission.set(userPermission.indexOf(selectionModel.getSelectedObject()), editUP);
+    				dataProvider.getList().set(dataProvider.getList().indexOf(selectionModel.getSelectedObject()), editUP);
+    			}
+    			if(deleteButton.getValue() == true){
+    				editUP.setPermissionType(3);
+    				userPermission.set(userPermission.indexOf(selectionModel.getSelectedObject()), editUP);
+    				dataProvider.getList().set(dataProvider.getList().indexOf(selectionModel.getSelectedObject()), editUP);
+    			}
+    			if(readButton.getValue() == false && editButton.getValue() == false && deleteButton.getValue() == false){
+    				Window.alert("Bitte waehlen Sie eine Art der Berechtigung aus");
+    			} 
     		}
     		
     	}
@@ -336,10 +373,23 @@ protected void run() {
     
     deletePermissionButton.addClickHandler(new ClickHandler() {
     	public void onClick(ClickEvent event){
-    		deletePermissionButton.setEnabled(false);
-    		savePermissionButton.setEnabled(false);
-    		
-    		adminService.getUserByMail(selectionModel.getSelectedObject().getMail(), getUserForPermissionDeleteCallback()); 
+    		if(selectionModel.getSelectedObject() == null){
+    			Window.alert("Bitte wahelen Sie eine Person aus.");
+    		}else{
+    			boolean deletePossible = new Boolean(true);
+    			for(int i = 0; i < permissions.size(); i++){
+    				if(permissions.get(i).getPermissionID() == selectionModel.getSelectedObject().getPermissionID() && permissions.get(i).getNID() == 0){
+    					deletePossible = false;
+    				}
+    			}
+    			if(deletePossible == true){
+    				
+    				dataProvider.getList().remove(selectionModel.getSelectedObject());
+    				adminService.getPermission(selectionModel.getSelectedObject().getUserID(), currentNB.getNbID(), currentNote.getnID(), getPermissionForDeleteCallback()); 
+    			}else{
+    				Window.alert("Die ausgewaehlte Person kann nicht von der Berechtigungsliste geloescht werden.");
+    			}
+    		} 
     	}
     });
     
@@ -393,13 +443,6 @@ protected void run() {
  		 }
 		}
 
-          /*
-           * Showcase instantiieren.
-           */
-          Update update = new EditNoteView();
-          
-          RootPanel.get("Details").clear();
-          RootPanel.get("Details").add(update);
     }
     });
     
@@ -419,7 +462,6 @@ protected void run() {
     cancelButton.addClickHandler(new ClickHandler() {
     	public void onClick(ClickEvent event){
     		cancelButton.setEnabled(false);
-    		cancelButton.setStylePrimaryName("");
     		
     		Update update = new WelcomeView();
     		
@@ -550,10 +592,17 @@ private AsyncCallback<ArrayList<Permission>> getPermissionsCallback(){
 				 }
 			 }
 			 else{
-			 adminService.getUserByID(result.get(i).getUserID(), getUserByIDCallback());
+ 				UserPermission up = new UserPermission();
+ 				up.setMail(null);
+ 				up.setUserID(result.get(i).getUserID());
+ 				up.setPermissionID(result.get(i).getPermissionID());
+ 				up.setPermissionType(result.get(i).getPermissionType());
+ 				userPermission.add(up);
 			 }
 		 }
-		 
+		y = 0;
+		adminService.getUserByID(userPermission.get(y).getUserID(), getUserByIDCallback());
+		permissions = result;
 	 }
 	};
 	return asyncCallback;
@@ -571,7 +620,15 @@ private AsyncCallback<AppUser> getUserByIDCallback(){
 	 public void onSuccess(AppUser result) {
 		 ClientsideSettings.getLogger().
 		 severe("Success GetUserByIDCallback: " + result.getClass().getSimpleName());
-//		 list.add(result.getMail());
+		 userPermission.get(y).setMail(result.getMail());
+			y++;
+			if(y < userPermission.size()){
+				adminService.getUserByID(userPermission.get(y).getUserID(), getUserByIDCallback());
+			}else{
+				for(int x = 0; x < userPermission.size(); x++){
+					dataProvider.getList().add(userPermission.get(x));
+				}
+			}
 	 }
 	};
 	return asyncCallback;
@@ -652,31 +709,61 @@ private AsyncCallback<DueDate> getDuedateCallback(){
     		 
     		 index = Application.notesDataProvider.getList().indexOf(currentNote.getnTitle());
     		 Application.notesList.set(index, result.getnTitle());
-    		 Application.notesSelectionModel.setSelected(result.getnTitle(), true); 
+
+    		 
+             Update update = new EditNoteView();
+             
+             RootPanel.get("Details").clear();
+             RootPanel.get("Details").add(update);
+    		 
+    		 boolean savePermission = new Boolean(true);
+    		 for(int x = 0; x < dataProvider.getList().size(); x++){
+    			 for(int z = 0; z < permissions.size(); z++){
+    				 if(permissions.get(z).getUserID() == dataProvider.getList().get(x).getUserID()){
+        				 Permission editPermission = new Permission();
+        				 editPermission = permissions.get(z);
+        				 editPermission.setPermissionType(dataProvider.getList().get(x).getPermissionType());
+        				 editPermissions.add(editPermission);
+    					 savePermission = false;
+    				 }
+    			 }
+    			 if(savePermission == true){
+    				 Permission permission = new Permission();
+    				 permission.setIsOwner(false);
+    				 permission.setNbID(currentNB.getNbID());
+    				 permission.setNID(result.getnID());
+    				 permission.setPermissionType(dataProvider.getList().get(x).getPermissionType());
+    				 permission.setUserID(dataProvider.getList().get(x).getUserID());
+    				 newPermissions.add(permission);
+    			 }
+    		 }
+    		 adminService.createPermissions(newPermissions, createPermissionsCallback());
+    		 adminService.editPermissions(editPermissions, editPermissionsCallback());
     	 }
     	};
     	return asyncCallback;
 
     }
     
-//    private AsyncCallback<Void> createPermissionCallback() {
-//    	AsyncCallback<Void> asyncCallback = new AsyncCallback<Void>() {
-//    		
-//    		@Override
-//    		public void onFailure(Throwable caught) {
-//    			ClientsideSettings.getLogger().severe("Error: " + caught.getMessage());
-//    		}
-//    		
-//    		@Override
-//    		public void onSuccess(Void result) {
-//    			ClientsideSettings.getLogger().
-//    			severe("Success CreatePermissionCallback: " + result.getClass().getSimpleName());
-//    		}
-//    	};
-//    	return asyncCallback;
-//    }
-//    
-    private AsyncCallback<AppUser> searchUserByMailCallback() {
+    private AsyncCallback<Void> createPermissionsCallback() {
+    	AsyncCallback<Void> asyncCallback = new AsyncCallback<Void>() {
+    		
+    		@Override
+    		public void onFailure(Throwable caught) {
+    			ClientsideSettings.getLogger().severe("Error: " + caught.getMessage());
+    		}
+    		
+    		@Override
+    		public void onSuccess(Void result) {
+    			ClientsideSettings.getLogger().
+    			severe("Success CreatePermissionCallback: " + result.getClass().getSimpleName());
+       		 Application.notesSelectionModel.setSelected(noteTitleTB.getValue(), true);
+    		}
+    	};
+    	return asyncCallback;
+    }
+    
+    private AsyncCallback<AppUser> searchUserByMailNewCallback() {
     	AsyncCallback<AppUser> asyncCallback = new AsyncCallback<AppUser>() {
     		
     		@Override
@@ -702,47 +789,65 @@ private AsyncCallback<DueDate> getDuedateCallback(){
         			}
         			
         			if(isExisting == false){
-            			permission.setUserID(user.getUserID());
-            			permission.setIsOwner(false);
+            			UserPermission userP = new UserPermission();
+            			userP.setMail(user.getMail());
+            			userP.setUserID(user.getUserID());
         			
         			permission.setUserID(user.getUserID());
         			
         			if(readButton.getValue() == true){
-        				permission.setPermissionType(1);
+        				userP.setPermissionType(1);
         			}
         			if(editButton.getValue() == true){
-        				permission.setPermissionType(2);
+        				userP.setPermissionType(2);
         			}
         			if(deleteButton.getValue() == true){
-        				permission.setPermissionType(3);
+        				userP.setPermissionType(3);
         			}
         			if(readButton.getValue() == false && editButton.getValue() == false && deleteButton.getValue() == false){
         				Window.alert("Bitte waehlen Sie eine Art der Berechtigung aus");
         			}
         			
-        			permissions.add(permission);
-//        			dataProvider.getList().add(user.getMail());
+        			dataProvider.getList().add(userP);
         			}
         			
-        			if(isExisting == true){
-        				
-        				if(readButton.getValue() == true){
-            				newPermission.setPermissionType(1);
-            			}
-            			if(editButton.getValue() == true){
-            				newPermission.setPermissionType(2);
-            			}
-            			if(deleteButton.getValue() == true){
-            				newPermission.setPermissionType(3);
-            			}
-            			if(readButton.getValue() == false && editButton.getValue() == false && deleteButton.getValue() == false){
-            				Window.alert("Bitte waehlen Sie eine Art der Berechtigung aus");
-            			}
-        				
-        				adminService.getPermission(user.getUserID(), currentNB.getNbID(), currentNote.getnID(), getPermissionCallback());
-        				
-        			}
+//        			if(isExisting == true){
+//        				
+//        				if(readButton.getValue() == true){
+//            				newPermission.setPermissionType(1);
+//            			}
+//            			if(editButton.getValue() == true){
+//            				newPermission.setPermissionType(2);
+//            			}
+//            			if(deleteButton.getValue() == true){
+//            				newPermission.setPermissionType(3);
+//            			}
+//            			if(readButton.getValue() == false && editButton.getValue() == false && deleteButton.getValue() == false){
+//            				Window.alert("Bitte waehlen Sie eine Art der Berechtigung aus");
+//            			}
+//        				
+//        				adminService.getPermission(user.getUserID(), currentNB.getNbID(), currentNote.getnID(), getPermissionCallback());
+//        				
+//        			}
         		}
+    		}
+    	};
+    	return asyncCallback;
+    }
+    
+    private AsyncCallback<AppUser> searchUserByMailEditCallback() {
+    	AsyncCallback<AppUser> asyncCallback = new AsyncCallback<AppUser>() {
+    		
+    		@Override
+    		public void onFailure(Throwable caught) {
+    			ClientsideSettings.getLogger().severe("Error: " + caught.getMessage());
+    		}
+    		
+    		@Override
+    		public void onSuccess(AppUser result) {
+    			ClientsideSettings.getLogger().
+    			severe("Success SearchUserByMailEditCallback: " + result.getClass().getSimpleName());
+    			
     		}
     	};
     	return asyncCallback;
@@ -765,24 +870,24 @@ private AsyncCallback<DueDate> getDuedateCallback(){
     	return asyncCallback;
     }
     
-    private AsyncCallback<AppUser> getUserForPermissionDeleteCallback() {
-    	AsyncCallback<AppUser> asyncCallback = new AsyncCallback<AppUser>() {
-    		
-    		@Override
-    		public void onFailure(Throwable caught) {
-    			ClientsideSettings.getLogger().severe("Error: " + caught.getMessage());
-    		}
-    		
-    		@Override
-    		public void onSuccess(AppUser result) {
-    			ClientsideSettings.getLogger().
-    			severe("Success GetUserForPermissionDeleteCallback: " + result.getClass().getSimpleName());
-    			permissionUser = result;
-    			adminService.getPermission(permissionUser.getUserID(), currentNB.getNbID(), currentNote.getnID(), getPermissionForDeleteCallback());
-    		}
-    	};
-    	return asyncCallback;
-    }
+//    private AsyncCallback<AppUser> getUserForPermissionDeleteCallback() {
+//    	AsyncCallback<AppUser> asyncCallback = new AsyncCallback<AppUser>() {
+//    		
+//    		@Override
+//    		public void onFailure(Throwable caught) {
+//    			ClientsideSettings.getLogger().severe("Error: " + caught.getMessage());
+//    		}
+//    		
+//    		@Override
+//    		public void onSuccess(AppUser result) {
+//    			ClientsideSettings.getLogger().
+//    			severe("Success GetUserForPermissionDeleteCallback: " + result.getClass().getSimpleName());
+//    			permissionUser = result;
+//    			adminService.getPermission(permissionUser.getUserID(), currentNB.getNbID(), currentNote.getnID(), getPermissionForDeleteCallback());
+//    		}
+//    	};
+//    	return asyncCallback;
+//    }
     
     private AsyncCallback<Permission> getPermissionForDeleteCallback() {
     	AsyncCallback<Permission> asyncCallback = new AsyncCallback<Permission>() {
@@ -802,30 +907,30 @@ private AsyncCallback<DueDate> getDuedateCallback(){
     	return asyncCallback;
     }
     
-    private AsyncCallback<Permission> getPermissionCallback() {
-    	AsyncCallback<Permission> asyncCallback = new AsyncCallback<Permission>() {
-    		
-    		@Override
-    		public void onFailure(Throwable caught) {
-    			ClientsideSettings.getLogger().severe("Error: " + caught.getMessage());
-    		}
-    		
-    		@Override
-    		public void onSuccess(Permission result) {
-    			ClientsideSettings.getLogger().
-    			severe("Success GetUserForPermissionDeleteCallback: " + result.getClass().getSimpleName());
-
-    			newPermission.setIsOwner(result.getIsOwner());
-    			newPermission.setNbID(result.getNbID());
-    			newPermission.setNID(result.getNID());
-    			newPermission.setPermissionID(result.getPermissionID());
-    			newPermission.setUserID(result.getUserID());
-    			
-    			adminService.editPermission(newPermission, editPermissionCallback());
-    		}
-    	};
-    	return asyncCallback;
-    }
+//    private AsyncCallback<Permission> getPermissionCallback() {
+//    	AsyncCallback<Permission> asyncCallback = new AsyncCallback<Permission>() {
+//    		
+//    		@Override
+//    		public void onFailure(Throwable caught) {
+//    			ClientsideSettings.getLogger().severe("Error: " + caught.getMessage());
+//    		}
+//    		
+//    		@Override
+//    		public void onSuccess(Permission result) {
+//    			ClientsideSettings.getLogger().
+//    			severe("Success GetUserForPermissionDeleteCallback: " + result.getClass().getSimpleName());
+//
+//    			newPermission.setIsOwner(result.getIsOwner());
+//    			newPermission.setNbID(result.getNbID());
+//    			newPermission.setNID(result.getNID());
+//    			newPermission.setPermissionID(result.getPermissionID());
+//    			newPermission.setUserID(result.getUserID());
+//    			
+//    			adminService.editPermission(newPermission, editPermissionCallback());
+//    		}
+//    	};
+//    	return asyncCallback;
+//    }
     
     private AsyncCallback<Void> deletePermissionCallback() {
     	AsyncCallback<Void> asyncCallback = new AsyncCallback<Void>() {
@@ -847,8 +952,8 @@ private AsyncCallback<DueDate> getDuedateCallback(){
     }
    
     
-    private AsyncCallback<Void> editPermissionCallback() {
-    	AsyncCallback<Void> asyncCallback = new AsyncCallback<Void>() {
+    private AsyncCallback<ArrayList<Permission>> editPermissionsCallback() {
+    	AsyncCallback<ArrayList<Permission>> asyncCallback = new AsyncCallback<ArrayList<Permission>>() {
     		
     		@Override
     		public void onFailure(Throwable caught) {
@@ -856,11 +961,12 @@ private AsyncCallback<DueDate> getDuedateCallback(){
     		}
     		
     		@Override
-    		public void onSuccess(Void result) {
+    		public void onSuccess(ArrayList<Permission> result) {
     			ClientsideSettings.getLogger().
     			severe("Success GetUserForPermissionDeleteCallback: " + result.getClass().getSimpleName());
     			deletePermissionButton.setEnabled(true);
     			savePermissionButton.setEnabled(true);
+          		 Application.notesSelectionModel.setSelected(noteTitleTB.getValue(), true);
     		}
     	};
     	return asyncCallback;

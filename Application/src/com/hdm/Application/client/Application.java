@@ -18,7 +18,7 @@ import com.hdm.Application.shared.NoteAdministrationAsync;
 import com.hdm.Application.shared.bo.AppUser;
 import com.hdm.Application.shared.bo.Note;
 import com.hdm.Application.shared.bo.Notebook;
-
+import com.hdm.Application.shared.bo.Permission;
 import com.hdm.Application.client.ClientsideSettings;
 
 import java.util.ArrayList;
@@ -154,7 +154,7 @@ public class Application implements EntryPoint {
 	  final Label usernameLabel = new Label("Username");
 	  final Label passwordLabel = new Label("Password");
 	  private Anchor signInLink = new Anchor("Login");
-	  final Button createNoteButton = new Button("");
+	  public final static Button createNoteButton = new Button("");
 	  final Button createNotebookButton = new Button("");
 	  final Button signOutButton = new Button("Ausloggen");
 	  final Button searchButton = new Button("Suche");
@@ -306,6 +306,8 @@ public class Application implements EntryPoint {
 	    RootPanel.get("Navigator").add(navPanel);
 	    RootPanel.get("Navigator").add(navPanel2);
 	    
+	    createNoteButton.setEnabled(false);
+	    
 	    /**
 	     * Implementierung der jeweiligen ClickHandler fuer die einzelnen Widgets
 	     */
@@ -323,7 +325,7 @@ public class Application implements EntryPoint {
 			public void onSelectionChange(SelectionChangeEvent event) {
 
 				adminService.getNotesOfNotebook(nbSelectionModel.getSelectedObject(), getNotesOfNotebookCallback());
-				
+				adminService.getPermission(currentUser.getUserID(), nbSelectionModel.getSelectedObject().getNbID(), 0, getPermissionCallback());
 				Update update = new EditNotebookView();
 				RootPanel.get("Details").clear();
 				RootPanel.get("Details").add(update);
@@ -516,6 +518,26 @@ public class Application implements EntryPoint {
 		 notesDataProvider.getList().clear();
 		 for(int i = 0; i < notes.size(); i++) {
 			 notesDataProvider.getList().add(notes.get(i).getnTitle());
+		 }
+	 }
+	 };
+	 return asyncCallback;
+ }
+ 
+ private AsyncCallback<Permission> getPermissionCallback() {
+	 AsyncCallback<Permission> asyncCallback = new AsyncCallback<Permission>(){
+	 
+	 @Override
+		public void onFailure(Throwable caught) {
+			ClientsideSettings.getLogger().severe("Error: " + caught.getMessage());
+		}
+	 
+	 @Override
+	 public void onSuccess(Permission result) {
+		 ClientsideSettings.getLogger().
+		 severe("Success GetPermissionCallback: " + result.getClass().getSimpleName());
+		 if(result.getPermissionType() == 2 || result.getPermissionType() == 3){
+			 createNoteButton.setEnabled(true);
 		 }
 	 }
 	 };

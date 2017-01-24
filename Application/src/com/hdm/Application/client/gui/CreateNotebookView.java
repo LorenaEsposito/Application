@@ -42,6 +42,10 @@ public class CreateNotebookView extends Update{
 	
 	private ArrayList<Permission> permissions = new ArrayList<Permission>();
 	
+	private ArrayList<UserPermission> userPermission = new ArrayList<UserPermission>();
+	
+	private Permission permission = new Permission();
+	
 	private AppUser user = null;
 
 	Date date = new Date();
@@ -240,32 +244,57 @@ protected void run() {
     savePermissionButton.addClickHandler(new ClickHandler() {
     	public void onClick(ClickEvent event) {
     		
-    		if(permissionText.getText() == ""){
-    			Window.alert("Bitte eine E-Mail-Adresse eingeben");
-        		savePermissionButton.setEnabled(false);
-        		readButton.setEnabled(false);
-        		editButton.setEnabled(false);
-        		deleteButton.setEnabled(false);
-        		savePermissionButton.setStylePrimaryName("savePermission-button");
-    			}
+    		savePermissionButton.setEnabled(false);
+    		readButton.setEnabled(false);
+    		editButton.setEnabled(false);
+    		deleteButton.setEnabled(false); 
+    		savePermissionButton.setStylePrimaryName("savePermission-button");
     		
-
     		
-       		if(permissionText.getText() == currentUser.getMail()){
-    			Window.alert("Als Eigentuemer der Notiz brauchen Sie keine Berechtigung fuer sich selbst anlegen.");
-        		savePermissionButton.setEnabled(false);
-        		readButton.setEnabled(false);
-        		editButton.setEnabled(false);
-        		deleteButton.setEnabled(false);
-        		savePermissionButton.setStylePrimaryName("savePermission-button");
-    		}else{
-    		
-    		String mail = new String();
-    		
-    		mail = permissionText.getValue();
-    		
-    		adminService.searchUserByMail(mail, searchUserByMailCallback());
+    		if(permissionText.getValue() != ""){
+        		if(permissionText.getText() == currentUser.getMail()){
+        			Window.alert("Als Eigentuemer der Notiz brauchen Sie keine Berechtigung fuer sich selbst anlegen.");
+            		savePermissionButton.setEnabled(true);
+            		readButton.setEnabled(true);
+            		editButton.setEnabled(true);
+            		deleteButton.setEnabled(true);
+            		permissionText.setText("");
+            		readButton.setValue(false);
+            		editButton.setValue(false);
+            		deleteButton.setValue(false); 
+            		savePermissionButton.setStylePrimaryName("savePermission-button");
+        		}else{
+        		adminService.searchUserByMail(permissionText.getValue(), searchUserByMailCallback());
+        		}
     		}
+
+        		
+        	if(selectionModel.getSelectedObject() == null && permissionText.getValue() == ""){
+        			Window.alert("Erstellen Sie eine neue Berechtigung oder bearbeiten Sie eine bestehende.");
+        		}
+        		else{
+        			UserPermission editUP = new UserPermission();
+        			editUP = selectionModel.getSelectedObject();
+        			if(readButton.getValue() == true){
+        				editUP.setPermissionType(1);
+        				dataProvider.getList().set(dataProvider.getList().indexOf(selectionModel.getSelectedObject()), editUP);
+        			}
+        			if(editButton.getValue() == true){
+        				editUP.setPermissionType(2);
+        				dataProvider.getList().set(dataProvider.getList().indexOf(selectionModel.getSelectedObject()), editUP);
+        			}
+        			if(deleteButton.getValue() == true){
+        				editUP.setPermissionType(3);
+        				dataProvider.getList().set(dataProvider.getList().indexOf(selectionModel.getSelectedObject()), editUP);
+        			}
+        			if(readButton.getValue() == false && editButton.getValue() == false && deleteButton.getValue() == false){
+        				Window.alert("Bitte waehlen Sie eine Art der Berechtigung aus");
+        			}
+            		savePermissionButton.setEnabled(true);
+            		readButton.setEnabled(true);
+            		editButton.setEnabled(true);
+            		deleteButton.setEnabled(true);
+        		}
     		
     	}
     });
@@ -391,28 +420,36 @@ protected void run() {
     		 severe("Success CreateNoteCallback: " + result.getClass().getSimpleName());
     		 newNB = result;
     		 
-    		 Permission permission = new Permission();
 				permission.setIsOwner(true);
-				permission.setNbID(result.getNbID()); 
+				permission.setNbID(result.getNbID());
 				permission.setNID(0);
 				permission.setPermissionType(3);
 				permission.setUserID(currentUser.getUserID());
 				permissions.add(permission);
 				
-				
+				if(dataProvider.getList().size() != 0){
 				for(int i = 0; i < dataProvider.getList().size(); i++){
-					permission.setIsOwner(false);
-					permission.setNbID(result.getNbID());
-					permission.setNID(0);
-					permission.setPermissionType(dataProvider.getList().get(i).getPermissionType());
-					permission.setUserID(dataProvider.getList().get(i).getUserID());
-					permissions.add(permission);
+					Permission nbPermission = new Permission();
+					nbPermission.setIsOwner(false);
+					nbPermission.setNbID(result.getNbID());
+					nbPermission.setNID(0);
+					nbPermission.setPermissionType(dataProvider.getList().get(i).getPermissionType());
+					nbPermission.setUserID(dataProvider.getList().get(i).getUserID());
+					permissions.add(nbPermission);
+				}
 				}
 
 				adminService.createPermissions(permissions, createPermissionCallback());
 				
+				Application.createNoteButton.setEnabled(true);
+				Application.notesSelectionModel.setSelected(Application.notesSelectionModel.getSelectedObject(), false);
 				Application.nbList.add(newNB);
 				Application.nbSelectionModel.setSelected(newNB, true);
+				
+//				Update update = new EditNotebookView();
+//				RootPanel.get("Details").clear();
+//				RootPanel.get("Details").add(update); 
+
 
     	 }
     	};
@@ -491,7 +528,7 @@ protected void run() {
         		
         		}
     			savePermissionButton.setEnabled(true);
-    			permissionText.setText("Name des Berechtigten");
+    			permissionText.setText("");
     			readButton.setEnabled(true);
     			editButton.setEnabled(true);
     			deleteButton.setEnabled(true);
