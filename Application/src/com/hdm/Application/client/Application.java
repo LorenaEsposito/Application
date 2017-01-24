@@ -164,6 +164,8 @@ public class Application implements EntryPoint {
 	  final Button developerButton = new Button("Entwickler");
 	  final CellList<String> noteCellList = new CellList<String>(noteCell);
 	  final CellList<Notebook> nbCellList = new CellList<Notebook>(nbCell, keyProvider);
+	  final Label notebookLabel = new Label();
+	  final Label noteLabel = new Label();
 //	  NotebookNotesTreeViewModel nntvm = new NotebookNotesTreeViewModel();
 //	  CellTree cellTree = new CellTree(nntvm, "Root");
 	  
@@ -298,7 +300,9 @@ public class Application implements EntryPoint {
 	    headButtonPanel.add(developerButton); 
 	    headButtonPanel.add(signOutButton);
 	    headPanel.add(headButtonPanel);
+	    navPanel.add(notebookLabel);
 	    navPanel.add(nbCellList);
+	    navPanel2.add(noteLabel);
 	    navPanel2.add(noteCellList);
 	    navPanel2.add(createNotebookButton);
 	    navPanel2.add(createNoteButton);
@@ -308,6 +312,9 @@ public class Application implements EntryPoint {
 	    RootPanel.get("Navigator").add(navPanel2);
 	    
 	    createNoteButton.setEnabled(false);
+	    
+	    notebookLabel.setText("Waehle ein Notizbuch aus:");
+	    noteLabel.setText("Waehle eine Notiz:");
 	    
 	    /**
 	     * Implementierung der jeweiligen ClickHandler fuer die einzelnen Widgets
