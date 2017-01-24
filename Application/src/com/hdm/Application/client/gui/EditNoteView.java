@@ -251,6 +251,8 @@ protected void run() {
     saveDuedateButton.setStyleName("savePermission-button");
     deleteDuedateButton.setStyleName("savePermission-button2");
 
+    
+    
 	adminService.getCurrentUser(getCurrentUserCallback());
     
     /*

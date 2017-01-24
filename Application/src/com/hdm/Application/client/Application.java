@@ -144,6 +144,7 @@ public class Application implements EntryPoint {
 	  private VerticalPanel navPanel = new VerticalPanel();
 	  private VerticalPanel navPanel2 = new VerticalPanel();
 	  private VerticalPanel navPanel3 = new VerticalPanel();
+	  private VerticalPanel navPanel4 = new VerticalPanel();
 	  /**
 	   * Erstellung aller Widgets
 	   */
@@ -166,7 +167,10 @@ public class Application implements EntryPoint {
 	  final CellList<String> noteCellList = new CellList<String>(noteCell);
 	  final CellList<Notebook> nbCellList = new CellList<Notebook>(nbCell, keyProvider);
 	  final Label notebookLabel = new Label();
+	  final Label notebookLabel2 = new Label();
 	  final Label noteLabel = new Label();
+	  final Label noteLabel2 = new Label();
+	  
 //	  NotebookNotesTreeViewModel nntvm = new NotebookNotesTreeViewModel();
 //	  CellTree cellTree = new CellTree(nntvm, "Root");
 	  
@@ -286,9 +290,11 @@ public class Application implements EntryPoint {
 	    navPanel.setStyleName("navPanel");
 	    navPanel2.setStyleName("navPanel2");
 	    navPanel3.setStyleName("navPanel3");
+	    navPanel4.setStyleName("navPanel4");
 	    headButtonPanel.setStyleName("headButtonPanel");
 	    notebookLabel.setStyleName("navLabel");
 	    noteLabel.setStyleName("navLabel");
+	    noteLabel2.setStyleName("navLabel");
 	    userLabel.setStyleName("usernameLabel");
 	    
 //	    cellTree.setAnimationEnabled(true);
@@ -312,17 +318,20 @@ public class Application implements EntryPoint {
 	    navPanel2.add(noteCellList);
 	    navPanel3.add(createNotebookButton);
 	    navPanel3.add(createNoteButton);
+	    navPanel4.add(noteLabel2);
 //	    navPanel2.add(cellTree);
 	    RootPanel.get("Header").add(headPanel);
 	    RootPanel.get("Navigator").add(navPanel3);
 	    RootPanel.get("Navigator").add(navPanel);
+	    RootPanel.get("Navigator").add(navPanel4);
 	    RootPanel.get("Navigator").add(navPanel2);
 	   
 	    
 	    createNoteButton.setEnabled(false);
 	    
-	    notebookLabel.setText("Waehle ein Notizbuch aus:");
-	    noteLabel.setText("Waehle eine Notiz:");
+	    notebookLabel.setText("Eigene Notizbuecher");
+	    noteLabel.setText("Eigene Notizen");
+	    noteLabel2.setText("Notizbuecher mit Berechtigung");
 	    
 	    /**
 	     * Implementierung der jeweiligen ClickHandler fuer die einzelnen Widgets

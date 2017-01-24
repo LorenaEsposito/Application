@@ -106,6 +106,13 @@ div#Trailer {
 	padding:10px;
 }
 
+.navPanel4 {
+	height:20px;
+	width:252px;
+	padding:10px;
+	background-color: #d5e7fd;
+}
+
 .navObject {
 	margin-top: 10px;
 	margin-left: 10px;
