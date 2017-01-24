@@ -295,8 +295,8 @@ public class Application implements EntryPoint {
 	    headButtonPanel.add(searchButton);
 	    headButtonPanel.add(impressumButton);
 	    headButtonPanel.add(profileButton);
-	    headButtonPanel.add(signOutButton);
 	    headButtonPanel.add(developerButton); 
+	    headButtonPanel.add(signOutButton);
 	    headPanel.add(headButtonPanel);
 	    navPanel.add(nbCellList);
 	    navPanel2.add(noteCellList);
