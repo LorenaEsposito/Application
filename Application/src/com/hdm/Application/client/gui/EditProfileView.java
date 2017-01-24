@@ -41,7 +41,10 @@ public class EditProfileView extends Update{
 	TextBox userNameTB = new TextBox();
 	Label mail = new Label();
 	Button saveButton = new Button("Speichern");
-	Button deleteButton = new Button("Konto loeschen");
+	Button deleteButton = new Button("Loeschen");
+	
+	
+	
 	
 	protected String getHeadlineText() {
 		return "";
@@ -67,7 +70,9 @@ public class EditProfileView extends Update{
 	     * Zuweisung eines Styles fuer die jeweiligen Widgets
 	     **/
 		
-		
+		saveButton.setStyleName("savePermission-button");
+		deleteButton.setStyleName("savePermission-button");
+		userNameTB.setStyleName("style-Textbox");
 		
 		/**
 	     * Erstellung der Clickhandler

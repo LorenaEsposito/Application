@@ -137,7 +137,8 @@ public class SearchView extends Update {
 		 **/
 		headlinePanel.setStyleName("headlinePanel");
 		searchDateBox.setVisible(false);		
-		searchButton.setStyleName("notework-menubutton");
+		searchButton.setStyleName("savePermission-button");
+		showNoteButton.setStyleName("savePermission-button");
 		searchPanel.setStyleName("searchPanel");
 		dueDateButton.setText("Duedate");
 		userNameButton.setText("Username");

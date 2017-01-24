@@ -149,7 +149,7 @@ public class Application implements EntryPoint {
 //	  private Label loginLabel = new Label("Bitte melde dich mit deinem Google Account an, um Notework nutzen zu kÃ¶nnen. Klicke auf Login und los geht's!");
 //	  final Label headerLabel = new Label("Notework");
 
-	  private Label loginLabel = new Label("");
+	  private Label loginLabel = new Label("Sie muessen sich bei Google anmelden:");
 	  public static Label userLabel = new Label();
 	  final Label usernameLabel = new Label("Username");
 	  final Label passwordLabel = new Label("Password");
