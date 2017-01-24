@@ -43,7 +43,6 @@ public class DeveloperView extends Update {
 	Label label17 = new Label();
 	Label label18 = new Label();
 	Label label19 = new Label();
-	TextArea text = new TextArea();
 	
 	
 	protected void run() {
@@ -54,7 +53,6 @@ public class DeveloperView extends Update {
 		
 		headlinePanel.add(mainheadline);
 		developerPanel.add(developerLabel);
-		developerPanel.add(text);
 		developerPanel.add(label1);
 		developerPanel.add(label2);
 		developerPanel.add(label3);
