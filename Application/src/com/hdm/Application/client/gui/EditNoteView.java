@@ -127,9 +127,9 @@ public class EditNoteView extends Update{
    TextBox noteSubtitleTB = new TextBox();
    TextBox permissionTB = new TextBox();
    TextArea textArea = new TextArea();
-   final Button saveNoteButton = new Button("Save Note");
-   final Button deleteNoteButton = new Button("Delete Note");
-   final Button cancelButton = new Button("Cancel");
+   final Button saveNoteButton = new Button("Speichern");
+   final Button deleteNoteButton = new Button("Loeschen");
+   final Button cancelButton = new Button("Abbrechen");
    final Button savePermissionButton = new Button("Save");
    final Button deletePermissionButton = new Button("Loeschen");
    final Button saveDuedateButton = new Button("Speichern");
@@ -241,11 +241,14 @@ protected void run() {
     duedate.setStyleName("datepicker");
     textArea.setStyleName("TextArea");
     savePermissionButton.setStyleName("savePermission-button");
-    deletePermissionButton.setStyleName("savePermission-button");
+    deletePermissionButton.setStyleName("savePermission-button2");
     buttonPanel.setStyleName("buttonPanel");
     permissionPanel.setStyleName("permissionPanel");
     rightsLabel.setStyleName("headline");
     duedateLabel.setStyleName("headline");
+    deleteNoteButton.setStyleName("savePermission-button");
+    saveDuedateButton.setStyleName("savePermission-button");
+    deleteDuedateButton.setStyleName("savePermission-button2");
 
 	adminService.getCurrentUser(getCurrentUserCallback());
     
