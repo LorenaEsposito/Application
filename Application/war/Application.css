@@ -107,10 +107,10 @@ div#Trailer {
 }
 
 .navPanel3 {
-	height:37px;
+	height:20px;
 	width:252px;
 	border-bottom:1px solid;
-	padding:12px;
+	padding:10px;
 }
 
 .navObject {
@@ -385,4 +385,10 @@ padding: 10px;
 
 .warningLabel {
 	color: #ff0000;
+}
+
+.labelPanel {
+	margin-top:10px;
+	margin-left:10px;
+	font-weight:bold;
 }

@@ -10,6 +10,7 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.VerticalPanel;
 import com.hdm.Application.client.Application;
 import com.hdm.Application.client.ClientsideSettings;
 import com.hdm.Application.shared.NoteAdministrationAsync;
@@ -31,13 +32,15 @@ public class EditProfileView extends Update{
 	   * Erstellung aller Panels
 	   */
 
+	VerticalPanel labelPanel = new VerticalPanel();
 	HorizontalPanel headlinePanel = new HorizontalPanel();
 	HorizontalPanel mainPanel = new HorizontalPanel();
 	
 	/**
 	   * Erstellung aller Widgets
 	   */
-	    
+	
+	Label username = new Label("Profilname");
 	TextBox userNameTB = new TextBox();
 	Label mail = new Label();
 	Button saveButton = new Button("Speichern");
@@ -59,17 +62,21 @@ public class EditProfileView extends Update{
 	     */
 		
 		mainPanel.add(headlinePanel);
+		
+		labelPanel.add(username);
 		mainPanel.add(mail);
 		mainPanel.add(userNameTB);
 		mainPanel.add(saveButton);
 		mainPanel.add(deleteButton);
 		
+		RootPanel.get("Details").add(labelPanel);
 		RootPanel.get("Details").add(mainPanel);
 		
 		/**
 	     * Zuweisung eines Styles fuer die jeweiligen Widgets
 	     **/
 		
+		labelPanel.setStyleName("labelPanel");
 		saveButton.setStyleName("savePermission-button");
 		deleteButton.setStyleName("savePermission-button");
 		userNameTB.setStyleName("style-Textbox");
