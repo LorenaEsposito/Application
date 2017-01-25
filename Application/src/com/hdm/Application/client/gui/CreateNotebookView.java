@@ -108,9 +108,7 @@ protected void run() {
     adminService.getCurrentUser(getCurrentUserCallback());
     
     mainPanel.setStyleName("detailsPanel");
-    
-    //currentNBTitle = Application.listbox.getSelectedItemText();
-    
+        
     cellList.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.ENABLED);
 
     // Add a selection model to handle user selection.
@@ -443,13 +441,8 @@ protected void run() {
 				adminService.createPermissions(permissions, createPermissionCallback());
 				
 				Application.createNoteButton.setEnabled(true);
-				Application.notesSelectionModel.setSelected(Application.notesSelectionModel.getSelectedObject(), false);
 				Application.nbList.add(newNB);
 				Application.nbSelectionModel.setSelected(newNB, true);
-				
-//				Update update = new EditNotebookView();
-//				RootPanel.get("Details").clear();
-//				RootPanel.get("Details").add(update); 
 
 
     	 }
@@ -470,7 +463,9 @@ protected void run() {
     		public void onSuccess(Void result) {
     			ClientsideSettings.getLogger().
     			severe("Success CreatePermissionCallback: " + result.getClass().getSimpleName());
- 
+				Update update = new EditNotebookView();
+				RootPanel.get("Details").clear();
+				RootPanel.get("Details").add(update); 
     		}
     	};
     	return asyncCallback;

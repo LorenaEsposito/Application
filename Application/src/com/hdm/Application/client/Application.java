@@ -171,9 +171,6 @@ public class Application implements EntryPoint {
 	  final Label noteLabel = new Label();
 	  final Label noteLabel2 = new Label();
 	  
-//	  NotebookNotesTreeViewModel nntvm = new NotebookNotesTreeViewModel();
-//	  CellTree cellTree = new CellTree(nntvm, "Root");
-	  
 	  
  /**
   * Create a remote service proxy to talk to the server-side Greeting service.
@@ -268,13 +265,7 @@ public class Application implements EntryPoint {
  	    
 	 	 // Connect the list to the data provider.
  	    nbDataProvider.addDataDisplay(nbCellList);
- 	    
-// 	    nntvm.setEditNotebookView(editNotebookView);
-// 	    editNotebookView.setNntvm(nntvm);
-// 	    
-// 	    nntvm.setEditNoteView(editNoteView);
-// 	    editNoteView.setNntvm(nntvm);
-// 	    
+ 	    	    
 	    /**
 	     * Zuweisung eines Styles fuer die jeweiligen Widgets
 	     **/
@@ -350,12 +341,10 @@ public class Application implements EntryPoint {
 	    
 	    nbSelectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
 			public void onSelectionChange(SelectionChangeEvent event) {
-
+				notesSelectionModel.setSelected(notesSelectionModel.getSelectedObject(), false);
 				adminService.getNotesOfNotebook(nbSelectionModel.getSelectedObject(), getNotesOfNotebookCallback());
 				adminService.getPermission(currentUser.getUserID(), nbSelectionModel.getSelectedObject().getNbID(), 0, getPermissionCallback());
-				Update update = new EditNotebookView();
-				RootPanel.get("Details").clear();
-				RootPanel.get("Details").add(update);
+
 			}
 	    });
 	    
@@ -490,7 +479,7 @@ public class Application implements EntryPoint {
 			.severe("Success GetCurrentUserCallback: " + result.getClass().getSimpleName());
 		 currentUser = result;
 
-		 userLabel.setText("Sie sind eingeloggt als: " + currentUser.getMail());
+		 userLabel.setText("Du bist eingeloggt als: " + currentUser.getMail());
 		 Update update = new WelcomeView();
 		 RootPanel.get("Details").add(update);
 		 
@@ -544,6 +533,9 @@ public class Application implements EntryPoint {
 		 for(int i = 0; i < notes.size(); i++) {
 			 notesDataProvider.getList().add(notes.get(i).getnTitle());
 		 }
+			Update update = new EditNotebookView();
+			RootPanel.get("Details").clear();
+			RootPanel.get("Details").add(update);
 	 }
 	 };
 	 return asyncCallback;

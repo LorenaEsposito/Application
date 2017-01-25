@@ -143,6 +143,7 @@ public class EditNotebookView extends Update {
 	    permissionPanel.add(deleteButton);
 	    permissionPanel.add(savePermissionButton);
 	    permissionPanel.add(deletePermissionButton);
+	    rightPanel.add(rightsLabel);
 	    rightPanel.add(permissionPanel);
 	    rightPanel.add(cellList);
 	    mainPanel.add(leftPanel);
@@ -232,6 +233,7 @@ public class EditNotebookView extends Update {
 	    	public void onClick(ClickEvent event) {
 	    		
 	    		savePermissionButton.setEnabled(false);
+	    		deletePermissionButton.setEnabled(false);
 	    		readButton.setEnabled(false);
 	    		editButton.setEnabled(false);
 	    		deleteButton.setEnabled(false); 
@@ -242,9 +244,13 @@ public class EditNotebookView extends Update {
 		    		if(permissionTB.getText() == currentUser.getMail()){
 		    			Window.alert("Als Eigentuemer der Notiz brauchen Sie keine Berechtigung fuer sich selbst anlegen.");
 		        		savePermissionButton.setEnabled(true);
+		        		deletePermissionButton.setEnabled(true); 
 		        		readButton.setEnabled(true);
 		        		editButton.setEnabled(true);
 		        		deleteButton.setEnabled(true);
+		        		readButton.setValue(false);
+		        		editButton.setValue(false);
+		        		deleteButton.setValue(false);
 		        		savePermissionButton.setStylePrimaryName("savePermission-button");
 		    		}else{
 	        		
@@ -275,9 +281,13 @@ public class EditNotebookView extends Update {
 	        				Window.alert("Bitte waehlen Sie eine Art der Berechtigung aus");
 	        			} 
 	        			savePermissionButton.setEnabled(true);
+	        			deletePermissionButton.setEnabled(true); 
 		        		readButton.setEnabled(true);
 		        		editButton.setEnabled(true);
 		        		deleteButton.setEnabled(true);
+		        		readButton.setValue(false);
+		        		editButton.setValue(false);
+		        		deleteButton.setValue(false);
 	        		}
 	        		
 
@@ -327,7 +337,7 @@ public class EditNotebookView extends Update {
 	    		deleteNBButton.setEnabled(false);
 	    		
 	    		adminService.deleteNotebook(currentNotebook, deleteNotebookCallback());
-	    		
+	    		Application.nbDataProvider.getList().remove(Application.nbSelectionModel.getSelectedObject());
 	    		Update update = new WelcomeView();
 	    		
 	    		RootPanel.get("Details").clear();
@@ -396,6 +406,7 @@ public class EditNotebookView extends Update {
     			    permissionTB.setEnabled(true);
     			    saveNBButton.setEnabled(true);
     			    savePermissionButton.setEnabled(true);
+    			    deletePermissionButton.setEnabled(true); 
     			    readButton.setEnabled(true);
     			    editButton.setEnabled(true);
     			    deleteButton.setEnabled(true);
@@ -681,32 +692,19 @@ public class EditNotebookView extends Update {
         			if(readButton.getValue() == false && editButton.getValue() == false && deleteButton.getValue() == false){
         				Window.alert("Bitte waehlen Sie eine Art der Berechtigung aus");
         			}
+        			permissionTB.setText("");
         			dataProvider.getList().add(userP);
+	        		savePermissionButton.setEnabled(true);
+	        		deletePermissionButton.setEnabled(true);
+	        		readButton.setEnabled(true);
+	        		editButton.setEnabled(true);
+	        		deleteButton.setEnabled(true);
+	        		readButton.setValue(false);
+	        		editButton.setValue(false);
+	        		deleteButton.setValue(false);
         			}
         			
-//        			if(isExisting == true){
-//        				
-//        				if(readButton.getValue() == true){
-//            				newPermission.setPermissionType(1);
-//            			}
-//            			if(editButton.getValue() == true){
-//            				newPermission.setPermissionType(2);
-//            			}
-//            			if(deleteButton.getValue() == true){
-//            				newPermission.setPermissionType(3);
-//            			}
-//            			if(readButton.getValue() == false && editButton.getValue() == false && deleteButton.getValue() == false){
-//            				Window.alert("Bitte waehlen Sie eine Art der Berechtigung aus");
-//            			}
-//        				
-//        				adminService.getPermission(user.getUserID(), currentNB.getNbID(), currentNote.getnID(), getPermissionCallback());
-//        				
-//        			}
         		}
-        		savePermissionButton.setEnabled(true);
-        		readButton.setEnabled(true);
-        		editButton.setEnabled(true);
-        		deleteButton.setEnabled(true);
     			
     		}
     	};
@@ -763,9 +761,6 @@ public class EditNotebookView extends Update {
     		 ClientsideSettings.getLogger().
     		 severe("Success DeleteNoteCallback: " + result.getClass().getSimpleName());
     		 
-    		 Update update = new WelcomeView();
-    		 RootPanel.get("Details").clear();
-    		 RootPanel.get("Details").add(update);
     	 }
 		};
 		return asyncCallback;
