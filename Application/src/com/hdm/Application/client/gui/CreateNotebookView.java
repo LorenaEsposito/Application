@@ -317,6 +317,9 @@ protected void run() {
 		 * der Datenbank zu verhindern.
 		 */
 		createButton.setEnabled(false);
+		cancelButton.setEnabled(false);
+		savePermissionButton.setEnabled(false);
+		deletePermissionButton.setEnabled(false);
 
 		notebook.setNbTitle(notebookTitle.getText());
 		notebook.setNbCreDate(date);
@@ -486,7 +489,7 @@ protected void run() {
     			user = result;
     			
     			if(user.getMail() == "error"){
-        			permissionWarning.setText("Bitte gib eine Mailadresse eines Users ein.");
+        			permissionWarning.setText("Der eingegebene Nutzer existiert nicht. Ueberpruefe deine bitte Ihre Angaben.");
         		}else{
         			boolean isExisting = new Boolean(false);
         			for(int i = 0; i < dataProvider.getList().size(); i++) {
@@ -503,19 +506,22 @@ protected void run() {
         			
         			if(readButton.getValue() == true){
         				userP.setPermissionType(1);
+            			dataProvider.getList().add(userP);
         			}
         			if(editButton.getValue() == true){
         				userP.setPermissionType(2);
+            			dataProvider.getList().add(userP);
         			}
         			if(deleteButton.getValue() == true){
         				userP.setPermissionType(3);
+            			dataProvider.getList().add(userP);
         			}
         			if(readButton.getValue() == false && editButton.getValue() == false && deleteButton.getValue() == false){
         				permissionWarning.setText("Bitte waehle eine Berechtigungsart aus."); 
         				savePermissionButton.setEnabled(true);
         			}
         			
-        			dataProvider.getList().add(userP);
+
         			}
         			
         			if(isExisting == true){

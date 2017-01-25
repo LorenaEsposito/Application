@@ -312,6 +312,9 @@ if(permissionText.getValue() != ""){
 		readButton.setEnabled(true);
 		editButton.setEnabled(true);
 		deleteButton.setEnabled(true);
+		readButton.setValue(false);
+		editButton.setValue(false);
+		deleteButton.setValue(false); 
 		savePermissionButton.setStylePrimaryName("savePermission-button");
 	}else{
         		
@@ -380,6 +383,9 @@ if(permissionText.getValue() != ""){
 		 * der Datenbank zu verhindern.
 		 */
 		createButton.setEnabled(false);
+		cancelButton.setEnabled(false);
+		savePermissionButton.setEnabled(false);
+		deletePermissionButton.setEnabled(false);
 		//createButton.setStylePrimaryName("");
 		
 		note.setnTitle(noteTitle.getText());
@@ -452,9 +458,6 @@ if(permissionText.getValue() != ""){
     	 public void onSuccess(Note result) {
     		 ClientsideSettings.getLogger().
     		 severe("Success CreateNoteCallback: " + result.getClass().getSimpleName());
-    		 
-    		 Application.notesList.add(note.getnTitle());
-    		 Application.notesSelectionModel.setSelected(result.getnTitle(), true); 
     		 currentN = result;
     		 boolean existingP = new Boolean(false);
     		 for(int i = 0; i < permissions.size(); i++){
@@ -480,12 +483,14 @@ if(permissionText.getValue() != ""){
     				 }
     			 }
     			 if(savePermission == true){
+    				 Window.alert("Permission wird erstellt");
     				 Permission permission = new Permission();
     				 permission.setIsOwner(false);
     				 permission.setNbID(currentNB.getNbID());
     				 permission.setNID(currentN.getnID());
     				 permission.setPermissionType(dataProvider.getList().get(x).getPermissionType());
     				 permission.setUserID(dataProvider.getList().get(x).getUserID());
+    				 Window.alert("Permission hinzugefuegt"); 
     				 notePermissions.add(permission);
     			 }
     		 }
@@ -504,6 +509,8 @@ if(permissionText.getValue() != ""){
 					duedate.setnID(currentN.getnID());
 					adminService.createDuedate(duedate, createDuedateCallback());
 				}
+	    		 Application.notesList.add(note.getnTitle());
+	    		 Application.notesSelectionModel.setSelected(result.getnTitle(), true);
     	 }
     	};
     	return asyncCallback;
@@ -522,6 +529,7 @@ if(permissionText.getValue() != ""){
     		public void onSuccess(Void result) {
     			ClientsideSettings.getLogger().
     			severe("Success CreatePermissionCallback: " + result.getClass().getSimpleName());
+    			Window.alert("Permissions erzeugt");
     		}
     	};
     	return asyncCallback;
@@ -559,7 +567,7 @@ if(permissionText.getValue() != ""){
     			user = result;
         		
     			if(user.getMail() == "error"){
-    				Window.alert("Der eingegebene Nutzer existiert nicht. Ueberpruefen Sie bitte Ihre Angaben.");
+    				Window.alert("Der eingegebene Nutzer existiert nicht. Ueberpruefe deine bitte Ihre Angaben.");
     			}else{
         			boolean isExisting = new Boolean(false);
         			for(int i = 0; i < dataProvider.getList().size(); i++) {
@@ -577,22 +585,22 @@ if(permissionText.getValue() != ""){
         			if(readButton.getValue() == true){
 
             			userP.setPermissionType(1);
-
+            			dataProvider.getList().add(userP);
         			}
         			if(editButton.getValue() == true){
 
             			userP.setPermissionType(2);
-
+            			dataProvider.getList().add(userP);
         			}
         			if(deleteButton.getValue() == true){
             			userP.setPermissionType(3);
+            			dataProvider.getList().add(userP);
         			}
         			if(readButton.getValue() == false && editButton.getValue() == false && deleteButton.getValue() == false){
-        				Window.alert("Bitte waehlen Sie eine Art der Berechtigung aus");
+        				Window.alert("Bitte waehle eine Berechtigung aus");
         				savePermissionButton.setEnabled(true);
         			}
         			
-        			dataProvider.getList().add(userP);
         			}
         			
         			if(isExisting == true){
@@ -638,7 +646,7 @@ if(permissionText.getValue() != ""){
 			 adminService.createNote(note, createNoteCallback());
    		 }
    		 if(isExisting == true){
-   			Window.alert("Diese Notiz existiert bereits im ausgewaehlten Notizbuch");
+   			Window.alert("Es existiert bereits eine Notiz mit diesem Titel");
    		 }
 
    	 }
