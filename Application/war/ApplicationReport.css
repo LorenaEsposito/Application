@@ -267,7 +267,7 @@ div#Header {
 
 .notePanel {
 	height: 50px;
-	width: 1300px;
+	width: 800px;
 	margin-left: 10px;
 	border-bottom: 1px solid;
 	padding-bottom: 8px;
@@ -276,12 +276,10 @@ div#Header {
 	padding-left:10px;
 }
 
-.settingsPanel{
-	width:500px;
-}
+
 .radiobuttonPanel {
 	height: 50px;
-	width: 1300px;
+	width: 500px;
 	margin-left: 10px;
 	border-bottom: 1px solid;
 	padding-bottom: 8px;

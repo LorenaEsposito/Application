@@ -72,7 +72,6 @@ public class ApplicationReport implements EntryPoint {
 	private HorizontalPanel radiobuttonPanel = new HorizontalPanel();
 	private HorizontalPanel searchUserPanel = new HorizontalPanel();
 	private HorizontalPanel notePanel = new HorizontalPanel();
-	private HorizontalPanel settingsPanel = new HorizontalPanel();
 	private VerticalPanel ergebnisPanel = new VerticalPanel();
 	private Label welcomeLabel = new Label();
 	final Button logoButton = new Button();
@@ -478,14 +477,11 @@ protected void loadRadiobuttonPanel() {
 	final DateBox bisBox = new DateBox();
 	final Button searchButton = new Button("Report anzeigen");
 	radiobuttonPanel.clear();
-	
-	settingsPanel.add(vonLabel);
-	settingsPanel.add(vonBox);
-	settingsPanel.add(bisLabel);
-	settingsPanel.add(bisBox);
-	settingsPanel.add(searchButton);
-	settingsPanel.setStyleName("settingsPanel");
-	radiobuttonPanel.add(settingsPanel);
+	radiobuttonPanel.add(vonLabel);
+	radiobuttonPanel.add(vonBox);
+	radiobuttonPanel.add(bisLabel);
+	radiobuttonPanel.add(bisBox);
+	radiobuttonPanel.add(searchButton);
 	radiobuttonPanel.setStyleName("radiobuttonPanel");
 	searchDateBox.setVisible(true);
 	filterPanel.clear();
