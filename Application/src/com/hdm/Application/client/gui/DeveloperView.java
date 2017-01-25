@@ -53,8 +53,6 @@ public class DeveloperView extends Update {
 		
 		headlinePanel.add(mainheadline);
 		developerPanel.add(developerLabel);
-		developerPanel.add(label1);
-		developerPanel.add(label2);
 		developerPanel.add(label3);
 		developerPanel.add(label4);
 		developerPanel.add(label5);
@@ -70,32 +68,27 @@ public class DeveloperView extends Update {
 		developerPanel.add(label15);
 		developerPanel.add(label16);
 		developerPanel.add(label17);
-		developerPanel.add(label18);
-		developerPanel.add(label19);
 		RootPanel.get("Details").add(headlinePanel);
 		RootPanel.get("Details").add(developerPanel);
 		
 		developerLabel.setText("HTML fuer einen Button:");
 		
-		label1.setText("<!DOCTYPE html>");
-		label2.setText("<html>");
-		label3.setText("<body>");
+
 		label4.setText("<p>Klicke den Button um zu Notework weitergeleitet zu werden</p>");
 		label5.setText("<button onclick=\"myFunction()\">Versuche es!</button>");
 		label6.setText("<script>");
 		label7.setText("function myFunction() {");
-		label8.setText("var currentPageUrlIs = \"\";");
-		label9.setText("if (typeof this.href != \"undefined\") {");
-		label10.setText("currentPageUrlIs = this.href.toString().toLowerCase();");
-		label11.setText("}else{");
-		label12.setText("currentPageUrlIs = document.location.toString().toLowerCase();");
-		label13.setText("}");
-		label14.setText("var url = 'http://127.0.0.1:8888/Application.html?url='+currentPageUrlIs;");
-		label15.setText("window.location.href = url;");
+		label8.setText("    var currentPageUrlIs = \"\";");
+		label9.setText("    if (typeof this.href != \"undefined\") {");
+		label10.setText("       currentPageUrlIs = this.href.toString().toLowerCase();");
+		label11.setText("   }else{");
+		label12.setText("       currentPageUrlIs = document.location.toString().toLowerCase();");
+		label13.setText("   }");
+		label14.setText("   var url = 'http://1-dot-notework-152915.appspot.com/Application.html?url='+currentPageUrlIs;");
+		label15.setText("   window.location.href = url;");
 		label16.setText("}");
 		label17.setText("</script>");
-		label18.setText("</body>");
-		label19.setText("</html>");
+
 		
 		
 		

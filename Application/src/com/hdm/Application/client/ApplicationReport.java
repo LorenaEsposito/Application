@@ -1,7 +1,6 @@
 package com.hdm.Application.client;
 
 import java.sql.Date;
-import java.time.LocalDate;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;

@@ -26,7 +26,7 @@ public class DBConnection {
 	 * der Application nur ueber einen root-Zugang und den entsprechenden
 	 * Google-Treibern angesprochen werden.
 	 */
-	private static String googleUrl = "jdbc:google:mysql://notework-147007:noteworkinstance/noteworkdatabase?user=root";
+	private static String googleUrl = "jdbc:google:mysql://notework-152915:europe-west1:noteworkinstance/noteworkdatabase?user=user&password=testit";
 
 	/**
 	 * Die URL fuer die Google Cloud-SQL Datenbank zum Ansteuern der Datenbank
