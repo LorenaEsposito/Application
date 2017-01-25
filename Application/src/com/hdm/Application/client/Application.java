@@ -143,6 +143,8 @@ public class Application implements EntryPoint {
 	  private HorizontalPanel headButtonPanel = new HorizontalPanel();
 	  private VerticalPanel navPanel = new VerticalPanel();
 	  private VerticalPanel navPanel2 = new VerticalPanel();
+	  private VerticalPanel navPanel3 = new VerticalPanel();
+	  private VerticalPanel navPanel4 = new VerticalPanel();
 	  /**
 	   * Erstellung aller Widgets
 	   */
@@ -150,7 +152,7 @@ public class Application implements EntryPoint {
 //	  private Label loginLabel = new Label("Bitte melde dich mit deinem Google Account an, um Notework nutzen zu kÃ¶nnen. Klicke auf Login und los geht's!");
 //	  final Label headerLabel = new Label("Notework");
 
-	  private Label loginLabel = new Label("Sie muessen sich bei Google anmelden:");
+	  private Label loginLabel = new Label("Bitte loggen Sie sich mit Ihrem Google-Account ein:");
 	  public static Label userLabel = new Label();
 	  final Label usernameLabel = new Label("Username");
 	  final Label passwordLabel = new Label("Password");
@@ -165,7 +167,10 @@ public class Application implements EntryPoint {
 	  final CellList<String> noteCellList = new CellList<String>(noteCell);
 	  final CellList<Notebook> nbCellList = new CellList<Notebook>(nbCell, keyProvider);
 	  final Label notebookLabel = new Label();
+	  final Label notebookLabel2 = new Label();
 	  final Label noteLabel = new Label();
+	  final Label noteLabel2 = new Label();
+	  
 //	  NotebookNotesTreeViewModel nntvm = new NotebookNotesTreeViewModel();
 //	  CellTree cellTree = new CellTree(nntvm, "Root");
 	  
@@ -280,10 +285,19 @@ public class Application implements EntryPoint {
  		impressumButton.setStyleName("headObject");
  		profileButton.setStyleName("headObject");
  		developerButton.setStyleName("headObject"); 
-	    signOutButton.setStyleName("headObject");
+	    signOutButton.setStyleName("headObjectSignout");
 	    headPanel.setStyleName("headPanel");
 	    navPanel.setStyleName("navPanel");
+	    navPanel2.setStyleName("navPanel2");
+	    navPanel3.setStyleName("navPanel3");
+	    navPanel4.setStyleName("navPanel4");
 	    headButtonPanel.setStyleName("headButtonPanel");
+	    notebookLabel.setStyleName("navLabel");
+	    noteLabel.setStyleName("navLabel");
+	    noteLabel2.setStyleName("navLabel");
+	    userLabel.setStyleName("usernameLabel");
+	    createNoteButton.setStyleName("createNoteButton");
+	    createNotebookButton.setStyleName("createNoteButton");
 	    
 //	    cellTree.setAnimationEnabled(true);
 	    
@@ -304,17 +318,22 @@ public class Application implements EntryPoint {
 	    navPanel.add(nbCellList);
 	    navPanel2.add(noteLabel);
 	    navPanel2.add(noteCellList);
-	    navPanel2.add(createNotebookButton);
-	    navPanel2.add(createNoteButton);
+	    navPanel3.add(createNotebookButton);
+	    navPanel3.add(createNoteButton);
+	    navPanel4.add(noteLabel2);
 //	    navPanel2.add(cellTree);
 	    RootPanel.get("Header").add(headPanel);
+	    RootPanel.get("Navigator").add(navPanel3);
 	    RootPanel.get("Navigator").add(navPanel);
+	    RootPanel.get("Navigator").add(navPanel4);
 	    RootPanel.get("Navigator").add(navPanel2);
+	   
 	    
 	    createNoteButton.setEnabled(false);
 	    
-	    notebookLabel.setText("Waehle ein Notizbuch aus:");
-	    noteLabel.setText("Waehle eine Notiz:");
+	    notebookLabel.setText("Eigene Notizbuecher");
+	    noteLabel.setText("Waehle eine Notiz");
+	    noteLabel2.setText("Notizbuecher mit Berechtigung");
 	    
 	    /**
 	     * Implementierung der jeweiligen ClickHandler fuer die einzelnen Widgets
@@ -471,7 +490,7 @@ public class Application implements EntryPoint {
 			.severe("Success GetCurrentUserCallback: " + result.getClass().getSimpleName());
 		 currentUser = result;
 
-		 userLabel.setText(currentUser.getMail());
+		 userLabel.setText("Sie sind eingeloggt als: " + currentUser.getMail());
 		 Update update = new WelcomeView();
 		 RootPanel.get("Details").add(update);
 		 

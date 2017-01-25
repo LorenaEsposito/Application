@@ -10,6 +10,7 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.VerticalPanel;
 import com.hdm.Application.client.Application;
 import com.hdm.Application.client.ClientsideSettings;
 import com.hdm.Application.shared.NoteAdministrationAsync;
@@ -31,18 +32,21 @@ public class EditProfileView extends Update{
 	   * Erstellung aller Panels
 	   */
 
+	VerticalPanel labelPanel = new VerticalPanel();
+	VerticalPanel accountPanel = new VerticalPanel();
 	HorizontalPanel headlinePanel = new HorizontalPanel();
 	HorizontalPanel mainPanel = new HorizontalPanel();
 	
 	/**
 	   * Erstellung aller Widgets
 	   */
-	    
+	
+	Label username = new Label("Profilname");
+	Label accountLabel = new Label("Kontoverwaltung");
 	TextBox userNameTB = new TextBox();
 	Label mail = new Label();
 	Button saveButton = new Button("Speichern");
-	Button deleteButton = new Button("Loeschen");
-	
+	Button deleteButton = new Button("Konto loeschen");
 	
 	
 	
@@ -59,19 +63,26 @@ public class EditProfileView extends Update{
 	     */
 		
 		mainPanel.add(headlinePanel);
+		
+		labelPanel.add(username);
 		mainPanel.add(mail);
 		mainPanel.add(userNameTB);
 		mainPanel.add(saveButton);
-		mainPanel.add(deleteButton);
+		accountPanel.add(accountLabel);
+		accountPanel.add(deleteButton);
 		
+		RootPanel.get("Details").add(labelPanel);
 		RootPanel.get("Details").add(mainPanel);
+		RootPanel.get("Details").add(accountPanel);
 		
 		/**
 	     * Zuweisung eines Styles fuer die jeweiligen Widgets
 	     **/
 		
+		labelPanel.setStyleName("labelPanel");
+		accountPanel.setStyleName("labelPanel");
 		saveButton.setStyleName("savePermission-button");
-		deleteButton.setStyleName("savePermission-button");
+		deleteButton.setStyleName("savePermission-button3");
 		userNameTB.setStyleName("style-Textbox");
 		
 		/**
@@ -134,7 +145,7 @@ public class EditProfileView extends Update{
     		 ClientsideSettings.getLogger().
     		 severe("Success EditNoteCallback: " + result.getClass().getSimpleName());
     		 currentUser = result;
-    		 Application.userLabel.setText(currentUser.getUserName());
+    		 Application.userLabel.setText("Sie sind eingeloggt als: " + currentUser.getUserName());
     		 
     		 Update update = new WelcomeView();
     		 RootPanel.get("Details").clear();

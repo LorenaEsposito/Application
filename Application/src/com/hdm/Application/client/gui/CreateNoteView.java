@@ -195,7 +195,7 @@ protected void run() {
     datePicker.setStyleName("datepicker");
     textArea.setStyleName("TextArea");
     savePermissionButton.setStyleName("savePermission-button");
-    deletePermissionButton.setStyleName("savePermission-button");
+    deletePermissionButton.setStyleName("savePermission-button2");
     buttonPanel.setStyleName("buttonPanel");
     permissionPanel.setStyleName("permissionPanel");
     rightsLabel.setStyleName("headline");

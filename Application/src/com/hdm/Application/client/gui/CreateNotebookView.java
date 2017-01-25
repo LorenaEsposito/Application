@@ -173,7 +173,7 @@ protected void run() {
     buttonPanel.setStyleName("buttonPanel");
     permissionPanel.setStyleName("permissionPanel");
     rightsLabel.setStyleName("headline");
-    deletePermissionButton.setStyleName("savePermission-button");
+    deletePermissionButton.setStyleName("savePermission-button2");
     
     notebookTitle.setEnabled(false);
     permissionText.setEnabled(false);
