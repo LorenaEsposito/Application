@@ -338,6 +338,7 @@ public class EditNotebookView extends Update {
 	    		
 	    		adminService.deleteNotebook(currentNotebook, deleteNotebookCallback());
 	    		Application.nbDataProvider.getList().remove(Application.nbSelectionModel.getSelectedObject());
+	    		Application.notesDataProvider.getList().clear();
 	    		Update update = new WelcomeView();
 	    		
 	    		RootPanel.get("Details").clear();
