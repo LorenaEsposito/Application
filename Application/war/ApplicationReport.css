@@ -1,18 +1,16 @@
 body {
 	font-family: sans-serif;
     text-align: center;  /* Zentrierung im Internet Explorer */
+    
   }
 
 h1 {
-  font-size: 2em;
-  font-weight: bold;
   color: #777777;
   margin: 10px 0px 0px;
   text-align: left;
 }
 
 .headline {
-	font-weight: bold;
 	margin-top: 10px;
 	margin-bottom: 3px;
 }
@@ -24,13 +22,19 @@ h1 {
 	width: 800px;
 	height:37px;
 	background-color: #006fdd;
-	font-weight: bold;
 	color: #ffffff;
 }
 
+.loadRadiobuttonPanel{
+	margin-left: 10px;
+}
+
+.loadSearchUserPanel{
+	margin-left: 10px;
+	
+}
 
 .noteTitle {
-	font-size: 20px;
 	color: #666666;
 	margin-top: 5px;
 	margin-left: 10px;
@@ -46,11 +50,9 @@ h1 {
 	}
 	
 .logoImpressum {
-	font-size: 25px;
 }
 .searchbox {
 	width: 400px;
-	font-size: 15px;
 	color: #666666;
 	margin-left: 10px;
 	margin-bottom: 15px;
@@ -86,25 +88,10 @@ h1 {
 	
 }
 
-.loginTextPanel  {
-	width: 300px;
-	margin-top: 100px;
-	margin-left: 42px;
-	
-}
-
-.impressumPanel {
-	background: url(/impressum.png);
-	background-size: 70%;
-	background-repeat: no-repeat;
-	height: 700px;
-	width:1000px;
-}
 .notework-logo {
 	background: url(/Logo.png);
-	background-size:45%;
+	background-size:30%;
 	background-repeat:no-repeat;
-	font-weight: bold;
 	width: 230px;
 	height:50px;
 	margin-left: 20px;
@@ -121,8 +108,6 @@ h1 {
 	width: 150px;
 }
 .notework-headline {
-	font-size: 12pt;
-	font-weight: bold;
 	color: #777777;
 	margin: 0px;
 	margin-top: 10px;
@@ -132,9 +117,7 @@ h1 {
 
 
 .navObject {
-	background: url(/NewNotebook.png);
 	background-size: 100%;
-	font-size: 100%;
 	font-weight: bold;
 	height:40px;
 	width:40px;
@@ -166,10 +149,6 @@ h1 {
 }
 
 .navObject:hover {
-	background: url(/hoverNewNotebook.png);
-	background-size: 100%;
-	font-size: 100%;
-	font-weight: bold;
 	height:40px;
 	width:40px;
 	margin-top: 10px;
@@ -178,11 +157,8 @@ h1 {
 	background-color: transparent;	
 }
 
+
 .navObject2 {
-	background: url(/NewNotice.png);
-	background-size: 100%;
-	font-size: 100%;
-	font-weight: bold;
 	height:40px;
 	width:40px;
 	margin-top:  8px;
@@ -192,10 +168,6 @@ h1 {
 }
 
 .navObject2:hover {
-	background: url(/hoverNewNotice.png);
-	background-size: 100%;
-	font-size: 100%;
-	font-weight: bold;
 	height:40px;
 	width:40px;
 	margin-top:  8px;
@@ -205,18 +177,19 @@ h1 {
 }
 
 .navListbox {
-	font-size: 100%;
-	font-weight: bold;
 	width: 240px;
 	height: 37px;
 	margin-left: 0px;
 	margin-top: 0px;
 	border: 0px;
 	background-color: #005bb7;	
+
+.searchOptions {
+margin-top:10px;
+
+}
 }
 .headObject {
-	font-size: 100%;
-	font-weight: bold;
 	color: #ffffff;
 	width: 12em;
 	margin-left: 10px;
@@ -225,8 +198,6 @@ h1 {
 	background-color: transparent;	
 }
 .headObject:hover {
-	font-size: 100%;
-	font-weight: bold;
 	color: #1188ff;
 	width: 12em;
 	margin-left: 10px;
@@ -258,7 +229,6 @@ h1 {
 
 .notework-addbutton{
 	background-color: #f7f7f7;
-	font-size: 100%;
 	width: 200px;
 	height:30px;
 	margin-left: 40px;
@@ -270,7 +240,6 @@ h1 {
 
 .listbox {
 	background-color: #f7f7f7;
-	font-size: 100%;
 	width: 200px;
 	height:30px;
 	margin-left: 40px;
@@ -279,45 +248,54 @@ h1 {
 
 .notework-searchbutton{
 	background-color: #f7f7f7;
-	font-size: 100%;
 	width: 200px;
 	height:auto;
 	margin-left: 40px;
-	opacity: 0.7;
-	
-	
+	opacity: 0.7;	
 }
+.loginPanel{
+	margin-top: 50px;
+	margin-left: 170px;
+}	
+	
+
 
 .AllNotesFromUserTable{
- background-color: rgba(0, 82, 164, 0.52);
+ background-color: #004e9b;
    border-collapse: collapse;
-  border: none;
- }
+   border: none;
+}
+
+
 .ReportHeader {
 	font-size:large;
-   background-color: rgba(0, 82, 164, 0.66);
+   background-color: #1188ff;
+   
  }
  .InfoColumn {
-    border-style: solid;
+    border-style: 1px solid black;
+    border-style: groove;
     text-align: left;
     padding: 0.5em 1em;
     border-bottom-width: thin;
+   
  }
  .ContentColumn {
-     padding-bottom: 20px;
+    padding-bottom: 20px;
     border: black;
-    border-style: solid;
+    border-style: 1px solid black;
     text-align: -webkit-left;
-    background-color: rgba(0, 82, 164, 0.70);
+    background-color: #004e9b;
  }	
 
 
 
 .detailsPanel {
 	background-color: #ffffff;
-	height:500px;
+	height:100%;
 	width: 800px;
 	margin-top: 0px;
+	margin-left: 10px;
 	padding-left: 10px;
 	padding-top: 10px;
 	box-shadow: inset 0px 2px 4px #a4a4a4;
@@ -335,10 +313,11 @@ h1 {
 	box-shadow: 0px 2px 2px #c0c0c0;
 	border-radius:8px;
 }
+
+.gwt-DateBox {
+}
+
 div#TopLevelFrame {
-	background: url(/Hintergrund-Notework5.jpg);
-	background-size: auto;
-	background-size: 100%;
 	background-repeat: no-repeat;
 	width-min: 1280px;
 	height-min: 800px;
@@ -388,6 +367,20 @@ div#Trailer {
   display: block;
   font-size: 16pt;
 }
+.usernamelabel {
+	margin-left: 10px;
+}
+
+.noteSearchButton{
+	margin-left: 200px;
+}
+
+.loadRadiobuttonPanel{
+	margin-left: 10px;
+	
+}
+
+
 
 /** Most GWT widgets already have a style name defined */
 .gwt-DialogBox {
