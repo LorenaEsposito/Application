@@ -78,7 +78,6 @@ h1 {
 .login{
 	background: url(/LoginBoxFinal.png);
 	background-repeat: no-repeat;
-	background-size: 70%;
 	margin-left: 100px;
 	margin-top: 140px;
 	height:500px;
@@ -114,9 +113,6 @@ h1 {
 
 
 .navObject {
-	background: url(/NewNotebook.png);
-	background-size: 100%;
-	font-size: 100%;
 	font-weight: bold;
 	height:40px;
 	width:40px;
@@ -126,96 +122,9 @@ h1 {
 	background-color: transparent;
 }
 
-.CreateRightPanel {
-	background-color: #f7f7f7;
-	width: 270px;
-	height: 500px;
-	padding-left:40px;
-	margin-top: -10px;
-	margin-left: 70px;
-	border-left: 1px solid silver;
-}
 
-.CreateNotebookLeftPanel {
-	background-color: #f7f7f7;
-	width: 300px;
-	height: 500px;
-	padding-left:40px;
-	margin-top: -10px;
-	margin-left: 70px;
-	border-left: 1px solid silver;
-	
-}
 
-.navObject:hover {
-	background: url(/hoverNewNotebook.png);
-	background-size: 100%;
-	font-size: 100%;
-	font-weight: bold;
-	height:40px;
-	width:40px;
-	margin-top: 10px;
-	margin-left: 200px;
-	border: 0px;
-	background-color: transparent;	
-}
 
-.navObject2 {
-	background: url(/NewNotice.png);
-	background-size: 100%;
-	font-size: 100%;
-	font-weight: bold;
-	height:40px;
-	width:40px;
-	margin-top:  8px;
-	margin-left: 200px;
-	border: 0px;
-	background-color: transparent;
-}
-
-.navObject2:hover {
-	background: url(/hoverNewNotice.png);
-	background-size: 100%;
-	font-size: 100%;
-	font-weight: bold;
-	height:40px;
-	width:40px;
-	margin-top:  8px;
-	margin-left: 200px;
-	border: 0px;
-	background-color: transparent;
-}
-
-.navListbox {
-	font-size: 100%;
-	font-weight: bold;
-	width: 240px;
-	height: 37px;
-	margin-left: 0px;
-	margin-top: 0px;
-	border: 0px;
-	background-color: #005bb7;	
-}
-.headObject {
-	font-size: 100%;
-	font-weight: bold;
-	color: #ffffff;
-	width: 12em;
-	margin-left: 10px;
-	margin-top: 15px;
-	border: 0px;
-	background-color: transparent;	
-}
-.headObject:hover {
-	font-size: 100%;
-	font-weight: bold;
-	color: #1188ff;
-	width: 12em;
-	margin-left: 10px;
-	margin-top: 15px;
-	border: 0px;
-	background-color: transparent;	
-}
 
 .savePermission-button{
 	height:25px;
@@ -261,7 +170,7 @@ h1 {
 
 .notework-searchbutton{
 	width: 200px;
-	margin-left: 40px;
+	margin-left: 15px;
 	
 	
 }
@@ -351,22 +260,42 @@ div#Navigator {
 div#Header {
 	height: auto;
 	width: 1600px;      /* standardkonforme horizontale Zentrierung */
+	height: 40px;
 	background-color: #0052a4;
-	box-shadow: 0px 2px 5px #000;
+
 }
 
 .notePanel {
-	margin-left: 10px;
-}
-
-.radiobuttonPanel {
+	height: 50px;
+	width: 1300px;
 	margin-left: 10px;
 	border-bottom: 1px solid;
 	padding-bottom: 8px;
+	background-color: #eeeeee;
+	padding-top:13px;
+	padding-left:10px;
+}
+
+.radiobuttonPanel {
+	height: 50px;
+	width: 1300px;
+	margin-left: 10px;
+	border-bottom: 1px solid;
+	padding-bottom: 8px;
+	background-color: #eeeeee;
+	padding-top:13px;
+	padding-left:10px;
 }
 
 .searchUserPanel{
+	height: 50px;
+	width: 1300px;
 	margin-left: 10px;
+	border-bottom: 1px solid;
+	padding-bottom: 8px;
+	background-color: #eeeeee;
+	padding-top:13px;
+	padding-left:10px;
 }
 div#Trailer {
 	clear: both;
@@ -376,7 +305,7 @@ div#Trailer {
 	font-size: 80%;
 	font-weight: bold;
 	text-align: center;
-	color: #ffffff;
+	color: #000000;
 }
 
 /**
