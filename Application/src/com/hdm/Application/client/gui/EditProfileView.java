@@ -145,7 +145,6 @@ public class EditProfileView extends Update{
     		 ClientsideSettings.getLogger().
     		 severe("Success EditNoteCallback: " + result.getClass().getSimpleName());
     		 currentUser = result;
-    		 Application.userLabel.setText("Sie sind eingeloggt als: " + currentUser.getUserName());
     		 
     		 Update update = new WelcomeView();
     		 RootPanel.get("Details").clear();
