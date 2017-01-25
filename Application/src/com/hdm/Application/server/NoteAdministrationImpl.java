@@ -15,6 +15,44 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 import com.hdm.Application.shared.NoteAdministration;
 
+/**
+ * Implementierungsklasse des Interface {@link AdministationService}. Diese
+ * Klasse ist <em>die</em> Klasse, die saemtliche Applikationslogik (oder engl.
+ * Business Logic) aggregiert. Die Applikationslogik findet sich in den Methoden
+ * dieser Klasse. Diese Klasse steht mit einer Reihe weiterer Datentypen in
+ * Verbindung. Dies sind:
+ * <ol>
+ * <li>{@link AdministrationService}: Dies ist das <em>lokale</em> - also
+ * Server-seitige - Interface, das die im System zur Verfuegung gestellten
+ * Funktionen deklariert.</li>
+ * <li>{@link AdministrationServiceAsync}:
+ * <code>AdministartionServiceImpl</code> und <code>AdministrationService</code>
+ * bilden nur die Server-seitige Sicht der Applikationslogik ab. Diese basiert
+ * vollstaendig auf synchronen Funktionsaufrufen. Wir muessen jedoch in der Lage
+ * sein, Client-seitige asynchrone Aufrufe zu bedienen. Dies bedingt ein
+ * weiteres Interface, das in der Regel genauso benannt wird, wie das synchrone
+ * Interface, jedoch mit dem zusaetzlichen Suffix "Async". Es steht nur
+ * mittelbar mit dieser Klasse in Verbindung. Die Erstellung und Pflege der
+ * Async Interfaces wird durch das Google Plugin semiautomatisch unterstuetzt.
+ * Weitere Informationen unter {@link AdministrationServiceAsync}.</li>
+ * <li>{@link RemoteServiceServlet}: Jede Server-seitig instantiierbare und
+ * Client-seitig ueber GWT RPC nutzbare Klasse muss die Klasse
+ * <code>RemoteServiceServlet</code> implementieren. Sie legt die funktionale
+ * Basis fuer die Anbindung von <code>AdministrationServiceImpl</code> an die
+ * Runtime des GWT RPC-Mechanismus.</li>
+ * </ol>
+ * <b>Wichtiger Hinweis:</b> Diese Klasse bedient sich sogenannter
+ * Mapper-Klassen. Sie gehoeren der Datenbank-Schicht an und bilden die
+ * objektorientierte Sicht der Applikationslogik auf die relationale
+ * organisierte Datenbank ab. Beachten Sie, dass saemtliche Methoden, die
+ * mittels GWT RPC aufgerufen werden koennen ein
+ * <code>throws IllegalArgumentException</code> in der Methodendeklaration
+ * aufweisen. Diese Methoden duerfen also Instanzen von
+ * {@link IllegalArgumentException} auswerfen. Mit diesen Exceptions koennen
+ * z.B. Probleme auf der Server-Seite in einfacher Weise auf die Client-Seite
+ * transportiert und dort systematisch in einem Catch-Block abgearbeitet werden.
+ */
+
 @SuppressWarnings("serial")
 public class NoteAdministrationImpl extends RemoteServiceServlet
     implements NoteAdministration {
@@ -79,7 +117,7 @@ public void init() throws IllegalArgumentException {
     
   }
 
-/*
+/**
  * Auslesen des aktuellen Benutzernamen aus der Google Accounts API, um
  * das Profil des aktuellen Benutzers aus der Datenbank zu lesen.
  */
@@ -92,6 +130,10 @@ public AppUser getCurrentUser() throws IllegalArgumentException {
 	return currentUser;
 }
 
+/**
+ * Auslesen des Users anhand seiner Mailadresse. Ist noch kein User unter dieser Mailadresse angelegt wird dies
+ * in der Methode gemacht. Inklusive Notizbuch und Notiz sowie der Berechtigung.
+ */
 public AppUser getUserByMail(String mail){
 	AppUser user = new AppUser();
 	if (this.uMapper.findByMail(mail) != null){
@@ -122,6 +164,9 @@ public AppUser getUserByMail(String mail){
 	return user;
 }
 
+/**
+ * Auslesen eines Users anhand seiner UserID.
+ */
 public AppUser getUserByID(int userID){
 	AppUser user = new AppUser();
 	user = this.uMapper.findByKey(userID);
@@ -586,6 +631,9 @@ public ArrayList<Notebook> searchForNotebook(String title) throws IllegalArgumen
     	return notes;
     }
     
+    /**
+     * Diese Methode gibt alle Notizen eines Notizbuchs zurueck
+     */
     public ArrayList<Note> getNotesOfNotebook(Notebook nb){
     	Vector<Note> vector = new Vector<Note>();
     	vector = this.nMapper.findByNotebook(nb);
@@ -606,6 +654,9 @@ public ArrayList<Notebook> searchForNotebook(String title) throws IllegalArgumen
     	return permissions;
     }
     
+    /**
+     * Diese Methode gibt alle Notizbuecher eines Users zurueck, bei denen er Eigentuemer ist.
+     */
     public ArrayList<Notebook> getOwnedNotebooks(AppUser user){
     	Vector<Permission> vector = new Vector<Permission>();
     	vector = this.pMapper.findOwnedNotebooks(user.getUserID());
@@ -618,6 +669,10 @@ public ArrayList<Notebook> searchForNotebook(String title) throws IllegalArgumen
     	return notebooks;
     }
     
+    /**
+     * Diese Methode gibt alle Berechtigungen einer Notiz oder eines Notizbuches aus.
+     * Um Notizbuch-Berechtigungen zu erhalten muss der Parameter int nID = 0 sein.
+     */
     public ArrayList<Permission> getPermissions(int nID, int nbID){
     	Vector<Permission> vector1 = new Vector<Permission>();
     	vector1 = this.pMapper.findByNotebookID(nbID);
@@ -645,6 +700,10 @@ public ArrayList<Notebook> searchForNotebook(String title) throws IllegalArgumen
     	return permissions;
     }
     
+    /**
+     * Diese Methode gibt eine Berechtigung fuer eine Notiz oder ein Notizbuch fuer einen bestimmten
+     * Nutzer zurueck.
+     */
     public Permission getPermission(int uID, int nbID, int nID){
     	Vector<Permission> vector1 = new Vector<Permission>();
     	ArrayList<Permission> permissions = new ArrayList<Permission>();
@@ -678,9 +737,9 @@ public ArrayList<Notebook> searchForNotebook(String title) throws IllegalArgumen
     }
     
     /**
-     * Diese Methode sucht einen bestimmten Nutzer anhand seiner GoogleID
+     * Diese Methode sucht einen bestimmten Nutzer anhand seiner Mail
      * 
-     * @param googleID
+     * @param mail
      * @return AppUser user
      */
     public AppUser searchUserByMail(String mail){
@@ -693,12 +752,18 @@ public ArrayList<Notebook> searchForNotebook(String title) throws IllegalArgumen
     	return user;
     }
 
-	
+	/**
+	 * Diese Methode sucht einen bestimmten User anhand seiner Mail.
+	 */
 	public AppUser getUserByEmail(String email) throws IllegalArgumentException {
 		AppUser user = new AppUser();
 		user = this.uMapper.findByMail (email);
 		return user;
 	}
+	
+	/**
+	 * Diese Methode gibt alle Notizen zurueck, die in der Datenbank vorhanden sind.
+	 */
 	public ArrayList<Note> findAll() throws IllegalArgumentException{
 		Vector<Note> vector = new Vector<Note>();
 		vector = this.nMapper.findAll();

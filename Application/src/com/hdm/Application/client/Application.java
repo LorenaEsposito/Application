@@ -313,20 +313,20 @@ public class Application implements EntryPoint {
 	    navPanel2.add(noteCellList);
 	    navPanel3.add(createNotebookButton);
 	    navPanel3.add(createNoteButton);
-	    navPanel4.add(noteLabel2);
+//	    navPanel4.add(noteLabel2);
 //	    navPanel2.add(cellTree);
 	    RootPanel.get("Header").add(headPanel);
 	    RootPanel.get("Navigator").add(navPanel3);
 	    RootPanel.get("Navigator").add(navPanel);
-	    RootPanel.get("Navigator").add(navPanel4);
+//	    RootPanel.get("Navigator").add(navPanel4);
 	    RootPanel.get("Navigator").add(navPanel2);
 	   
 	    
 	    createNoteButton.setEnabled(false);
 	    
-	    notebookLabel.setText("Eigene Notizbuecher");
+	    notebookLabel.setText("Notizbuecher");
 	    noteLabel.setText("Waehle eine Notiz");
-	    noteLabel2.setText("Notizbuecher mit Berechtigung");
+//	    noteLabel2.setText("Notizbuecher mit Berechtigung");
 	    
 	    /**
 	     * Implementierung der jeweiligen ClickHandler fuer die einzelnen Widgets
@@ -353,6 +353,9 @@ public class Application implements EntryPoint {
 	
 	    createNotebookButton.addClickHandler(new ClickHandler() {
 	  	public void onClick(ClickEvent event) {
+	  		
+	  		notesSelectionModel.setSelected(notesSelectionModel.getSelectedObject(), false);
+	  		nbSelectionModel.setSelected(nbSelectionModel.getSelectedObject(), false); 
 	          /*
 	           * Showcase instantiieren.
 	           */ 
@@ -366,6 +369,9 @@ public class Application implements EntryPoint {
 	    
 	    createNoteButton.addClickHandler(new ClickHandler() {
 	  	public void onClick(ClickEvent event) {
+	  		
+	  		notesSelectionModel.setSelected(notesSelectionModel.getSelectedObject(), false);
+	  		
 	          /*
 	           * Showcase instantiieren.
 	           */

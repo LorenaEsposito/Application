@@ -37,7 +37,7 @@ public class ImpressumView extends Update{
 	Label mainheadline = new Label("Impressum");
     Label logoImpressum = new Label("NoteWork");
     Label adress = new Label("Hochschule der Medien Stuttgart");
-    Label names1 = new Label("Marius Klepser, Lorena Esposito, Dominik Dach, Lisa, Andra, Sina"); 
+    Label names1 = new Label("Marius Klepser, Lorena Esposito, Dominik Dach, Lisa Rathfelder, Andra Weirich, Sina Koritko"); 
 	
 	
 	protected void run() {

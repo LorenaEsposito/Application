@@ -34,6 +34,14 @@ import com.hdm.Application.shared.bo.Notebook;
 import com.hdm.Application.shared.bo.Permission;
 import com.hdm.Application.shared.bo.UserPermission;
 
+/**
+ * In dieser View kann eine neue Notiz fuer ein ausgewaehltes Notizbuch erstellt werden, sowie deren
+ * Berechtigungen, die von den Berechtigungen des Notizbuches abweichen koennen. Pro Notizbuch, darf 
+ * jeder Notiz-Titel nur genau einmal vorkommen.
+ * @author Lorena
+ *
+ */
+
 public class CreateNoteView extends Update{
 
 	
@@ -43,6 +51,10 @@ public class CreateNoteView extends Update{
 	 */
 	
 	private NoteAdministrationAsync adminService = ClientsideSettings.getAdministration();
+	
+	/**
+	 * Implementierung verschiedener Objekte zur spaeteren Verwendung
+	 */
 	
 	int y = 0;
 	
@@ -312,6 +324,9 @@ if(permissionText.getValue() != ""){
 		readButton.setEnabled(true);
 		editButton.setEnabled(true);
 		deleteButton.setEnabled(true);
+		readButton.setValue(false);
+		editButton.setValue(false);
+		deleteButton.setValue(false); 
 		savePermissionButton.setStylePrimaryName("savePermission-button");
 	}else{
         		
@@ -385,6 +400,9 @@ if(permissionText.getValue() != ""){
 		 * der Datenbank zu verhindern.
 		 */
 		createButton.setEnabled(false);
+		cancelButton.setEnabled(false);
+		savePermissionButton.setEnabled(false);
+		deletePermissionButton.setEnabled(false);
 		//createButton.setStylePrimaryName("");
 		
 		note.setnTitle(noteTitle.getText());
@@ -412,6 +430,10 @@ if(permissionText.getValue() != ""){
 
 }
 
+/**
+ * Erstellen aller asynchronen Callbacks
+ * @return
+ */
 
 	private AsyncCallback<AppUser> getCurrentUserCallback(){
 		AsyncCallback<AppUser> asyncCallback = new AsyncCallback<AppUser>() {
@@ -457,10 +479,14 @@ if(permissionText.getValue() != ""){
     	 public void onSuccess(Note result) {
     		 ClientsideSettings.getLogger().
     		 severe("Success CreateNoteCallback: " + result.getClass().getSimpleName());
-    		 
-    		 Application.notesList.add(note.getnTitle());
-    		 Application.notesSelectionModel.setSelected(result.getnTitle(), true); 
     		 currentN = result;
+    		 
+    		 /*
+    		  * Bei Erstellen einer Notiz wird geprueft, ob der Ersteller bereits eine Notizbuch-Berechtigung hat,
+    		  * beziehungsweise, ob er der Eigentuemer des Notizbuches ist. Ist dies nicht der Fall wird eine 
+    		  * neue Berechtigung erstellt.
+    		  */
+    		 
     		 boolean existingP = new Boolean(false);
     		 for(int i = 0; i < permissions.size(); i++){
     			 if(permissions.get(i).getUserID() == currentUser.getUserID() && permissions.get(i).getIsOwner() == true){
@@ -479,11 +505,15 @@ if(permissionText.getValue() != ""){
     		 }
     		 boolean savePermission = new Boolean(true);
     		 for(int x = 0; x < dataProvider.getList().size(); x++){
+    			 savePermission = true;
     			 for(int z = 0; z < permissions.size(); z++){
     				 if(permissions.get(z).getUserID() == dataProvider.getList().get(x).getUserID()){
     					 savePermission = false;
     				 }
     			 }
+    			 /*
+    			  * Auch die Berechtigungen, die der Notizersteller vergeben hat werden gespeichert.
+    			  */
     			 if(savePermission == true){
     				 Permission permission = new Permission();
     				 permission.setIsOwner(false);
@@ -502,13 +532,17 @@ if(permissionText.getValue() != ""){
 		        if(notePermissions.size() != 0){  
 				adminService.createPermissions(notePermissions, createPermissionsCallback());
 		        }
-				
+				/*
+				 * Wurde ein Faelligkeitsdatum vergeben wird dieses ebenfalls gespeichert.
+				 */
 				if(datePicker.getValue() != null) {
 					DueDate duedate = new DueDate();
 					duedate.setdDate(datePicker.getValue());
 					duedate.setnID(currentN.getnID());
 					adminService.createDuedate(duedate, createDuedateCallback());
 				}
+	    		 Application.notesList.add(note.getnTitle());
+	    		 Application.notesSelectionModel.setSelected(result.getnTitle(), true);
     	 }
     	};
     	return asyncCallback;
@@ -527,6 +561,7 @@ if(permissionText.getValue() != ""){
     		public void onSuccess(Void result) {
     			ClientsideSettings.getLogger().
     			severe("Success CreatePermissionCallback: " + result.getClass().getSimpleName());
+    			Window.alert("Permissions erzeugt");
     		}
     	};
     	return asyncCallback;
@@ -562,9 +597,12 @@ if(permissionText.getValue() != ""){
     			ClientsideSettings.getLogger().
     			severe("Success SearchUserByMailCallback: " + result.getClass().getSimpleName());
     			user = result;
-        		
+        		/*
+        		 * Vor der Berechtigungsvergabe wird geprueft, ob die Mailadresse im System vorhanden ist.
+        		 * Ist dies nicht der Fall erhaelt der User eine Nachricht.
+        		 */
     			if(user.getMail() == "error"){
-    				Window.alert("Der eingegebene Nutzer existiert nicht. Ueberpruefen Sie bitte Ihre Angaben.");
+    				Window.alert("Der eingegebene Nutzer existiert nicht. Ueberpruefe deine bitte Ihre Angaben.");
     			}else{
         			boolean isExisting = new Boolean(false);
         			for(int i = 0; i < dataProvider.getList().size(); i++) {
@@ -582,22 +620,22 @@ if(permissionText.getValue() != ""){
         			if(readButton.getValue() == true){
 
             			userP.setPermissionType(1);
-
+            			dataProvider.getList().add(userP);
         			}
         			if(editButton.getValue() == true){
 
             			userP.setPermissionType(2);
-
+            			dataProvider.getList().add(userP);
         			}
         			if(deleteButton.getValue() == true){
             			userP.setPermissionType(3);
+            			dataProvider.getList().add(userP);
         			}
         			if(readButton.getValue() == false && editButton.getValue() == false && deleteButton.getValue() == false){
-        				Window.alert("Bitte waehlen Sie eine Art der Berechtigung aus");
+        				Window.alert("Bitte waehle eine Berechtigung aus");
         				savePermissionButton.setEnabled(true);
         			}
         			
-        			dataProvider.getList().add(userP);
         			}
         			
         			if(isExisting == true){
@@ -630,7 +668,9 @@ if(permissionText.getValue() != ""){
    	 public void onSuccess(ArrayList<Note> result) {
    		 ClientsideSettings.getLogger().
    		 severe("Success GetNotesOfNotebookCallback: " + result.getClass().getSimpleName());
-   		 
+   		 /*
+   		  * Jedes Notizbuch darf einen Notiz-Titel nur einmal enthalten.
+   		  */
    		 boolean isExisting = new Boolean(false);
    		 for(int y = 0; y < result.size(); y++) {
    			 if(noteTitle.getText() == result.get(y).getnTitle()) {
@@ -643,7 +683,7 @@ if(permissionText.getValue() != ""){
 			 adminService.createNote(note, createNoteCallback());
    		 }
    		 if(isExisting == true){
-   			Window.alert("Diese Notiz existiert bereits im ausgewaehlten Notizbuch");
+   			Window.alert("Es existiert bereits eine Notiz mit diesem Titel");
    		 }
 
    	 }
@@ -663,6 +703,11 @@ if(permissionText.getValue() != ""){
     		public void onSuccess(ArrayList<Permission> result) {
     			ClientsideSettings.getLogger().
     			severe("Success GetPermissionsCallback: " + result.getClass().getSimpleName());
+    			
+    			/*
+    			 * Die Notizbuch-Berechtigungen werden dem User hier bereits angezeigt, dass keine Berechtigung
+    			 * doppelt angelegt wird.
+    			 */
     			for(int i = 0; i < result.size(); i++){
     				if(result.get(i).getUserID() != currentUser.getUserID()){
     				UserPermission up = new UserPermission();
@@ -694,6 +739,9 @@ if(permissionText.getValue() != ""){
     		public void onSuccess(AppUser result) {
     			ClientsideSettings.getLogger().
     			severe("Success GetUserByIDCallback: " + result.getClass().getSimpleName());
+    			/*
+    			 * Das User-Objekt wird benoetigt, um die Berechtigungen anzuzeigen und anzulegen.
+    			 */
     			userPermission.get(y).setMail(result.getMail());
     			y++;
     			if(y < userPermission.size()){
