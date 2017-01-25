@@ -143,7 +143,7 @@ public class EditProfileView extends Update{
     	 @Override
     	 public void onSuccess(AppUser result) {
     		 ClientsideSettings.getLogger().
-    		 severe("Success EditNoteCallback: " + result.getClass().getSimpleName());
+    		 severe("Success EditUserCallback: " + result.getClass().getSimpleName());
     		 currentUser = result;
     		 
     		 Update update = new WelcomeView();
