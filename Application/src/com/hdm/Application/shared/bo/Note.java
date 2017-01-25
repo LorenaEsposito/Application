@@ -15,7 +15,7 @@ public class Note extends NoteObject {
 	private Date nCreDate;
 	private int userID;
 	private String source;
-	private DueDate dDate;
+	private Date dDate;
 	private int pType; 
 	
 
@@ -171,6 +171,14 @@ public class Note extends NoteObject {
 
 	public void setpType(int pType) {
 		this.pType = pType;
+	}
+	
+	public Date getdDate() {
+		return dDate;
+	}
+
+	public void setdDate(Date dDate) {
+		this.dDate = dDate;
 	}
 
 }

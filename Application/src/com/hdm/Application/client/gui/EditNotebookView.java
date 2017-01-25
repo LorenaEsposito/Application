@@ -28,6 +28,15 @@ import com.hdm.Application.shared.bo.Notebook;
 import com.hdm.Application.shared.bo.Permission;
 import com.hdm.Application.shared.bo.UserPermission;
 
+/**
+ * Diese View ermoeglicht dem User das Bearbeiten, sofern er die noetige Berechtigung dafuer hat.
+ * Ist diese nicht vorhanden, so kann er das Notizbuch und die Notizen nur lesen. Ebenfalls koennen die
+ * Berechtigungen veraendert oder geloescht werden. Mit einer Loeschberechtigung kann das Notizbuch auch geloescht
+ * werden.
+ * @author Lorena
+ *
+ */
+
 public class EditNotebookView extends Update {
 
 	/**
@@ -35,6 +44,10 @@ public class EditNotebookView extends Update {
 	 * Applikationslogik.
 	 */
 	private NoteAdministrationAsync adminService = ClientsideSettings.getAdministration();
+	
+	/**
+	 * Implementierung verschiedener Objekte zur spaeteren Verwendung
+	 */
 	
 	private Notebook currentNotebook = new Notebook();
 	
@@ -360,6 +373,11 @@ public class EditNotebookView extends Update {
 	    
 	}
 	
+	/**
+	 * Erstellen aller asynchronen Callbacks
+	 * @return
+	 */
+	
 	private AsyncCallback<AppUser> getCurrentUserCallback(){
 		AsyncCallback<AppUser> asyncCallback = new AsyncCallback<AppUser>() {
 			
@@ -377,6 +395,9 @@ public class EditNotebookView extends Update {
 			 
 			 currentNotebook = Application.nbSelectionModel.getSelectedObject();
 			 
+			 /*
+			  * Setzen dedes Notizbuch-Titels und der Daten.
+			  */
 			    creDate.setText(currentNotebook.getNbCreDate().toString());
 			    modDate.setText(currentNotebook.getNbModDate().toString());
 			    notebookTitleTB.setText(currentNotebook.getNbTitle());
@@ -400,7 +421,12 @@ public class EditNotebookView extends Update {
     		public void onSuccess(ArrayList<Permission> result) {
     			ClientsideSettings.getLogger().
     			severe("Success GetUserForPermissionDeleteCallback: " + result.getClass().getSimpleName());
-    			 for(int i = 0; i < result.size(); i++) {
+    			 /*
+    			  * Hier werden die Berechtigungen aus der Datenbank geholt, um sie spaeter anzeigen
+    			  * zu koennen. Ausserdem wird die Berechtigung des aktuellen Nutzers ausgelesen und die
+    			  * entsprechenden Buttons freigegeben.
+    			  */
+    			for(int i = 0; i < result.size(); i++) {
     				 if(currentUser.getUserID() == result.get(i).getUserID()){
     					 if(result.get(i).getIsOwner() == true){
     						 ownerLabel.setText("Du bist Eigentuemer dieses Notizbuchs");
@@ -455,6 +481,9 @@ public class EditNotebookView extends Update {
 		 public void onSuccess(AppUser result) {
 			 ClientsideSettings.getLogger().
 			 severe("Success GetUserByIDCallback: " + result.getClass().getSimpleName());
+			 /*
+			  * Auslesen un
+			  */
 			 userPermission.get(y).setMail(result.getMail());
 				y++;
 				if(y < userPermission.size()){

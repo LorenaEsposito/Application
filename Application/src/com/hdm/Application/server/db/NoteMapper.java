@@ -872,6 +872,7 @@ public Vector<Note> findOwnNotesFromAppUser(AppUser user) {
 		nIDs.add(nID);
 		
 		}
+		
 
 }
 catch (SQLException e){
@@ -922,6 +923,84 @@ try{
 }
 
 
+public Vector<Note> findByBetweenDueDate(java.sql.Date von, java.sql.Date bis){
+Connection con = DBConnection.connection();
+Vector<Note> result = new Vector<Note>();
+	 
+
+try{
+	 Statement stmt = con.createStatement();			 
+	 ResultSet rs = stmt.executeQuery("SELECT *	FROM notes INNER JOIN duedates ON duedates.nid = notes.nid WHERE duedate  BETWEEN '"+von.toString()+"' AND '"+bis.toString()+"';");
+
+	 
+	//Fuer jeden Eintrag im Suchergebnis wird ein Note-Objekt erstellt.
+	 while(rs.next()) {
+		 Note note = new Note();
+		 note.setnID(rs.getInt("nid"));
+		 note.setNbID(rs.getInt("nbid"));
+		 note.setnTitle(rs.getString("title"));
+		 note.setnSubtitle(rs.getString("subtitle"));
+		 note.setnContent(rs.getString("content"));
+		 note.setSource(rs.getString("source"));
+		 note.setnCreDate(rs.getDate("creadate"));
+		 note.setnModDate(rs.getDate("moddate"));
+		 note.setdDate(rs.getDate("duedate"));
+		//Neues Objekt wird dem Ergebnisvektor hinzugefuegt
+		 result.addElement(note);
+		 
+	 } 
+}
+
+
+
+catch (SQLException e){
+	 System.out.println("SQL FEHLER: "+e);
+	 e.printStackTrace();
+}
+
+//Vektor wird zurueckgegeben
+return result;
+}
+
+
+public Vector<Note> findByBetweenModiDate(java.sql.Date von, java.sql.Date bis){
+Connection con = DBConnection.connection();
+Vector<Note> result = new Vector<Note>();
+	 
+
+try{
+	 Statement stmt = con.createStatement();			 
+	 ResultSet rs = stmt.executeQuery("SELECT * FROM notes WHERE moddate BETWEEN '"+von.toString()+"' AND '"+bis.toString()+"';");
+	 
+	 
+	//Fuer jeden Eintrag im Suchergebnis wird ein Note-Objekt erstellt.
+	 while(rs.next()) {
+		 Note note = new Note();
+		 note.setnID(rs.getInt("nid"));
+		 note.setNbID(rs.getInt("nbid"));
+		 note.setnTitle(rs.getString("title"));
+		 note.setnSubtitle(rs.getString("subtitle"));
+		 note.setnContent(rs.getString("content"));
+		 note.setSource(rs.getString("source"));
+		 note.setnCreDate(rs.getDate("creadate"));
+		 note.setnModDate(rs.getDate("moddate"));
+		 
+		//Neues Objekt wird dem Ergebnisvektor hinzugefuegt
+		 result.addElement(note);
+		 
+	 } 
+}
+
+
+
+catch (SQLException e){
+	 System.out.println("SQL FEHLER: "+e);
+	 e.printStackTrace();
+}
+
+//Vektor wird zurueckgegeben
+return result;
+}
 		 			 
 
 }

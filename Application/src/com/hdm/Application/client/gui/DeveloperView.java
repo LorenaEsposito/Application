@@ -6,6 +6,12 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
+/**
+ * In dieser View wird der HTML-Code fuer den externen Button angezeigt.
+ * @author Lorena
+ *
+ */
+
 public class DeveloperView extends Update {
 	
 	protected String getHeadlineText(){
