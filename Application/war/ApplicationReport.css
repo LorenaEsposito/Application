@@ -291,9 +291,12 @@ h1 {
 
 .ergebnisPanel {
 	margin-left: 10px;
-
 	}
 
+.welcomePanel {
+	margin-left: 10px;
+	
+}
 
 .detailsPanel {
 	background-color: #ffffff;
@@ -347,11 +350,24 @@ div#Navigator {
 
 div#Header {
 	height: auto;
-	width-min: 800px;      /* standardkonforme horizontale Zentrierung */
+	width: 1600px;      /* standardkonforme horizontale Zentrierung */
 	background-color: #0052a4;
 	box-shadow: 0px 2px 5px #000;
 }
 
+.notePanel {
+	margin-left: 10px;
+}
+
+.radiobuttonPanel {
+	margin-left: 10px;
+	border-bottom: 1px solid;
+	padding-bottom: 8px;
+}
+
+.searchUserPanel{
+	margin-left: 10px;
+}
 div#Trailer {
 	clear: both;
 	padding: 10px 0;

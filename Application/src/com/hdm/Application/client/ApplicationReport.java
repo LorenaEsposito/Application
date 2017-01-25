@@ -204,6 +204,7 @@ public class ApplicationReport implements EntryPoint {
 		searchUserPanel.add(lbB);
 		searchUserPanel.add(enB);
 		searchUserPanel.add(anB);
+		searchUserPanel.setStyleName("searchUserPanel");
 
 		filterPanel.clear();
 		filterPanel.add(searchUserPanel);
@@ -481,6 +482,7 @@ protected void loadRadiobuttonPanel() {
 	radiobuttonPanel.add(bisLabel);
 	radiobuttonPanel.add(bisBox);
 	radiobuttonPanel.add(searchButton);
+	radiobuttonPanel.setStyleName("radiobuttonPanel");
 	searchDateBox.setVisible(true);
 	filterPanel.clear();
 	filterPanel.add(radiobuttonPanel);
@@ -573,6 +575,7 @@ protected void loadRadiobuttonPanel() {
 			notePanel.add(no);
 			notePanel.add(nb);
 			notePanel.add(aNo);
+			notePanel.setStyleName("notePanel");
 			
 			filterPanel.clear();
 			filterPanel.add(notePanel);
