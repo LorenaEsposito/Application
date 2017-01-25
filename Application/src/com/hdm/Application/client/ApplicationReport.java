@@ -126,12 +126,14 @@ public class ApplicationReport implements EntryPoint {
 					welcomeLabel.setText("Willkommen im Report Generator, bitte wählen Sie in der Navigation zuerst aus welchen Report Sie generieren möchten.");
 					filterPanel.add(welcomeLabel);	
 					searchDateBox.setStyleName("gwt-DateBox");
-					showReportAllUserNotesButton.setStylePrimaryName("notework-searchbutton");
-					showReportFilteredNotesButton.setStylePrimaryName("notework-searchbutton");
-					showReportAllNotes.setStylePrimaryName("notework-searchbutton");
+					showReportAllUserNotesButton.setStyleName("notework-searchbutton");
+					showReportFilteredNotesButton.setStyleName("notework-searchbutton");
+					showReportAllNotes.setStyleName("notework-searchbutton");
 					navigationPanel.add(showReportAllUserNotesButton);
 					navigationPanel.add(showReportFilteredNotesButton);
 					navigationPanel.add(showReportAllNotes);
+					ergebnisPanel.setStyleName("ergebnisPanel");
+					welcomeLabel.setStyleName("welcomePanel");
 					detailPanel.add(filterPanel);
 					detailPanel.add(ergebnisPanel);
 					RootPanel.get("Navigator").add(navigationPanel);

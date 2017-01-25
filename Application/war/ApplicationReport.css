@@ -93,25 +93,6 @@ h1 {
 	
 }
 
-.impressumPanel {
-	background: url(/impressum.png);
-	background-size: 70%;
-	background-repeat: no-repeat;
-	height: 700px;
-	width:1000px;
-}
-.notework-logo {
-	background: url(/Logo.png);
-	background-size:45%;
-	background-repeat:no-repeat;
-	font-weight: bold;
-	width: 230px;
-	height:50px;
-	margin-left: 20px;
-	margin-top: 7px;
-	border: 0px;
-}	
-
 .style-Textbox {
 	margin-top: 10px;
 	margin-bottom: 10px;
@@ -120,6 +101,7 @@ h1 {
 	height:20px;
 	width: 150px;
 }
+
 .notework-headline {
 	font-size: 12pt;
 	font-weight: bold;
@@ -278,12 +260,8 @@ h1 {
 }
 
 .notework-searchbutton{
-	background-color: #f7f7f7;
-	font-size: 100%;
 	width: 200px;
-	height:auto;
 	margin-left: 40px;
-	opacity: 0.7;
 	
 	
 }
@@ -311,6 +289,10 @@ h1 {
     background-color: rgba(0, 82, 164, 0.70);
  }	
 
+.ergebnisPanel {
+	margin-left: 10px;
+
+	}
 
 
 .detailsPanel {
@@ -318,7 +300,7 @@ h1 {
 	height:500px;
 	width: 800px;
 	margin-top: 0px;
-	padding-left: 10px;
+	padding-left: 20px;
 	padding-top: 10px;
 	box-shadow: inset 0px 2px 4px #a4a4a4;
 }
