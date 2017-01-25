@@ -109,7 +109,7 @@ public class Application implements EntryPoint {
 		public final static SingleSelectionModel<String> notesSelectionModel = new SingleSelectionModel<String>();
 	    
 		public final static SingleSelectionModel<Notebook> nbSelectionModel = new SingleSelectionModel<Notebook>(keyProvider);
-		
+
 		// Create a data provider.
 		public static ListDataProvider<String> notesDataProvider = new ListDataProvider<String>();
 		
@@ -266,6 +266,7 @@ public class Application implements EntryPoint {
  	    
 	 	 // Connect the list to the data provider.
  	    nbDataProvider.addDataDisplay(nbCellList);
+ 	    
  	    	    
 	    /**
 	     * Zuweisung eines Styles fuer die jeweiligen Widgets
@@ -483,10 +484,8 @@ public class Application implements EntryPoint {
 		 userLabel.setText("Du bist eingeloggt als: " + currentUser.getMail());
 		 Update update = new WelcomeView();
 		 RootPanel.get("Details").add(update);
-		 
 		 adminService.getNotebooksOfUser(currentUser, getNotebooksOfUserCallback());
-		 
-		 
+		  
 	 }
 	 };
 	 return asyncCallback;
@@ -508,10 +507,7 @@ public class Application implements EntryPoint {
 			 
 			 for (int x = 0; x < notebooks.size(); x++ ){
 				 nbDataProvider.getList().add(notebooks.get(x));
-
 			 }
-//			 nbCellList.setVisibleRange(0, 5);
-//			 adminService.getNotesOfNotebook(nbSelectionModel.getSelectedObject(), getNotesOfNotebookCallback());
 		 }
 	 };
 	 return asyncCallback;

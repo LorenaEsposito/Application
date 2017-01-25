@@ -18,6 +18,7 @@ public class UserPermission implements Serializable{
 	private String mail;
 	private int permissionType;
 	private int permissionID;
+	private int nID;
 
 	
 	public int getUserID() {
@@ -73,7 +74,13 @@ public class UserPermission implements Serializable{
 		this.permissionID = permissionID;
 	}
 	
-
+	public int getNID(){
+		return nID;
+	}
+	
+	public void setNID(int nID){
+		this.nID = nID;
+	}
 
 
 

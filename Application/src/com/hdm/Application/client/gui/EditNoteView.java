@@ -146,6 +146,7 @@ public class EditNoteView extends Update{
    Label credate = new Label("");
    Label moddateLabel = new Label("Zuletzt bearbeitet am ");
    Label moddate = new Label("");
+   Label ownerLabel = new Label("");
    
 //	private Note currentNote = null;
 
@@ -182,6 +183,7 @@ protected void run() {
     permissionPanel.add(deletePermissionButton);
     rightPanel.add(cellList);
     rightPanel.add(duedateLabel);
+    leftPanel.add(ownerLabel);
     leftPanel.add(noteTitleTB);
     leftPanel.add(noteSubtitleTB);
     leftPanel.add(textArea); 
@@ -358,8 +360,10 @@ protected void run() {
         		deleteButton.setEnabled(true);
     		}
     		else{
+    			
     			UserPermission editUP = new UserPermission();
     			editUP = selectionModel.getSelectedObject();
+    			if(editUP.getNID() != 0){
     			if(readButton.getValue() == true){
     				editUP.setPermissionType(1);
     				userPermission.set(userPermission.indexOf(selectionModel.getSelectedObject()), editUP);
@@ -378,6 +382,10 @@ protected void run() {
     			if(readButton.getValue() == false && editButton.getValue() == false && deleteButton.getValue() == false){
     				Window.alert("Bitte waehlen Sie eine Art der Berechtigung aus");
     			}
+    			}else{
+    				Window.alert("Notizbuch-Berechtigungen koennen nicht geaendert werden");
+    			}
+    			permissionTB.setText(""); 
         		savePermissionButton.setEnabled(true);
         		deletePermissionButton.setEnabled(true); 
         		readButton.setEnabled(true);
@@ -597,6 +605,9 @@ private AsyncCallback<ArrayList<Permission>> getPermissionsCallback(){
 		 severe("Success GetPermissionsCallback: " + result.getClass().getSimpleName());
 		 for(int i = 0; i < result.size(); i++) {
 			 if(currentUser.getUserID() == result.get(i).getUserID()){
+				 if(result.get(i).getIsOwner() == true){
+					 ownerLabel.setText("Du bist Eigentuemer dieser Notiz");
+				 }
 				 if(result.get(i).getPermissionType() == 2){
 					 noteTitleTB.setEnabled(true);
 					 noteSubtitleTB.setEnabled(true);
@@ -633,6 +644,7 @@ private AsyncCallback<ArrayList<Permission>> getPermissionsCallback(){
  				up.setUserID(result.get(i).getUserID());
  				up.setPermissionID(result.get(i).getPermissionID());
  				up.setPermissionType(result.get(i).getPermissionType());
+ 				up.setNID(result.get(i).getNID()); 
  				userPermission.add(up);
 			 }
 		 }
