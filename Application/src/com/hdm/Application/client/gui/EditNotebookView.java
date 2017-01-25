@@ -323,8 +323,6 @@ public class EditNotebookView extends Update {
 	    		newNotebook.setNbCreDate(currentNotebook.getNbCreDate());
 	    		newNotebook.setNbModDate(newDate);
 	    		
-//	    		 adminService.getCurrentUser(getCurrentUserCallback());
-//	    		 adminService.editNote(newNote, editNoteCallback());
 	    		
 	   			 adminService.getOwnedNotebooks(currentUser, getOwnedNotebooksCallback());
 	    		
@@ -522,6 +520,7 @@ public class EditNotebookView extends Update {
     		 severe("Success EditNoteCallback: " + result.getClass().getSimpleName());
     		 boolean savePermission = new Boolean(true);
     		 for(int x = 0; x < dataProvider.getList().size(); x++){
+    			 savePermission = true;
     			 for(int z = 0; z < permissions.size(); z++){
     				 if(permissions.get(z).getUserID() == dataProvider.getList().get(x).getUserID()){
         				 Permission editPermission = new Permission();

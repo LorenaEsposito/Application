@@ -477,6 +477,7 @@ if(permissionText.getValue() != ""){
     		 }
     		 boolean savePermission = new Boolean(true);
     		 for(int x = 0; x < dataProvider.getList().size(); x++){
+    			 savePermission = true;
     			 for(int z = 0; z < permissions.size(); z++){
     				 if(permissions.get(z).getUserID() == dataProvider.getList().get(x).getUserID()){
     					 savePermission = false;
