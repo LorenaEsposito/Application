@@ -101,6 +101,7 @@ public class EditNotebookView extends Update {
 	Label creDate = new Label();
 	Label modDateLabel = new Label("Zuletzt bearbeitet am: ");
 	Label modDate = new Label();
+	Label ownerLabel = new Label();
 	TextBox notebookTitleTB = new TextBox();
 	TextBox permissionTB = new TextBox();
 	Button saveNBButton = new Button("Speichern");
@@ -129,6 +130,7 @@ public class EditNotebookView extends Update {
 	     */
 	    
 	    headlinePanel.add(mainheadline);
+	    leftPanel.add(ownerLabel); 
 	    leftPanel.add(notebookTitleTB);
 	    buttonPanel.add(saveNBButton);
 	    buttonPanel.add(deleteNBButton);
@@ -402,6 +404,9 @@ public class EditNotebookView extends Update {
     			severe("Success GetUserForPermissionDeleteCallback: " + result.getClass().getSimpleName());
     			 for(int i = 0; i < result.size(); i++) {
     				 if(currentUser.getUserID() == result.get(i).getUserID()){
+    					 if(result.get(i).getIsOwner() == true){
+    						 ownerLabel.setText("Du bist Eigentuemer dieses Notizbuchs");
+    					 }
     			if(result.get(i).getPermissionType() == 2){
     			    notebookTitleTB.setEnabled(true);
     			    permissionTB.setEnabled(true);
@@ -479,7 +484,7 @@ public class EditNotebookView extends Update {
 			 ClientsideSettings.getLogger().
 			 severe("Success GetOwnedNotebooksCallback: " + result.getClass().getSimpleName());
 			 for(int y = 0; y < result.size(); y++) {
-     			 if(newNotebook.getNbTitle() == result.get(y).getNbTitle() && newNotebook.getNbID() != result.get(y).getNbID()) {
+     			 if(newNotebook.getNbTitle() == result.get(y).getNbTitle() && newNotebook.getNbID() == result.get(y).getNbID()) {
      				 notebookTitleTB.setText(currentNotebook.getNbTitle());
      				 isExisting = true;
      				 break;

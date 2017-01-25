@@ -326,6 +326,7 @@ if(permissionText.getValue() != ""){
         		else{
         			UserPermission editUP = new UserPermission();
         			editUP = selectionModel.getSelectedObject();
+        			if(editUP.getNID() != 0){
         			if(readButton.getValue() == true){
         				editUP.setPermissionType(1);
         				dataProvider.getList().set(dataProvider.getList().indexOf(selectionModel.getSelectedObject()), editUP);
@@ -341,6 +342,10 @@ if(permissionText.getValue() != ""){
         			if(readButton.getValue() == false && editButton.getValue() == false && deleteButton.getValue() == false){
         				Window.alert("Bitte waehlen Sie eine Art der Berechtigung aus");
         			}
+        			}else{
+        				Window.alert("Notizbuch-Berechtigungen koennen nicht geaendert werden");
+        			}
+        			permissionText.setText("");
             		savePermissionButton.setEnabled(true);
             		readButton.setEnabled(true);
             		editButton.setEnabled(true);
@@ -665,6 +670,7 @@ if(permissionText.getValue() != ""){
     				up.setUserID(result.get(i).getUserID());
     				up.setPermissionID(result.get(i).getPermissionID());
     				up.setPermissionType(result.get(i).getPermissionType());
+    				up.setNID(result.get(i).getNID()); 
     				userPermission.add(up);
     				}
     			}
