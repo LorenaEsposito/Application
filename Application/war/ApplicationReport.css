@@ -276,6 +276,9 @@ div#Header {
 	padding-left:10px;
 }
 
+.settingsPanel{
+	width:500px;
+}
 .radiobuttonPanel {
 	height: 50px;
 	width: 1300px;
