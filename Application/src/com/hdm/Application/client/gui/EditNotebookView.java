@@ -60,7 +60,7 @@ public class EditNotebookView extends Update {
 	
 	boolean isExisting = new Boolean(false);
 	
-	int index = 0;
+	int index = new Integer(0);
 	
 	Date newDate = new Date();
 	
@@ -116,7 +116,7 @@ public class EditNotebookView extends Update {
 //	    this.append("");
 		
 		adminService.getCurrentUser(getCurrentUserCallback());
-	    
+		  
 	    mainPanel.setStyleName("detailsPanel");
 	    
 	    // Connect the table to the data provider.
@@ -543,64 +543,29 @@ public class EditNotebookView extends Update {
     		 }
     		 adminService.createPermissions(newPermissions, createPermissionsCallback());
     		 adminService.editPermissions(editPermissions, editPermissionsCallback());
-    		 
-      		 index = Application.nbDataProvider.getList().indexOf(Application.nbSelectionModel.getSelectedObject());
-    		 Application.nbDataProvider.getList().set(index, newNotebook);
+    		 Application.nbDataProvider.getList().clear();
+    		 adminService.getNotebooksOfUser(currentUser, new AsyncCallback<ArrayList<Notebook>>(){
+    	    		
+    	    		@Override
+    	    		public void onFailure(Throwable caught) {
+    	    			ClientsideSettings.getLogger().severe("Error: " + caught.getMessage());
+    	    		}
+    	    	 
+    	    	 @Override
+    	    	 public void onSuccess(ArrayList<Notebook> result) {
+    	    		 ClientsideSettings.getLogger().
+    	    		 severe("Success EditNoteCallback: " + result.getClass().getSimpleName());
+    	    		 for(int i = 0; i < result.size(); i++){
+    	    		 Application.nbDataProvider.getList().add(result.get(i));
+    	    		 }
+    	    	 }
+    		 });
     		 
     	 }
     	};
     	return asyncCallback;
 
     }
-	
-//	private AsyncCallback<Void> editNotebookTitleCallback() {
-//    	AsyncCallback<Void> asyncCallback = new AsyncCallback<Void>(){
-//    		
-//    		@Override
-//    		public void onFailure(Throwable caught) {
-//    			ClientsideSettings.getLogger().severe("Error: " + caught.getMessage());
-//    		}
-//    	 
-//    	 @Override
-//    	 public void onSuccess(Void result) {
-//    		 ClientsideSettings.getLogger().
-//    		 severe("Success EditNoteCallback: " + result.getClass().getSimpleName());
-//    		 Window.alert("EditNote erfolgreich");
-//    		 boolean savePermission = new Boolean(true);
-//    		 Window.alert("EditNote erfolgreich");
-//    		 for(int x = 0; x < dataProvider.getList().size(); x++){
-//    			 for(int z = 0; z < permissions.size(); z++){
-//    				 if(permissions.get(z).getUserID() == dataProvider.getList().get(x).getUserID()){
-//        				 Permission editPermission = new Permission();
-//        				 editPermission = permissions.get(z);
-//        				 editPermission.setPermissionType(dataProvider.getList().get(x).getPermissionType());
-//        				 editPermissions.add(editPermission);
-//        				 Window.alert("Permission bearbeiten");
-//    					 savePermission = false;
-//    				 }
-//    			 }
-//    			 if(savePermission == true){
-//    				 Permission permission = new Permission();
-//    				 permission.setIsOwner(false);
-//    				 permission.setNbID(currentNotebook.getNbID());
-//    				 permission.setNID(0);
-//    				 permission.setPermissionType(dataProvider.getList().get(x).getPermissionType());
-//    				 permission.setUserID(dataProvider.getList().get(x).getUserID());
-//    				 Window.alert("Permission anlegen"); 
-//    				 newPermissions.add(permission);
-//    			 }
-//    		 }
-//    		 adminService.createPermissions(newPermissions, createPermissionsCallback());
-//    		 adminService.editPermissions(editPermissions, editPermissionsCallback());
-//    		 
-//       		 index = Application.nbDataProvider.getList().indexOf(currentNotebook);
-//    		 Application.nbDataProvider.getList().set(index, newNotebook);
-//    		 Application.nbSelectionModel.setSelected(newNotebook, true);
-//    	 }
-//    	};
-//    	return asyncCallback;
-//
-//    }
 	
     private AsyncCallback<Void> createPermissionsCallback() {
     	AsyncCallback<Void> asyncCallback = new AsyncCallback<Void>() {

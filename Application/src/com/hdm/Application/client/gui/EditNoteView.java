@@ -351,6 +351,11 @@ protected void run() {
     		}
     		if(selectionModel.getSelectedObject() == null && permissionTB.getValue() == ""){
     			Window.alert("Erstellen Sie eine neue Berechtigung oder bearbeiten Sie eine bestehende.");
+        		savePermissionButton.setEnabled(true);
+        		deletePermissionButton.setEnabled(true); 
+        		readButton.setEnabled(true);
+        		editButton.setEnabled(true);
+        		deleteButton.setEnabled(true);
     		}
     		else{
     			UserPermission editUP = new UserPermission();
@@ -372,7 +377,12 @@ protected void run() {
     			}
     			if(readButton.getValue() == false && editButton.getValue() == false && deleteButton.getValue() == false){
     				Window.alert("Bitte waehlen Sie eine Art der Berechtigung aus");
-    			} 
+    			}
+        		savePermissionButton.setEnabled(true);
+        		deletePermissionButton.setEnabled(true); 
+        		readButton.setEnabled(true);
+        		editButton.setEnabled(true);
+        		deleteButton.setEnabled(true);
     		}
     		
     	}
@@ -831,6 +841,7 @@ private AsyncCallback<DueDate> getDuedateCallback(){
         			}
         			
         			dataProvider.getList().add(userP);
+        			permissionTB.setText("");
 	        		savePermissionButton.setEnabled(true);
 	        		deletePermissionButton.setEnabled(true); 
 	        		readButton.setEnabled(true);

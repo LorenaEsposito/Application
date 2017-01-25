@@ -97,6 +97,7 @@ public class Application implements EntryPoint {
 		TextCell noteCell = new TextCell();
 		
 		NotebookCell nbCell = new NotebookCell();
+		
 	    static ProvidesKey<Notebook> keyProvider = new ProvidesKey<Notebook>() {
 		      public Object getKey(Notebook item) {
 		        // Always do a null check.
