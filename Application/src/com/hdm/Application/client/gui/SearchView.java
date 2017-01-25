@@ -208,7 +208,7 @@ public class SearchView extends Update {
 			if (n || dd ){
 				Note selectedNoteA = ((SingleSelectionModel<Note>) noteTable.getSelectionModel()).getSelectedObject();
 				Cookies.setCookie("selectedNoteID", (String.valueOf(selectedNote.getnID())));
-		   			Update update = new EditNoteView();
+		   			Update update = new ShowNoteView();
 		   			RootPanel.get("Details").clear();
 			   		RootPanel.get("Details").add(update);
 				
@@ -216,7 +216,7 @@ public class SearchView extends Update {
 			if (nb){
 				Notebook selectedNoteB = ((SingleSelectionModel<Notebook>) notebookTable.getSelectionModel()).getSelectedObject();
 				Cookies.setCookie("selectedNotebookID", (String.valueOf(selectedNoteB.getNbID())));
-		   			Update update = new EditNotebookView();
+		   			Update update = new ShowNotebookView();
 		   			RootPanel.get("Details").clear();
 			   		RootPanel.get("Details").add(update);			}
 			
