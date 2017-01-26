@@ -352,8 +352,8 @@ public class Application implements EntryPoint {
 	    createNotebookButton.addClickHandler(new ClickHandler() {
 	  	public void onClick(ClickEvent event) {
 	  		
-	  		notesSelectionModel.setSelected(notesSelectionModel.getSelectedObject(), false);
-	  		nbSelectionModel.setSelected(nbSelectionModel.getSelectedObject(), false); 
+//	  		notesSelectionModel.setSelected(notesSelectionModel.getSelectedObject(), false);
+//	  		nbSelectionModel.setSelected(nbSelectionModel.getSelectedObject(), false); 
 	          /*
 	           * Showcase instantiieren.
 	           */ 
