@@ -445,6 +445,7 @@ public class NoteMapper {
 					note.setnCreDate(rs.getDate("creadate"));
 					note.setnModDate(rs.getDate("moddate"));
 					
+					
 					// Neues Objekt wird dem Ergebnisvektor hinzugefuegt
 					result.addElement(note);
 				}
@@ -550,7 +551,7 @@ public Vector<Note> findByUserPermission3(AppUser user) {
 		Statement stmt = con.createStatement();
 		
 		//Statement ausfuellen und als Query an DB schicken
-		ResultSet rs = stmt.executeQuery("SELECT nid FROM permissions WHERE appuserid= " + appUserID +" AND permtype=3");
+		ResultSet rs = stmt.executeQuery("SELECT nid FROM permissions WHERE appuserid= " + appUserID +" AND permtype = 3");
 		
 		while (rs.next()){
 			
@@ -810,42 +811,7 @@ try{
 		 			 
 
 	 
-public Vector<Note> findByBetweenCreationDate(java.sql.Date von, java.sql.Date bis){
-	 Connection con = DBConnection.connection();
-	 Vector<Note> result = new Vector<Note>();
-	 	 
-	 
-	 try{
-		 Statement stmt = con.createStatement();			 
-		 ResultSet rs = stmt.executeQuery("SELECT * FROM notes WHERE creadate BETWEEN '"+von.toString()+"' AND '"+bis.toString()+"';");
-		 
-		 
-		//Fuer jeden Eintrag im Suchergebnis wird ein Note-Objekt erstellt.
-		 while(rs.next()) {
-			 Note note = new Note();
-			 note.setnID(rs.getInt("nid"));
-			 note.setNbID(rs.getInt("nbid"));
-			 note.setnTitle(rs.getString("title"));
-			 note.setnSubtitle(rs.getString("subtitle"));
-			 note.setnContent(rs.getString("content"));
-			 note.setSource(rs.getString("source"));
-			 note.setnCreDate(rs.getDate("creadate"));
-			 note.setnModDate(rs.getDate("moddate"));
-			 
-			//Neues Objekt wird dem Ergebnisvektor hinzugefuegt
-			 result.addElement(note);
-			 
-		 } 
-	 }
-	 
-	 catch (SQLException e){
-		 System.out.println("SQL FEHLER: "+e);
-		 e.printStackTrace();
-	 }
-	 
-	//Vektor wird zurueckgegeben
-	 return result;
-}
+
 public Vector<Note> findOwnNotesFromAppUser(AppUser user) {
 
 	// DB-Verbindung holen und Variablen zurücksetzen
@@ -872,7 +838,6 @@ public Vector<Note> findOwnNotesFromAppUser(AppUser user) {
 		nIDs.add(nID);
 		
 		}
-		
 
 }
 catch (SQLException e){
@@ -922,6 +887,42 @@ try{
 
 }
 
+public Vector<Note> findByBetweenCreationDate(java.sql.Date von, java.sql.Date bis){
+	 Connection con = DBConnection.connection();
+	 Vector<Note> result = new Vector<Note>();
+	 	 
+	 
+	 try{
+		 Statement stmt = con.createStatement();			 
+		 ResultSet rs = stmt.executeQuery("SELECT * FROM notes WHERE creadate BETWEEN '"+von.toString()+"' AND '"+bis.toString()+"';");
+		 
+		 
+		//Fuer jeden Eintrag im Suchergebnis wird ein Note-Objekt erstellt.
+		 while(rs.next()) {
+			 Note note = new Note();
+			 note.setnID(rs.getInt("nid"));
+			 note.setNbID(rs.getInt("nbid"));
+			 note.setnTitle(rs.getString("title"));
+			 note.setnSubtitle(rs.getString("subtitle"));
+			 note.setnContent(rs.getString("content"));
+			 note.setSource(rs.getString("source"));
+			 note.setnCreDate(rs.getDate("creadate"));
+			 note.setnModDate(rs.getDate("moddate"));
+			 
+			//Neues Objekt wird dem Ergebnisvektor hinzugefuegt
+			 result.addElement(note);
+			 
+		 } 
+	 }
+	 
+	 catch (SQLException e){
+		 System.out.println("SQL FEHLER: "+e);
+		 e.printStackTrace();
+	 }
+	 
+	//Vektor wird zurueckgegeben
+	 return result;
+}
 
 public Vector<Note> findByBetweenDueDate(java.sql.Date von, java.sql.Date bis){
 Connection con = DBConnection.connection();
@@ -961,8 +962,6 @@ catch (SQLException e){
 //Vektor wird zurueckgegeben
 return result;
 }
-
-
 public Vector<Note> findByBetweenModiDate(java.sql.Date von, java.sql.Date bis){
 Connection con = DBConnection.connection();
 Vector<Note> result = new Vector<Note>();
@@ -1000,7 +999,6 @@ catch (SQLException e){
 
 //Vektor wird zurueckgegeben
 return result;
-}
-		 			 
+}		 			 
 
 }

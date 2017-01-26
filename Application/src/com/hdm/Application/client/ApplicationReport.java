@@ -70,9 +70,9 @@ public class ApplicationReport implements EntryPoint {
 	private VerticalPanel detailPanel = new VerticalPanel();
 	private HorizontalPanel filterPanel = new HorizontalPanel();
 	private HorizontalPanel radiobuttonPanel = new HorizontalPanel();
-	private VerticalPanel searchUserPanel = new VerticalPanel();
-	private VerticalPanel notePanel = new VerticalPanel();
-	private HorizontalPanel hpRadiobuttonPanel = new HorizontalPanel();
+	private HorizontalPanel searchPanel = new HorizontalPanel();
+	private HorizontalPanel searchUserPanel = new HorizontalPanel();
+	private HorizontalPanel notePanel = new HorizontalPanel();
 	private VerticalPanel ergebnisPanel = new VerticalPanel();
 	private Label welcomeLabel = new Label();
 	final Button logoButton = new Button();
@@ -83,6 +83,10 @@ public class ApplicationReport implements EntryPoint {
 	boolean lb;
 	boolean en; 
 	boolean an;
+	
+	private boolean dd;
+	private boolean md;
+	private boolean cd;
 	
 	/**
 	 * Da diese Klasse die Implementierung des Interface <code>EntryPoint</code>
@@ -127,14 +131,12 @@ public class ApplicationReport implements EntryPoint {
 					welcomeLabel.setText("Willkommen im Report Generator, bitte wählen Sie in der Navigation zuerst aus welchen Report Sie generieren möchten.");
 					filterPanel.add(welcomeLabel);	
 					searchDateBox.setStyleName("gwt-DateBox");
-					showReportAllUserNotesButton.setStyleName("notework-searchbutton");
-					showReportFilteredNotesButton.setStyleName("notework-searchbutton");
-					showReportAllNotes.setStyleName("notework-searchbutton");
+					showReportAllUserNotesButton.setStylePrimaryName("notework-searchbutton");
+					showReportFilteredNotesButton.setStylePrimaryName("notework-searchbutton");
+					showReportAllNotes.setStylePrimaryName("notework-searchbutton");
 					navigationPanel.add(showReportAllUserNotesButton);
 					navigationPanel.add(showReportFilteredNotesButton);
 					navigationPanel.add(showReportAllNotes);
-					ergebnisPanel.setStyleName("ergebnisPanel");
-					welcomeLabel.setStyleName("welcomePanel");
 					detailPanel.add(filterPanel);
 					detailPanel.add(ergebnisPanel);
 					RootPanel.get("Navigator").add(navigationPanel);
@@ -187,35 +189,24 @@ public class ApplicationReport implements EntryPoint {
 		detailPanel.add(filterPanel);
 		
 		final Label usernameLabel = new Label();
-		usernameLabel.setText("Nutzer-Email");
-		usernameLabel.setStylePrimaryName("usernamelabel");
+		usernameLabel.setText("Nutzer-Email:");
 		final TextBox username = new TextBox(); 
-		username.setStylePrimaryName("usernamelabel");
-		final RadioButton lebB = new RadioButton("Radiobutton-Group","Leseberechtigung");
-		lebB.setStylePrimaryName("usernamelabel");
-		final RadioButton lbB = new RadioButton("Radiobutton-Group","Löschberechtigung");
-		lbB.setStylePrimaryName("usernamelabel");
-		final RadioButton bbB = new RadioButton("Radiobutton-Group","Bearbeitungsberechtigung");
-		bbB.setStylePrimaryName("usernamelabel");
-		final RadioButton enB = new RadioButton("Radiobutton-Group","Eigene Notizen");
-		enB.setStylePrimaryName("usernamelabel");
-		final RadioButton anB = new RadioButton("Radiobutton-Group","Alle Notizen eines Users");
-		anB.setStylePrimaryName("usernamelabel");
 		final Button userSearchButton = new Button("Report generieren");
-		userSearchButton.setStylePrimaryName("usernamelabel");
-		
-		
+		final RadioButton lebB = new RadioButton("Radiobutton-Group","Leseberechtigung");
+		final RadioButton lbB = new RadioButton("Radiobutton-Group","Löschberechtigung");
+		final RadioButton bbB = new RadioButton("Radiobutton-Group","Bearbeitungsberechtigung");
+		final RadioButton enB = new RadioButton("Radiobutton-Group","Eigene Notizen");
+		final RadioButton anB = new RadioButton("Radiobutton-Group","Alle Notizen eines Users");
 
 		searchUserPanel.clear();
 		searchUserPanel.add(usernameLabel);
 		searchUserPanel.add(username);
+		searchUserPanel.add(userSearchButton);
 		searchUserPanel.add(lebB);
 		searchUserPanel.add(bbB);
 		searchUserPanel.add(lbB);
 		searchUserPanel.add(enB);
 		searchUserPanel.add(anB);
-		searchUserPanel.setStyleName("searchUserPanel");
-		searchUserPanel.add(userSearchButton);
 
 		filterPanel.clear();
 		filterPanel.add(searchUserPanel);
@@ -476,31 +467,36 @@ public class ApplicationReport implements EntryPoint {
   * 
   */
 protected void loadRadiobuttonPanel() {
-	
+	Window.alert("loadRadiobutton Panel ausgeführt");
 	detailPanel.clear();
 	detailPanel.add(filterPanel);
 	
+	final RadioButton duedate = new RadioButton("Radiobuttongroup", "Fälligkeitsdatum");
+	final RadioButton modidate = new RadioButton("Radiobuttongroup", "Modifikationsdatum");
+	final RadioButton creadate = new RadioButton("Radiobuttongroup", "Erstellungsdatum");
+
 	final Label vonLabel = new Label();
-	vonLabel.setText("Von");
-	vonLabel.setStylePrimaryName("loadRadiobuttonPanel");
+	vonLabel.setText("Von:");
 	final DateBox vonBox = new DateBox();
 	final Label bisLabel = new Label();
-	bisLabel.setStylePrimaryName("loadRadiobuttonPanel");
-	bisLabel.setText("Bis");
+	bisLabel.setText("Bis:");
 	final DateBox bisBox = new DateBox();
 	final Button searchButton = new Button("Report anzeigen");
-	searchButton.setStylePrimaryName("loadRadiobuttonPanel");
-	
 	radiobuttonPanel.clear();
-	radiobuttonPanel.add(vonLabel);
-	radiobuttonPanel.add(vonBox);
-	radiobuttonPanel.add(bisLabel);
-	radiobuttonPanel.add(bisBox);
-	radiobuttonPanel.add(searchButton);
-	radiobuttonPanel.setStyleName("radiobuttonPanel");
+	radiobuttonPanel.add(duedate);
+	radiobuttonPanel.add(modidate);
+	radiobuttonPanel.add(creadate);
+	searchPanel.clear();
+	searchPanel.add(vonLabel);
+	searchPanel.add(vonBox);
+	searchPanel.add(bisLabel);
+	searchPanel.add(bisBox);
+	searchPanel.add(searchButton);
 	searchDateBox.setVisible(true);
 	filterPanel.clear();
 	filterPanel.add(radiobuttonPanel);
+	detailPanel.add(searchPanel);
+	
 
 	DateTimeFormat datumsFormat = DateTimeFormat.getFormat("dd.MM.yyyy");
 	vonBox.setFormat(new DateBox.DefaultFormat(datumsFormat));
@@ -521,48 +517,162 @@ protected void loadRadiobuttonPanel() {
 		
 		@Override
 		public void onClick(ClickEvent event) { 
-			
-			if (vonBox.getValue() == null && bisBox.getValue() != null ){
-				java.util.Date date = new java.util.Date(0);
-				vonBox.setValue(date);
-			}
-			if (vonBox.getValue() != null && bisBox.getValue() == null){
-				
-				java.util.Date date = new java.util.Date();
-				bisBox.setValue(date);
-			}
-			
-			if ( vonBox.getValue() == null && bisBox.getValue() == null){
-				
-			}
-				reportGenerator.findByBetweenCreationDate(vonBox.getValue(), bisBox.getValue(), new AsyncCallback<AllFilteredNotes>() {
-					@Override
-					public void onFailure(Throwable caught) {
-						// TODO Auto-generated method stub	
+			 
+			boolean rbselected = false;
+			 dd = duedate.getValue();
+			 md = modidate.getValue();
+			 cd = creadate.getValue();
+			 
+			if(dd){
+				Window.alert("DueDate ausgewählt");
+				 rbselected = true;	
+				 
+				 if (vonBox.getValue() == null && bisBox.getValue() != null ){
+						java.util.Date date = new java.util.Date(0);
+						vonBox.setValue(date);
 					}
-					@Override
-					public void onSuccess(AllFilteredNotes result) {
-						if (result.getRows().size() > 1) {
-							//Um den Report in HTML-Text zu �berf�hren ben�tigen wir einen HTMLReportWriter
-							HTMLReportWriter writer = new HTMLReportWriter();
-							//Wir �bergeben den erhaltenen Report an den HTMLReportWriter
-							writer.process(result);
-							//Wir leeren das DetailPanel, damit etwaige vorherige Reports nicht mehr angezeigt werden
-							searchUserPanel.clear();
-							//Wir bef�llen das DetailPanel mit dem HTML-Text den wir vom ReporWriter erhalten
-							detailPanel.add(new HTML(writer.getReportText()));
-							//Wir aktivieren den Button zur Anforderung eines Reports wieder, da der angeforderte Report ausgegeben ist
-						}
-						else{
-							Label noresult = new Label();
-							String message = "Es wurden keine Notizen gefunden.";
-							noresult.setText(message);
-							detailPanel.clear();
-							detailPanel.add(noresult);
-						}
+					if (vonBox.getValue() != null && bisBox.getValue() == null){
+						
+						java.util.Date date = new java.util.Date();
+						bisBox.setValue(date);
+					}
+					
+					if ( vonBox.getValue() == null && bisBox.getValue() == null){
 						
 					}
-				});				
+					reportGenerator.findByBetweenDueDate(vonBox.getValue(), bisBox.getValue(), new AsyncCallback<AllFilteredNotes>() {
+						@Override
+						public void onFailure(Throwable caught) {
+							// TODO Auto-generated method stub	
+						}
+						@Override
+						public void onSuccess(AllFilteredNotes result) {
+							Window.alert("between duedate onsucess");
+
+							if (result.getRows().size() > 1) {
+								//Um den Report in HTML-Text zu �berf�hren ben�tigen wir einen HTMLReportWriter
+								HTMLReportWriter writer = new HTMLReportWriter();
+								//Wir �bergeben den erhaltenen Report an den HTMLReportWriter
+								writer.process(result);
+								//Wir leeren das DetailPanel, damit etwaige vorherige Reports nicht mehr angezeigt werden
+								searchUserPanel.clear();
+								//Wir bef�llen das DetailPanel mit dem HTML-Text den wir vom ReporWriter erhalten
+								detailPanel.add(new HTML(writer.getReportText()));
+								//Wir aktivieren den Button zur Anforderung eines Reports wieder, da der angeforderte Report ausgegeben ist
+							}
+							else{
+								Label noresult = new Label();
+								String message = "Es wurden keine Notizen gefunden.";
+								noresult.setText(message);
+								detailPanel.clear();
+								detailPanel.add(noresult);
+							}
+							
+						}
+					});				
+
+			}
+			
+			if(md){
+				Window.alert("Modidate ausgewählt");
+				 rbselected = true;	
+				 
+				 if (vonBox.getValue() == null && bisBox.getValue() != null ){
+						java.util.Date date = new java.util.Date(0);
+						vonBox.setValue(date);
+					}
+					if (vonBox.getValue() != null && bisBox.getValue() == null){
+						
+						java.util.Date date = new java.util.Date();
+						bisBox.setValue(date);
+					}
+					
+					if ( vonBox.getValue() == null && bisBox.getValue() == null){
+						
+					}
+					reportGenerator.findByBetweenModiDate(vonBox.getValue(), bisBox.getValue(), new AsyncCallback<AllFilteredNotes>() {
+						
+
+						@Override
+						public void onFailure(Throwable caught) {
+							// TODO Auto-generated method stub	
+						}
+						@Override
+						public void onSuccess(AllFilteredNotes result) {
+							Window.alert("between Modidate onsucess");
+
+							if (result.getRows().size() > 1) {
+								//Um den Report in HTML-Text zu �berf�hren ben�tigen wir einen HTMLReportWriter
+								HTMLReportWriter writer = new HTMLReportWriter();
+								//Wir �bergeben den erhaltenen Report an den HTMLReportWriter
+								writer.process(result);
+								//Wir leeren das DetailPanel, damit etwaige vorherige Reports nicht mehr angezeigt werden
+								searchUserPanel.clear();
+								//Wir bef�llen das DetailPanel mit dem HTML-Text den wir vom ReporWriter erhalten
+								detailPanel.add(new HTML(writer.getReportText()));
+								//Wir aktivieren den Button zur Anforderung eines Reports wieder, da der angeforderte Report ausgegeben ist
+							}
+							else{
+								Label noresult = new Label();
+								String message = "Es wurden keine Notizen gefunden.";
+								noresult.setText(message);
+								detailPanel.clear();
+								detailPanel.add(noresult);
+							}
+							
+						}
+					});	
+					
+			}
+					if(cd){
+						Window.alert("Creaddate ausgewählt");
+
+						 rbselected = true;	
+						 
+						 if (vonBox.getValue() == null && bisBox.getValue() != null ){
+								java.util.Date date = new java.util.Date(0);
+								vonBox.setValue(date);
+							}
+							if (vonBox.getValue() != null && bisBox.getValue() == null){
+								
+								java.util.Date date = new java.util.Date();
+								bisBox.setValue(date);
+							}
+							
+							if ( vonBox.getValue() == null && bisBox.getValue() == null){
+								
+							}
+							reportGenerator.findByBetweenCreationDate(vonBox.getValue(), bisBox.getValue(), new AsyncCallback<AllFilteredNotes>() {
+								@Override
+								public void onFailure(Throwable caught) {
+									Window.alert("between creadate fehlgeschlaegn");
+								}
+								@Override
+								public void onSuccess(AllFilteredNotes result) {
+									Window.alert("between creadate onsucess");
+
+									if (result.getRows().size() > 1) {
+										//Um den Report in HTML-Text zu �berf�hren ben�tigen wir einen HTMLReportWriter
+										HTMLReportWriter writer = new HTMLReportWriter();
+										//Wir �bergeben den erhaltenen Report an den HTMLReportWriter
+										writer.process(result);
+										//Wir leeren das DetailPanel, damit etwaige vorherige Reports nicht mehr angezeigt werden
+										searchUserPanel.clear();
+										//Wir bef�llen das DetailPanel mit dem HTML-Text den wir vom ReporWriter erhalten
+										detailPanel.add(new HTML(writer.getReportText()));
+										//Wir aktivieren den Button zur Anforderung eines Reports wieder, da der angeforderte Report ausgegeben ist
+									}
+									else{
+										Label noresult = new Label();
+										String message = "Es wurden keine Notizen gefunden.";
+										noresult.setText(message);
+										detailPanel.clear();
+										detailPanel.add(noresult);
+									}
+									
+								}
+							});				
+					}
 		}
 	});		
 	}
@@ -576,33 +686,23 @@ protected void loadRadiobuttonPanel() {
 			detailPanel.add(filterPanel);
 			
 			final Label usernameLabel = new Label();
-			usernameLabel.setText("Titelstichwort");
-			usernameLabel.setStylePrimaryName("usernamelabel");
+			usernameLabel.setText("Titelstichwort:");
 			final TextBox sucheNachNotiz = new TextBox(); 
-			sucheNachNotiz.setStylePrimaryName("usernamelabel");
-			final RadioButton nb = new RadioButton("Radiobutton-Group","Notizbuch");
-			final RadioButton no = new RadioButton("Radiobutton-Group","Notiz");
-			final RadioButton aNo = new RadioButton("Radiobutton-Group","Alle Notizen");
 			final Button noteSearchButton = new Button("Report generieren");
-			noteSearchButton.setStylePrimaryName("usernamelabel");
-			hpRadiobuttonPanel.setStylePrimaryName("usernamelabel");
+			final RadioButton no = new RadioButton("Radiobutton-Group","Notiz");
+			final RadioButton nb = new RadioButton("Radiobutton-Group","Notizbuch");
+			final RadioButton aNo = new RadioButton("Radiobutton-Group","Alle Notizen");
 			
 			notePanel.clear();
 			notePanel.add(usernameLabel);
 			notePanel.add(sucheNachNotiz);
-			notePanel.add(hpRadiobuttonPanel);
-			hpRadiobuttonPanel.add(no);
-			hpRadiobuttonPanel.add(nb);
-			hpRadiobuttonPanel.add(aNo);
 			notePanel.add(noteSearchButton);
 			notePanel.add(no);
 			notePanel.add(nb);
 			notePanel.add(aNo);
-			notePanel.setStyleName("notePanel");
 			
 			filterPanel.clear();
 			filterPanel.add(notePanel);
-			
 			
 			
 			
@@ -619,7 +719,7 @@ protected void loadRadiobuttonPanel() {
 					
 					if (no.getValue()){
 						reportGenerator.findByTitle(sucheNachNotiz.getText(), new AsyncCallback<AllNotes>() {
-							
+
 							@Override
 							public void onFailure(Throwable caught) {
 								Window.alert("createAllFilteredNotesReport fehler");

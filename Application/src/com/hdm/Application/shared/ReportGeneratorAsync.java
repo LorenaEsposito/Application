@@ -43,4 +43,9 @@ public interface ReportGeneratorAsync {
 	void findByBetweenCreationDate(Date von, Date bis, AsyncCallback<AllFilteredNotes> callback);
 
 	void findByTitle(String nTitle, AsyncCallback<AllNotes> callback);
+
+	void findByBetweenDueDate(Date von, Date bis,	AsyncCallback<AllFilteredNotes> callback);
+
+	void findByBetweenModiDate(Date von, Date bis,
+			AsyncCallback<AllFilteredNotes> callback);
 }

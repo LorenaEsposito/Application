@@ -99,7 +99,7 @@ public void process(AllNotesFromUser r) {
     Row toprow = rows.elementAt(0);
     
   	result.append("<th class=\"ReportHeader\" colspan=\"5\"> Das ist der Report bzgl. des Nutzers: " + toprow.getColumnAt(0) + "</th></tr>");
-  	result.append("<th> Notizbuch</th>"+
+  	result.append("<th> Notiz ID</th>"+
   					"<th> Notiztitel</th>"+
   					"<th> Untertitel</th>"+
   					"<th>Berechtigung</th>"+
@@ -145,7 +145,7 @@ public void process(AllFilteredNotes r) {
 	    Row toprow = rows.elementAt(0);
 	    
 	  	result.append("<th class=\"ReportHeader\" colspan=\"4\"> Report nach Filtersuche: " + toprow.getColumnAt(0) + "</th></tr>");
-	  	result.append("<th> Notizbuch</th>"+
+	  	result.append("<th> Notiz ID</th>"+
 	  					"<th> Notiztitel</th>"+
 	  					"<th> Untertitel</th>"+
 	  					 "<th>Erstellungsdatum</tr>");
@@ -182,7 +182,7 @@ public void process(AllNotes r) {
 	    Row toprow = rows.elementAt(0);
 	    
 	  	result.append("<th class=\"ReportHeader\" colspan=\"4\"> Report nach allen Notizen </th></tr>");
-	  	result.append("<th> Notizbuch</th>"+
+	  	result.append("<th> Notiz ID</th>"+
 	  					"<th> Notiztitel</th>"+
 	  					"<th> Untertitel</th>"+
 	  					 "<th>Erstellungsdatum</tr>");

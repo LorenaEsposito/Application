@@ -40,6 +40,10 @@ public interface ReportGenerator extends RemoteService {
 	
 	public void init() throws IllegalArgumentException;
 
+	public AllFilteredNotes findByBetweenDueDate(Date von, Date bis) throws IllegalArgumentException;
+
+	public AllFilteredNotes findByBetweenModiDate(Date von, Date bis) throws IllegalArgumentException;
+
 	
 
 
