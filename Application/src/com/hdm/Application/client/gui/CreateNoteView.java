@@ -183,6 +183,7 @@ protected void run() {
           Cookies.getCookie("url")
           
           );
+        Cookies.removeCookie("url");
        }   
     
     readButton.setText("Leseberechtigung");

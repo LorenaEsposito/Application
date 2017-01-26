@@ -211,11 +211,7 @@ public class Application implements EntryPoint {
 					if (currentUser != null) {
 						Cookies.setCookie("userid", String.valueOf(currentUser.getUserID()));
 						loadGUI();
-						if(Cookies.getCookie("url") != null) {
-				   			Update update = new CreateNoteView();
-				   			RootPanel.get("Details").clear();
-					   		RootPanel.get("Details").add(update);		   		
-						}							
+							
 					}else{
 						Cookies.removeCookie("userid");
 						loginInfo.setLoggedIn(false);
@@ -266,6 +262,8 @@ public class Application implements EntryPoint {
  	    
 	 	 // Connect the list to the data provider.
  	    nbDataProvider.addDataDisplay(nbCellList);
+ 	    
+ 	    
  	    
  	    	    
 	    /**
@@ -370,7 +368,7 @@ public class Application implements EntryPoint {
 	    createNoteButton.addClickHandler(new ClickHandler() {
 	  	public void onClick(ClickEvent event) {
 	  		
-	  		notesSelectionModel.setSelected(notesSelectionModel.getSelectedObject(), false);
+//	  		notesSelectionModel.setSelected(notesSelectionModel.getSelectedObject(), false);
 	  		
 	          /*
 	           * Showcase instantiieren.
@@ -514,6 +512,8 @@ public class Application implements EntryPoint {
 			 for (int x = 0; x < notebooks.size(); x++ ){
 				 nbDataProvider.getList().add(notebooks.get(x));
 			 }
+			 nbSelectionModel.setSelected(notebooks.get(0), true);
+
 		 }
 	 };
 	 return asyncCallback;
@@ -536,9 +536,15 @@ public class Application implements EntryPoint {
 		 for(int i = 0; i < notes.size(); i++) {
 			 notesDataProvider.getList().add(notes.get(i).getnTitle());
 		 }
+			if(Cookies.getCookie("url") != null) {
+			Update update = new CreateNoteView();
+			RootPanel.get("Details").clear();
+	   		RootPanel.get("Details").add(update);		   		
+		}else{
 			Update update = new EditNotebookView();
 			RootPanel.get("Details").clear();
 			RootPanel.get("Details").add(update);
+		}
 	 }
 	 };
 	 return asyncCallback;

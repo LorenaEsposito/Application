@@ -29,7 +29,7 @@ import com.hdm.Application.shared.bo.Permission;
 import com.hdm.Application.shared.bo.UserPermission;
 
 /**
- * Diese View ermoeglicht dem User das Bearbeiten, sofern er die noetige Berechtigung dafuer hat.
+ * Diese View ermoeglicht dem User das Bearbeiten eines Notizbuches, sofern er die noetige Berechtigung dafuer hat.
  * Ist diese nicht vorhanden, so kann er das Notizbuch und die Notizen nur lesen. Ebenfalls koennen die
  * Berechtigungen veraendert oder geloescht werden. Mit einer Loeschberechtigung kann das Notizbuch auch geloescht
  * werden.
@@ -482,7 +482,8 @@ public class EditNotebookView extends Update {
 			 ClientsideSettings.getLogger().
 			 severe("Success GetUserByIDCallback: " + result.getClass().getSimpleName());
 			 /*
-			  * Auslesen un
+			  * Auslesen und setzen der Usermail und UserID zur Anzeige der Berechtigungen und 
+			  * zur spaeteren Verwendung
 			  */
 			 userPermission.get(y).setMail(result.getMail());
 				y++;
@@ -510,6 +511,10 @@ public class EditNotebookView extends Update {
 		 public void onSuccess(ArrayList<Notebook> result) {
 			 ClientsideSettings.getLogger().
 			 severe("Success GetOwnedNotebooksCallback: " + result.getClass().getSimpleName());
+			 /*
+			  * Pruefung der Einmaligkeit des Notizbuches durch Vergleich mit allen Notizbuechern, 
+			  * die der Nutzer besitzt. Ist dieser Fall nicht gegeben, erhaelt der User eine Info.
+			  */
 			 for(int y = 0; y < result.size(); y++) {
      			 if(newNotebook.getNbTitle() == result.get(y).getNbTitle() && newNotebook.getNbID() == result.get(y).getNbID()) {
      				 notebookTitleTB.setText(currentNotebook.getNbTitle());
@@ -552,6 +557,10 @@ public class EditNotebookView extends Update {
     	 public void onSuccess(Notebook result) {
     		 ClientsideSettings.getLogger().
     		 severe("Success EditNoteCallback: " + result.getClass().getSimpleName());
+    		 /*
+    		  * Hier werden die neu hinzugefuegten Berechtigungen per Callback erstellt und die 
+    		  * bereits bestehenden werden editiert, falls sich die Berechtigungsart geaendert hat.
+    		  */
     		 boolean savePermission = new Boolean(true);
     		 for(int x = 0; x < dataProvider.getList().size(); x++){
     			 savePermission = true;
@@ -659,7 +668,11 @@ public class EditNotebookView extends Update {
     		@Override
     		public void onSuccess(AppUser result) {
     			ClientsideSettings.getLogger().
-    			severe("Success SearchUserByGoogleIDCallback: " + result.getClass().getSimpleName());
+    			severe("Success SearchUserByMailCallback: " + result.getClass().getSimpleName());
+    			/*
+    			 * In diesem Callback wird ueberprueft, ob der eingegeben User fuer eine Berechtigung
+    			 * im System existiert.
+    			 */
     			user = result;
     			if(user.getMail() == "error"){
         			Window.alert("Der eingegebene Nutzer existiert nicht. Ueberpruefen Sie bitte Ihre Angaben.");
@@ -764,19 +777,5 @@ public class EditNotebookView extends Update {
 		};
 		return asyncCallback;
 	}
-    
-	
-//	public void setNntvm(NotebookNotesTreeViewModel nntvm) {
-//		this.nntvm = nntvm;
-//	}
-//
-//	public void setSelected(Notebook nb) {
-//		if (nb != null) {
-//			currentNotebook = nb;
-//			notebookTitleTB.setText(currentNotebook.getNbTitle());
-//		} else {
-//			notebookTitleTB.setText("");
-//		}
-//	}
 	
 }

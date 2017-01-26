@@ -40,6 +40,15 @@ import com.hdm.Application.shared.bo.Notebook;
 import com.hdm.Application.shared.bo.Permission;
 import com.hdm.Application.shared.bo.UserPermission;
 
+/**
+ * Diese View ermoeglicht dem User das Bearbeiten einer Notiz, sofern er die noetige Berechtigung dafuer hat.
+ * Ist diese nicht vorhanden, so kann er das Notizbuch und die Notizen nur lesen. Ebenfalls koennen die
+ * Berechtigungen veraendert oder geloescht werden. Mit einer Loeschberechtigung kann das Notizbuch auch geloescht
+ * werden.
+ * @author Lorena
+ *
+ */
+
 public class EditNoteView extends Update{
 
 
@@ -537,6 +546,11 @@ protected void run() {
 
 }
 
+/**
+ * Erstellen aller asynchronen Callbacks
+ * @return
+ */
+
 private AsyncCallback<AppUser> getCurrentUserCallback(){
 	AsyncCallback<AppUser> asyncCallback = new AsyncCallback<AppUser>() {
 		
@@ -572,7 +586,9 @@ private AsyncCallback<ArrayList<Note>> getNotesOfNotebookCallback() {
 		 ClientsideSettings.getLogger().
 		 severe("Success GetNotesOfNotebookCallback: " + result.getClass().getSimpleName());
 		 notesOfNB = result;
-		 
+		 /*
+		  * Hier findet das Setzen aller Daten statt, die in der View angezeigt werden sollen.
+		  */
 		 for(int i = 0; i < notesOfNB.size(); i++){
 			 if(noteTitle == notesOfNB.get(i).getnTitle()) {
 				 currentNote = notesOfNB.get(i);
@@ -603,6 +619,11 @@ private AsyncCallback<ArrayList<Permission>> getPermissionsCallback(){
 	 public void onSuccess(ArrayList<Permission> result) {
 		 ClientsideSettings.getLogger().
 		 severe("Success GetPermissionsCallback: " + result.getClass().getSimpleName());
+		 /*
+		  * Hier werden die Berechtigungen aus der Datenbank geholt, um sie spaeter anzeigen
+		  * zu koennen. Ausserdem wird die Berechtigung des aktuellen Nutzers ausgelesen und die
+		  * entsprechenden Buttons freigegeben.
+		  */
 		 for(int i = 0; i < result.size(); i++) {
 			 if(currentUser.getUserID() == result.get(i).getUserID()){
 				 if(result.get(i).getIsOwner() == true){
@@ -668,6 +689,10 @@ private AsyncCallback<AppUser> getUserByIDCallback(){
 	 public void onSuccess(AppUser result) {
 		 ClientsideSettings.getLogger().
 		 severe("Success GetUserByIDCallback: " + result.getClass().getSimpleName());
+		 /*
+		  * Auslesen und setzen der Usermail und UserID zur Anzeige der Berechtigungen und 
+		  * zur spaeteren Verwendung
+		  */
 		 userPermission.get(y).setMail(result.getMail());
 			y++;
 			if(y < userPermission.size()){
@@ -759,7 +784,10 @@ private AsyncCallback<DueDate> getDuedateCallback(){
              
              RootPanel.get("Details").clear();
              RootPanel.get("Details").add(update);
-    		 
+    		 /*
+    		  * Hier werden die neu hinzugefuegten Berechtigungen per Callback erstellt und die 
+    		  * bereits bestehenden werden editiert, falls sich die Berechtigungsart geaendert hat.
+    		  */
     		 boolean savePermission = new Boolean(true);
     		 for(int x = 0; x < dataProvider.getList().size(); x++){
     			 savePermission = true;
@@ -821,7 +849,10 @@ private AsyncCallback<DueDate> getDuedateCallback(){
     			ClientsideSettings.getLogger().
     			severe("Success SearchUserByGoogleIDCallback: " + result.getClass().getSimpleName());
     			user = result;
-    			
+    			/*
+    			 * In diesem Callback wird ueberprueft, ob der eingegeben User fuer eine Berechtigung
+    			 * im System existiert.
+    			 */
     			if(user.getMail() == "error"){
         			Window.alert("Der eingegebene Nutzer existiert nicht. Ueberpruefen Sie bitte Ihre Angaben.");
         		}else{

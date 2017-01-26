@@ -108,6 +108,11 @@ public class EditProfileView extends Update{
 		
 	}
 	
+	/**
+	 * Erstellen aller asynchronen Callbacks
+	 * @return
+	 */
+	
 	private AsyncCallback<AppUser> getCurrentUserCallback() {
     	AsyncCallback<AppUser> asyncCallback = new AsyncCallback<AppUser>(){
     		
@@ -121,7 +126,9 @@ public class EditProfileView extends Update{
     		 ClientsideSettings.getLogger().
     		 severe("Success GetCurrentUserCallback: " + result.getClass().getSimpleName());
     		 currentUser = result;
-    		 
+    		 /*
+    		  * Hier werden die noetigen Daten geholt und in die View eingesetzt.
+    		  */
     		 if(currentUser.getUserName() != null){
     			 userNameTB.setText(currentUser.getUserName());
     		 }else{
