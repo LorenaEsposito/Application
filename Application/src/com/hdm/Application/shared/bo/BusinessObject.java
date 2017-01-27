@@ -5,10 +5,10 @@ import java.io.Serializable;
 /**
  * Die abstrakte Klasse <code>BusinessObject</code> implementiert das Interface
  * <code>Serializable</code> und ist somit serilisierbar. Sie stellt die
- * Elternklasse für alle BusinessObjects dar, die über die GUI verwendet werden.
+ * Elternklasse fuer alle BusinessObjects dar, die ueber die GUI verwendet werden.
  * 
  * Die Klasse ist abstrakt und mit static final <code> serialVersionUID</code>
- * ausgestattet, dies ist wichtiger Bestandteil für die Serialisierung.
+ * ausgestattet, dies ist wichtiger Bestandteil fuer die Serialisierung.
  * 
  * @author Andra
  *
@@ -20,7 +20,7 @@ public abstract class BusinessObject implements Serializable {
 	private int id = 0;
 
 	/**
-	 * Gibt die eindeutige Datenbank-ID des Objekts zurück.
+	 * Gibt die eindeutige Datenbank-ID des Objekts zurueck.
 	 * 
 	 * @return id
 	 */
@@ -40,7 +40,7 @@ public abstract class BusinessObject implements Serializable {
 	}
 
 	/**
-	 * Gibt ein Objekt als String zurück. Dabei wird ein Format definiert
+	 * Gibt ein Objekt als String zurueck. Dabei wird ein Format definiert
 	 * 
 	 * @return String im vorgefertigten Format
 	 */
@@ -51,7 +51,7 @@ public abstract class BusinessObject implements Serializable {
 	}
 
 	/**
-	 * Vergleicht das aufrufende BO mit dem im Parameterbereich übergebenen BO.
+	 * Vergleicht das aufrufende BO mit dem im Parameterbereich uebergebenen BO.
 	 * 
 	 * @param o
 	 * @return boolischer Wert

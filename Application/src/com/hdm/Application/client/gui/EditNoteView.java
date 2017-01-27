@@ -139,7 +139,7 @@ public class EditNoteView extends Update{
    final Button saveNoteButton = new Button("Speichern");
    final Button deleteNoteButton = new Button("Loeschen");
    final Button cancelButton = new Button("Abbrechen");
-   final Button savePermissionButton = new Button("Save");
+   final Button savePermissionButton = new Button("Speichern");
    final Button deletePermissionButton = new Button("Loeschen");
    final Button saveDuedateButton = new Button("Speichern");
    final Button deleteDuedateButton = new Button("Loeschen");

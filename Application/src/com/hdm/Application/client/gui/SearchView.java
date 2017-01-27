@@ -73,7 +73,7 @@ public class SearchView extends Update {
 	TextBox searchBox = new TextBox();
 	DateBox searchDateBox = new DateBox(); 
 	final Button searchButton = new Button("Suchen");
-	final Button showNoteButton = new Button ("Anzeigen");
+//	final Button showNoteButton = new Button ("Anzeigen");
 	final RadioButton dueDateButton = new RadioButton("Radiobutton-Group","Duedate");
 	final RadioButton userNameButton = new RadioButton("Radiobutton-Group","Username");
 	final RadioButton noteButton = new RadioButton("Radiobutton-Group","Note");
@@ -138,9 +138,9 @@ public class SearchView extends Update {
 		headlinePanel.setStyleName("headlinePanel");
 		searchDateBox.setVisible(false);		
 		searchButton.setStyleName("savePermission-button");
-		showNoteButton.setStyleName("savePermission-button");
+//		showNoteButton.setStyleName("savePermission-button");
 		searchPanel.setStyleName("searchPanel");
-		dueDateButton.setText("Enddatum");
+		dueDateButton.setText("Faelligkeitsdatum");
 		userNameButton.setText("Profilname");
 		noteButton.setText("Notiz");
 		notebookButton.setText("Notizbuch");
@@ -198,35 +198,35 @@ public class SearchView extends Update {
 		
 		});
 				
-		showNoteButton.addClickHandler(new ClickHandler(){
-			@SuppressWarnings("unchecked")
-			public void onClick(ClickEvent event){
-			
-			Note selectedNote = ((SingleSelectionModel<Note>) noteTable.getSelectionModel()).getSelectedObject();
-			Window.alert("Titel der Notiz die ausgew�hlt wurde: " + selectedNote.getnTitle());		
-		
-			if (n || dd ){
-				Note selectedNoteA = ((SingleSelectionModel<Note>) noteTable.getSelectionModel()).getSelectedObject();
-				Cookies.setCookie("selectedNoteID", (String.valueOf(selectedNote.getnID())));
-		   			Update update = new ShowNoteView();
-		   			RootPanel.get("Details").clear();
-			   		RootPanel.get("Details").add(update);
-				
-			}
-			if (nb){
-				Notebook selectedNoteB = ((SingleSelectionModel<Notebook>) notebookTable.getSelectionModel()).getSelectedObject();
-				Cookies.setCookie("selectedNotebookID", (String.valueOf(selectedNoteB.getNbID())));
-		   			Update update = new ShowNotebookView();
-		   			RootPanel.get("Details").clear();
-			   		RootPanel.get("Details").add(update);			}
-			
-			
-			if (un){
-				Window.alert("Nutzer nicht anzeigbar");
-			}
-			}
-			});
-			
+//		showNoteButton.addClickHandler(new ClickHandler(){
+//			@SuppressWarnings("unchecked")
+//			public void onClick(ClickEvent event){
+//			
+//			Note selectedNote = ((SingleSelectionModel<Note>) noteTable.getSelectionModel()).getSelectedObject();
+//			Window.alert("Titel der Notiz die ausgew�hlt wurde: " + selectedNote.getnTitle());		
+//		
+//			if (n || dd ){
+//				Note selectedNoteA = ((SingleSelectionModel<Note>) noteTable.getSelectionModel()).getSelectedObject();
+//				Cookies.setCookie("selectedNoteID", (String.valueOf(selectedNote.getnID())));
+//		   			Update update = new ShowNoteView();
+//		   			RootPanel.get("Details").clear();
+//			   		RootPanel.get("Details").add(update);
+//				
+//			}
+//			if (nb){
+//				Notebook selectedNoteB = ((SingleSelectionModel<Notebook>) notebookTable.getSelectionModel()).getSelectedObject();
+//				Cookies.setCookie("selectedNotebookID", (String.valueOf(selectedNoteB.getNbID())));
+//		   			Update update = new ShowNotebookView();
+//		   			RootPanel.get("Details").clear();
+//			   		RootPanel.get("Details").add(update);			}
+//			
+//			
+//			if (un){
+//				Window.alert("Nutzer nicht anzeigbar");
+//			}
+//			}
+//			});
+//			
 			
 		
 		searchButton.addClickHandler(new ClickHandler() {
@@ -253,7 +253,7 @@ public class SearchView extends Update {
 							Window.alert("Zu deiner Suche konnten leider keine Ergebnisse gefunden werden.");
 					 	 }else{
 					 		ergebnisPanel.add(noteTable);
-					 		ergebnisPanel.add(showNoteButton);
+//					 		ergebnisPanel.add(showNoteButton);
 					 		noteTable.setRowCount(result.size(), false);
 							noteTable.setRowData(0, result);
 							ListDataProvider<Note> dataProvider = new ListDataProvider<Note>();
@@ -275,9 +275,8 @@ public class SearchView extends Update {
 							if(result.size() == 0 ){
 								Window.alert("Zu deiner Suche konnten leider keine Ergebnisse gefunden werden.");
 						 	 }else{
-						 		Window.alert("Resultsize: "+result.size());
 						 		ergebnisPanel.add(userTable);
-						 		ergebnisPanel.add(showNoteButton);
+//						 		ergebnisPanel.add(showNoteButton);
 						 		userTable.setRowCount(result.size(), false);
 								userTable.setRowData(0, result);
 								ListDataProvider<AppUser> dataProvider = new ListDataProvider<AppUser>();
@@ -301,9 +300,8 @@ public class SearchView extends Update {
 								if(result.size() == 0 ){
 									Window.alert("Zu deiner Suche konnten leider keine Ergebnisse gefunden werden.");
 							 	 }else{
-							 		Window.alert("Resultsize: "+result.size());
 							 		ergebnisPanel.add(noteTable);
-							 		ergebnisPanel.add(showNoteButton);
+//							 		ergebnisPanel.add(showNoteButton);
 							 		noteTable.setRowCount(result.size(), false);
 									noteTable.setRowData(0, result);
 									ListDataProvider<Note> dataProvider = new ListDataProvider<Note>();
@@ -327,9 +325,9 @@ public class SearchView extends Update {
 							if(result.size() == 0 ){
 								Window.alert("Zu deiner Suche konnten leider keine Ergebnisse gefunden werden.");
 						 	 }else{
-						 		Window.alert("Resultsize: "+result.size());
+
 						 		ergebnisPanel.add(notebookTable);
-						 		ergebnisPanel.add(showNoteButton);
+//						 		ergebnisPanel.add(showNoteButton);
 						 		notebookTable.setRowCount(result.size(), false);
 								notebookTable.setRowData(0, result);
 								ListDataProvider<Notebook> dataProvider = new ListDataProvider<Notebook>();
@@ -342,7 +340,7 @@ public class SearchView extends Update {
 					}
 				
 				if (!rbselected) {
-					Window.alert("Bitte erst ein Radiobutton ausgew�hlen!");
+					Window.alert("Bitte erst ein Radiobutton ausgewaehlen!");
 					searchBox.setFocus(true);
 					searchBox.setText("");
 					searchDateBox.setValue(null);
@@ -357,13 +355,13 @@ public class SearchView extends Update {
 
 	private void userTable(){
 		
-		Column<AppUser, Boolean> checkColumn = new Column<AppUser, Boolean>(new CheckboxCell(true, false)) {
-			@Override
-			public Boolean getValue(AppUser object) {
-				return selectionModelB.isSelected(object);
-			}
-			
-		};
+//		Column<AppUser, Boolean> checkColumn = new Column<AppUser, Boolean>(new CheckboxCell(true, false)) {
+//			@Override
+//			public Boolean getValue(AppUser object) {
+//				return selectionModelB.isSelected(object);
+//			}
+//			
+//		};
 		   TextColumn<AppUser> nameCol = new TextColumn<AppUser>() {
 
 		    @Override
@@ -385,17 +383,17 @@ public class SearchView extends Update {
 		  
 		 userTable.addColumn(nameCol, "Name");
 		 userTable.addColumn(googleIDCol, "E-Mail");
-		 userTable.addColumn(checkColumn);
+//		 userTable.addColumn(checkColumn);
 	}
 	
 	protected void notebookTable(){
 			
-		Column<Notebook, Boolean> checkColumn = new Column<Notebook, Boolean>(new CheckboxCell(true, false)) {
-			@Override
-			public Boolean getValue(Notebook object) {
-				return selectionModelA.isSelected(object);
-			}
-		};
+//		Column<Notebook, Boolean> checkColumn = new Column<Notebook, Boolean>(new CheckboxCell(true, false)) {
+//			@Override
+//			public Boolean getValue(Notebook object) {
+//				return selectionModelA.isSelected(object);
+//			}
+//		};
 		
 		
 		TextColumn<Notebook> titleCol = new TextColumn<Notebook>() {
@@ -439,20 +437,20 @@ public class SearchView extends Update {
 		notebookTable.addColumn(titleCol, "Notizbuch Titel");
 		notebookTable.addColumn(createCol, "erstellt am:");
 		notebookTable.addColumn(moddateCol, "zuletzt bearbeitet:");
-		notebookTable.addColumn(checkColumn);
+//		notebookTable.addColumn(checkColumn);
 		
 	}
 
 	
 	
    protected void noteTable(){
-	   Column<Note, Boolean> checkColumn = new Column<Note, Boolean>(new CheckboxCell(true, false)) {
-			@Override
-			public Boolean getValue(Note object) {
-				return selectionModel.isSelected(object);
-			}
-			
-		};
+//	   Column<Note, Boolean> checkColumn = new Column<Note, Boolean>(new CheckboxCell(true, false)) {
+//			@Override
+//			public Boolean getValue(Note object) {
+//				return selectionModel.isSelected(object);
+//			}
+//			
+//		};
 	
 		TextColumn<Note> titleCol = new TextColumn<Note>() {
 
@@ -490,7 +488,7 @@ public class SearchView extends Update {
 		noteTable.addColumn(titleCol, "Titel");
 		noteTable.addColumn(subCol, "Untertitel");
 		noteTable.addColumn(createCol, "erstellt am:");
-		noteTable.addColumn(checkColumn);
+//		noteTable.addColumn(checkColumn);
 		
 
    }
